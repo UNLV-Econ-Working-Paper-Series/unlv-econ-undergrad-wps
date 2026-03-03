@@ -1,0 +1,33 @@
+---
+layout: ../../layouts/PolicyLayout.astro
+title: Author Posting Agreement (Summary)
+lead: This summary outlines author rights, posting permissions, and publication responsibilities.
+bodyClass: page-policy-author-agreement
+---
+
+This page summarizes expectations for posting student work in the Proceedings.
+
+## Author rights
+
+Authors retain copyright unless otherwise noted.
+
+## Permission to post
+
+By posting a paper, the author grants the Proceedings (and, if applicable, UNLV as publisher) a non-exclusive license to host and distribute the work online for educational and archival purposes.
+
+## Author responsibilities
+
+Authors confirm that:
+
+- the work is their own and sources are properly cited
+- permissions exist for third-party materials, or those materials were removed/replaced
+- manuscripts do not include confidential or restricted information that should not be public
+- to the best of their knowledge, the work follows the standards in [Publication Ethics & Integrity](../ethics/)
+
+## Updates and withdrawal
+
+Authors may request corrections and updates under [Corrections, Updates & Versioning](../corrections-versioning/). In limited circumstances, content may be restricted or withdrawn under [Takedown / Rights & Privacy Requests](../takedown/).
+
+## Questions
+
+For rights, licensing, or posting questions, contact the journal team through the [Contact page](../../contact/).

@@ -1,4 +1,5 @@
 ---
+import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { cleanPaperTitle, getAllPapers, getIssueLabelForPaper, getIssueSlugForPaper, paperHref } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
@@ -12,23 +13,31 @@ export async function getStaticPaths() {
 const issueSlug = Astro.params.issue ?? "";
 const papers = (await getAllPapers()).filter((paper) => getIssueSlugForPaper(paper) === issueSlug);
 const issueLabel = papers[0] ? getIssueLabelForPaper(papers[0]) : issueSlug;
+
+const issueZipHref = withBase(`/assets/issues/${issueSlug}/${issueSlug}-pdfs.zip`);
 ---
 
 <BaseLayout title={`${issueLabel} | Issues`} bodyClass="section-issues page-issue-detail">
   <div class="issue-layout">
-    <section class="page-intro page-intro--issue issue-intro full-bleed">
-      <div class="issue-intro-kicker">
-        <p>Issue</p>
-      </div>
-      <div class="issue-intro-title">
-        <h1>{issueLabel}</h1>
-      </div>
-      <div class="issue-intro-subtitle">
-        <p>Browse working papers by {issueLabel} cohort</p>
-      </div>
-    </section>
+    <PageBanner kicker="Issue" title={issueLabel} subtitle={`Browse working papers by ${issueLabel} cohort.`} />
 
     <section class="content-section issue-content">
+      <div class="page-intro-actions">
+        <a class="btn btn-small" href={withBase("/issues/")}>Back to issues</a>
+
+        {papers.length > 0 ? (
+          <a class="btn btn-small btn-primary" href={issueZipHref}>
+            Download ZIP (PDFs)
+          </a>
+        ) : null}
+      </div>
+
+      {papers.length > 0 ? (
+        <p class="muted small" style="margin: 0.6rem 0 0;">
+          This download packages all PDFs from <strong>{issueLabel}</strong> into a single ZIP file.
+        </p>
+      ) : null}
+
       {papers.length === 0 ? (
         <article class="accent-card empty-state-card">
           <h2>No papers available yet</h2>
@@ -58,5 +67,4 @@ const issueLabel = papers[0] ? getIssueLabelForPaper(papers[0]) : issueSlug;
         </>
       )}
     </section>
-  </div>
-</BaseLayout>
+  </div></BaseLayout>

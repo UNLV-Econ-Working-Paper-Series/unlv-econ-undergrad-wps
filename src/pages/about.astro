@@ -1,141 +1,240 @@
 ---
+import { getCollection } from "astro:content";
+import PageBanner from "../components/PageBanner.astro";
+import TableOfContents from "../components/TableOfContents.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { withBase } from "../lib/urls";
+
+const publicationSteps = [
+  {
+    title: "Capstone research",
+    description: "Students complete an original research project in ECON 495 under faculty supervision.",
+  },
+  {
+    title: "Semester issue",
+    description: "Each semester is published as one issue containing that cohort's papers.",
+  },
+  {
+    title: "Paper pages",
+    description: "Every paper has a page with abstract, key metadata, and a downloadable PDF.",
+  },
+  {
+    title: "Updates",
+    description: "When authors revise, the most current version is displayed and prior versions may be retained when feasible.",
+  },
+];
+
+const bibtexTemplate = `@misc{econ495_author_year,
+  title        = {Title of Paper},
+  author       = {Last, First and Last, First},
+  year         = {2026},
+  howpublished = {UNLV ECON 495 Journal (Capstone Proceedings), Issue: Spring 2026},
+  url          = {https://markjayson13.github.io/econ495journal_site/...},
+  note         = {Working paper (undergraduate capstone research).}
+}`;
+
+const allGraduateAssistants = (await getCollection("graduateAssistants")).sort(
+  (a, b) => b.data.termOrder - a.data.termOrder || a.data.name.localeCompare(b.data.name)
+);
+
+const currentGraduateAssistants = allGraduateAssistants.filter((assistant) => assistant.data.current);
+
+const tocItems = [
+  { id: "about-glance-title", label: "At a Glance" },
+  { id: "about-what-is", label: "What This Is" },
+  { id: "about-what-isnt", label: "What This Isn't" },
+  { id: "about-process-title", label: "How Publication Works" },
+  { id: "about-policies-title", label: "Policies" },
+  { id: "about-team-title", label: "Editorial Team" },
+  { id: "about-ga-title", label: "Graduate Assistants" },
+  { id: "about-cta-title", label: "Get Involved" },
+];
 ---
 
-<BaseLayout title="About | UNLV ECON 495 Journal" bodyClass="section-about page-about">
-  <section class="page-intro page-intro--band full-bleed">
-    <div class="page-intro-title">
-      <h1>About the Proceedings</h1>
-    </div>
-    <div class="page-intro-subtitle">
-      <p>
-        The <strong>UNLV ECON 495 Capstone Proceedings</strong> is an open-access archive of undergraduate working papers
-        produced in <strong>ECON 495 (Seminar in Economic Research)</strong> at the University of Nevada, Las Vegas.
-      </p>
-      <p>
-        Each semester is released as a single <strong>issue</strong> so student research remains
-        <strong>citable, discoverable, and easy to browse</strong>.
-      </p>
-    </div>
-  </section>
+<BaseLayout title="About | UNLV ECON 495 Journal" bodyClass="section-about page-about page-about-modern">
+  <PageBanner
+    title="About"
+    lead="An open-access archive of undergraduate capstone working papers from UNLV Economics."
+    note="Working papers (not peer reviewed). Published by semester issue."
+  />
 
   <section class="content-section">
-    <section class="about-two-col">
-      <article class="prose-section about-panel">
-        <h2>Mission and Scope</h2>
+    <div class="page-with-toc">
+      <aside class="page-with-toc__toc">
+        <TableOfContents items={tocItems} />
+      </aside>
+
+      <div class="page-with-toc__main">
+        <section class="about-modern-shell">
+    <section class="about-block about-card" aria-labelledby="about-glance-title">
+      <h2 id="about-glance-title">At a Glance</h2>
+      <ul class="about-glance-list">
+        <li><strong>Open-access archive</strong> of undergraduate working papers from ECON 495 at UNLV.</li>
+        <li>Published <strong>once per semester</strong> as a single issue.</li>
+        <li>Each paper has a <strong>citable page</strong> with abstract, metadata, and downloadable PDF.</li>
+        <li>Projects are developed under <strong>faculty supervision</strong> and may be revised over time.</li>
+      </ul>
+    </section>
+
+    <section class="about-two-up" aria-label="What this is and what this is not">
+      <article class="about-card about-card--compact">
+        <h2 id="about-what-is">What This Is</h2>
         <p>
-          The Proceedings exists to preserve and showcase the capstone research process, turning an economic question into
-          <strong>evidence, analysis, and a defensible argument</strong>.
+          The UNLV ECON 495 Journal (Capstone Proceedings) preserves and showcases undergraduate capstone research, turning an
+          economic question into <strong>evidence, analysis, and a defensible argument</strong>.
         </p>
         <p>
-          It expands access to undergraduate scholarship while providing student authors a durable public record of their work.
-        </p>
-        <p>
-          Papers posted here are <strong>working papers</strong>, not peer-reviewed journal articles. Authors may revise drafts
-          as methods, writing, and interpretation improve over time.
+          It is designed to make student work <strong>discoverable, readable, and citable</strong> beyond the classroom.
         </p>
       </article>
 
-      <article class="prose-section about-panel">
-        <h2>Archive Organization</h2>
-        <p>The archive is structured to make research easy to find and cite:</p>
-        <ul>
-          <li><strong>Issues (by semester):</strong> Each semester is published as one issue.</li>
-          <li>
-            <strong>Paper pages:</strong> Each paper has its own page with an abstract, key metadata, and a downloadable PDF.
-          </li>
-          <li>
-            <strong>Categories (by topic):</strong> Papers are indexed by topic category across semesters for discovery and
-            browsing.
-          </li>
-        </ul>
+      <article class="about-card about-card--compact">
+        <h2 id="about-what-isnt">What This Isn&apos;t</h2>
         <p>
-          Many ECON 495 projects are also presented in the broader undergraduate research ecosystem at UNLV (for example,
-          research symposia), and strong papers are well-positioned for further development into more formal publication
-          pathways.
+          This site is <strong>not a peer-reviewed journal</strong>. Papers are working papers authored by students.
+        </p>
+        <p>
+          Methods, writing, and interpretation may evolve across versions as authors refine their work.
         </p>
       </article>
     </section>
 
-    <hr class="section-divider" />
+    <section class="about-block about-card" aria-labelledby="about-process-title">
+      <h2 id="about-process-title">How Publication Works</h2>
+      <ol class="about-stepper">
+        {publicationSteps.map((step, index) => (
+          <li class="about-step-card">
+            <span class="about-step-number">{index + 1}</span>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
 
-    <section class="prose-section">
-      <h2>Editorial Leadership</h2>
-      <div class="content-stack editorial-grid">
-        <article class="founder-card">
-          <img
-            class="founder-thumb"
-            src={withBase("/assets/images/assane.jpg")}
-            alt="Professor Djeto Assane"
-            style="--focus-y: 40%;"
-          />
-          <div class="founder-body">
-            <h3 class="founder-name">Professor Djeto Assane, Ph.D.</h3>
-            <p class="founder-role">ECON 495 Instructor</p>
+    <section class="about-block about-card" aria-labelledby="about-policies-title">
+      <h2 id="about-policies-title">Policies</h2>
+
+      <details class="about-policy" open>
+        <summary>How to cite</summary>
+        <div class="about-policy-body">
+          <p>Use the paper&apos;s page URL as the stable link. Suggested format:</p>
+          <p>
+            <strong>Author Last Name, First Name.</strong> (Year). <em>Title of Paper.</em> UNLV ECON 495 Journal (Capstone
+            Proceedings), <strong>Issue: [Semester Year]</strong>. URL
+          </p>
+          <h3>BibTeX template</h3>
+          <pre class="about-code"><code>{bibtexTemplate}</code></pre>
+        </div>
+      </details>
+
+      <details class="about-policy">
+        <summary>Rights and reuse</summary>
+        <div class="about-policy-body">
+          <p><strong>Authors retain copyright</strong> unless otherwise noted.</p>
+          <p>
+            Posting is intended to make work discoverable and citable. For reuse beyond brief quotation, contact the author or
+            the journal team.
+          </p>
+          <p>
+            The views in each paper are those of the author(s) and do not necessarily reflect UNLV or its faculty.
+          </p>
+        </div>
+      </details>
+
+      <details class="about-policy">
+        <summary>Corrections and versioning</summary>
+        <div class="about-policy-body">
+          <p>
+            Papers may be updated over time as methods, interpretation, or presentation improve. The latest public version is
+            displayed on each paper page.
+          </p>
+        </div>
+      </details>
+
+      <details class="about-policy">
+        <summary>Takedown and accessibility support</summary>
+        <div class="about-policy-body">
+          <p>
+            If a paper contains an error, requires an update, or needs removal for rights reasons, contact the journal team with
+            the paper title and URL.
+          </p>
+          <p>
+            For accessibility support or format requests, use the Contact page and include the page link plus the requested
+            accommodation.
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <section class="about-block about-card" aria-labelledby="about-team-title">
+      <h2 id="about-team-title">Editorial Team</h2>
+
+      <div class="about-team-grid about-team-grid--editorial">
+        <article class="about-person-card">
+          <img class="about-person-thumb" src={withBase("/assets/images/assane.jpg")} alt="Professor Djeto Assane" />
+          <div>
+            <p class="about-role">Instructor</p>
+            <h3>Professor Djeto Assane, Ph.D.</h3>
             <p>
-              Dr. Djeto Assane was educated at the Universit&eacute; d&apos;Abidjan (C&ocirc;te d&apos;Ivoire) and the University of
-              Colorado Boulder (M.A., Ph.D.). His teaching areas include statistics, econometrics, mathematical economics, and
-              microeconomics. He has also served as visiting faculty in the American Economic Association Summer Minority
-              Scholarship Program.
+              Economist and ECON 495 instructor with expertise in statistics, econometrics, mathematical economics, and
+              microeconomics.
             </p>
           </div>
         </article>
 
-        <article class="founder-card">
-          <img
-            class="founder-thumb"
-            src={withBase("/assets/images/mark-jayson.jpg")}
-            alt="Mark Jayson Farol"
-            style="--focus-y: 35%;"
-          />
-          <div class="founder-body">
-            <h3 class="founder-name">Mark Jayson Farol, M.A.</h3>
-            <p class="founder-role">Journal Organizer</p>
+        <article class="about-person-card">
+          <img class="about-person-thumb" src={withBase("/assets/images/mark-jayson.jpg")} alt="Mark Jayson Farol" />
+          <div>
+            <p class="about-role">Journal Organizer</p>
+            <h3>Mark Jayson Farol, M.A.</h3>
             <p>
-              Mark Jayson Farol earned his M.A. in Quantitative Business Economics and B.S. in Economics at UNLV. He previously
-              supported undergraduate empirical research in ECON 495 as a graduate assistant and research collaborator, and
-              organizes the Proceedings to keep student work accessible, organized, and citable.
+              Maintains the Proceedings workflow and publication structure to keep student research accessible, organized, and
+              citable.
             </p>
           </div>
         </article>
       </div>
     </section>
 
-    <hr class="section-divider" />
+    <section class="about-block about-card" aria-labelledby="about-ga-title">
+      <header class="about-section-head">
+        <h2 id="about-ga-title">Graduate Assistants</h2>
+        <a class="about-inline-link" href={withBase("/graduate-assistants/")}>View all Graduate Assistants →</a>
+      </header>
 
-    <section class="prose-section">
-      <h2>Graduate Assistants</h2>
-      <div class="content-stack assistants-grid">
-        <article class="founder-card">
-          <img
-            class="founder-thumb"
-            src={withBase("/assets/images/brandon-penticoff.jpg")}
-            alt="Brandon Penticoff"
-            style="--focus-y: 35%;"
-          />
-          <div class="founder-body">
-            <h3 class="founder-name">Brandon Penticoff</h3>
-            <p class="founder-role">Graduate Assistant, Spring 2026</p>
-            <p>
-              Brandon Penticoff is a University of Nevada, Las Vegas student pursuing an accelerated B.A./M.A. in Economics and
-              Quantitative Business Economics. He works as a freelance Financial Data Analyst, transforming complex banking
-              records into structured reports for legal- and policy-oriented analysis. Focus areas include data organization,
-              litigation support, and clear communication of data-driven insights.
-            </p>
-          </div>
-        </article>
+      {currentGraduateAssistants.length === 0 ? (
+        <p class="about-empty">No current graduate assistants are listed.</p>
+      ) : (
+        <div class="about-team-grid about-team-grid--ga">
+          {currentGraduateAssistants.map((assistant) => (
+            <article class="about-person-card">
+              {assistant.data.headshot ? (
+                <img class="about-person-thumb" src={withBase(assistant.data.headshot)} alt={assistant.data.name} />
+              ) : null}
+              <div>
+                <p class="about-role">{assistant.data.term}</p>
+                <h3>
+                  <a class="about-person-link" href={withBase(`/graduate-assistants/${assistant.slug}/`)}>{assistant.data.name}</a>
+                </h3>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+
+    <section class="about-block about-card about-cta" aria-labelledby="about-cta-title">
+      <h2 id="about-cta-title">Get Involved</h2>
+      <p>Contact the journal team for publication questions, corrections, or collaboration with the undergraduate research workflow.</p>
+      <div class="page-intro-actions">
+        <a class="btn btn-small btn-primary" href={withBase("/contact/")}>Contact</a>
+        <a class="btn btn-small" href={withBase("/our/")}>Explore Research Pathway</a>
       </div>
     </section>
+        </section>
+      </div>
 
-    <hr class="section-divider" />
-
-    <section class="prose-section">
-      <h2>Citation, Reuse, and Disclaimer</h2>
-      <p>
-        Unless otherwise noted, <strong>authors retain copyright</strong>. Posting on this site is intended to make student
-        research discoverable and citable. For reuse beyond brief quotation, contact the author or the journal team.
-      </p>
-    </section>
+    </div>
   </section>
 </BaseLayout>

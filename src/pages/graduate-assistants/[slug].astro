@@ -1,0 +1,35 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import PageBanner from "../../components/PageBanner.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+export async function getStaticPaths() {
+  const assistants = await getCollection("graduateAssistants");
+  return assistants.map((assistant) => ({
+    params: { slug: assistant.slug },
+    props: { assistant },
+  }));
+}
+
+const { assistant } = Astro.props as { assistant: CollectionEntry<"graduateAssistants"> };
+const { Content } = await render(assistant);
+---
+
+<BaseLayout title={`${assistant.data.name} | Graduate Assistants`} bodyClass="section-about page-ga-profile">
+  <PageBanner title={assistant.data.name} lead={`${assistant.data.role} (${assistant.data.term})`} />
+
+  <section class="content-section ga-profile-shell">
+    {assistant.data.headshot ? (
+      <img class="ga-profile-thumb" src={withBase(assistant.data.headshot)} alt={assistant.data.name} loading="lazy" />
+    ) : null}
+
+    <article class="ga-profile-bio">
+      <Content />
+    </article>
+
+    <p class="ga-back-link">
+      <a href={withBase("/graduate-assistants/")}>← Back to Graduate Assistants</a>
+    </p>
+  </section>
+</BaseLayout>

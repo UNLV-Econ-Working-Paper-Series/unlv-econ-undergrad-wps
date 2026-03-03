@@ -1,4 +1,5 @@
 ---
+import { ClientRouter, fade } from "astro:transitions";
 import "../styles/global.css";
 import { withBase } from "../lib/urls";
 
@@ -20,7 +21,7 @@ const navItems = [
   { href: withBase("/"), label: "Home" },
   { href: withBase("/issues/"), label: "Issues" },
   { href: withBase("/categories/"), label: "Categories" },
-  { href: withBase("/our/"), label: "Our" },
+  { href: withBase("/our/"), label: "Research Pathway" },
   { href: withBase("/about/"), label: "About" },
   { href: withBase("/contact/"), label: "Contact" },
 ];
@@ -40,12 +41,13 @@ function isActive(href: string): boolean {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:name="root" transition:animate="none">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <ClientRouter />
   </head>
   <body class={bodyClass || undefined}>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -66,7 +68,7 @@ function isActive(href: string): boolean {
       </div>
     </header>
 
-    <main id="content" class="page-body">
+    <main id="content" class="page-body" transition:name="page-main" transition:animate={fade()}>
       <div class="page-content">
         <slot />
       </div>
@@ -88,6 +90,7 @@ function isActive(href: string): boolean {
               <li><a href={withBase("/")}>Home</a></li>
               <li><a href={withBase("/issues/")}>Issues</a></li>
               <li><a href={withBase("/categories/")}>Categories</a></li>
+              <li><a href={withBase("/our/")}>Research Pathway</a></li>
               <li><a href={withBase("/about/")}>About</a></li>
               <li><a href={withBase("/contact/")}>Contact</a></li>
             </ul>
@@ -127,11 +130,136 @@ function isActive(href: string): boolean {
           });
         };
 
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", setCurrentYear, { once: true });
-        } else {
+        const collectRevealTargets = () => {
+          const selectors = [
+            "[data-reveal]",
+            "main .content-section",
+            "main .hero-panel",
+            "main .card",
+            "main .contact-card",
+            "main .ga-card",
+            "main .our-surface",
+          ];
+
+          const unique = new Set();
+          selectors.forEach((selector) => {
+            document.querySelectorAll(selector).forEach((node) => unique.add(node));
+          });
+
+          return Array.from(unique);
+        };
+
+        const initReveal = () => {
+          const nodes = collectRevealTargets();
+          if (nodes.length === 0) {
+            return;
+          }
+
+          const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (reducedMotion || !("IntersectionObserver" in window)) {
+            nodes.forEach((node) => node.classList.add("is-revealed"));
+            return;
+          }
+
+          const observer = new IntersectionObserver(
+            (entries, io) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("is-revealed");
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.12 }
+          );
+
+          nodes.forEach((node, index) => {
+            if (!node.hasAttribute("data-reveal")) {
+              node.setAttribute("data-reveal", "auto");
+            }
+
+            if (!node.hasAttribute("data-reveal-delay")) {
+              node.setAttribute("data-reveal-delay", String(index % 3));
+            }
+
+            const bounds = node.getBoundingClientRect();
+            if (bounds.top <= window.innerHeight * 0.92) {
+              node.classList.add("is-revealed");
+            } else {
+              observer.observe(node);
+            }
+          });
+        };
+
+        const initCopyButtons = () => {
+          const buttons = Array.from(document.querySelectorAll("[data-copy-target]"));
+          if (buttons.length === 0) {
+            return;
+          }
+
+          buttons.forEach((button) => {
+            if (button.dataset.copyInit === "true") {
+              return;
+            }
+            button.dataset.copyInit = "true";
+
+            const originalLabel = (button.textContent || "Copy").trim();
+
+            button.addEventListener("click", async () => {
+              const selector = button.dataset.copyTarget || "";
+              const target = selector ? document.querySelector(selector) : null;
+              const text = (target?.textContent || "").trim();
+              if (!text) {
+                return;
+              }
+
+              const showCopied = () => {
+                button.classList.add("is-copied");
+                button.textContent = "Copied!";
+                window.setTimeout(() => {
+                  button.classList.remove("is-copied");
+                  button.textContent = originalLabel;
+                }, 1600);
+              };
+
+              try {
+                await navigator.clipboard.writeText(text);
+                showCopied();
+                return;
+              } catch (_) {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.setAttribute("readonly", "");
+                ta.style.position = "fixed";
+                ta.style.left = "-9999px";
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                  document.execCommand("copy");
+                } catch (e) {
+                  // noop
+                }
+                ta.remove();
+                showCopied();
+              }
+            });
+          });
+        };
+
+        const runEnhancements = () => {
+          document.documentElement.classList.add("motion-ready");
           setCurrentYear();
+          initReveal();
+          initCopyButtons();
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", runEnhancements, { once: true });
+        } else {
+          runEnhancements();
         }
+
+        document.addEventListener("astro:page-load", runEnhancements);
       })();
     </script>
   </body>

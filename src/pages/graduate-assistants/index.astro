@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import PageBanner from "../../components/PageBanner.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+const assistants = (await getCollection("graduateAssistants")).sort(
+  (a, b) => b.data.termOrder - a.data.termOrder || a.data.name.localeCompare(b.data.name)
+);
+
+const termMap = new Map<string, typeof assistants>();
+for (const assistant of assistants) {
+  if (!termMap.has(assistant.data.term)) {
+    termMap.set(assistant.data.term, []);
+  }
+  termMap.get(assistant.data.term)?.push(assistant);
+}
+
+const termGroups = Array.from(termMap.entries());
+---
+
+<BaseLayout title="Graduate Assistants | UNLV ECON 495 Journal" bodyClass="section-about page-ga-index">
+  <PageBanner
+    title="Graduate Assistants"
+    lead="Graduate assistants support manuscript quality checks and publication workflows by semester cohort."
+  />
+
+  <section class="content-section ga-archive-shell">
+    {termGroups.length === 0 ? (
+      <article class="about-card ga-empty">
+        <p class="muted">No graduate assistants are listed yet.</p>
+      </article>
+    ) : (
+      termGroups.map(([term, items]) => (
+        <section class="ga-term-block" aria-labelledby={`ga-term-${term.toLowerCase().replace(/\s+/g, "-")}`}>
+          <h2 id={`ga-term-${term.toLowerCase().replace(/\s+/g, "-")}`}>{term}</h2>
+
+          <div class="ga-grid">
+            {items.map((assistant) => (
+              <a class="ga-card" href={withBase(`/graduate-assistants/${assistant.slug}/`)}>
+                {assistant.data.headshot ? (
+                  <img class="ga-thumb" src={withBase(assistant.data.headshot)} alt={assistant.data.name} loading="lazy" />
+                ) : null}
+                <p class="ga-kicker">{assistant.data.role}</p>
+                <h3>{assistant.data.name}</h3>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))
+    )}
+  </section>
+</BaseLayout>

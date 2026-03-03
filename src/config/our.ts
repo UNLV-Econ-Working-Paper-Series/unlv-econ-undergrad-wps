@@ -4,30 +4,6 @@ export interface ResourceLink {
   kind: "primary" | "secondary";
 }
 
-export interface PathwayStep {
-  title: string;
-  summary: string;
-}
-
-export const OUR_PATHWAY_STEPS: PathwayStep[] = [
-  {
-    title: "R1 Research Culture",
-    summary: "UNLV's Carnegie R1 environment builds research rigor and evidence-first thinking.",
-  },
-  {
-    title: "OUR Support",
-    summary: "Office of Undergraduate Research programs help students develop projects and communication skills.",
-  },
-  {
-    title: "Research Symposia",
-    summary: "Students present findings publicly through poster, oral, and creative presentation formats.",
-  },
-  {
-    title: "Spectra Journal",
-    summary: "Strong projects can develop into polished manuscripts for formal undergraduate publication.",
-  },
-];
-
 export const OUR_LINKS: ResourceLink[] = [
   {
     label: "Visit Research Symposia",
@@ -55,15 +31,9 @@ export const SPECTRA_LINKS: ResourceLink[] = [
 ];
 
 export const SYMPOSIA_POINTS: string[] = [
-  "Students present capstone and independent projects in a public research setting.",
-  "Presentation formats include poster sessions, oral presentations, and performances/exhibitions.",
-  "Symposia run each fall and spring and help students strengthen communication and feedback cycles.",
-];
-
-export const SPECTRA_HIGHLIGHTS: string[] = [
-  "Biannual and open access, with mentored undergraduate scholarship at the center.",
-  "Multidisciplinary publication pathway for research completed through courses and projects.",
-  "Built for discoverability and citation in undergraduate research ecosystems.",
+  "Open to students with course-based or independent research projects.",
+  "Formats include posters, oral presentations, and performances or exhibitions.",
+  "Held each fall and spring to support public communication and research feedback.",
 ];
 
 export const SPECTRA_PUBLISHES: string[] = [
@@ -74,7 +44,7 @@ export const SPECTRA_PUBLISHES: string[] = [
 ];
 
 export const SPECTRA_REVIEW: string[] = [
-  "Editorial screening for completeness and submission standards.",
   "Double-blind peer review with disciplinary experts.",
-  "Revision cycle focused on evidence quality, method clarity, and manuscript readability.",
+  "Editorial checks for clarity, structure, and submission completeness.",
+  "Revision cycle focused on evidence quality and manuscript readiness.",
 ];

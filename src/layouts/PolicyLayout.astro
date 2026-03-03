@@ -1,0 +1,34 @@
+---
+import PageBanner from "../components/PageBanner.astro";
+import BaseLayout from "./BaseLayout.astro";
+import { withBase } from "../lib/urls";
+
+interface Props {
+  title: string;
+  lead: string;
+  description?: string;
+  bodyClass?: string;
+}
+
+const { title, lead, description = lead, bodyClass = "" } = Astro.props;
+---
+
+<BaseLayout
+  title={`${title} | Policies | UNLV ECON 495 Journal`}
+  description={description}
+  bodyClass={`page-policy ${bodyClass}`.trim()}
+>
+  <PageBanner title={title} lead={lead} compact />
+
+  <section class="content-section policy-shell">
+    <p class="policy-breadcrumb">
+      <a href={withBase("/policies/")}>Policies</a>
+      <span aria-hidden="true"> / </span>
+      <span>{title}</span>
+    </p>
+
+    <article class="policy-article">
+      <slot />
+    </article>
+  </section>
+</BaseLayout>

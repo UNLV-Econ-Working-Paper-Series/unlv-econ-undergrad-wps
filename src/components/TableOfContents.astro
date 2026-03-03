@@ -1,0 +1,96 @@
+---
+interface TocItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  title?: string;
+  items: TocItem[];
+}
+
+const { title = "On this page", items = [] } = Astro.props;
+---
+
+<nav class="toc" data-toc data-reveal="auto" data-reveal-delay="1" aria-label={title}>
+  <h2 class="toc__title">{title}</h2>
+
+  <ol class="toc__list">
+    {items.map((item) => (
+      <li class="toc__item">
+        <a class="toc__link" href={`#${item.id}`} data-toc-link={item.id}>
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ol>
+
+  <script is:inline>
+    (() => {
+      const init = () => {
+        document.querySelectorAll("[data-toc]").forEach((toc) => {
+          if (toc.dataset.tocInit === "true") {
+            return;
+          }
+          toc.dataset.tocInit = "true";
+
+          const links = Array.from(toc.querySelectorAll("[data-toc-link]"));
+          const sections = links
+            .map((link) => document.getElementById(link.dataset.tocLink || ""))
+            .filter(Boolean);
+
+          if (sections.length === 0) {
+            return;
+          }
+
+          const setActive = (id) => {
+            links.forEach((link) => {
+              link.classList.toggle("is-active", (link.dataset.tocLink || "") === id);
+            });
+          };
+
+          const hash = decodeURIComponent(location.hash || "").replace("#", "");
+          if (hash) {
+            setActive(hash);
+          } else {
+            setActive(sections[0].id);
+          }
+
+          links.forEach((link) => {
+            link.addEventListener("click", () => {
+              const id = link.dataset.tocLink || "";
+              if (id) {
+                setActive(id);
+              }
+            });
+          });
+
+          const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (reducedMotion || !("IntersectionObserver" in window)) {
+            return;
+          }
+
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.target?.id) {
+                  setActive(entry.target.id);
+                }
+              });
+            },
+            { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
+          );
+
+          sections.forEach((section) => observer.observe(section));
+        });
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init, { once: true });
+      } else {
+        init();
+      }
+      document.addEventListener("astro:page-load", init);
+    })();
+  </script>
+</nav>

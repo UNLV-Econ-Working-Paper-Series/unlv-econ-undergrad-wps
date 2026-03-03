@@ -1,68 +1,85 @@
 ---
+import ContactCard from "../components/ContactCard.astro";
+import PageBanner from "../components/PageBanner.astro";
+import { CONTACT } from "../config/contact";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const journalActions = [
+  { label: "Email Journal Team", href: `mailto:${CONTACT.journal.email}`, primary: true },
+  { label: "Common Requests", href: "#requests" },
+];
+
+const deptActions = [
+  { label: "Call Office", href: `tel:${CONTACT.dept.phone}`, primary: true },
+  { label: "Get Directions", href: CONTACT.dept.directionsUrl, external: true },
+];
+
+const commonRequests = [
+  { label: "Broken link", subject: "Report a broken link" },
+  { label: "Author update", subject: "Author update request" },
+  { label: "Correction / updated PDF", subject: "Correction or updated PDF" },
+  { label: "Permissions / reuse", subject: "Permissions or reuse" },
+  { label: "Takedown", subject: "Takedown request" },
+];
 ---
 
-<BaseLayout title="Contact | UNLV ECON 495 Journal" bodyClass="section-contact page-contact">
-  <section class="page-intro page-intro--band full-bleed">
-    <div class="page-intro-title">
-      <h1>Contact</h1>
-    </div>
-    <div class="page-intro-subtitle">
-      <p>Reach the journal team and department office.</p>
-    </div>
-  </section>
+<BaseLayout title="Contact | UNLV ECON 495 Journal" bodyClass="section-contact page-contact page-contact-modern">
+  <PageBanner title="Contact" lead="Reach the journal team or the Department of Economics office." />
 
-  <section class="content-section contact-shell">
-    <article class="contact-office contact-office--primary">
-      <h2>Department of Economics</h2>
-      <p class="muted small">
-        Mailing Address:<br />
-        Department of Economics<br />
-        University of Nevada, Las Vegas<br />
-        Mail Stop: 6005<br />
-        4505 S. Maryland Pkwy.<br />
-        Las Vegas, NV 89154
-      </p>
-      <p class="muted small">
-        Phone: 702-895-3776<br />
-        Campus Location: Frank and Estella Beam Hall (BEH), Room 508
-      </p>
-    </article>
+  <section class="content-section contact-modern-shell">
+    <h1 class="contact-sr-only">Contact</h1>
 
-    <details class="more-details">
-      <summary class="more-details__summary">More Details</summary>
-      <div class="more-details__content">
-        <section class="contact-directory">
-          <article class="contact-profile">
-            <h2>Professor Djeto Assane, Ph.D.</h2>
-            <p class="contact-role">ECON 495 Instructor</p>
-            <ul class="contact-link-list">
-              <li><a href="mailto:djeto.assane@unlv.edu">Email: djeto.assane@unlv.edu</a></li>
-              <li>
-                <a href="https://scholar.google.com/citations?user=VJYYWTIAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">
-                  Google Scholar Profile
-                </a>
-              </li>
-            </ul>
-          </article>
+    <section class="contact-grid" aria-labelledby="contact-routing-title">
+      <h2 id="contact-routing-title" class="contact-grid-heading">Who are you trying to reach?</h2>
 
-          <article class="contact-profile">
-            <h2>Mark Jayson Farol, M.A.</h2>
-            <p class="contact-role">Journal Organizer</p>
-            <ul class="contact-link-list">
-              <li><a href="mailto:series-team@unlv.edu">Email: series-team@unlv.edu</a></li>
-              <li>
-                <a href="https://scholar.google.com/citations?hl=en&user=vdr24hsAAAAJ" target="_blank" rel="noopener noreferrer">
-                  Google Scholar Profile
-                </a>
-              </li>
-              <li>
-                <a href="https://www.linkedin.com/in/markjaysonfarol" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              </li>
-            </ul>
-          </article>
-        </section>
+      <ContactCard title={CONTACT.journal.title} desc={CONTACT.journal.desc} actions={journalActions}>
+        <p class="contact-line">
+          <strong>Email:</strong>
+          <a href={`mailto:${CONTACT.journal.email}`}>{CONTACT.journal.email}</a>
+        </p>
+        <p class="contact-hint">
+          Use this for corrections, permissions, takedown requests, author updates, and site issues.
+        </p>
+      </ContactCard>
+
+      <ContactCard title={CONTACT.dept.title} desc={CONTACT.dept.desc} actions={deptActions}>
+        <p class="contact-line">
+          <strong>Phone:</strong>
+          <a href={`tel:${CONTACT.dept.phone}`}>{CONTACT.dept.phone}</a>
+        </p>
+        <p class="contact-line"><strong>Location:</strong> {CONTACT.dept.locationLine}</p>
+        <address class="contact-address">
+          {CONTACT.dept.addressLines.map((line) => (
+            <div>{line}</div>
+          ))}
+        </address>
+      </ContactCard>
+    </section>
+
+    <section id="requests" class="contact-requests" aria-labelledby="requests-title">
+      <h2 id="requests-title">Common Requests</h2>
+      <div class="contact-chip-list" role="list" aria-label="Common journal support requests">
+        {commonRequests.map((request) => (
+          <a
+            role="listitem"
+            class="contact-chip"
+            href={`mailto:${CONTACT.journal.email}?subject=${encodeURIComponent(request.subject)}`}
+          >
+            {request.label}
+          </a>
+        ))}
       </div>
-    </details>
+      <p class="contact-note">
+        For paper-specific issues, include the paper title and paper URL. For reuse requests, include what content you want to
+        reuse and where it will be used.
+      </p>
+    </section>
+
+    <section class="contact-map" aria-labelledby="directions-title">
+      <h2 id="directions-title">Directions</h2>
+      <p>
+        <a href={CONTACT.dept.directionsUrl} target="_blank" rel="noopener noreferrer">Open in Google Maps →</a>
+      </p>
+    </section>
   </section>
 </BaseLayout>

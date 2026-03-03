@@ -15,16 +15,21 @@ const heroImage = withBase("/assets/images/lee-business-school.jpg");
 ---
 
 <BaseLayout title="UNLV ECON 495 Journal" bodyClass="page-home">
-  <section class="hero-banner home-hero home-hero--modern full-bleed" style={`--hero-image: url('${heroImage}');`}>
+  <section
+    class="hero-banner home-hero home-hero--modern full-bleed"
+    style={`--hero-image: url('${heroImage}'); --hero-focus-x: 56%; --hero-focus-y: 28%; --hero-panel-top: clamp(24px, 4vh, 76px); --hero-panel-width: 620px;`}
+  >
     <div class="hero-content home-hero-content">
-      <p class="hero-kicker">Undergraduate Economics Working Paper Series</p>
-      <h1>UNLV ECON 495 Journal</h1>
-      <p class="hero-subtitle">
-        A working paper series of undergraduate capstone research from UNLV Economics, published by semester issue.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn-home-primary" href={withBase("/issues/")}>Browse Issues</a>
-        <a class="btn btn-home-secondary" href={withBase("/papers/")}>Search Papers</a>
+      <div class="hero-panel">
+        <p class="hero-kicker">Undergraduate Economics Working Paper Series</p>
+        <h1>UNLV ECON 495 Journal</h1>
+        <p class="hero-subtitle">
+          A working paper series of undergraduate capstone research from UNLV Economics, published by semester issue.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-home-primary" href={withBase("/issues/")}>Browse Issues</a>
+          <a class="btn btn-home-secondary" href={withBase("/papers/")}>Search Papers</a>
+        </div>
       </div>
     </div>
 

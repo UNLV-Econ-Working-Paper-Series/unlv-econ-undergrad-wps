@@ -1,4 +1,5 @@
 ---
+import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getIssueGroups } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
@@ -24,77 +25,55 @@ const latestIssue = issues[0] ?? null;
 ---
 
 <BaseLayout title="Issues | UNLV ECON 495 Journal" bodyClass="section-issues page-issues">
-  <section class="issues-hero content-section" aria-labelledby="issues-title">
-    <h1 id="issues-title" class="issues-hero-title">Issues</h1>
-    <p class="issues-hero-copy">{issuesIntro}</p>
-    <span class="issues-hero-rule" aria-hidden="true"></span>
-  </section>
+  <PageBanner title="Issues" subtitle={issuesIntro} />
 
   <section class="issues-explorer content-section">
-    {latestIssue ? (
-      <section class="issues-latest-wrap" aria-label="Latest issue">
-        <article class="issues-latest issue-archive-card card">
-          <div>
-            <p class="eyebrow">Latest Issue</p>
-            <h2>{latestIssue.label}</h2>
-            <p class="issue-card-meta">
-              {latestIssue.papers.length} papers • {(issueCategoryMap.get(latestIssue.slug) ?? []).length} categories
-            </p>
-            <div class="issue-topic-chips" aria-label={`Categories in ${latestIssue.label}`}>
-              {(issueCategoryMap.get(latestIssue.slug) ?? []).slice(0, 4).map((category) => (
-                <span class="issue-topic-chip">{category}</span>
-              ))}
-            </div>
-          </div>
-          <div class="issue-card-actions">
-            <a class="btn btn-small btn-primary" href={withBase(`/issues/${latestIssue.slug}/`)}>Browse issue</a>
-            <button
-              type="button"
-              class="btn btn-small btn-outline"
-              data-download-all
-              data-urls={latestIssue.papers.map((paper) => withBase(paper.data.pdf)).join("|")}
-            >
-              Download PDFs
-            </button>
-          </div>
-        </article>
-      </section>
-    ) : null}
-
     <section class="issues-controls issues-controls--modern" aria-label="Issue filters">
       <div class="issues-search">
         <label for="issues-search">Search papers</label>
         <input id="issues-search" type="search" placeholder="Search papers..." />
       </div>
 
-      <div class="issues-filter-row issues-filter-row--stacked">
-        <div class="issues-year-filter issues-year-filter--tabs">
-          <span class="issues-filter-label">Year</span>
-          <div class="issues-year-segment" role="group" aria-label="Filter by year">
-            <button type="button" class="issues-year-tab is-active" data-year-tab data-year="">All</button>
+      <div class="issues-filter-row issues-filter-row--selects" aria-label="Issue filters">
+        <div class="issues-year-filter">
+          <label class="issues-filter-label" for="issues-year">Year</label>
+          <select id="issues-year">
+            <option value="">All years</option>
             {years.map((year) => (
-              <button type="button" class="issues-year-tab" data-year-tab data-year={String(year)}>
-                {year}
-              </button>
+              <option value={String(year)}>{year}</option>
             ))}
-          </div>
+          </select>
         </div>
 
         <div class="issues-category-filter">
-          <span class="issues-filter-label">Category</span>
-          <div class="issues-chip-list" role="group" aria-label="Filter by category">
-            <button type="button" class="issues-chip is-active" data-category-chip data-category="">
-              All categories
-            </button>
+          <label class="issues-filter-label" for="issues-category">Category</label>
+          <select id="issues-category">
+            <option value="">All categories</option>
             {categories.map((category) => (
-              <button type="button" class="issues-chip" data-category-chip data-category={category.toLowerCase()}>
-                {category}
-              </button>
+              <option value={category.toLowerCase()}>{category}</option>
             ))}
-          </div>
+          </select>
         </div>
       </div>
     </section>
+
+    {latestIssue ? (
+      <section class="issues-latest-line" aria-label="Latest issue">
+        <p class="issues-latest-line__text">
+          <span class="issues-latest-line__label">Latest issue:</span>{" "}
+          <a class="issues-latest-line__link" href={withBase(`/issues/${latestIssue.slug}/`)}>
+            {latestIssue.label}
+          </a>
+          <span class="issues-latest-line__meta">
+            {" "}— {latestIssue.papers.length} papers • {(issueCategoryMap.get(latestIssue.slug) ?? []).length} categories
+          </span>
+        </p>
+
+        <a class="btn btn-small btn-primary" href={withBase(`/issues/${latestIssue.slug}/`)}>
+          Browse
+        </a>
+      </section>
+    ) : null}
 
     <section class="issues-cards" aria-label="Issue cards">
       {issues.length === 0 ? (
@@ -145,15 +124,6 @@ const latestIssue = issues[0] ?? null;
 
               <div class="issue-card-actions">
                 <a class="btn btn-small btn-primary" href={withBase(`/issues/${issue.slug}/`)}>Browse issue</a>
-                <button
-                  type="button"
-                  class="btn btn-small btn-outline"
-                  data-download-all
-                  data-urls={issue.papers.map((paper) => withBase(paper.data.pdf)).join("|")}
-                  disabled={issue.papers.length === 0}
-                >
-                  Download PDFs
-                </button>
               </div>
             </article>
           );
@@ -171,30 +141,14 @@ const latestIssue = issues[0] ?? null;
 
   <script is:inline>
     const searchInput = document.getElementById("issues-search");
-    const yearTabs = Array.from(document.querySelectorAll("[data-year-tab]"));
-    const categoryChips = Array.from(document.querySelectorAll("[data-category-chip]"));
+    const yearSelect = document.getElementById("issues-year");
+    const categorySelect = document.getElementById("issues-category");
     const issueCards = Array.from(document.querySelectorAll("[data-issue-card]"));
-    const downloadButtons = Array.from(document.querySelectorAll("[data-download-all]"));
-
-    let selectedYear = "";
-    let selectedCategory = "";
-
-    function setActiveYear(nextYear) {
-      selectedYear = nextYear;
-      yearTabs.forEach((tab) => {
-        tab.classList.toggle("is-active", (tab.dataset.year || "") === selectedYear);
-      });
-    }
-
-    function setActiveCategory(nextCategory) {
-      selectedCategory = nextCategory;
-      categoryChips.forEach((chip) => {
-        chip.classList.toggle("is-active", (chip.dataset.category || "") === selectedCategory);
-      });
-    }
 
     function applyFilters() {
       const query = (searchInput?.value || "").trim().toLowerCase();
+      const selectedYear = (yearSelect?.value || "").trim();
+      const selectedCategory = (categorySelect?.value || "").trim();
 
       issueCards.forEach((card) => {
         const year = card.dataset.year || "";
@@ -209,45 +163,13 @@ const latestIssue = issues[0] ?? null;
       });
     }
 
-    yearTabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        setActiveYear(tab.dataset.year || "");
-        applyFilters();
-      });
-    });
-
-    categoryChips.forEach((chip) => {
-      chip.addEventListener("click", () => {
-        setActiveCategory(chip.dataset.category || "");
-        applyFilters();
-      });
-    });
-
     searchInput?.addEventListener("input", applyFilters);
+    yearSelect?.addEventListener("change", applyFilters);
+    categorySelect?.addEventListener("change", applyFilters);
 
-    downloadButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const urls = (button.dataset.urls || "").split("|").filter(Boolean);
-        if (urls.length === 0) {
-          return;
-        }
-
-        urls.forEach((url, index) => {
-          window.setTimeout(() => {
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "";
-            link.rel = "noopener noreferrer";
-            document.body.append(link);
-            link.click();
-            link.remove();
-          }, index * 180);
-        });
-      });
-    });
-
-    setActiveYear("");
-    setActiveCategory("");
+    // init
+    if (yearSelect) yearSelect.value = "";
+    if (categorySelect) categorySelect.value = "";
     applyFilters();
   </script>
 </BaseLayout>

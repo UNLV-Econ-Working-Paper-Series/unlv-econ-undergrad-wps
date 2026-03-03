@@ -1,4 +1,5 @@
 ---
+import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { cleanPaperTitle, getIssueGroups, paperHref } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
@@ -7,11 +8,7 @@ const issues = await getIssueGroups();
 ---
 
 <BaseLayout title="Papers | UNLV ECON 495 Journal" bodyClass="section-papers page-papers">
-  <section class="page-intro page-intro--standard">
-    <p class="eyebrow">Papers</p>
-    <h1>Papers</h1>
-    <p class="page-subtitle">Browse every working paper organized by semester issue.</p>
-  </section>
+  <PageBanner title="Papers" subtitle="Browse every working paper organized by semester issue." />
 
   <section class="content-section">
     {issues.length === 0 ? (

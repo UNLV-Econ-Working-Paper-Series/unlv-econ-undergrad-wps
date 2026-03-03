@@ -1,0 +1,32 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  lead?: string;
+  note?: string;
+  kicker?: string;
+  compact?: boolean;
+  class?: string;
+}
+
+const {
+  title,
+  subtitle = "",
+  lead = "",
+  note = "",
+  kicker = "",
+  compact = false,
+  class: className = "",
+} = Astro.props;
+
+const leadText = lead || subtitle;
+---
+
+<section class:list={["page-banner", "full-bleed", compact && "page-banner--compact", className]} aria-label="Page header">
+  <div class="page-banner__inner">
+    {kicker ? <p class="page-banner__kicker">{kicker}</p> : null}
+    <h1>{title}</h1>
+    {leadText ? <p class="page-banner__subtitle">{leadText}</p> : null}
+    {note ? <p class="page-banner__note">{note}</p> : null}
+  </div>
+</section>

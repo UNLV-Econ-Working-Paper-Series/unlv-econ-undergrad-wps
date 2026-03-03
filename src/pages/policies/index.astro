@@ -1,0 +1,110 @@
+---
+import PageBanner from "../../components/PageBanner.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+const policies = [
+  {
+    slug: "focus-scope",
+    title: "Focus & Scope",
+    ojs: "Focus and Scope",
+    summary:
+      "Defines what the Proceedings publishes, what it does not publish, and the working paper notice.",
+  },
+  {
+    slug: "open-access",
+    title: "Open Access Policy",
+    ojs: "Open Access Policy",
+    summary: "Confirms free reader access and no APCs or submission fees.",
+  },
+  {
+    slug: "editorial-process",
+    title: "Editorial Screening Process (Not Peer Review)",
+    ojs: "Peer Review Process (custom text)",
+    summary:
+      "Documents non-peer-review screening checks, posting criteria, and postponement/decline conditions.",
+  },
+  {
+    slug: "permissions",
+    title: "Copyright, Licensing & Permissions",
+    ojs: "Copyright Notice / Licensing / Author Rights",
+    summary:
+      "Clarifies copyright ownership, hosting license, third-party content obligations, and reuse expectations.",
+  },
+  {
+    slug: "privacy",
+    title: "Privacy Statement",
+    ojs: "Privacy Statement",
+    summary:
+      "Explains data handling for visitors and inquiries, plus retention and disclosure expectations.",
+  },
+  {
+    slug: "corrections-versioning",
+    title: "Corrections, Updates & Versioning",
+    ojs: "Corrections/Retractions (policy page)",
+    summary: "Defines update pathways, stable URLs, and correction versus revision expectations.",
+  },
+  {
+    slug: "ethics",
+    title: "Publication Ethics & Integrity",
+    ojs: "Publication Ethics and Malpractice Statement",
+    summary: "Sets standards for integrity, misconduct handling, and responsible data and citation practice.",
+  },
+  {
+    slug: "takedown",
+    title: "Takedown / Rights & Privacy Requests",
+    ojs: "Policy page (linked from About/Policies)",
+    summary: "Outlines request grounds, review workflow, outcomes, and escalation.",
+  },
+  {
+    slug: "archiving",
+    title: "Archiving & Preservation",
+    ojs: "Archiving",
+    summary: "Describes continuity, backups, stable URLs, and tombstone-page handling.",
+  },
+  {
+    slug: "accessibility",
+    title: "Accessibility",
+    ojs: "Policy page",
+    summary: "Provides support paths for accessible formats and accommodation requests.",
+  },
+  {
+    slug: "author-agreement",
+    title: "Author Posting Agreement (Summary)",
+    ojs: "Optional policy page",
+    summary: "Summarizes author rights, permissions to post, and responsibility expectations.",
+  },
+];
+---
+
+<BaseLayout
+  title="Policies | UNLV ECON 495 Journal"
+  description="Publication, rights, privacy, ethics, and accessibility policies for the UNLV ECON 495 Journal Proceedings."
+  bodyClass="page-policy-index"
+>
+  <PageBanner
+    title="Policies"
+    lead="Publication, rights, privacy, and integrity policies for the UNLV ECON 495 Journal (Capstone Proceedings)."
+    compact
+  />
+
+  <section class="content-section policy-shell">
+    <article class="policy-article">
+      <h2>Policy Directory</h2>
+      <p>
+        These pages are written to map cleanly into OJS policy surfaces while remaining readable on the public Proceedings
+        site.
+      </p>
+
+      <div class="policy-directory" role="list" aria-label="Policy pages">
+        {policies.map((policy) => (
+          <a role="listitem" class="policy-directory-item" href={withBase(`/policies/${policy.slug}/`)}>
+            <h3>{policy.title}</h3>
+            <p>{policy.summary}</p>
+            <p class="policy-ojs-map"><strong>OJS Mapping:</strong> {policy.ojs}</p>
+          </a>
+        ))}
+      </div>
+    </article>
+  </section>
+</BaseLayout>

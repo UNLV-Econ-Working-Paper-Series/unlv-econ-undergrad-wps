@@ -1,4 +1,5 @@
 ---
+import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { cleanPaperTitle, getCategoryGroups, getIssueLabelForPaper, paperHref } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
@@ -16,16 +17,13 @@ const categoryName = category?.name ?? categorySlug;
 ---
 
 <BaseLayout title={`${categoryName} | Categories`} bodyClass="section-categories page-category-detail">
-  <section class="page-intro page-intro--standard">
-    <p class="eyebrow">Category</p>
-    <h1>{categoryName}</h1>
-    <p class="page-subtitle">Working papers tagged for {categoryName}.</p>
+  <PageBanner kicker="Category" title={categoryName} subtitle={`Working papers tagged for ${categoryName}.`} />
+
+  <section class="content-section">
     <div class="page-intro-actions">
       <a class="btn btn-small" href={withBase("/categories/")}>Back to categories</a>
     </div>
-  </section>
 
-  <section class="content-section">
     {papers.length === 0 ? (
       <article class="accent-card empty-state-card">
         <p class="muted">No papers yet in this category.</p>

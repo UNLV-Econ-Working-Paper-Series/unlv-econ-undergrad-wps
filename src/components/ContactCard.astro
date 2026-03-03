@@ -1,0 +1,118 @@
+---
+interface ContactAction {
+  label: string;
+  href: string;
+  primary?: boolean;
+  external?: boolean;
+}
+
+interface Props {
+  title: string;
+  desc?: string;
+  actions?: ContactAction[];
+}
+
+const { title, desc = "", actions = [] } = Astro.props;
+---
+
+<section class="contact-card">
+  <header class="contact-card-head">
+    <h2>{title}</h2>
+    {desc ? <p class="contact-card-muted">{desc}</p> : null}
+  </header>
+
+  <div class="contact-card-body">
+    <slot />
+  </div>
+
+  {actions.length > 0 ? (
+    <div class="contact-card-actions">
+      {actions.map((action) => (
+        <a
+          class:list={["contact-card-btn", action.primary ? "contact-card-btn--primary" : "contact-card-btn--secondary"]}
+          href={action.href}
+          target={action.external ? "_blank" : undefined}
+          rel={action.external ? "noopener noreferrer" : undefined}
+        >
+          {action.label}
+        </a>
+      ))}
+    </div>
+  ) : null}
+</section>
+
+<style>
+  .contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 2px 8px rgba(20, 24, 32, 0.06);
+    padding: 1rem;
+  }
+
+  .contact-card-head h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.25;
+    color: #111319;
+    font-family: "Roboto Slab", var(--font-serif);
+  }
+
+  .contact-card-muted {
+    margin: 0.5rem 0 0;
+    color: var(--muted);
+    line-height: 1.55;
+    font-size: 0.97rem;
+  }
+
+  .contact-card-body {
+    margin-top: 0.78rem;
+  }
+
+  .contact-card-actions {
+    margin-top: 0.92rem;
+    display: flex;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-card-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.4rem;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 0.46rem 0.85rem;
+    border: 1px solid transparent;
+    font-size: 0.92rem;
+    line-height: 1;
+  }
+
+  .contact-card-btn--primary {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+  }
+
+  .contact-card-btn--secondary {
+    background: #ffffff;
+    color: var(--accent);
+    border-color: rgba(177, 2, 2, 0.28);
+  }
+
+  .contact-card-btn--primary:hover,
+  .contact-card-btn--primary:focus-visible {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
+    color: #ffffff;
+  }
+
+  .contact-card-btn--secondary:hover,
+  .contact-card-btn--secondary:focus-visible {
+    border-color: rgba(177, 2, 2, 0.42);
+    background: #fff7f7;
+    color: var(--accent-dark);
+  }
+</style>

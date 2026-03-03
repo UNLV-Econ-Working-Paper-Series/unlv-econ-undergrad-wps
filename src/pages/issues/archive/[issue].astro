@@ -1,4 +1,5 @@
 ---
+import PageBanner from "../../../components/PageBanner.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getArchiveIssueGroups } from "../../../lib/archive";
 import { withBase } from "../../../lib/urls";
@@ -12,13 +13,11 @@ const { issue } = Astro.props;
 ---
 
 <BaseLayout title={`${issue.label} | Archive`} bodyClass="section-issues page-archive-issue">
-  <section class="issues-hero content-section" aria-labelledby="archive-issue-title">
-    <h1 id="archive-issue-title" class="issues-hero-title">{issue.label}</h1>
-    <p class="issues-hero-copy">
-      Archive issue with {issue.papers.length} working paper(s) and {issue.categories.length} topic categories.
-    </p>
-    <span class="issues-hero-rule" aria-hidden="true"></span>
-  </section>
+  <PageBanner
+    kicker="Archive Issue"
+    title={issue.label}
+    subtitle={`Archive issue with ${issue.papers.length} working paper(s) and ${issue.categories.length} topic categories.`}
+  />
 
   <section class="content-section">
     <article class="issue-archive-card card">

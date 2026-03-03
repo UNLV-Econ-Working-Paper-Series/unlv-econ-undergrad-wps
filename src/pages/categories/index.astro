@@ -1,5 +1,6 @@
 ---
 import CategoryCard from "../../components/CategoryCard.astro";
+import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCategoryGroups, getIssueLabelForPaper } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
@@ -14,11 +15,7 @@ const categories = categoryGroups.map((group) => ({
 ---
 
 <BaseLayout title="Categories | UNLV ECON 495 Journal" bodyClass="section-categories page-categories page-categories-modern">
-  <section class="issues-hero content-section" aria-labelledby="categories-title">
-    <h1 id="categories-title" class="issues-hero-title">Categories</h1>
-    <p class="issues-hero-copy">Choose a category to view all working papers in that topic area.</p>
-    <span class="issues-hero-rule" aria-hidden="true"></span>
-  </section>
+  <PageBanner title="Categories" subtitle="Choose a category to view all working papers in that topic area." />
 
   <section class="content-section categories-shell categories-shell-modern">
     <header class="categories-controls" aria-label="Category discovery tools">

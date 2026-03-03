@@ -1,4 +1,5 @@
 ---
+import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   cleanPaperTitle,
@@ -37,16 +38,13 @@ const publicationLabel = (() => {
 
 <BaseLayout title={`${title} | Papers`} bodyClass="section-papers page-paper-detail">
   <div class="paper-page">
-    <section class="page-intro page-intro--standard paper-intro">
-      <p class="eyebrow">Working Paper</p>
-      <h1>{title}</h1>
-      <p class="page-subtitle">
-        {authorsDisplay}
-        <span aria-hidden="true"> • </span>
-        {issueLabel}
-        <span aria-hidden="true"> • </span>
-        {publicationLabel}
-      </p>
+    <PageBanner
+      kicker="Working Paper"
+      title={title}
+      subtitle={`${authorsDisplay} • ${issueLabel} • ${publicationLabel}`}
+    />
+
+    <section class="content-section paper-detail-quick-actions">
       <div class="page-intro-actions">
         <a class="btn btn-primary" href={pdfHref}>Download PDF</a>
         <a class="btn btn-small" href={withBase(`/issues/${issueSlug}/`)}>Back to issue</a>
@@ -83,8 +81,17 @@ const publicationLabel = (() => {
           </div>
         </dl>
 
-        <h3 class="paper-citation-heading">Recommended Citation</h3>
-        <div class="citation-copy">{citation}</div>
+        <div class="paper-citation-head">
+          <h3 class="paper-citation-heading">Recommended Citation</h3>
+          <button
+            type="button"
+            class="btn btn-small btn-outline copy-btn"
+            data-copy-target="#paper-citation"
+          >
+            Copy citation
+          </button>
+        </div>
+        <div id="paper-citation" class="citation-copy">{citation}</div>
       </article>
 
       <article class="card accent-card paper-abstract-card">

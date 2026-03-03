@@ -1,4 +1,5 @@
 ---
+import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getArchiveIssueGroups } from "../../lib/archive";
 import { withBase } from "../../lib/urls";
@@ -8,13 +9,10 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
 ---
 
 <BaseLayout title="Archive | UNLV ECON 495 Journal" bodyClass="section-issues page-archive">
-  <section class="issues-hero content-section" aria-labelledby="archive-title">
-    <h1 id="archive-title" class="issues-hero-title">Archive</h1>
-    <p class="issues-hero-copy">
-      Archived UNLV Economics Hub working papers (pre-2024), organized by semester issue for quick browsing and download.
-    </p>
-    <span class="issues-hero-rule" aria-hidden="true"></span>
-  </section>
+  <PageBanner
+    title="Archive"
+    subtitle="Archived UNLV Economics Hub working papers (pre-2024), organized by semester issue for quick browsing and download."
+  />
 
   <section class="issues-explorer content-section">
     <section class="issues-controls issues-controls--modern" aria-label="Archive filters">
@@ -23,16 +21,14 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
         <input id="archive-search" type="search" placeholder="Search papers..." />
       </div>
 
-      <div class="issues-year-filter issues-year-filter--tabs">
-        <span class="issues-filter-label">Year</span>
-        <div class="issues-year-segment" role="group" aria-label="Filter archive by year">
-          <button type="button" class="issues-year-tab is-active" data-year-tab data-year="">All</button>
+      <div class="issues-year-filter issues-year-filter--select">
+        <label for="archive-year" class="issues-filter-label">Year</label>
+        <select id="archive-year">
+          <option value="">All years</option>
           {years.map((year) => (
-            <button type="button" class="issues-year-tab" data-year-tab data-year={String(year)}>
-              {year}
-            </button>
+            <option value={String(year)}>{year}</option>
           ))}
-        </div>
+        </select>
       </div>
     </section>
 
@@ -87,21 +83,13 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
 
   <script is:inline>
     const searchInput = document.getElementById("archive-search");
-    const yearTabs = Array.from(document.querySelectorAll("[data-year-tab]"));
+    const yearSelect = document.getElementById("archive-year");
     const issueCards = Array.from(document.querySelectorAll("[data-archive-issue-card]"));
     const downloadButtons = Array.from(document.querySelectorAll("[data-download-all]"));
 
-    let selectedYear = "";
-
-    function setActiveYear(nextYear) {
-      selectedYear = nextYear;
-      yearTabs.forEach((tab) => {
-        tab.classList.toggle("is-active", (tab.dataset.year || "") === selectedYear);
-      });
-    }
-
     function applyFilters() {
       const query = (searchInput?.value || "").trim().toLowerCase();
+      const selectedYear = yearSelect?.value || "";
 
       issueCards.forEach((card) => {
         const year = card.dataset.year || "";
@@ -114,14 +102,8 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
       });
     }
 
-    yearTabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        setActiveYear(tab.dataset.year || "");
-        applyFilters();
-      });
-    });
-
     searchInput?.addEventListener("input", applyFilters);
+    yearSelect?.addEventListener("change", applyFilters);
 
     downloadButtons.forEach((button) => {
       button.addEventListener("click", () => {
@@ -144,7 +126,6 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
       });
     });
 
-    setActiveYear("");
     applyFilters();
   </script>
 </BaseLayout>
