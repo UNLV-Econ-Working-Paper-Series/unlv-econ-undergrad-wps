@@ -1,0 +1,119 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { cleanPaperTitle, getAllPapers, getCategoryGroups, getIssueGroups, paperHref } from "../lib/papers";
+import { withBase } from "../lib/urls";
+
+const allPapers = await getAllPapers();
+const issues = await getIssueGroups();
+const categories = await getCategoryGroups();
+
+const latestIssue = issues[0] ?? null;
+const latestIssueTitles = (latestIssue?.papers ?? []).slice(0, 3);
+const categoryChips = categories.filter((group) => group.count > 0).sort((a, b) => b.count - a.count).slice(0, 10);
+
+const heroImage = withBase("/assets/images/lee-business-school.jpg");
+---
+
+<BaseLayout title="UNLV ECON 495 Journal" bodyClass="page-home">
+  <section class="hero-banner home-hero home-hero--modern full-bleed" style={`--hero-image: url('${heroImage}');`}>
+    <div class="hero-content home-hero-content">
+      <p class="hero-kicker">Undergraduate Economics Working Paper Series</p>
+      <h1>UNLV ECON 495 Journal</h1>
+      <p class="hero-subtitle">
+        A working paper series of undergraduate capstone research from UNLV Economics, published by semester issue.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-home-primary" href={withBase("/issues/")}>Browse Issues</a>
+        <a class="btn btn-home-secondary" href={withBase("/papers/")}>Search Papers</a>
+      </div>
+    </div>
+
+    <p class="hero-credit">
+      Photo credit:
+      <a
+        href="https://www.unlv.edu/news/release/lee-business-school-maintains-accreditation-business-and-accounting-programs"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        UNLV News (Lee Business School)
+      </a>
+    </p>
+  </section>
+
+  <section class="section home-section" aria-labelledby="latest-issue-title">
+    <div class="section-head home-section-head">
+      <div>
+        <p class="eyebrow">Latest Issue</p>
+        <h2 id="latest-issue-title">Latest Semester Release</h2>
+      </div>
+      <a class="link-inline" href={withBase("/issues/")}>View all issues</a>
+    </div>
+
+    {latestIssue ? (
+      <article class="card home-surface home-latest-card">
+        <header class="home-latest-head">
+          <h3><a href={withBase(`/issues/${latestIssue.slug}/`)}>{latestIssue.label}</a></h3>
+          <p class="home-issue-meta">{latestIssue.papers.length} papers</p>
+        </header>
+
+        <ol class="home-featured-list">
+          {latestIssueTitles.length > 0 ? (
+            latestIssueTitles.map((paper) => (
+              <li>
+                <a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a>
+              </li>
+            ))
+          ) : (
+            <li class="muted">No papers posted in this issue yet.</li>
+          )}
+        </ol>
+
+        <div class="card-actions">
+          <a class="btn btn-home-primary" href={withBase(`/issues/${latestIssue.slug}/`)}>Browse Issue</a>
+          {latestIssueTitles[0] ? <a class="btn btn-home-secondary" href={paperHref(latestIssueTitles[0])}>Read Featured Paper</a> : null}
+        </div>
+      </article>
+    ) : (
+      <article class="card home-surface">
+        <p class="muted">No issues have been published yet.</p>
+      </article>
+    )}
+  </section>
+
+  <section class="section home-section" aria-labelledby="browse-category-title">
+    <div class="section-head home-section-head">
+      <div>
+        <p class="eyebrow">Browse by Category</p>
+        <h2 id="browse-category-title">Explore Topic Areas</h2>
+      </div>
+    </div>
+
+    <article class="card home-surface">
+      <div class="home-category-chips" role="list" aria-label="Top categories">
+        {categoryChips.map((category) => (
+          <a class="home-category-chip" role="listitem" href={withBase(`/categories/${category.slug}/`)}>
+            {category.name}
+          </a>
+        ))}
+      </div>
+    </article>
+  </section>
+
+  <section class="section home-section" aria-labelledby="about-bullets-title">
+    <div class="section-head home-section-head">
+      <div>
+        <p class="eyebrow">About</p>
+        <h2 id="about-bullets-title">What This Proceedings Is</h2>
+      </div>
+      <a class="link-inline" href={withBase("/about/")}>Read full about</a>
+    </div>
+
+    <article class="card home-surface">
+      <ul class="home-about-bullets">
+        <li>Open-access archive of ECON 495 capstone research, organized by semester issue.</li>
+        <li>Working paper series for discovery and citation; papers are not peer-reviewed journal articles.</li>
+        <li>Student authors retain visible, citable research records with downloadable PDFs.</li>
+      </ul>
+    </article>
+  </section>
+</BaseLayout>

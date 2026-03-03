@@ -1,0 +1,144 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  OUR_LINKS,
+  OUR_PATHWAY_STEPS,
+  SPECTRA_HIGHLIGHTS,
+  SPECTRA_LINKS,
+  SPECTRA_PUBLISHES,
+  SPECTRA_REVIEW,
+  SYMPOSIA_POINTS,
+} from "../config/our";
+
+const symposiaPrimary = OUR_LINKS.find((link) => link.kind === "primary") ?? null;
+const symposiaSecondary = OUR_LINKS.filter((link) => link.kind === "secondary");
+const spectraPrimary = SPECTRA_LINKS.find((link) => link.kind === "primary") ?? null;
+---
+
+<BaseLayout title="OUR | UNLV ECON 495 Journal" bodyClass="section-our page-our page-our-modern">
+  <div class="our-modern-page">
+    <section class="our-hero content-section" aria-labelledby="our-pathway-title">
+      <h1 id="our-pathway-title">Research Pathway at UNLV</h1>
+      <p>
+        UNLV&apos;s Carnegie R1 environment supports undergraduates from research development to public presentation and
+        publication.
+      </p>
+
+      <div class="our-stepper" role="list" aria-label="Research pathway stages">
+        {OUR_PATHWAY_STEPS.map((step, index) => (
+          <article class="our-step" role="listitem">
+            <span class="our-step-number" aria-hidden="true">{index + 1}</span>
+            <h2>{step.title}</h2>
+            <p>{step.summary}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="content-section our-section our-section--symposia" aria-labelledby="our-symposia-title">
+      <div class="our-section-head">
+        <p class="eyebrow">Step 3</p>
+        <h2 id="our-symposia-title">OUR Undergraduate Research Symposia</h2>
+      </div>
+
+      <div class="our-layout-two-col">
+        <article class="our-surface our-main-copy">
+          <p>
+            OUR Undergraduate Research Symposia give students a public forum to present capstone and independent work,
+            receive constructive feedback, and strengthen research communication.
+          </p>
+          <ul class="our-list">
+            {SYMPOSIA_POINTS.map((point) => (
+              <li>{point}</li>
+            ))}
+          </ul>
+        </article>
+
+        <aside class="our-surface our-links-card" aria-label="Symposia quick links">
+          <h3>Quick links</h3>
+          {symposiaPrimary ? (
+            <a class="btn btn-small btn-primary" href={symposiaPrimary.href} target="_blank" rel="noopener noreferrer">
+              {symposiaPrimary.label}
+            </a>
+          ) : null}
+
+          <ul class="our-text-links">
+            {symposiaSecondary.map((link) => (
+              <li>
+                <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="content-section our-callout" aria-label="Pathway transition">
+      <p>
+        Presenting at the OUR Undergraduate Research Symposia often serves as a launchpad for developing research into a
+        polished manuscript for Spectra Undergraduate Research Journal.
+      </p>
+    </section>
+
+    <section class="content-section our-section our-section--spectra" aria-labelledby="our-spectra-title">
+      <div class="our-section-head">
+        <p class="eyebrow">Step 4</p>
+        <h2 id="our-spectra-title">Spectra Undergraduate Research Journal</h2>
+      </div>
+
+      <article class="our-surface our-main-copy">
+        <p>
+          Spectra is UNLV&apos;s undergraduate, multidisciplinary, open-access publication pathway for mentored research.
+        </p>
+
+        <ul class="our-list our-list--compact">
+          {SPECTRA_HIGHLIGHTS.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </article>
+
+      <div class="our-mini-grid" aria-label="Spectra key information">
+        <article class="our-surface our-mini-card">
+          <h3>What Spectra publishes</h3>
+          <ul class="our-list our-list--compact">
+            {SPECTRA_PUBLISHES.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </article>
+
+        <article class="our-surface our-mini-card">
+          <h3>How review works</h3>
+          <ul class="our-list our-list--compact">
+            {SPECTRA_REVIEW.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </article>
+      </div>
+
+      <div class="our-section-actions">
+        {spectraPrimary ? (
+          <a class="btn btn-small btn-primary" href={spectraPrimary.href} target="_blank" rel="noopener noreferrer">
+            {spectraPrimary.label}
+          </a>
+        ) : null}
+      </div>
+
+      <details class="our-accordion">
+        <summary>Read more: submission expectations and support resources</summary>
+        <div class="our-accordion-body">
+          <p>
+            Submissions are managed through the journal&apos;s online platform with companion faculty-mentor documentation.
+            Strong ECON 495 capstone papers are often well-positioned to evolve into submission-ready manuscripts.
+          </p>
+          <p>
+            OUR also provides workshops and support resources that help students with abstracts, citations, manuscript
+            preparation, and revision strategy.
+          </p>
+        </div>
+      </details>
+    </section>
+  </div>
+</BaseLayout>

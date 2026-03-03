@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+const target = withBase("/categories/");
+---
+
+<BaseLayout title="Redirecting Category">
+  <article class="card">
+    <p>This legacy category is archived.</p>
+    <p><a href={target}>Continue to Categories</a></p>
+  </article>
+  <script is:inline define:vars={{ target }}>
+    window.location.replace(target);
+  </script>
+</BaseLayout>

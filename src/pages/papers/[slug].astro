@@ -1,0 +1,106 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  cleanPaperTitle,
+  formatCitation,
+  getAllPapers,
+  getIssueLabelForPaper,
+  getIssueSlugForPaper,
+  paperSlug,
+} from "../../lib/papers";
+import { withBase } from "../../lib/urls";
+
+export async function getStaticPaths() {
+  const papers = await getAllPapers();
+  return papers.map((paper) => ({ params: { slug: paperSlug(paper) }, props: { paper } }));
+}
+
+const { paper } = Astro.props;
+const title = cleanPaperTitle(paper.data.title);
+const issueLabel = getIssueLabelForPaper(paper);
+const issueSlug = getIssueSlugForPaper(paper);
+const citation = formatCitation(paper);
+const pdfHref = withBase(paper.data.pdf);
+const authorsDisplay = paper.data.authors.length > 0 ? paper.data.authors.join(", ") : "Author information not provided";
+const publicationLabel = (() => {
+  const raw = paper.data.published_at?.trim();
+  if (!raw) {
+    return "Not provided";
+  }
+  const parsed = new Date(raw);
+  if (Number.isNaN(parsed.getTime())) {
+    return raw;
+  }
+  return parsed.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+})();
+---
+
+<BaseLayout title={`${title} | Papers`} bodyClass="section-papers page-paper-detail">
+  <div class="paper-page">
+    <section class="page-intro page-intro--standard paper-intro">
+      <p class="eyebrow">Working Paper</p>
+      <h1>{title}</h1>
+      <p class="page-subtitle">
+        {authorsDisplay}
+        <span aria-hidden="true"> • </span>
+        {issueLabel}
+        <span aria-hidden="true"> • </span>
+        {publicationLabel}
+      </p>
+      <div class="page-intro-actions">
+        <a class="btn btn-primary" href={pdfHref}>Download PDF</a>
+        <a class="btn btn-small" href={withBase(`/issues/${issueSlug}/`)}>Back to issue</a>
+      </div>
+    </section>
+
+    <section class="content-section paper-detail-grid">
+      <article class="card accent-card paper-meta-card">
+        <h2>Article Details</h2>
+        <dl class="paper-detail-list">
+          <div class="paper-detail-row">
+            <dt>Issue</dt>
+            <dd>{issueLabel}</dd>
+          </div>
+          <div class="paper-detail-row">
+            <dt>Publication Date</dt>
+            <dd>{publicationLabel}</dd>
+          </div>
+          <div class="paper-detail-row">
+            <dt>Authors</dt>
+            <dd>{authorsDisplay}</dd>
+          </div>
+          <div class="paper-detail-row">
+            <dt>Advisor</dt>
+            <dd>{paper.data.advisor || "Not provided"}</dd>
+          </div>
+          <div class="paper-detail-row">
+            <dt>Category</dt>
+            <dd>{paper.data.category || "Not provided"}</dd>
+          </div>
+          <div class="paper-detail-row">
+            <dt>Keywords</dt>
+            <dd>{paper.data.keywords.length > 0 ? paper.data.keywords.join(", ") : "Not provided"}</dd>
+          </div>
+        </dl>
+
+        <h3 class="paper-citation-heading">Recommended Citation</h3>
+        <div class="citation-copy">{citation}</div>
+      </article>
+
+      <article class="card accent-card paper-abstract-card">
+        <h2>Abstract</h2>
+        <p class="prose">{paper.data.abstract || "Abstract not provided."}</p>
+      </article>
+
+      <article class="card accent-card paper-preview-card">
+        <h2>PDF Preview</h2>
+        <iframe
+          class="paper-preview-frame"
+          src={`${pdfHref}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0`}
+          title={`PDF preview: ${title}`}
+          loading="lazy"
+        ></iframe>
+      </article>
+    </section>
+  </div>
+</BaseLayout>

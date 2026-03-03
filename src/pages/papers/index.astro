@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { cleanPaperTitle, getIssueGroups, paperHref } from "../../lib/papers";
+import { withBase } from "../../lib/urls";
+
+const issues = await getIssueGroups();
+---
+
+<BaseLayout title="Papers | UNLV ECON 495 Journal" bodyClass="section-papers page-papers">
+  <section class="page-intro page-intro--standard">
+    <p class="eyebrow">Papers</p>
+    <h1>Papers</h1>
+    <p class="page-subtitle">Browse every working paper organized by semester issue.</p>
+  </section>
+
+  <section class="content-section">
+    {issues.length === 0 ? (
+      <article class="accent-card empty-state-card">
+        <p class="muted">No papers available yet.</p>
+      </article>
+    ) : (
+      issues
+        .filter((issue) => issue.papers.length > 0)
+        .map((issue) => (
+          <section class="paper-issue-group" id={issue.slug}>
+            <h2>{issue.label}</h2>
+            <div class="card-grid">
+              {issue.papers.map((paper) => (
+                <article class="card paper-card accent-card">
+                  <div class="paper-meta">
+                    {paper.data.published_at ? <span class="pill">{paper.data.published_at}</span> : null}
+                    <span class="pill light">{issue.label}</span>
+                  </div>
+                  <h3><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h3>
+                  <p class="muted small">By {paper.data.authors.join(", ")}</p>
+                  <p class="muted">{paper.data.abstract.slice(0, 190)}{paper.data.abstract.length > 190 ? "..." : ""}</p>
+                  <div class="card-actions">
+                    <a class="btn btn-small" href={paperHref(paper)}>Read abstract</a>
+                    <a class="btn btn-small btn-primary" href={withBase(paper.data.pdf)}>Download PDF</a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))
+    )}
+  </section>
+</BaseLayout>

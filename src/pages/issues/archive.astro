@@ -1,0 +1,150 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getArchiveIssueGroups } from "../../lib/archive";
+import { withBase } from "../../lib/urls";
+
+const archiveIssues = getArchiveIssueGroups();
+const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b) => b - a);
+---
+
+<BaseLayout title="Archive | UNLV ECON 495 Journal" bodyClass="section-issues page-archive">
+  <section class="issues-hero content-section" aria-labelledby="archive-title">
+    <h1 id="archive-title" class="issues-hero-title">Archive</h1>
+    <p class="issues-hero-copy">
+      Archived UNLV Economics Hub working papers (pre-2024), organized by semester issue for quick browsing and download.
+    </p>
+    <span class="issues-hero-rule" aria-hidden="true"></span>
+  </section>
+
+  <section class="issues-explorer content-section">
+    <section class="issues-controls issues-controls--modern" aria-label="Archive filters">
+      <div class="issues-search">
+        <label for="archive-search">Search papers</label>
+        <input id="archive-search" type="search" placeholder="Search papers..." />
+      </div>
+
+      <div class="issues-year-filter issues-year-filter--tabs">
+        <span class="issues-filter-label">Year</span>
+        <div class="issues-year-segment" role="group" aria-label="Filter archive by year">
+          <button type="button" class="issues-year-tab is-active" data-year-tab data-year="">All</button>
+          {years.map((year) => (
+            <button type="button" class="issues-year-tab" data-year-tab data-year={String(year)}>
+              {year}
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="issues-cards issues-cards--archive" aria-label="Archive issue cards">
+      {archiveIssues.length === 0 ? (
+        <article class="card empty-state-card">
+          <p class="muted">No archive papers are listed yet.</p>
+        </article>
+      ) : (
+        archiveIssues.map((issue) => (
+          <article
+            class="issue-archive-card card"
+            data-archive-issue-card
+            data-year={String(issue.year)}
+            data-search={[
+              issue.label,
+              ...issue.categories,
+              ...issue.papers.map((paper) => `${paper.title} ${paper.authors}`),
+            ]
+              .join(" ")
+              .toLowerCase()}
+          >
+            <header class="issue-archive-head">
+              <h2>{issue.label}</h2>
+              <p class="issue-card-meta">
+                {issue.papers.length} papers • {issue.categories.length} categories
+              </p>
+            </header>
+
+            <div class="issue-topic-chips" aria-label={`Categories in ${issue.label}`}>
+              {issue.categories.map((category) => (
+                <span class="issue-topic-chip">{category}</span>
+              ))}
+            </div>
+
+            <div class="issue-card-actions">
+              <a class="btn btn-small btn-primary" href={withBase(`/issues/archive/${issue.slug}/`)}>Browse issue</a>
+              <button
+                type="button"
+                class="btn btn-small btn-outline"
+                data-download-all
+                data-urls={issue.papers.map((paper) => withBase(paper.file)).join("|")}
+              >
+                Download PDFs
+              </button>
+            </div>
+          </article>
+        ))
+      )}
+    </section>
+  </section>
+
+  <script is:inline>
+    const searchInput = document.getElementById("archive-search");
+    const yearTabs = Array.from(document.querySelectorAll("[data-year-tab]"));
+    const issueCards = Array.from(document.querySelectorAll("[data-archive-issue-card]"));
+    const downloadButtons = Array.from(document.querySelectorAll("[data-download-all]"));
+
+    let selectedYear = "";
+
+    function setActiveYear(nextYear) {
+      selectedYear = nextYear;
+      yearTabs.forEach((tab) => {
+        tab.classList.toggle("is-active", (tab.dataset.year || "") === selectedYear);
+      });
+    }
+
+    function applyFilters() {
+      const query = (searchInput?.value || "").trim().toLowerCase();
+
+      issueCards.forEach((card) => {
+        const year = card.dataset.year || "";
+        const search = card.dataset.search || "";
+
+        const matchesYear = selectedYear === "" || year === selectedYear;
+        const matchesQuery = query === "" || search.includes(query);
+
+        card.hidden = !(matchesYear && matchesQuery);
+      });
+    }
+
+    yearTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        setActiveYear(tab.dataset.year || "");
+        applyFilters();
+      });
+    });
+
+    searchInput?.addEventListener("input", applyFilters);
+
+    downloadButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const urls = (button.dataset.urls || "").split("|").filter(Boolean);
+        if (urls.length === 0) {
+          return;
+        }
+
+        urls.forEach((url, index) => {
+          window.setTimeout(() => {
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "";
+            link.rel = "noopener noreferrer";
+            document.body.append(link);
+            link.click();
+            link.remove();
+          }, index * 180);
+        });
+      });
+    });
+
+    setActiveYear("");
+    applyFilters();
+  </script>
+</BaseLayout>

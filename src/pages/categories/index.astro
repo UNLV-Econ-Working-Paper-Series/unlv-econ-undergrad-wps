@@ -1,0 +1,101 @@
+---
+import CategoryCard from "../../components/CategoryCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCategoryGroups, getIssueLabelForPaper } from "../../lib/papers";
+import { withBase } from "../../lib/urls";
+
+const categoryGroups = await getCategoryGroups();
+const categories = categoryGroups.map((group) => ({
+  title: group.name,
+  href: withBase(`/categories/${group.slug}/`),
+  count: group.count,
+  latestIssue: group.papers[0] ? getIssueLabelForPaper(group.papers[0]) : "No papers yet",
+}));
+---
+
+<BaseLayout title="Categories | UNLV ECON 495 Journal" bodyClass="section-categories page-categories page-categories-modern">
+  <section class="issues-hero content-section" aria-labelledby="categories-title">
+    <h1 id="categories-title" class="issues-hero-title">Categories</h1>
+    <p class="issues-hero-copy">Choose a category to view all working papers in that topic area.</p>
+    <span class="issues-hero-rule" aria-hidden="true"></span>
+  </section>
+
+  <section class="content-section categories-shell categories-shell-modern">
+    <header class="categories-controls" aria-label="Category discovery tools">
+      <div class="categories-search">
+        <label for="cat-search">Search categories</label>
+        <input id="cat-search" type="search" placeholder="Search categories..." />
+      </div>
+
+      <div class="categories-sort">
+        <label for="cat-sort">Sort</label>
+        <select id="cat-sort">
+          <option value="az">A-Z</option>
+          <option value="count">Most papers</option>
+        </select>
+      </div>
+    </header>
+
+    <div id="cat-grid" class="cat-grid cat-grid-modern" aria-live="polite">
+      {categories.map((category) => (
+        <div
+          class="cat-grid-item"
+          data-category-item
+          data-title={category.title.toLowerCase()}
+          data-count={String(category.count)}
+        >
+          <CategoryCard
+            title={category.title}
+            href={category.href}
+            meta={category.count > 0 ? `Latest: ${category.latestIssue}` : "No papers yet"}
+          />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <script is:inline>
+    const searchInput = document.getElementById("cat-search");
+    const sortSelect = document.getElementById("cat-sort");
+    const grid = document.getElementById("cat-grid");
+    const items = Array.from(document.querySelectorAll("[data-category-item]"));
+
+    function applyCategoryFilters() {
+      const query = (searchInput?.value || "").trim().toLowerCase();
+      const sortMode = sortSelect?.value || "az";
+
+      items.forEach((item) => {
+        const title = item.dataset.title || "";
+        item.hidden = query.length > 0 && !title.includes(query);
+      });
+
+      const visibleItems = items.filter((item) => !item.hidden);
+
+      visibleItems.sort((a, b) => {
+        const titleA = a.dataset.title || "";
+        const titleB = b.dataset.title || "";
+        const countA = Number.parseInt(a.dataset.count || "0", 10);
+        const countB = Number.parseInt(b.dataset.count || "0", 10);
+
+        if (sortMode === "count") {
+          if (countA !== countB) {
+            return countB - countA;
+          }
+        }
+
+        return titleA.localeCompare(titleB);
+      });
+
+      if (grid) {
+        visibleItems.forEach((item) => {
+          grid.appendChild(item);
+        });
+      }
+    }
+
+    searchInput?.addEventListener("input", applyCategoryFilters);
+    sortSelect?.addEventListener("change", applyCategoryFilters);
+
+    applyCategoryFilters();
+  </script>
+</BaseLayout>

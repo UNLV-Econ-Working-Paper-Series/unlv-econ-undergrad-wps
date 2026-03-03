@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+const target = withBase("/categories/public-economics-and-policy/");
+---
+
+<BaseLayout title="Redirecting Category">
+  <article class="card">
+    <p>This category moved.</p>
+    <p><a href={target}>Continue to Public Economics & Policy</a></p>
+  </article>
+  <script is:inline define:vars={{ target }}>
+    window.location.replace(target);
+  </script>
+</BaseLayout>

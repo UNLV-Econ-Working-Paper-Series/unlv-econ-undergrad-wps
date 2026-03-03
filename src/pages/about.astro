@@ -1,0 +1,141 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/urls";
+---
+
+<BaseLayout title="About | UNLV ECON 495 Journal" bodyClass="section-about page-about">
+  <section class="page-intro page-intro--band full-bleed">
+    <div class="page-intro-title">
+      <h1>About the Proceedings</h1>
+    </div>
+    <div class="page-intro-subtitle">
+      <p>
+        The <strong>UNLV ECON 495 Capstone Proceedings</strong> is an open-access archive of undergraduate working papers
+        produced in <strong>ECON 495 (Seminar in Economic Research)</strong> at the University of Nevada, Las Vegas.
+      </p>
+      <p>
+        Each semester is released as a single <strong>issue</strong> so student research remains
+        <strong>citable, discoverable, and easy to browse</strong>.
+      </p>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <section class="about-two-col">
+      <article class="prose-section about-panel">
+        <h2>Mission and Scope</h2>
+        <p>
+          The Proceedings exists to preserve and showcase the capstone research process, turning an economic question into
+          <strong>evidence, analysis, and a defensible argument</strong>.
+        </p>
+        <p>
+          It expands access to undergraduate scholarship while providing student authors a durable public record of their work.
+        </p>
+        <p>
+          Papers posted here are <strong>working papers</strong>, not peer-reviewed journal articles. Authors may revise drafts
+          as methods, writing, and interpretation improve over time.
+        </p>
+      </article>
+
+      <article class="prose-section about-panel">
+        <h2>Archive Organization</h2>
+        <p>The archive is structured to make research easy to find and cite:</p>
+        <ul>
+          <li><strong>Issues (by semester):</strong> Each semester is published as one issue.</li>
+          <li>
+            <strong>Paper pages:</strong> Each paper has its own page with an abstract, key metadata, and a downloadable PDF.
+          </li>
+          <li>
+            <strong>Categories (by topic):</strong> Papers are indexed by topic category across semesters for discovery and
+            browsing.
+          </li>
+        </ul>
+        <p>
+          Many ECON 495 projects are also presented in the broader undergraduate research ecosystem at UNLV (for example,
+          research symposia), and strong papers are well-positioned for further development into more formal publication
+          pathways.
+        </p>
+      </article>
+    </section>
+
+    <hr class="section-divider" />
+
+    <section class="prose-section">
+      <h2>Editorial Leadership</h2>
+      <div class="content-stack editorial-grid">
+        <article class="founder-card">
+          <img
+            class="founder-thumb"
+            src={withBase("/assets/images/assane.jpg")}
+            alt="Professor Djeto Assane"
+            style="--focus-y: 40%;"
+          />
+          <div class="founder-body">
+            <h3 class="founder-name">Professor Djeto Assane, Ph.D.</h3>
+            <p class="founder-role">ECON 495 Instructor</p>
+            <p>
+              Dr. Djeto Assane was educated at the Universit&eacute; d&apos;Abidjan (C&ocirc;te d&apos;Ivoire) and the University of
+              Colorado Boulder (M.A., Ph.D.). His teaching areas include statistics, econometrics, mathematical economics, and
+              microeconomics. He has also served as visiting faculty in the American Economic Association Summer Minority
+              Scholarship Program.
+            </p>
+          </div>
+        </article>
+
+        <article class="founder-card">
+          <img
+            class="founder-thumb"
+            src={withBase("/assets/images/mark-jayson.jpg")}
+            alt="Mark Jayson Farol"
+            style="--focus-y: 35%;"
+          />
+          <div class="founder-body">
+            <h3 class="founder-name">Mark Jayson Farol, M.A.</h3>
+            <p class="founder-role">Journal Organizer</p>
+            <p>
+              Mark Jayson Farol earned his M.A. in Quantitative Business Economics and B.S. in Economics at UNLV. He previously
+              supported undergraduate empirical research in ECON 495 as a graduate assistant and research collaborator, and
+              organizes the Proceedings to keep student work accessible, organized, and citable.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <section class="prose-section">
+      <h2>Graduate Assistants</h2>
+      <div class="content-stack assistants-grid">
+        <article class="founder-card">
+          <img
+            class="founder-thumb"
+            src={withBase("/assets/images/brandon-penticoff.jpg")}
+            alt="Brandon Penticoff"
+            style="--focus-y: 35%;"
+          />
+          <div class="founder-body">
+            <h3 class="founder-name">Brandon Penticoff</h3>
+            <p class="founder-role">Graduate Assistant, Spring 2026</p>
+            <p>
+              Brandon Penticoff is a University of Nevada, Las Vegas student pursuing an accelerated B.A./M.A. in Economics and
+              Quantitative Business Economics. He works as a freelance Financial Data Analyst, transforming complex banking
+              records into structured reports for legal- and policy-oriented analysis. Focus areas include data organization,
+              litigation support, and clear communication of data-driven insights.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <section class="prose-section">
+      <h2>Citation, Reuse, and Disclaimer</h2>
+      <p>
+        Unless otherwise noted, <strong>authors retain copyright</strong>. Posting on this site is intended to make student
+        research discoverable and citable. For reuse beyond brief quotation, contact the author or the journal team.
+      </p>
+    </section>
+  </section>
+</BaseLayout>

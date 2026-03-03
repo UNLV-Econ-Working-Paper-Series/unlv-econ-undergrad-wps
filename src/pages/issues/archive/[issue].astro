@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getArchiveIssueGroups } from "../../../lib/archive";
+import { withBase } from "../../../lib/urls";
+
+export async function getStaticPaths() {
+  const issues = getArchiveIssueGroups();
+  return issues.map((issue) => ({ params: { issue: issue.slug }, props: { issue } }));
+}
+
+const { issue } = Astro.props;
+---
+
+<BaseLayout title={`${issue.label} | Archive`} bodyClass="section-issues page-archive-issue">
+  <section class="issues-hero content-section" aria-labelledby="archive-issue-title">
+    <h1 id="archive-issue-title" class="issues-hero-title">{issue.label}</h1>
+    <p class="issues-hero-copy">
+      Archive issue with {issue.papers.length} working paper(s) and {issue.categories.length} topic categories.
+    </p>
+    <span class="issues-hero-rule" aria-hidden="true"></span>
+  </section>
+
+  <section class="content-section">
+    <article class="issue-archive-card card">
+      <header class="issue-archive-head">
+        <h2>Issue Summary</h2>
+        <p class="issue-card-meta">
+          {issue.papers.length} papers • {issue.categories.length} categories
+        </p>
+      </header>
+
+      <div class="issue-topic-chips" aria-label={`Categories in ${issue.label}`}>
+        {issue.categories.map((category) => (
+          <span class="issue-topic-chip">{category}</span>
+        ))}
+      </div>
+
+      <div class="issue-card-actions">
+        <a class="btn btn-small" href={withBase("/issues/archive/")}>Back to archive</a>
+        <button
+          type="button"
+          class="btn btn-small btn-outline"
+          data-download-all
+          data-urls={issue.papers.map((paper) => withBase(paper.file)).join("|")}
+        >
+          Download PDFs
+        </button>
+      </div>
+    </article>
+
+    <div class="archive-paper-list archive-paper-list--issue" aria-label="Papers in this archive issue">
+      {issue.papers.map((paper) => (
+        <article class="archive-paper-item card">
+          <h3>{paper.title}</h3>
+          <p class="muted small">Authors: {paper.authors || "Not listed"}</p>
+          <div class="issue-card-actions">
+            <a class="btn btn-small btn-primary" href={withBase(paper.file)}>Download PDF</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <script is:inline>
+    const button = document.querySelector("[data-download-all]");
+
+    button?.addEventListener("click", () => {
+      const urls = (button.dataset.urls || "").split("|").filter(Boolean);
+      if (urls.length === 0) {
+        return;
+      }
+
+      urls.forEach((url, index) => {
+        window.setTimeout(() => {
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "";
+          link.rel = "noopener noreferrer";
+          document.body.append(link);
+          link.click();
+          link.remove();
+        }, index * 180);
+      });
+    });
+  </script>
+</BaseLayout>

@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { cleanPaperTitle, getAllPapers, getIssueLabelForPaper, getIssueSlugForPaper, paperHref } from "../../lib/papers";
+import { withBase } from "../../lib/urls";
+
+export async function getStaticPaths() {
+  const papers = await getAllPapers();
+  const slugs = [...new Set(papers.map((paper) => getIssueSlugForPaper(paper)))];
+  return slugs.map((issue) => ({ params: { issue } }));
+}
+
+const issueSlug = Astro.params.issue ?? "";
+const papers = (await getAllPapers()).filter((paper) => getIssueSlugForPaper(paper) === issueSlug);
+const issueLabel = papers[0] ? getIssueLabelForPaper(papers[0]) : issueSlug;
+---
+
+<BaseLayout title={`${issueLabel} | Issues`} bodyClass="section-issues page-issue-detail">
+  <div class="issue-layout">
+    <section class="page-intro page-intro--issue issue-intro full-bleed">
+      <div class="issue-intro-kicker">
+        <p>Issue</p>
+      </div>
+      <div class="issue-intro-title">
+        <h1>{issueLabel}</h1>
+      </div>
+      <div class="issue-intro-subtitle">
+        <p>Browse working papers by {issueLabel} cohort</p>
+      </div>
+    </section>
+
+    <section class="content-section issue-content">
+      {papers.length === 0 ? (
+        <article class="accent-card empty-state-card">
+          <h2>No papers available yet</h2>
+          <p class="muted">This issue page is published, but paper records have not been posted yet.</p>
+        </article>
+      ) : (
+        <>
+          <h2 class="section-title">Papers in This Issue</h2>
+          <div class="card-grid issue-paper-grid">
+            {papers.map((paper) => (
+              <article class="card paper-card accent-card">
+                <div class="paper-meta">
+                  {paper.data.published_at ? <span class="pill">{paper.data.published_at}</span> : null}
+                  <span class="pill light">{issueLabel}</span>
+                </div>
+                <h3><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h3>
+                <p class="muted small">By {paper.data.authors.join(", ")}</p>
+                <p class="muted small">Category: {paper.data.category}</p>
+                <p class="muted">{paper.data.abstract.slice(0, 240)}{paper.data.abstract.length > 240 ? "..." : ""}</p>
+                <div class="card-actions">
+                  <a class="btn btn-small" href={paperHref(paper)}>Read abstract</a>
+                  <a class="btn btn-small btn-primary" href={withBase(paper.data.pdf)}>Download PDF</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </>
+      )}
+    </section>
+  </div>
+</BaseLayout>

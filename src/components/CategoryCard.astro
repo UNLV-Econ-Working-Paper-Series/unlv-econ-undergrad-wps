@@ -1,0 +1,21 @@
+---
+interface Props {
+  title: string;
+  href: string;
+  meta?: string;
+}
+
+const { title, href, meta = "" } = Astro.props;
+---
+
+<a class="cat-card" href={href}>
+  <div class="cat-card-top">
+    <h3 class="cat-card-title">{title}</h3>
+  </div>
+
+  {meta ? <p class="cat-card-meta">{meta}</p> : null}
+
+  <div class="cat-card-cta">
+    View papers <span aria-hidden="true">&rarr;</span>
+  </div>
+</a>

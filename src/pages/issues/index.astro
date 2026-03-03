@@ -1,0 +1,253 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getIssueGroups } from "../../lib/papers";
+import { withBase } from "../../lib/urls";
+
+const issues = await getIssueGroups();
+const issuesIntro =
+  "Browse semester-based issues from ECON 495. Each release groups student working papers into one citable issue for discovery and reuse.";
+
+const issueCategoryMap = new Map(
+  issues.map((issue) => [
+    issue.slug,
+    [...new Set(issue.papers.map((paper) => paper.data.category.trim()).filter((category) => category.length > 0))].sort((a, b) =>
+      a.localeCompare(b)
+    ),
+  ])
+);
+
+const years = [...new Set(issues.map((issue) => issue.year).filter((year): year is number => typeof year === "number"))].sort(
+  (a, b) => b - a
+);
+const categories = [...new Set([...issueCategoryMap.values()].flat())].sort((a, b) => a.localeCompare(b));
+const latestIssue = issues[0] ?? null;
+---
+
+<BaseLayout title="Issues | UNLV ECON 495 Journal" bodyClass="section-issues page-issues">
+  <section class="issues-hero content-section" aria-labelledby="issues-title">
+    <h1 id="issues-title" class="issues-hero-title">Issues</h1>
+    <p class="issues-hero-copy">{issuesIntro}</p>
+    <span class="issues-hero-rule" aria-hidden="true"></span>
+  </section>
+
+  <section class="issues-explorer content-section">
+    {latestIssue ? (
+      <section class="issues-latest-wrap" aria-label="Latest issue">
+        <article class="issues-latest issue-archive-card card">
+          <div>
+            <p class="eyebrow">Latest Issue</p>
+            <h2>{latestIssue.label}</h2>
+            <p class="issue-card-meta">
+              {latestIssue.papers.length} papers • {(issueCategoryMap.get(latestIssue.slug) ?? []).length} categories
+            </p>
+            <div class="issue-topic-chips" aria-label={`Categories in ${latestIssue.label}`}>
+              {(issueCategoryMap.get(latestIssue.slug) ?? []).slice(0, 4).map((category) => (
+                <span class="issue-topic-chip">{category}</span>
+              ))}
+            </div>
+          </div>
+          <div class="issue-card-actions">
+            <a class="btn btn-small btn-primary" href={withBase(`/issues/${latestIssue.slug}/`)}>Browse issue</a>
+            <button
+              type="button"
+              class="btn btn-small btn-outline"
+              data-download-all
+              data-urls={latestIssue.papers.map((paper) => withBase(paper.data.pdf)).join("|")}
+            >
+              Download PDFs
+            </button>
+          </div>
+        </article>
+      </section>
+    ) : null}
+
+    <section class="issues-controls issues-controls--modern" aria-label="Issue filters">
+      <div class="issues-search">
+        <label for="issues-search">Search papers</label>
+        <input id="issues-search" type="search" placeholder="Search papers..." />
+      </div>
+
+      <div class="issues-filter-row issues-filter-row--stacked">
+        <div class="issues-year-filter issues-year-filter--tabs">
+          <span class="issues-filter-label">Year</span>
+          <div class="issues-year-segment" role="group" aria-label="Filter by year">
+            <button type="button" class="issues-year-tab is-active" data-year-tab data-year="">All</button>
+            {years.map((year) => (
+              <button type="button" class="issues-year-tab" data-year-tab data-year={String(year)}>
+                {year}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="issues-category-filter">
+          <span class="issues-filter-label">Category</span>
+          <div class="issues-chip-list" role="group" aria-label="Filter by category">
+            <button type="button" class="issues-chip is-active" data-category-chip data-category="">
+              All categories
+            </button>
+            {categories.map((category) => (
+              <button type="button" class="issues-chip" data-category-chip data-category={category.toLowerCase()}>
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="issues-cards" aria-label="Issue cards">
+      {issues.length === 0 ? (
+        <article class="card empty-state-card">
+          <p class="muted">No issues have been published yet.</p>
+        </article>
+      ) : (
+        issues.map((issue) => {
+          const issueCategories = issueCategoryMap.get(issue.slug) ?? [];
+          const searchText = [
+            issue.label,
+            ...issue.papers.map((paper) => paper.data.title),
+            ...issue.papers.flatMap((paper) => paper.data.authors),
+            ...issue.papers.flatMap((paper) => paper.data.keywords),
+            ...issue.papers.map((paper) => paper.data.abstract),
+            ...issueCategories,
+          ]
+            .join(" ")
+            .toLowerCase();
+
+          return (
+            <article
+              class="issue-archive-card card"
+              data-issue-card
+              data-year={issue.year === null ? "unknown" : String(issue.year)}
+              data-categories={issueCategories.map((category) => category.toLowerCase()).join("|")}
+              data-search={searchText}
+            >
+              <header class="issue-archive-head">
+                <h2>{issue.label}</h2>
+                <p class="issue-card-meta">
+                  {issue.papers.length} papers • {issueCategories.length} categories
+                </p>
+              </header>
+
+              <div class="issue-topic-chips" aria-label={`Categories in ${issue.label}`}>
+                {issueCategories.length === 0 ? (
+                  <span class="issue-topic-chip">Uncategorized</span>
+                ) : (
+                  <>
+                    {issueCategories.slice(0, 5).map((category) => (
+                      <span class="issue-topic-chip">{category}</span>
+                    ))}
+                    {issueCategories.length > 5 ? <span class="issue-topic-chip">+{issueCategories.length - 5} more</span> : null}
+                  </>
+                )}
+              </div>
+
+              <div class="issue-card-actions">
+                <a class="btn btn-small btn-primary" href={withBase(`/issues/${issue.slug}/`)}>Browse issue</a>
+                <button
+                  type="button"
+                  class="btn btn-small btn-outline"
+                  data-download-all
+                  data-urls={issue.papers.map((paper) => withBase(paper.data.pdf)).join("|")}
+                  disabled={issue.papers.length === 0}
+                >
+                  Download PDFs
+                </button>
+              </div>
+            </article>
+          );
+        })
+      )}
+    </section>
+
+    <section class="issues-archive-container">
+      <a class="issue-archive-card issue-archive-link card" href={withBase("/issues/archive/")}>
+        <h3>Legacy Archive</h3>
+        <p>Browse pre-2024 Hub working papers</p>
+      </a>
+    </section>
+  </section>
+
+  <script is:inline>
+    const searchInput = document.getElementById("issues-search");
+    const yearTabs = Array.from(document.querySelectorAll("[data-year-tab]"));
+    const categoryChips = Array.from(document.querySelectorAll("[data-category-chip]"));
+    const issueCards = Array.from(document.querySelectorAll("[data-issue-card]"));
+    const downloadButtons = Array.from(document.querySelectorAll("[data-download-all]"));
+
+    let selectedYear = "";
+    let selectedCategory = "";
+
+    function setActiveYear(nextYear) {
+      selectedYear = nextYear;
+      yearTabs.forEach((tab) => {
+        tab.classList.toggle("is-active", (tab.dataset.year || "") === selectedYear);
+      });
+    }
+
+    function setActiveCategory(nextCategory) {
+      selectedCategory = nextCategory;
+      categoryChips.forEach((chip) => {
+        chip.classList.toggle("is-active", (chip.dataset.category || "") === selectedCategory);
+      });
+    }
+
+    function applyFilters() {
+      const query = (searchInput?.value || "").trim().toLowerCase();
+
+      issueCards.forEach((card) => {
+        const year = card.dataset.year || "";
+        const search = card.dataset.search || "";
+        const categories = (card.dataset.categories || "").split("|").filter(Boolean);
+
+        const matchesYear = selectedYear === "" || year === selectedYear;
+        const matchesCategory = selectedCategory === "" || categories.includes(selectedCategory);
+        const matchesQuery = query === "" || search.includes(query);
+
+        card.hidden = !(matchesYear && matchesCategory && matchesQuery);
+      });
+    }
+
+    yearTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        setActiveYear(tab.dataset.year || "");
+        applyFilters();
+      });
+    });
+
+    categoryChips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        setActiveCategory(chip.dataset.category || "");
+        applyFilters();
+      });
+    });
+
+    searchInput?.addEventListener("input", applyFilters);
+
+    downloadButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const urls = (button.dataset.urls || "").split("|").filter(Boolean);
+        if (urls.length === 0) {
+          return;
+        }
+
+        urls.forEach((url, index) => {
+          window.setTimeout(() => {
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "";
+            link.rel = "noopener noreferrer";
+            document.body.append(link);
+            link.click();
+            link.remove();
+          }, index * 180);
+        });
+      });
+    });
+
+    setActiveYear("");
+    setActiveCategory("");
+    applyFilters();
+  </script>
+</BaseLayout>

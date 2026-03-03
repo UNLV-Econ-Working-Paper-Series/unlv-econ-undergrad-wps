@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getAllPapers, getIssueSlugForPaper, paperSlug } from "../../../lib/papers";
+import { withBase } from "../../../lib/urls";
+
+export async function getStaticPaths() {
+  const papers = await getAllPapers();
+  const paths = [];
+
+  for (const paper of papers) {
+    const match = paper.data.pdf.match(/\/(paper-\d+)\.pdf$/i);
+    const legacyPaperSlug = match?.[1] ?? null;
+    if (!legacyPaperSlug) {
+      continue;
+    }
+
+    paths.push({
+      params: {
+        issue: getIssueSlugForPaper(paper),
+        paper: legacyPaperSlug,
+      },
+      props: {
+        target: withBase(`/papers/${paperSlug(paper)}/`),
+      },
+    });
+  }
+
+  return paths;
+}
+
+const { target } = Astro.props;
+---
+
+<BaseLayout title="Redirecting Paper">
+  <article class="card">
+    <p>This legacy paper URL has moved.</p>
+    <p><a href={target}>Continue to paper page</a></p>
+  </article>
+  <script is:inline define:vars={{ target }}>
+    window.location.replace(target);
+  </script>
+</BaseLayout>

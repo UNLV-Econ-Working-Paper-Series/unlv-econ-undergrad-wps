@@ -1,0 +1,138 @@
+---
+import "../styles/global.css";
+import { withBase } from "../lib/urls";
+
+interface Props {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description = "UNLV ECON 495 Journal - undergraduate capstone research published as working papers.",
+  bodyClass = "",
+} = Astro.props;
+
+const pathname = Astro.url.pathname;
+const currentYear = new Date().getFullYear();
+const navItems = [
+  { href: withBase("/"), label: "Home" },
+  { href: withBase("/issues/"), label: "Issues" },
+  { href: withBase("/categories/"), label: "Categories" },
+  { href: withBase("/our/"), label: "Our" },
+  { href: withBase("/about/"), label: "About" },
+  { href: withBase("/contact/"), label: "Contact" },
+];
+
+function normalize(path: string): string {
+  return path.endsWith("/") ? path : `${path}/`;
+}
+
+function isActive(href: string): boolean {
+  const current = normalize(pathname);
+  const target = normalize(href);
+  if (target === normalize(withBase("/"))) {
+    return current === target;
+  }
+  return current.startsWith(target);
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body class={bodyClass || undefined}>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="site-header modern-header">
+      <div class="site-shell site-topbar">
+        <a class="site-title site-logo" href={withBase("/")}>UNLV ECON 495 Journal</a>
+
+        <nav class="main-nav" aria-label="Primary">
+          <ul>
+            {navItems.map((item) => (
+              <li>
+                <a href={item.href} class={isActive(item.href) ? "is-active" : undefined}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="content" class="page-body">
+      <div class="page-content">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="site-footer modern-footer">
+      <div class="site-shell footer-shell">
+        <div class="footer-main" role="navigation" aria-label="Footer navigation">
+          <section class="footer-brand">
+            <h2 class="footer-journal">UNLV ECON 495 Journal</h2>
+            <p class="footer-description">
+              Open-access undergraduate working paper archive from ECON 495 at the University of Nevada, Las Vegas.
+            </p>
+          </section>
+
+          <nav class="footer-nav" aria-label="Explore">
+            <h3 class="footer-heading">Explore</h3>
+            <ul class="footer-links">
+              <li><a href={withBase("/")}>Home</a></li>
+              <li><a href={withBase("/issues/")}>Issues</a></li>
+              <li><a href={withBase("/categories/")}>Categories</a></li>
+              <li><a href={withBase("/about/")}>About</a></li>
+              <li><a href={withBase("/contact/")}>Contact</a></li>
+            </ul>
+          </nav>
+
+          <nav class="footer-nav" aria-label="Academic links">
+            <h3 class="footer-heading">Academic Links</h3>
+            <ul class="footer-links">
+              <li><a href="https://www.unlv.edu/business" target="_blank" rel="noopener noreferrer">Lee Business School</a></li>
+              <li><a href="https://www.unlv.edu/economics" target="_blank" rel="noopener noreferrer">Department of Economics</a></li>
+              <li><a href="https://www.unlv.edu/our" target="_blank" rel="noopener noreferrer">Office of Undergraduate Research</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="footer-utility">
+          <p class="footer-utility-text">
+            <span>&copy; <span data-current-year>{currentYear}</span> UNLV ECON 495 Journal.</span>
+            <span class="footer-disclaimer">Working papers are student-authored and may be revised over time.</span>
+          </p>
+
+          <ul class="footer-utility-links">
+            <li><a href={withBase("/policies/privacy/")}>Privacy</a></li>
+            <li><a href={withBase("/policies/permissions/")}>Permissions</a></li>
+            <li><a href={withBase("/policies/takedown/")}>Takedown</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline>
+      (() => {
+        const setCurrentYear = () => {
+          const year = String(new Date().getFullYear());
+          document.querySelectorAll("[data-current-year]").forEach((node) => {
+            node.textContent = year;
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", setCurrentYear, { once: true });
+        } else {
+          setCurrentYear();
+        }
+      })();
+    </script>
+  </body>
+</html>
