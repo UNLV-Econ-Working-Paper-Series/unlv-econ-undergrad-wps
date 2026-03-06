@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Accessibility
-lead: The Proceedings supports access needs and provides accommodation pathways for posted papers.
+lead: The Series supports access needs and provides accommodation pathways for posted papers.
 bodyClass: page-policy-accessibility
 ---
 
@@ -17,7 +17,7 @@ If a paper PDF is not accessible to you (for example, screen reader compatibilit
 
 ## How to request support
 
-Contact the journal team via the [Contact page](../../contact/) and include:
+Contact the series team via the [Contact page](../../contact/) and include:
 
 - paper title and URL
 - type of accessibility support needed
@@ -27,4 +27,4 @@ The team will respond and coordinate reasonable accommodations where feasible.
 
 ## Ongoing improvements
 
-Because papers are authored and exported in many formats, accessibility varies. The Proceedings encourages accessible document practices and will continue improving guidance over time.
+Because papers are authored and exported in many formats, accessibility varies. The Series encourages accessible document practices and will continue improving guidance over time.

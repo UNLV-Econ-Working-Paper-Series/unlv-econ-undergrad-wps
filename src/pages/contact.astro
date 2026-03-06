@@ -1,55 +1,45 @@
 ---
 import ContactCard from "../components/ContactCard.astro";
 import PageBanner from "../components/PageBanner.astro";
-import { CONTACT } from "../config/contact";
+import { CONTACT_PAGE_CONTENT } from "../data/contact-content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-const journalActions = [
-  { label: "Email Journal Team", href: `mailto:${CONTACT.journal.email}`, primary: true },
-  { label: "Common Requests", href: "#requests" },
-];
-
-const deptActions = [
-  { label: "Call Office", href: `tel:${CONTACT.dept.phone}`, primary: true },
-  { label: "Get Directions", href: CONTACT.dept.directionsUrl, external: true },
-];
-
-const commonRequests = [
-  { label: "Broken link", subject: "Report a broken link" },
-  { label: "Author update", subject: "Author update request" },
-  { label: "Correction / updated PDF", subject: "Correction or updated PDF" },
-  { label: "Permissions / reuse", subject: "Permissions or reuse" },
-  { label: "Takedown", subject: "Takedown request" },
-];
 ---
 
-<BaseLayout title="Contact | UNLV ECON 495 Journal" bodyClass="section-contact page-contact page-contact-modern">
-  <PageBanner title="Contact" lead="Reach the journal team or the Department of Economics office." />
+<BaseLayout title="Contact | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-contact page-contact page-contact-modern">
+  <PageBanner title={CONTACT_PAGE_CONTENT.banner.title} lead={CONTACT_PAGE_CONTENT.banner.lead} />
 
   <section class="content-section contact-modern-shell">
     <h1 class="contact-sr-only">Contact</h1>
 
     <section class="contact-grid" aria-labelledby="contact-routing-title">
-      <h2 id="contact-routing-title" class="contact-grid-heading">Who are you trying to reach?</h2>
+      <h2 id="contact-routing-title" class="contact-grid-heading">{CONTACT_PAGE_CONTENT.routingTitle}</h2>
 
-      <ContactCard title={CONTACT.journal.title} desc={CONTACT.journal.desc} actions={journalActions}>
+      <ContactCard
+        title={CONTACT_PAGE_CONTENT.contact.series.title}
+        desc={CONTACT_PAGE_CONTENT.contact.series.desc}
+        actions={CONTACT_PAGE_CONTENT.contact.series.actions}
+      >
         <p class="contact-line">
           <strong>Email:</strong>
-          <a href={`mailto:${CONTACT.journal.email}`}>{CONTACT.journal.email}</a>
+          <a href={`mailto:${CONTACT_PAGE_CONTENT.contact.series.email}`}>{CONTACT_PAGE_CONTENT.contact.series.email}</a>
         </p>
         <p class="contact-hint">
-          Use this for corrections, permissions, takedown requests, author updates, and site issues.
+          {CONTACT_PAGE_CONTENT.contact.series.hint}
         </p>
       </ContactCard>
 
-      <ContactCard title={CONTACT.dept.title} desc={CONTACT.dept.desc} actions={deptActions}>
+      <ContactCard
+        title={CONTACT_PAGE_CONTENT.contact.dept.title}
+        desc={CONTACT_PAGE_CONTENT.contact.dept.desc}
+        actions={CONTACT_PAGE_CONTENT.contact.dept.actions}
+      >
         <p class="contact-line">
           <strong>Phone:</strong>
-          <a href={`tel:${CONTACT.dept.phone}`}>{CONTACT.dept.phone}</a>
+          <a href={`tel:${CONTACT_PAGE_CONTENT.contact.dept.phone}`}>{CONTACT_PAGE_CONTENT.contact.dept.phone}</a>
         </p>
-        <p class="contact-line"><strong>Location:</strong> {CONTACT.dept.locationLine}</p>
+        <p class="contact-line"><strong>Location:</strong> {CONTACT_PAGE_CONTENT.contact.dept.locationLine}</p>
         <address class="contact-address">
-          {CONTACT.dept.addressLines.map((line) => (
+          {CONTACT_PAGE_CONTENT.contact.dept.addressLines.map((line) => (
             <div>{line}</div>
           ))}
         </address>
@@ -57,28 +47,31 @@ const commonRequests = [
     </section>
 
     <section id="requests" class="contact-requests" aria-labelledby="requests-title">
-      <h2 id="requests-title">Common Requests</h2>
-      <div class="contact-chip-list" role="list" aria-label="Common journal support requests">
-        {commonRequests.map((request) => (
+      <h2 id="requests-title">{CONTACT_PAGE_CONTENT.requests.title}</h2>
+      <div class="contact-chip-list" role="list" aria-label="Common series support requests">
+        {CONTACT_PAGE_CONTENT.requests.items.map((request) => (
           <a
             role="listitem"
             class="contact-chip"
-            href={`mailto:${CONTACT.journal.email}?subject=${encodeURIComponent(request.subject)}`}
+            href={`mailto:${CONTACT_PAGE_CONTENT.contact.series.email}?subject=${encodeURIComponent(request.subject)}`}
           >
             {request.label}
           </a>
         ))}
       </div>
-      <p class="contact-note">
-        For paper-specific issues, include the paper title and paper URL. For reuse requests, include what content you want to
-        reuse and where it will be used.
-      </p>
+      <p class="contact-note">{CONTACT_PAGE_CONTENT.requests.note}</p>
     </section>
 
     <section class="contact-map" aria-labelledby="directions-title">
-      <h2 id="directions-title">Directions</h2>
+      <h2 id="directions-title">{CONTACT_PAGE_CONTENT.directions.title}</h2>
       <p>
-        <a href={CONTACT.dept.directionsUrl} target="_blank" rel="noopener noreferrer">Open in Google Maps →</a>
+        <a
+          href={CONTACT_PAGE_CONTENT.contact.dept.directionsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {CONTACT_PAGE_CONTENT.directions.linkLabel}
+        </a>
       </p>
     </section>
   </section>

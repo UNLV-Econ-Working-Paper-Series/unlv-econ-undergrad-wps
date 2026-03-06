@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content";
+import { OASIS_MIRROR_ACTIVE } from "../config/repositoryStatus";
 import { CATEGORY_DEFINITIONS, categoryNameForSlug, categorySlugForName } from "../data/categories";
 import { ISSUE_DEFINITIONS, definedIssueLabel } from "../data/issues";
 import { withBase } from "../lib/urls";
@@ -244,8 +245,9 @@ export function formatCitation(paper: PaperEntry): string {
   const title = cleanPaperTitle(paper.data.title);
   const yearMatch = issue.match(/(\d{4})/);
   const year = yearMatch?.[1] ?? "n.d.";
-  const url = paperHref(paper);
-  return `${authors} (${year}). ${title}. ${issue}. UNLV ECON 495 Journal. ${url}`;
+  const oasisUrl = paper.data.oasis_url?.trim();
+  const url = OASIS_MIRROR_ACTIVE && oasisUrl ? oasisUrl : paperHref(paper);
+  return `${authors} (${year}). ${title}. ${issue}. UNLV Undergraduate Economics Working Paper Series. ${url}`;
 }
 
 export function groupPapersBySemester(papers: PaperEntry[]): SemesterGroup[] {

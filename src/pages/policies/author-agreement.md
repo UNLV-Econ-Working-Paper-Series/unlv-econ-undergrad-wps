@@ -5,7 +5,7 @@ lead: This summary outlines author rights, posting permissions, and publication 
 bodyClass: page-policy-author-agreement
 ---
 
-This page summarizes expectations for posting student work in the Proceedings.
+This page summarizes expectations for posting work in the Series.
 
 ## Author rights
 
@@ -13,7 +13,7 @@ Authors retain copyright unless otherwise noted.
 
 ## Permission to post
 
-By posting a paper, the author grants the Proceedings (and, if applicable, UNLV as publisher) a non-exclusive license to host and distribute the work online for educational and archival purposes.
+By posting a paper, the author grants the Series (and, if applicable, UNLV as publisher) a non-exclusive license to host and distribute the work online for educational and archival purposes.
 
 ## Author responsibilities
 
@@ -30,4 +30,4 @@ Authors may request corrections and updates under [Corrections, Updates & Versio
 
 ## Questions
 
-For rights, licensing, or posting questions, contact the journal team through the [Contact page](../../contact/).
+For rights, licensing, or posting questions, contact the series team through the [Contact page](../../contact/).

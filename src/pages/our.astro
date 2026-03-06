@@ -12,7 +12,7 @@ const spectraPrimary = SPECTRA_LINKS.find((link) => link.kind === "primary") ?? 
 const pathwayCards = [
   {
     kicker: "Archive",
-    title: "ECON 495 Journal (This Site)",
+    title: "UNLV Undergraduate Economics Working Paper Series (This Site)",
     summary: "Your paper gets a stable page, metadata, and PDF for citation and discovery.",
     href: withBase("/papers/"),
     label: "Browse archive",
@@ -29,7 +29,7 @@ const pathwayCards = [
   {
     kicker: "Publish",
     title: "Spectra Journal",
-    summary: "Strong projects can become mentored, peer-reviewed undergraduate publications.",
+    summary: "Strong projects can become mentored, peer-reviewed publications.",
     href: spectraPrimary?.href || "https://oasis.library.unlv.edu/spectra/",
     label: "Visit Spectra Journal",
     external: true,
@@ -43,11 +43,10 @@ const tocItems = [
 ];
 ---
 
-<BaseLayout title="Undergraduate Research | UNLV ECON 495 Journal" bodyClass="section-our page-our page-our-modern">
+<BaseLayout title="Research Pathway | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-our page-our page-our-modern">
   <PageBanner
-    title="Undergraduate Research Pathway"
-    lead="How ECON 495 projects can be presented and developed into publishable scholarship at UNLV."
-    note="External links: Office of Undergraduate Research (OUR) and Spectra. The Proceedings remains the course archive."
+    title="Economics Research Pathway"
+    lead="How Department of Economics projects can move from working paper posting to broader dissemination."
   />
 
   <div class="page-with-toc">
@@ -59,15 +58,16 @@ const tocItems = [
       <div class="our-modern-page">
     <section class="content-section our-connection-section" aria-labelledby="our-connection-title">
       <header class="our-section-head our-section-head--linear">
-        <h2 id="our-connection-title">Beyond ECON 495: Present &amp; Publish</h2>
+        <h2 id="our-connection-title">From Archive to Present &amp; Publish</h2>
         <p class="our-connection-intro">
-          ECON 495 projects often follow a clear pathway: <strong>archive - present - revise - publish</strong>.
+          This pathway describes how student-authored economics papers in the UNLV Department of Economics are first posted as
+          working papers, then presented, revised, and sometimes developed into formal publication submissions.
         </p>
       </header>
 
       <div class="our-path-grid" role="list" aria-label="Research pathway overview">
         {pathwayCards.map((card) => (
-          <article class="our-surface our-path-card" role="listitem">
+          <article class="our-surface our-path-card" data-motion="gsap" role="listitem">
             <p class="our-path-kicker">{card.kicker}</p>
             <h3>{card.title}</h3>
             <p>{card.summary}</p>
@@ -85,13 +85,13 @@ const tocItems = [
       <header class="our-section-head our-section-head--linear">
         <h2 id="our-symposia-title">OUR Undergraduate Research Symposia</h2>
         <p>
-          The Office of Undergraduate Research (OUR) hosts public forums where students present capstone and independent
-          projects and receive constructive feedback.
+          The Office of Undergraduate Research (OUR) hosts public forums where undergraduate researchers present independent
+          and course-based projects and receive constructive feedback.
         </p>
       </header>
 
       <div class="our-layout-two-col">
-        <article class="our-surface our-main-copy">
+        <article class="our-surface our-main-copy" data-motion="gsap">
           <ul class="our-list">
             {SYMPOSIA_POINTS.map((point) => (
               <li>{point}</li>
@@ -99,7 +99,7 @@ const tocItems = [
           </ul>
         </article>
 
-        <aside class="our-surface our-links-card" aria-label="Symposia quick links">
+        <aside class="our-surface our-links-card" data-motion="gsap" aria-label="Symposia quick links">
           <h3>Quick Links</h3>
           {symposiaPrimary ? (
             <a class="btn btn-small btn-primary" href={symposiaPrimary.href} target="_blank" rel="noopener noreferrer">
@@ -119,9 +119,9 @@ const tocItems = [
     </section>
 
     <section class="content-section our-bridge" aria-label="Symposia to publication transition">
-      <article class="our-surface our-bridge-card">
+      <article class="our-surface our-bridge-card" data-motion="gsap">
         <p>
-          Presenting at the Undergraduate Research Symposia often becomes the bridge from class project to polished manuscript
+          Presenting at the Undergraduate Research Symposia often becomes the bridge from an early-stage project to a polished manuscript
           for journal submission.
         </p>
       </article>
@@ -136,7 +136,7 @@ const tocItems = [
       </header>
 
       <div class="our-mini-grid" aria-label="Spectra publication details">
-        <article class="our-surface our-mini-card">
+        <article class="our-surface our-mini-card" data-motion="gsap">
           <h3>What Spectra publishes</h3>
           <ul class="our-list our-list--compact">
             {SPECTRA_PUBLISHES.map((item) => (
@@ -145,7 +145,7 @@ const tocItems = [
           </ul>
         </article>
 
-        <article class="our-surface our-mini-card">
+        <article class="our-surface our-mini-card" data-motion="gsap">
           <h3>How review works</h3>
           <ul class="our-list our-list--compact">
             {SPECTRA_REVIEW.map((item) => (
@@ -167,11 +167,11 @@ const tocItems = [
         <summary>Read more: submission expectations and support resources</summary>
         <div class="our-accordion-body">
           <p>
-            Strong ECON 495 projects can continue toward publication with revision support, mentor feedback, and journal-style
+            Strong economics projects can continue toward publication with revision support, mentor feedback, and journal-style
             preparation through UNLV undergraduate research resources.
           </p>
           <p>
-            Use the proceedings archive, symposium feedback, and faculty guidance as a practical progression from course research
+            Use the working paper archive, symposium feedback, and faculty guidance as a practical progression from department research
             to public scholarship.
           </p>
         </div>

@@ -5,7 +5,7 @@ lead: Working papers may be refined over time while preserving stable citation a
 bodyClass: page-policy-corrections
 ---
 
-Because this Proceedings publishes **working papers**, updates and refinements are expected.
+Because this Series publishes **working papers**, updates and refinements are expected.
 
 ## What can be updated
 
@@ -19,7 +19,7 @@ Updates may include:
 ## Versioning approach
 
 - Each paper page URL is intended to be **stable** for citation.
-- The Proceedings generally displays the **most current public version** of a paper.
+- The Series generally displays the **most current public version** of a paper.
 - When feasible, prior versions may be retained for recordkeeping; otherwise, the previous PDF may be replaced.
 
 ## Corrections vs. revisions
@@ -31,7 +31,7 @@ When appropriate, a short note may be added to the paper page indicating an upda
 
 ## How to request a correction or update
 
-Email the journal team and include:
+Email the series team and include:
 
 - paper title
 - paper page URL

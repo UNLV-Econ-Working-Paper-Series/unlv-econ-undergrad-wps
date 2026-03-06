@@ -1,11 +1,11 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Privacy Statement
-lead: This statement explains how the Proceedings handles visitor and inquiry information.
+lead: This statement explains how the Series handles visitor and inquiry information.
 bodyClass: page-policy-privacy
 ---
 
-This Privacy Statement describes how the UNLV ECON 495 Journal (Capstone Proceedings) handles information from visitors and authors.
+This Privacy Statement describes how the UNLV Undergraduate Economics Working Paper Series handles information from visitors and authors.
 
 ## Information we collect
 
@@ -22,11 +22,11 @@ This information supports basic security, troubleshooting, and performance monit
 
 ### Information you provide
 
-If you contact the journal team (for example, by email), we receive the information you choose to share, such as your name, email address, and message content.
+If you contact the series team (for example, by email), we receive the information you choose to share, such as your name, email address, and message content.
 
 ## Cookies and analytics
 
-If the Proceedings uses analytics or cookies, they are used to understand site usage and improve performance. Where applicable, analytics should minimize unnecessary personal-data collection.
+If the Series uses analytics or cookies, they are used to understand site usage and improve performance. Where applicable, analytics should minimize unnecessary personal-data collection.
 
 ## How we use information
 
@@ -39,11 +39,11 @@ We use collected information to:
 
 ## What we do not publish
 
-We do not publish student ID numbers, grades, or other education records. Authors should avoid including private personal data or confidential information in manuscripts.
+We do not publish student or employee ID numbers, grades, or other education records. Authors should avoid including private personal data or confidential information in manuscripts.
 
 ## Sharing and disclosure
 
-We do not sell personal information. Information may be disclosed when required by law or for legitimate university administrative needs if the Proceedings is operated by UNLV.
+We do not sell personal information. Information may be disclosed when required by law or for legitimate university administrative needs if the Series is operated by UNLV.
 
 ## Data retention
 
@@ -51,4 +51,4 @@ Messages and logs are retained only as long as needed for operations, policy com
 
 ## Questions
 
-For privacy concerns, including requests to remove personal information from a posted paper, contact the journal team through the [Contact page](../../contact/).
+For privacy concerns, including requests to remove personal information from a posted paper, contact the series team through the [Contact page](../../contact/).

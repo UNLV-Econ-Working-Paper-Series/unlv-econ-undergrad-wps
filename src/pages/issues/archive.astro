@@ -8,7 +8,7 @@ const archiveIssues = getArchiveIssueGroups();
 const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b) => b - a);
 ---
 
-<BaseLayout title="Archive | UNLV ECON 495 Journal" bodyClass="section-issues page-archive">
+<BaseLayout title="Archive | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-issues page-archive">
   <PageBanner
     title="Archive"
     subtitle="Archived UNLV Economics Hub working papers (pre-2024), organized by semester issue for quick browsing and download."
@@ -41,6 +41,7 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
         archiveIssues.map((issue) => (
           <article
             class="issue-archive-card card"
+            data-motion="gsap"
             data-archive-issue-card
             data-year={String(issue.year)}
             data-search={[

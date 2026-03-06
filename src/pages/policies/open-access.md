@@ -1,11 +1,11 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Open Access Policy
-lead: All Proceedings content is freely accessible online without reader fees.
+lead: All Series content is freely accessible online without reader fees.
 bodyClass: page-policy-open-access
 ---
 
-The UNLV ECON 495 Journal (Capstone Proceedings) provides **open access** to all published working papers. Readers may view paper pages and download PDFs **without fees**.
+The UNLV Undergraduate Economics Working Paper Series provides **open access** to all published working papers. Readers may view paper pages and download PDFs **without fees**.
 
 ## Author fees
 
@@ -17,4 +17,4 @@ Access is free. Reuse depends on each paper's copyright and licensing terms. See
 
 ## Purpose
 
-Open access supports UNLV's educational mission by increasing the visibility of undergraduate research and enabling citation and discovery.
+Open access supports UNLV's educational mission by increasing the visibility of economics research and enabling citation and discovery.

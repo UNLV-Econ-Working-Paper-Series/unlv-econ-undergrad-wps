@@ -1,5 +1,6 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
+import { OASIS_MIRROR_ACTIVE } from "../../config/repositoryStatus";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   cleanPaperTitle,
@@ -22,6 +23,8 @@ const issueLabel = getIssueLabelForPaper(paper);
 const issueSlug = getIssueSlugForPaper(paper);
 const citation = formatCitation(paper);
 const pdfHref = withBase(paper.data.pdf);
+const oasisUrl = paper.data.oasis_url?.trim();
+const showOasisLink = OASIS_MIRROR_ACTIVE && Boolean(oasisUrl);
 const authorsDisplay = paper.data.authors.length > 0 ? paper.data.authors.join(", ") : "Author information not provided";
 const publicationLabel = (() => {
   const raw = paper.data.published_at?.trim();
@@ -39,7 +42,7 @@ const publicationLabel = (() => {
 <BaseLayout title={`${title} | Papers`} bodyClass="section-papers page-paper-detail">
   <div class="paper-page">
     <PageBanner
-      kicker="Working Paper"
+      kicker="Working paper (not peer-reviewed unless stated)"
       title={title}
       subtitle={`${authorsDisplay} • ${issueLabel} • ${publicationLabel}`}
     />
@@ -47,6 +50,11 @@ const publicationLabel = (() => {
     <section class="content-section paper-detail-quick-actions">
       <div class="page-intro-actions">
         <a class="btn btn-primary" href={pdfHref}>Download PDF</a>
+        {showOasisLink && (
+          <a class="btn btn-small" href={oasisUrl} target="_blank" rel="noopener noreferrer">
+            View in OAsis (UNLV Repository)
+          </a>
+        )}
         <a class="btn btn-small" href={withBase(`/issues/${issueSlug}/`)}>Back to issue</a>
       </div>
     </section>

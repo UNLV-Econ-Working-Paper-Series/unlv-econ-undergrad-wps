@@ -11,7 +11,7 @@ interface Props {
 
 const {
   title,
-  description = "UNLV ECON 495 Journal - undergraduate capstone research published as working papers.",
+  description = "UNLV Undergraduate Economics Working Paper Series - open-access working papers from the UNLV Department of Economics.",
   bodyClass = "",
 } = Astro.props;
 
@@ -54,7 +54,7 @@ function isActive(href: string): boolean {
 
     <header class="site-header modern-header">
       <div class="site-shell site-topbar">
-        <a class="site-title site-logo" href={withBase("/")}>UNLV ECON 495 Journal</a>
+        <a class="site-title site-logo" href={withBase("/")}>UNLV Undergraduate Economics Working Paper Series</a>
 
         <nav class="main-nav" aria-label="Primary">
           <ul>
@@ -78,9 +78,9 @@ function isActive(href: string): boolean {
       <div class="site-shell footer-shell">
         <div class="footer-main" role="navigation" aria-label="Footer navigation">
           <section class="footer-brand">
-            <h2 class="footer-journal">UNLV ECON 495 Journal</h2>
+            <h2 class="footer-journal">UNLV Undergraduate Economics Working Paper Series</h2>
             <p class="footer-description">
-              Open-access undergraduate working paper archive from ECON 495 at the University of Nevada, Las Vegas.
+              Open-access working paper archive for the UNLV Department of Economics.
             </p>
           </section>
 
@@ -108,8 +108,9 @@ function isActive(href: string): boolean {
 
         <div class="footer-utility">
           <p class="footer-utility-text">
-            <span>&copy; <span data-current-year>{currentYear}</span> UNLV ECON 495 Journal.</span>
-            <span class="footer-disclaimer">Working papers are student-authored and may be revised over time.</span>
+            <span>&copy; <span data-current-year>{currentYear}</span> UNLV Undergraduate Economics Working Paper Series.</span>
+            <span class="footer-disclaimer">Working papers are author-provided and may be revised over time.</span>
+            <span>Platform built by Mark Jayson Farol (Founding Technical Editor).</span>
           </p>
 
           <ul class="footer-utility-links">
@@ -120,6 +121,12 @@ function isActive(href: string): boolean {
         </div>
       </div>
     </footer>
+
+    <script>
+      import { bootSiteMotion } from "../scripts/site-motion";
+
+      bootSiteMotion();
+    </script>
 
     <script is:inline>
       (() => {
@@ -134,7 +141,6 @@ function isActive(href: string): boolean {
           const selectors = [
             "[data-reveal]",
             "main .content-section",
-            "main .hero-panel",
             "main .card",
             "main .contact-card",
             "main .ga-card",
@@ -146,7 +152,13 @@ function isActive(href: string): boolean {
             document.querySelectorAll(selector).forEach((node) => unique.add(node));
           });
 
-          return Array.from(unique);
+          return Array.from(unique).filter((node) => {
+            if (!(node instanceof Element)) {
+              return false;
+            }
+
+            return !node.matches('[data-motion="gsap"]');
+          });
         };
 
         const initReveal = () => {

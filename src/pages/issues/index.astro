@@ -6,7 +6,7 @@ import { withBase } from "../../lib/urls";
 
 const issues = await getIssueGroups();
 const issuesIntro =
-  "Browse semester-based issues from ECON 495. Each release groups student working papers into one citable issue for discovery and reuse.";
+  "Browse semester-based issues from the UNLV Department of Economics. Each release groups working papers into one citable issue for discovery and reuse.";
 
 const issueCategoryMap = new Map(
   issues.map((issue) => [
@@ -24,7 +24,7 @@ const categories = [...new Set([...issueCategoryMap.values()].flat())].sort((a, 
 const latestIssue = issues[0] ?? null;
 ---
 
-<BaseLayout title="Issues | UNLV ECON 495 Journal" bodyClass="section-issues page-issues">
+<BaseLayout title="Issues | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-issues page-issues">
   <PageBanner title="Issues" subtitle={issuesIntro} />
 
   <section class="issues-explorer content-section">
@@ -58,15 +58,12 @@ const latestIssue = issues[0] ?? null;
     </section>
 
     {latestIssue ? (
-      <section class="issues-latest-line" aria-label="Latest issue">
+      <section class="issues-latest-line" data-motion="gsap" aria-label="Latest issue">
         <p class="issues-latest-line__text">
           <span class="issues-latest-line__label">Latest issue:</span>{" "}
           <a class="issues-latest-line__link" href={withBase(`/issues/${latestIssue.slug}/`)}>
             {latestIssue.label}
           </a>
-          <span class="issues-latest-line__meta">
-            {" "}— {latestIssue.papers.length} papers • {(issueCategoryMap.get(latestIssue.slug) ?? []).length} categories
-          </span>
         </p>
 
         <a class="btn btn-small btn-primary" href={withBase(`/issues/${latestIssue.slug}/`)}>
@@ -97,6 +94,7 @@ const latestIssue = issues[0] ?? null;
           return (
             <article
               class="issue-archive-card card"
+              data-motion="gsap"
               data-issue-card
               data-year={issue.year === null ? "unknown" : String(issue.year)}
               data-categories={issueCategories.map((category) => category.toLowerCase()).join("|")}
@@ -132,7 +130,7 @@ const latestIssue = issues[0] ?? null;
     </section>
 
     <section class="issues-archive-container">
-      <a class="issue-archive-card issue-archive-link card" href={withBase("/issues/archive/")}>
+      <a class="issue-archive-card issue-archive-link card" data-motion="gsap" href={withBase("/issues/archive/")}>
         <h3>Legacy Archive</h3>
         <p>Browse pre-2024 Hub working papers</p>
       </a>

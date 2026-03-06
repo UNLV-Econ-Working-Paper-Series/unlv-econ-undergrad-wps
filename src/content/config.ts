@@ -11,6 +11,7 @@ const papers = defineCollection({
     abstract: z.string().min(1),
     pdf: z.string().min(1),
     issue_slug: z.string().min(1),
+    oasis_url: z.string().url().optional(),
     published_at: z.string().optional(),
   }),
 });

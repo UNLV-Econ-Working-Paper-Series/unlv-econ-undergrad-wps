@@ -1,19 +1,19 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Editorial Screening Process (Not Peer Review)
-lead: The Proceedings uses editorial screening for archive readiness and policy compliance, not peer review.
+lead: The Series uses editorial screening for archive readiness and policy compliance, not peer review.
 bodyClass: page-policy-editorial-process
 ---
 
 ## Summary
 
-The Proceedings uses **editorial screening** to prepare working papers for publication as an educational archive. This screening is **not peer review**.
+The Series uses **editorial screening** to prepare working papers for publication as an educational archive. This screening is **not peer review**.
 
 ## What published means here
 
 A paper is published when it has:
 
-- been completed as part of ECON 495, and
+- met the Focus & Scope criteria for department-affiliated economics research, and
 - passed baseline editorial checks for posting and policy compliance.
 
 Publication indicates readiness for public archiving, **not** validation of methods or results.

@@ -1,9 +1,9 @@
 \documentclass[12pt]{article}
 
-% --- Journal metadata helpers (edit these) ---
+% --- Series metadata helpers (edit these) ---
 \newcommand{\paperTitle}{}
 \newcommand{\paperAuthors}{}
-\newcommand{\paperCourse}{ECON 495}
+\newcommand{\paperCourse}{Department of Economics}
 \newcommand{\paperDept}{Department of Economics}
 \newcommand{\paperUni}{University of Nevada, Las Vegas}
 
@@ -16,7 +16,7 @@
 \newcommand{\paperAbstract}{%
 }
 
-{\color{ECONRed}\LARGE\textbf{ECON 495 Journal}\par}
+{\color{ECONRed}\LARGE\textbf{UNLV Undergraduate Economics Working Paper Series}\par}
 
 % ... (rest of the document preamble unchanged)
 

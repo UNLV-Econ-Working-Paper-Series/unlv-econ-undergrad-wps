@@ -1,18 +1,21 @@
 {
-  "name": "econ495-astro-site",
+  "name": "unlv-economics-working-paper-series-site",
   "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro build && npm run verify:text-contracts",
     "preview": "astro preview",
     "astro": "astro",
-    "migrate:papers": "tsx scripts/import-papers-from-jekyll.ts --source ../UNLVECON495Journal/assets/data/papers.json"
+    "migrate:papers": "tsx scripts/import-papers-from-jekyll.ts --source ../UNLVECON495Journal/assets/data/papers.json",
+    "generate:homepage-content": "tsx scripts/markdown-to-homepage-content.ts",
+    "verify:text-contracts": "tsx scripts/verify-text-contracts.ts"
   },
   "dependencies": {
-    "astro": "^5.0.0"
+    "astro": "^5.0.0",
+    "gsap": "^3.14.2"
   },
   "devDependencies": {
     "@vitejs/plugin-basic-ssl": "^2.1.4",

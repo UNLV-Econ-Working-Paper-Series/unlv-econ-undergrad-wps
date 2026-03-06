@@ -11,7 +11,7 @@ Unless otherwise noted, **authors retain copyright** in their working papers.
 
 ## License to host and disseminate
 
-By publishing a paper in this Proceedings, authors grant the Proceedings (and, if applicable, the University of Nevada, Las Vegas as publisher) a **non-exclusive, worldwide license** to:
+By publishing a paper in this Series, authors grant the Series (and, if applicable, the University of Nevada, Las Vegas as publisher) a **non-exclusive, worldwide license** to:
 
 - host, reproduce, display, and distribute the work online
 - preserve the work as part of an educational archive
@@ -34,7 +34,7 @@ Brief quotation with proper attribution is generally acceptable. Use the recomme
 For reuse beyond brief quotation (including reproducing figures/tables or distributing full PDFs), contact:
 
 - the author(s), and/or
-- the journal team listed on the [Contact page](../../contact/)
+- the series team listed on the [Contact page](../../contact/)
 
 ## Trademarks and branding
 

@@ -1,9 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { cleanPaperTitle, getAllPapers, getCategoryGroups, getIssueGroups, paperHref } from "../lib/papers";
+import { HOMEPAGE_EDITABLE_CONTENT } from "../data/homepage-content";
+import { NEWS_EVENTS } from "../data/news";
+import { cleanPaperTitle, getCategoryGroups, getIssueGroups, paperHref } from "../lib/papers";
 import { withBase } from "../lib/urls";
 
-const allPapers = await getAllPapers();
 const issues = await getIssueGroups();
 const categories = await getCategoryGroups();
 
@@ -12,19 +13,105 @@ const latestIssueTitles = (latestIssue?.papers ?? []).slice(0, 3);
 const categoryChips = categories.filter((group) => group.count > 0).sort((a, b) => b.count - a.count).slice(0, 10);
 
 const heroImage = withBase("/assets/images/lee-business-school.jpg");
+
+const toDisplayHref = (href: string | undefined, fallback: string): string => {
+  const candidate = (href ?? "").trim();
+  const target = candidate.length > 0 ? candidate : fallback;
+  if (!target) {
+    return "";
+  }
+  if (/^(https?:)?\/\//.test(target) || target.startsWith("mailto:") || target.startsWith("#")) {
+    return target;
+  }
+
+  const basePath = import.meta.env.BASE_URL || "/";
+  if (basePath !== "/" && target.startsWith(basePath)) {
+    return target;
+  }
+  return withBase(target);
+};
+
+const latestIssueEditable = HOMEPAGE_EDITABLE_CONTENT.latestIssue ?? {};
+const newsAndEventsEditable = HOMEPAGE_EDITABLE_CONTENT.newsAndEvents ?? {};
+
+const editableFeaturedItems = (latestIssueEditable.featuredItems ?? [])
+  .map((item) => {
+    const label = item.label?.trim() ?? "";
+    const href = item.href?.trim() ?? "";
+    return {
+      label,
+      href: href.length > 0 ? toDisplayHref(href, href) : "",
+    };
+  })
+  .filter((item) => item.label.length > 0);
+
+const featuredItems =
+  editableFeaturedItems.length > 0
+    ? editableFeaturedItems
+    : latestIssueTitles.map((paper) => ({
+        label: cleanPaperTitle(paper.data.title),
+        href: paperHref(paper),
+      }));
+
+const defaultLatestIssueHref = latestIssue ? `/issues/${latestIssue.slug}/` : "/issues/";
+const latestIssueTitle = latestIssueEditable.title?.trim() || latestIssue?.label || "Latest Issue";
+const latestIssueHref = toDisplayHref(latestIssueEditable.href, defaultLatestIssueHref);
+const latestIssueMeta = latestIssueEditable.metaText?.trim() || (latestIssue ? `${latestIssue.papers.length} papers` : "");
+const latestIssueEmptyStateText = latestIssueEditable.emptyStateText?.trim() || "No papers posted in this issue yet.";
+
+const latestIssuePrimaryCta = {
+  label: latestIssueEditable.primaryCta?.label?.trim() || "Browse Issue",
+  href: toDisplayHref(latestIssueEditable.primaryCta?.href, defaultLatestIssueHref),
+};
+
+const defaultSecondaryCtaHref = latestIssueTitles[0] ? paperHref(latestIssueTitles[0]) : "";
+const hasSecondaryCtaOverride = Boolean(
+  latestIssueEditable.secondaryCta?.label?.trim() || latestIssueEditable.secondaryCta?.href?.trim()
+);
+const latestIssueSecondaryCta = hasSecondaryCtaOverride
+  ? {
+      label: latestIssueEditable.secondaryCta?.label?.trim() || "Read Featured Paper",
+      href: toDisplayHref(latestIssueEditable.secondaryCta?.href, defaultSecondaryCtaHref || "/issues/"),
+    }
+  : defaultSecondaryCtaHref
+    ? { label: "Read Featured Paper", href: defaultSecondaryCtaHref }
+    : null;
+
+const hasLatestIssueOverride = Boolean(
+  latestIssueEditable.title?.trim() ||
+    latestIssueEditable.href?.trim() ||
+    latestIssueEditable.metaText?.trim() ||
+    latestIssueEditable.emptyStateText?.trim() ||
+    latestIssueEditable.primaryCta?.label?.trim() ||
+    latestIssueEditable.primaryCta?.href?.trim() ||
+    latestIssueEditable.secondaryCta?.label?.trim() ||
+    latestIssueEditable.secondaryCta?.href?.trim() ||
+    editableFeaturedItems.length > 0
+);
+
+const showLatestIssueCard = Boolean(latestIssue || hasLatestIssueOverride);
+
+const newsEyebrow = newsAndEventsEditable.eyebrow?.trim() || "Updates";
+const newsHeading = newsAndEventsEditable.title?.trim() || "News and Events";
+const newsItems = ((newsAndEventsEditable.items ?? []).length > 0 ? newsAndEventsEditable.items ?? [] : NEWS_EVENTS)
+  .map((item) => item.trim())
+  .filter((item) => item.length > 0);
+const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News and event updates will be posted here.";
 ---
 
-<BaseLayout title="UNLV ECON 495 Journal" bodyClass="page-home">
+<BaseLayout title="UNLV Undergraduate Economics Working Paper Series" bodyClass="page-home">
   <section
     class="hero-banner home-hero home-hero--modern full-bleed"
-    style={`--hero-image: url('${heroImage}'); --hero-focus-x: 56%; --hero-focus-y: 28%; --hero-panel-top: clamp(24px, 4vh, 76px); --hero-panel-width: 620px;`}
+    style={`--hero-image: url('${heroImage}'); --hero-focus-x: 56%; --hero-focus-y: 28%; --hero-panel-top: clamp(12px, 2.2vh, 42px); --hero-panel-width: 980px;`}
   >
     <div class="hero-content home-hero-content">
       <div class="hero-panel">
-        <p class="hero-kicker">Undergraduate Economics Working Paper Series</p>
-        <h1>UNLV ECON 495 Journal</h1>
+        <p class="hero-kicker">UNLV Department of Economics</p>
+        <h1>UNLV Undergraduate Economics Working Paper Series</h1>
         <p class="hero-subtitle">
-          A working paper series of undergraduate capstone research from UNLV Economics, published by semester issue.
+          Official archive for undergraduate economics working papers at UNLV.
+          <br />
+          Published by semester issue.
         </p>
         <div class="hero-actions">
           <a class="btn btn-home-primary" href={withBase("/issues/")}>Browse Issues</a>
@@ -54,35 +141,64 @@ const heroImage = withBase("/assets/images/lee-business-school.jpg");
       <a class="link-inline" href={withBase("/issues/")}>View all issues</a>
     </div>
 
-    {latestIssue ? (
-      <article class="card home-surface home-latest-card">
+    {showLatestIssueCard ? (
+      <article class="card home-surface home-latest-card" data-motion="gsap">
         <header class="home-latest-head">
-          <h3><a href={withBase(`/issues/${latestIssue.slug}/`)}>{latestIssue.label}</a></h3>
-          <p class="home-issue-meta">{latestIssue.papers.length} papers</p>
+          <h3><a href={latestIssueHref}>{latestIssueTitle}</a></h3>
+          {latestIssueMeta ? <p class="home-issue-meta">{latestIssueMeta}</p> : null}
         </header>
 
         <ol class="home-featured-list">
-          {latestIssueTitles.length > 0 ? (
-            latestIssueTitles.map((paper) => (
+          {featuredItems.length > 0 ? (
+            featuredItems.map((item) => (
               <li>
-                <a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a>
+                {item.href ? <a href={item.href}>{item.label}</a> : item.label}
               </li>
             ))
           ) : (
-            <li class="muted">No papers posted in this issue yet.</li>
+            <li class="muted">{latestIssueEmptyStateText}</li>
           )}
         </ol>
 
         <div class="card-actions">
-          <a class="btn btn-home-primary" href={withBase(`/issues/${latestIssue.slug}/`)}>Browse Issue</a>
-          {latestIssueTitles[0] ? <a class="btn btn-home-secondary" href={paperHref(latestIssueTitles[0])}>Read Featured Paper</a> : null}
+          {latestIssuePrimaryCta.label ? (
+            <a class="btn btn-home-primary" href={latestIssuePrimaryCta.href}>
+              {latestIssuePrimaryCta.label}
+            </a>
+          ) : null}
+          {latestIssueSecondaryCta?.label ? (
+            <a class="btn btn-home-secondary" href={latestIssueSecondaryCta.href}>
+              {latestIssueSecondaryCta.label}
+            </a>
+          ) : null}
         </div>
       </article>
     ) : (
-      <article class="card home-surface">
+      <article class="card home-surface" data-motion="gsap">
         <p class="muted">No issues have been published yet.</p>
       </article>
     )}
+  </section>
+
+  <section class="section home-section" aria-labelledby="news-events-title">
+    <div class="section-head home-section-head">
+      <div>
+        <p class="eyebrow">{newsEyebrow}</p>
+        <h2 id="news-events-title">{newsHeading}</h2>
+      </div>
+    </div>
+
+    <article class="card home-surface" data-motion="gsap">
+      {newsItems.length > 0 ? (
+        <ul class="home-about-bullets">
+          {newsItems.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      ) : (
+        <p class="muted">{newsEmptyStateText}</p>
+      )}
+    </article>
   </section>
 
   <section class="section home-section" aria-labelledby="browse-category-title">
@@ -93,7 +209,7 @@ const heroImage = withBase("/assets/images/lee-business-school.jpg");
       </div>
     </div>
 
-    <article class="card home-surface">
+    <article class="card home-surface" data-motion="gsap">
       <div class="home-category-chips" role="list" aria-label="Top categories">
         {categoryChips.map((category) => (
           <a class="home-category-chip" role="listitem" href={withBase(`/categories/${category.slug}/`)}>
@@ -108,16 +224,16 @@ const heroImage = withBase("/assets/images/lee-business-school.jpg");
     <div class="section-head home-section-head">
       <div>
         <p class="eyebrow">About</p>
-        <h2 id="about-bullets-title">What This Proceedings Is</h2>
+        <h2 id="about-bullets-title">What This Series Is</h2>
       </div>
       <a class="link-inline" href={withBase("/about/")}>Read full about</a>
     </div>
 
-    <article class="card home-surface">
+    <article class="card home-surface" data-motion="gsap">
       <ul class="home-about-bullets">
-        <li>Open-access archive of ECON 495 capstone research, organized by semester issue.</li>
+        <li>Open-access archive of UNLV Department of Economics working papers, organized by semester issue.</li>
         <li>Working paper series for discovery and citation; papers are not peer-reviewed journal articles.</li>
-        <li>Student authors retain visible, citable research records with downloadable PDFs.</li>
+        <li>Authors retain visible, citable research records with downloadable PDFs.</li>
       </ul>
     </article>
   </section>

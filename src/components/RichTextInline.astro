@@ -1,0 +1,24 @@
+---
+import type { RichTextSegment } from "../data/rich-text.types";
+
+interface Props {
+  segments: RichTextSegment[];
+}
+
+const { segments = [] } = Astro.props;
+---
+
+<span>
+  {segments.map((segment) => {
+    if (segment.tone === "strong") {
+      return <strong>{segment.text}</strong>;
+    }
+    if (segment.tone === "em") {
+      return <em>{segment.text}</em>;
+    }
+    if (segment.tone === "code") {
+      return <code>{segment.text}</code>;
+    }
+    return segment.text;
+  })}
+</span>

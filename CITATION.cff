@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+title: "UNLV Undergraduate Economics Working Paper Series Site"
+message: "If you use this software, please cite it using this metadata."
+type: software
+authors:
+  - family-names: "Farol"
+    given-names: "Mark Jayson"
+    roles:
+      - author
+      - maintainer
+license: "SEE LICENSE FILE"
+repository-code: "https://github.com/markjayson13/econ495journal_site"
+url: "https://github.com/markjayson13/econ495journal_site"
+date-released: "2026-03-06"
+abstract: "Public-facing website for the UNLV Undergraduate Economics Working Paper Series."

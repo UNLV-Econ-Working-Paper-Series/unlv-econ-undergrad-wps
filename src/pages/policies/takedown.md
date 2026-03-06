@@ -5,7 +5,7 @@ lead: Rights and privacy concerns are reviewed through a documented request and 
 bodyClass: page-policy-takedown
 ---
 
-The Proceedings is an educational archive. Rights, privacy, and policy concerns are reviewed seriously.
+The Series is an educational archive. Rights, privacy, and policy concerns are reviewed seriously.
 
 ## Reasons we may restrict access or remove content
 
@@ -19,7 +19,7 @@ We may restrict access, remove a PDF, or withdraw a paper page for reasons inclu
 
 ## How to submit a request
 
-Send an email to the journal team listed on the [Contact page](../../contact/) with:
+Send an email to the series team listed on the [Contact page](../../contact/) with:
 
 - paper title and URL
 - specific content at issue (page numbers, figure, excerpt)
@@ -47,4 +47,4 @@ Temporary restriction may occur while review is ongoing.
 
 ## Appeals
 
-If a requester or author disagrees with the outcome, the matter may be escalated through the appropriate academic administrative channel when the Proceedings is operated by UNLV.
+If a requester or author disagrees with the outcome, the matter may be escalated through the appropriate academic administrative channel when the Series is operated by UNLV.

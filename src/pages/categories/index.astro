@@ -14,7 +14,7 @@ const categories = categoryGroups.map((group) => ({
 }));
 ---
 
-<BaseLayout title="Categories | UNLV ECON 495 Journal" bodyClass="section-categories page-categories page-categories-modern">
+<BaseLayout title="Categories | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-categories page-categories page-categories-modern">
   <PageBanner title="Categories" subtitle="Choose a category to view all working papers in that topic area." />
 
   <section class="content-section categories-shell categories-shell-modern">
@@ -37,6 +37,7 @@ const categories = categoryGroups.map((group) => ({
       {categories.map((category) => (
         <div
           class="cat-grid-item"
+          data-motion="gsap"
           data-category-item
           data-title={category.title.toLowerCase()}
           data-count={String(category.count)}

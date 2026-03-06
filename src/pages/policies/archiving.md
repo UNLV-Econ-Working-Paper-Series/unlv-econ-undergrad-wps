@@ -1,11 +1,11 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Archiving & Preservation
-lead: The Proceedings preserves undergraduate scholarship with stable URLs and continuity practices.
+lead: The Series preserves department-affiliated economics scholarship with stable URLs and continuity practices.
 bodyClass: page-policy-archiving
 ---
 
-The Proceedings aims to preserve undergraduate scholarship in a stable, citable form.
+The Series aims to preserve department-affiliated economics scholarship in a stable, citable form.
 
 ## Stable access
 
@@ -26,4 +26,4 @@ When a paper is updated or withdrawn, a public record page (tombstone page) may 
 
 ## Repository and indexing (optional)
 
-If the Proceedings is operated by UNLV, preservation and indexing may be supported through university library systems or approved archiving services.
+If repository mirroring or additional indexing is enabled in the future, the Series may also distribute metadata or copies through approved university or scholarly platforms that support preservation and discovery.

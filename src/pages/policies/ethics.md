@@ -1,11 +1,11 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Publication Ethics & Integrity
-lead: The Proceedings promotes responsible scholarship, citation discipline, and good-faith correction.
+lead: The Series promotes responsible scholarship, citation discipline, and good-faith correction.
 bodyClass: page-policy-ethics
 ---
 
-The UNLV ECON 495 Journal (Capstone Proceedings) supports responsible scholarship and academic integrity.
+The UNLV Undergraduate Economics Working Paper Series supports responsible scholarship and academic integrity.
 
 ## Academic integrity
 
@@ -17,7 +17,7 @@ Authors are expected to:
 
 ## Plagiarism and misconduct
 
-If credible concerns arise, the Proceedings may:
+If credible concerns arise, the Series may:
 
 - request clarification or supporting materials from the author(s)
 - postpone posting or restrict access while concerns are reviewed
@@ -37,4 +37,4 @@ If AI tools materially assisted in drafting, translation, coding, or analysis, a
 
 ## Corrections and withdrawal
 
-The Proceedings supports good-faith corrections and responsible updating. See [Corrections, Updates & Versioning](../corrections-versioning/) and [Takedown / Rights & Privacy Requests](../takedown/).
+The Series supports good-faith corrections and responsible updating. See [Corrections, Updates & Versioning](../corrections-versioning/) and [Takedown / Rights & Privacy Requests](../takedown/).

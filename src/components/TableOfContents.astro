@@ -12,7 +12,7 @@ interface Props {
 const { title = "On this page", items = [] } = Astro.props;
 ---
 
-<nav class="toc" data-toc data-reveal="auto" data-reveal-delay="1" aria-label={title}>
+<nav class="toc" data-toc data-reveal="auto" data-reveal-delay="1" data-motion="gsap" aria-label={title}>
   <h2 class="toc__title">{title}</h2>
 
   <ol class="toc__list">
