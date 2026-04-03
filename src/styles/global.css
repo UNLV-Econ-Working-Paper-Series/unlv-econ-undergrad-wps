@@ -4275,12 +4275,12 @@ a:hover {
 
 .page-home .hero-panel {
   display: inline-block;
-  padding: clamp(0.95rem, 2.1vw, 1.2rem) clamp(0.95rem, 2.1vw, 1.2rem) clamp(1rem, 2.2vw, 1.25rem);
+  padding: clamp(0.82rem, 1.8vw, 1.1rem) clamp(1rem, 2.2vw, 1.35rem) clamp(0.9rem, 1.9vw, 1.12rem);
   border-radius: 16px;
-  background: rgba(177, 2, 2, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  background: linear-gradient(135deg, rgba(120, 16, 26, 0.36) 0%, rgba(169, 46, 36, 0.26) 100%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
 }
 
 .page-home .hero-kicker {
@@ -4289,11 +4289,14 @@ a:hover {
 
 .page-home .hero-subtitle {
   margin-top: 0.68rem;
-  max-width: 60ch;
+  max-width: 48ch;
+  font-size: clamp(0.98rem, 1.3vw, 1.14rem);
+  line-height: 1.46;
+  text-wrap: balance;
 }
 
 .page-home .hero-actions {
-  margin-top: 1rem;
+  margin-top: 0.82rem;
 }
 
 .page-home .hero-credit {
@@ -6415,9 +6418,9 @@ body:not(.page-home) .page-banner__inner {
 
 /* Home hero title: balance the site name cleanly */
 .page-home .home-hero h1 {
-  max-width: 12ch;
-  font-size: clamp(2.1rem, 4.7vw, 4.1rem);
-  line-height: 1.02;
+  max-width: 15ch;
+  font-size: clamp(2rem, 4vw, 3.75rem);
+  line-height: 0.98;
   text-wrap: balance;
 }
 
