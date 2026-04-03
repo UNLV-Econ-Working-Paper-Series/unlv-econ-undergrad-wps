@@ -98,7 +98,12 @@ const currentGraduateAssistants = sortedProfiles.filter(
                 {editorialTeam.map((person) => (
                   <article class="about-person-card">
                     {person.headshot ? (
-                      <img class="about-person-thumb" src={withBase(person.headshot)} alt={person.name} />
+                      <img
+                        class="about-person-thumb"
+                        src={withBase(person.headshot)}
+                        alt={person.name}
+                        title={person.photoSource}
+                      />
                     ) : null}
                     <div class="about-person-copy">
                       <p class="about-role">{person.displayRole}</p>
@@ -140,7 +145,12 @@ const currentGraduateAssistants = sortedProfiles.filter(
                 {currentGraduateAssistants.map((assistant) => (
                   <article class="about-person-card">
                     {assistant.headshot ? (
-                      <img class="about-person-thumb" src={withBase(assistant.headshot)} alt={assistant.name} />
+                      <img
+                        class="about-person-thumb"
+                        src={withBase(assistant.headshot)}
+                        alt={assistant.name}
+                        title={assistant.photoSource}
+                      />
                     ) : null}
                     <div class="about-person-copy">
                       <p class="about-role">{assistant.displayRole}</p>

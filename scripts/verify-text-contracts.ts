@@ -12,7 +12,7 @@ const pageContracts: PageContract[] = [
     file: "dist/index.html",
     texts: [
       "UNLV Undergraduate Economics Working Paper Series",
-      "Official archive for undergraduate economics working papers at UNLV",
+      "Archive for undergraduate economics working papers at UNLV",
       "Published by semester issue",
       "Latest Issue",
       "Latest Semester Release",

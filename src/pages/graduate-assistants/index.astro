@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import PageBanner from "../../components/PageBanner.astro";
+import { PUBLIC_PROFILES } from "../../data/public-profiles";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { withBase } from "../../lib/urls";
 
@@ -17,6 +18,7 @@ for (const assistant of assistants) {
 }
 
 const termGroups = Array.from(termMap.entries());
+const assistantProfiles = new Map(PUBLIC_PROFILES.map((profile) => [profile.profileHref, profile]));
 ---
 
 <BaseLayout title="Graduate Assistants | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-about page-ga-index">
@@ -39,7 +41,13 @@ const termGroups = Array.from(termMap.entries());
             {items.map((assistant) => (
               <a class="ga-card" href={withBase(`/graduate-assistants/${assistant.slug}/`)}>
                 {assistant.data.headshot ? (
-                  <img class="ga-thumb" src={withBase(assistant.data.headshot)} alt={assistant.data.name} loading="lazy" />
+                  <img
+                    class="ga-thumb"
+                    src={withBase(assistant.data.headshot)}
+                    alt={assistant.data.name}
+                    loading="lazy"
+                    title={assistantProfiles.get(`/graduate-assistants/${assistant.slug}/`)?.photoSource}
+                  />
                 ) : null}
                 <p class="ga-kicker">{assistant.data.role}</p>
                 <h3>{assistant.data.name}</h3>

@@ -16,6 +16,7 @@ export interface PublicProfile {
   profileBio?: string[];
   sections: PublicProfileSection[];
   headshot?: string;
+  photoSource?: string;
   profileHref?: string;
   links?: PublicProfileLink[];
   current?: boolean;

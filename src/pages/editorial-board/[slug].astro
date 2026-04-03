@@ -25,7 +25,13 @@ const { profile } = Astro.props as { profile: PublicProfile };
 
   <section class="content-section profile-shell">
     {profile.headshot ? (
-      <img class="profile-thumb" src={withBase(profile.headshot)} alt={profile.name} loading="lazy" />
+      <img
+        class="profile-thumb"
+        src={withBase(profile.headshot)}
+        alt={profile.name}
+        loading="lazy"
+        title={profile.photoSource}
+      />
     ) : null}
 
     <article class="profile-bio">

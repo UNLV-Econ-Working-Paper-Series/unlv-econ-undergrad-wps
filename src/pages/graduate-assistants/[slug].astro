@@ -26,7 +26,13 @@ const assistantProfile = PUBLIC_PROFILES.find(
 
   <section class="content-section profile-shell">
     {assistant.data.headshot ? (
-      <img class="profile-thumb" src={withBase(assistant.data.headshot)} alt={assistant.data.name} loading="lazy" />
+      <img
+        class="profile-thumb"
+        src={withBase(assistant.data.headshot)}
+        alt={assistant.data.name}
+        loading="lazy"
+        title={assistantProfile?.photoSource}
+      />
     ) : null}
 
     <article class="profile-bio">

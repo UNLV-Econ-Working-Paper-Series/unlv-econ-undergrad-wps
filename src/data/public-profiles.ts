@@ -16,6 +16,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
     ],
     sections: ["editorial_team"],
     headshot: "/assets/images/assane.jpg",
+    photoSource: "Photo source: UNLV profile",
     profileHref: "/editorial-board/djeto-assane/",
     links: [
       { type: "website", href: "https://assane.faculty.unlv.edu/" },
@@ -37,6 +38,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
     ],
     sections: ["editorial_team"],
     headshot: "/assets/images/eric-chiang.jpeg",
+    photoSource: "Photo source: UNLV profile",
     profileHref: "/editorial-board/eric-chiang/",
     links: [
       { type: "website", href: "https://www.unlv.edu/people/eric-chiang" },
@@ -59,6 +61,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
     ],
     sections: ["editorial_team"],
     headshot: "/assets/images/mark-jayson.jpg",
+    photoSource: "Photo source: LinkedIn profile",
     profileHref: "/editorial-board/mark-jayson-farol/",
     links: [
       { type: "website", href: "https://markjayson.com" },
@@ -76,6 +79,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
       "UNLV student in the accelerated B.A./M.A. program in Economics and Quantitative Business Economics and Spring 2026 Graduate Assistant for the series",
     sections: ["graduate_assistants"],
     headshot: "/assets/images/brandon-penticoff.jpg",
+    photoSource: "Photo source: LinkedIn profile",
     profileHref: "/graduate-assistants/brandon-penticoff/",
     links: [{ type: "linkedin", href: "https://www.linkedin.com/in/brandon-penticoff-4002252b1/" }],
     current: true,
