@@ -110,12 +110,14 @@ const currentGraduateAssistants = sortedProfiles.filter(
                         )}
                       </h3>
                       <p>{person.summary}</p>
-                      <ProfileLinks links={person.links} className="about-person-links" />
-                      {person.profileHref ? (
-                        <a class="about-read-more" href={withBase(person.profileHref)}>
-                          Read more →
-                        </a>
-                      ) : null}
+                      <div class="about-person-actions">
+                        <ProfileLinks links={person.links} className="about-person-links" />
+                        {person.profileHref ? (
+                          <a class="about-read-more" href={withBase(person.profileHref)}>
+                            Read more →
+                          </a>
+                        ) : null}
+                      </div>
                     </div>
                   </article>
                 ))}
@@ -150,12 +152,14 @@ const currentGraduateAssistants = sortedProfiles.filter(
                         )}
                       </h3>
                       <p>{assistant.summary}</p>
-                      <ProfileLinks links={assistant.links} className="about-person-links" />
-                      {assistant.profileHref ? (
-                        <a class="about-read-more" href={withBase(assistant.profileHref)}>
-                          Read more →
-                        </a>
-                      ) : null}
+                      <div class="about-person-actions">
+                        <ProfileLinks links={assistant.links} className="about-person-links" />
+                        {assistant.profileHref ? (
+                          <a class="about-read-more" href={withBase(assistant.profileHref)}>
+                            Read more →
+                          </a>
+                        ) : null}
+                      </div>
                     </div>
                   </article>
                 ))}
