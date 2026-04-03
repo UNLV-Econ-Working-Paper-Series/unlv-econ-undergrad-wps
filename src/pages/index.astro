@@ -104,21 +104,26 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News
 <BaseLayout title="UNLV Undergraduate Economics Working Paper Series" bodyClass="page-home">
   <section
     class="hero-banner home-hero home-hero--modern full-bleed"
-    style={`--hero-image: url('${heroImage}'); --hero-focus-x: 57%; --hero-focus-y: 33%; --hero-panel-top: clamp(10px, 1.8vh, 28px); --hero-panel-width: 1220px;`}
+    style={`--hero-image: url('${heroImage}'); --hero-focus-x: 58%; --hero-focus-y: 10%; --hero-panel-top: clamp(10px, 2vh, 25px); --hero-panel-width: 1440px;`}
   >
     <div class="hero-content home-hero-content">
-      <div class="hero-panel">
-        <p class="hero-kicker">UNLV Department of Economics</p>
-        <h1>UNLV Undergraduate Economics Working Paper Series</h1>
-        <p class="hero-subtitle">
-          Archive for undergraduate economics working papers at UNLV
-          Published by semester issue
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-home-primary" href={withBase("/issues/")}>Browse Issues</a>
-          <a class="btn btn-home-secondary" href={withBase(hasPublishedPapers ? "/papers/" : "/issues/archive/")}>
-            {hasPublishedPapers ? "Search Papers" : "Browse Archive"}
-          </a>
+      <div class="hero-panel-shell">
+        <div class="hero-panel">
+          <p class="hero-kicker">UNLV Department of Economics</p>
+          <h1>
+            <span class="hero-title-line">UNLV Undergraduate Economics</span>
+            <span class="hero-title-line">Working Paper Series</span>
+          </h1>
+          <p class="hero-subtitle">
+            <span class="hero-subtitle-line">Archive for undergraduate economics working papers at UNLV</span>
+            <span class="hero-subtitle-line">Published by semester issue</span>
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-home-primary" href={withBase("/issues/")}>Browse Issues</a>
+            <a class="btn btn-home-secondary" href={withBase(hasPublishedPapers ? "/papers/" : "/issues/archive/")}>
+              {hasPublishedPapers ? "Search Papers" : "Browse Archive"}
+            </a>
+          </div>
         </div>
       </div>
     </div>

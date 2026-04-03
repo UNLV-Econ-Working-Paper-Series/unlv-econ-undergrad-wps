@@ -3298,13 +3298,12 @@ a:hover {
 
 .page-home .hero-banner.home-hero--modern {
   position: relative;
-  min-height: clamp(540px, 67vw, 760px);
-  display: flex;
-  align-items: flex-end;
+  min-height: clamp(560px, 72vh, 820px);
+  display: block;
   color: #ffffff;
   background-image: var(--hero-image);
   background-size: cover;
-  background-position: center;
+  background-position: var(--hero-focus-x, 50%) var(--hero-focus-y, 42%);
   box-shadow: none;
 }
 
@@ -3312,25 +3311,48 @@ a:hover {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(120deg, rgba(10, 15, 24, 0.76) 0%, rgba(16, 23, 34, 0.52) 48%, rgba(14, 22, 33, 0.34) 100%);
+  background: linear-gradient(
+    92deg,
+    rgba(10, 10, 10, 0.58) 0%,
+    rgba(10, 10, 10, 0.27) 42%,
+    rgba(10, 10, 10, 0.08) 70%,
+    rgba(10, 10, 10, 0) 100%
+  );
 }
 
 .page-home .home-hero-content {
-  position: relative;
+  position: absolute;
   z-index: 1;
-  width: min(100%, var(--container-max));
-  margin: 0 auto;
-  padding:
-    clamp(3.2rem, 7vw, 5.6rem)
-    clamp(1.2rem, 3.6vw, 3rem)
-    clamp(2.5rem, 5vw, 4.2rem);
+  left: clamp(18px, 4vw, 56px);
+  top: var(--hero-panel-top, clamp(72px, 10vh, 140px));
+  width: auto;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.page-home .hero-panel-shell {
+  display: inline-block;
+  width: max-content;
+  max-width: min(calc(100vw - clamp(42px, 7vw, 140px)), var(--hero-panel-width, 860px));
+}
+
+.page-home .hero-panel {
+  display: block;
+  width: 100%;
+  max-width: none;
+  padding: clamp(0.72rem, 1.5vw, 0.96rem) clamp(1rem, 2vw, 1.3rem) clamp(0.78rem, 1.6vw, 1rem);
+  border-radius: 0;
+  background: linear-gradient(135deg, rgba(120, 16, 26, 0.28) 0%, rgba(169, 46, 36, 0.18) 100%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
 .page-home .hero-kicker {
-  margin: 0 0 0.52rem;
+  margin: 0 0 0.4rem;
   color: rgba(255, 255, 255, 0.96);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -3338,35 +3360,44 @@ a:hover {
 
 .page-home .home-hero h1 {
   margin: 0;
+  max-width: none;
   color: #ffffff;
   font-family: "Roboto Slab", var(--font-serif);
-  font-size: clamp(2.6rem, 6vw, 4.8rem);
+  font-size: clamp(3rem, 5vw, 5rem);
   font-weight: 700;
   letter-spacing: 0.01em;
-  line-height: 1.03;
+  line-height: 0.94;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
 .page-home .hero-subtitle {
-  margin-top: 1rem;
-  max-width: 66ch;
+  margin-top: 2rem;
+  max-width: none;
   color: rgba(255, 255, 255, 0.94);
-  font-size: clamp(1.05rem, 1.6vw, 1.32rem);
+  font-size: clamp(0.92rem, 1.15vw, 1.04rem);
   font-weight: 400;
-  line-height: 1.62;
+  line-height: 1.38;
+}
+
+.page-home .hero-title-line,
+.page-home .hero-subtitle-line {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  white-space: nowrap;
 }
 
 .page-home .hero-actions {
-  margin-top: 1.4rem;
-  gap: 0.75rem;
+  margin-top: 0.72rem;
+  gap: 0.62rem;
 }
 
 .page-home .btn-home-primary,
 .page-home .btn-home-secondary {
   border-radius: 13px;
-  min-height: 2.85rem;
-  padding: 0.58rem 1.08rem;
-  font-size: 0.95rem;
+  min-height: 2.65rem;
+  padding: 0.52rem 0.96rem;
+  font-size: 0.92rem;
   font-weight: 600;
   transition:
     background-color 180ms ease,
@@ -3413,7 +3444,7 @@ a:hover {
   right: clamp(0.75rem, 1.8vw, 1.1rem);
   bottom: clamp(0.55rem, 1.3vw, 0.9rem);
   z-index: 1;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.36);
   color: rgba(255, 255, 255, 0.95);
   font-size: 0.73rem;
 }
@@ -3428,6 +3459,7 @@ a:hover {
 
 .page-home .home-section-head {
   margin-bottom: 1rem;
+  
 }
 
 .page-home .home-section-head .eyebrow {
@@ -3538,6 +3570,20 @@ a:hover {
     font-size: 0.78rem;
     padding: 0.45rem 0.58rem;
   }
+
+  .page-home .home-hero-content {
+    left: clamp(14px, 3vw, 22px);
+    top: clamp(84px, 12vh, 120px);
+  }
+
+  .page-home .hero-panel-shell {
+    max-width: min(100% - 1.5rem, 690px);
+  }
+
+  .page-home .hero-title-line,
+  .page-home .hero-subtitle-line {
+    white-space: normal;
+  }
 }
 
 @media (max-width: 760px) {
@@ -3566,6 +3612,35 @@ a:hover {
   .page-home .btn-home-secondary {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-banner__inner {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .page-home .hero-banner.home-hero--modern {
+    min-height: clamp(500px, 82vh, 680px);
+    background-position: var(--hero-focus-x, 50%) calc(var(--hero-focus-y, 28%) + 10%);
+  }
+
+  .page-home .home-hero-content {
+    left: 0.9rem;
+    right: 0.9rem;
+    top: 96px;
+    width: auto;
+  }
+
+  .page-home .hero-panel-shell {
+    display: block;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .page-home .hero-panel {
+    padding: 0.9rem;
   }
 }
 
@@ -4246,93 +4321,6 @@ a:hover {
   font-size: 1rem;
   line-height: 1.28;
   color: #111319;
-}
-
-.page-home .hero-banner.home-hero--modern {
-  display: block;
-  min-height: clamp(560px, 72vh, 820px);
-  background-position: center 42%;
-}
-
-.page-home .hero-banner.home-hero--modern::before {
-  background: linear-gradient(
-    92deg,
-    rgba(10, 10, 10, 0.58) 0%,
-    rgba(10, 10, 10, 0.27) 42%,
-    rgba(10, 10, 10, 0.08) 70%,
-    rgba(10, 10, 10, 0) 100%
-  );
-}
-
-.page-home .home-hero-content {
-  position: absolute;
-  left: clamp(18px, 4vw, 56px);
-  top: clamp(92px, 14vh, 200px);
-  width: min(100% - 2rem, 760px);
-  margin: 0;
-  padding: 0;
-}
-
-.page-home .hero-panel {
-  display: inline-block;
-  padding: clamp(0.82rem, 1.8vw, 1.1rem) clamp(1rem, 2.2vw, 1.35rem) clamp(0.9rem, 1.9vw, 1.12rem);
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(120, 16, 26, 0.36) 0%, rgba(169, 46, 36, 0.26) 100%);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
-}
-
-.page-home .hero-kicker {
-  margin: 0 0 0.4rem;
-}
-
-.page-home .hero-subtitle {
-  margin-top: 0.68rem;
-  max-width: 48ch;
-  font-size: clamp(0.98rem, 1.3vw, 1.14rem);
-  line-height: 1.46;
-  text-wrap: balance;
-}
-
-.page-home .hero-actions {
-  margin-top: 0.82rem;
-}
-
-.page-home .hero-credit {
-  background: rgba(0, 0, 0, 0.36);
-}
-
-@media (max-width: 900px) {
-  .page-home .home-hero-content {
-    left: clamp(14px, 3vw, 22px);
-    top: clamp(84px, 12vh, 120px);
-    width: min(100% - 1.5rem, 690px);
-  }
-}
-
-@media (max-width: 640px) {
-  .page-banner__inner {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .page-home .hero-banner.home-hero--modern {
-    min-height: clamp(500px, 82vh, 680px);
-    background-position: center 38%;
-  }
-
-  .page-home .home-hero-content {
-    left: 0.9rem;
-    right: 0.9rem;
-    width: auto;
-    top: 96px;
-  }
-
-  .page-home .hero-panel {
-    display: block;
-    padding: 0.9rem;
-  }
 }
 
 /* ===== About Page Information Architecture Pass ===== */
@@ -6094,23 +6082,6 @@ body:not(.page-home) .page-banner__inner {
 
 
 /* =========================================================
-   Home hero: image focus + panel placement (uncover signage)
-   ========================================================= */
-
-.page-home .hero-banner.home-hero--modern {
-  background-position: var(--hero-focus-x, 50%) var(--hero-focus-y, 42%);
-}
-
-.page-home .home-hero-content {
-  top: var(--hero-panel-top, clamp(72px, 10vh, 140px));
-  width: min(100% - 1.8rem, var(--hero-panel-width, 760px));
-}
-
-.page-home .hero-panel {
-  max-width: var(--hero-panel-width, 760px);
-}
-
-/* =========================================================
    TOC: left rail + subtle animation (NBER-ish)
    ========================================================= */
 
@@ -6268,23 +6239,6 @@ body:not(.page-home) .page-banner__inner {
 }
 
 /* =========================================================
-   Home hero: image focus + panel placement
-   ========================================================= */
-
-.page-home .hero-banner.home-hero--modern {
-  background-position: var(--hero-focus-x, 50%) var(--hero-focus-y, 42%);
-}
-
-.page-home .home-hero-content {
-  top: var(--hero-panel-top, clamp(72px, 10vh, 140px));
-  width: min(100% - 1.8rem, var(--hero-panel-width, 760px));
-}
-
-.page-home .hero-panel {
-  max-width: var(--hero-panel-width, 760px);
-}
-
-/* =========================================================
    TOC FINAL: left rail, stable layout, light animation
    ========================================================= */
 
@@ -6407,21 +6361,6 @@ body:not(.page-home) .page-banner__inner {
   .page-with-toc__toc{
     padding-top: 0.75rem;
   }
-}
-
-/* Home hero: tweak framing on small screens */
-@media (max-width: 640px){
-  .page-home .hero-banner.home-hero--modern{
-    background-position: var(--hero-focus-x, 50%) calc(var(--hero-focus-y, 28%) + 10%);
-  }
-}
-
-/* Home hero title: balance the site name cleanly */
-.page-home .home-hero h1 {
-  max-width: 15ch;
-  font-size: clamp(2rem, 4vw, 3.75rem);
-  line-height: 0.98;
-  text-wrap: balance;
 }
 
 /* =========================================================
