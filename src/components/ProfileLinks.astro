@@ -1,0 +1,72 @@
+---
+import type { PublicProfileLink } from "../data/public-profiles.types";
+
+const { links = [], className } = Astro.props as {
+  links?: PublicProfileLink[];
+  className?: string;
+};
+
+const linkLabels: Record<PublicProfileLink["type"], string> = {
+  website: "Website",
+  linkedin: "LinkedIn",
+  scholar: "Google Scholar",
+  researchgate: "ResearchGate",
+};
+---
+
+{
+  links.length > 0 ? (
+    <ul class:list={["profile-links", className]} aria-label="Profile links">
+      {links.map((link) => {
+        const label = link.label ?? linkLabels[link.type];
+        return (
+          <li>
+            <a
+              class="profile-links__link"
+              data-profile-link-type={link.type}
+              href={link.href}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={label}
+              title={label}
+            >
+              {link.type === "website" ? (
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9-9-4.03-9-9 4.03-9 9-9Zm0 2c-1.4 0-2.69.76-3.65 2.04h7.3C14.69 5.76 13.4 5 12 5Zm-4.73 4A7 7 0 0 0 5.1 11h3.05c.1-.69.27-1.36.5-2Zm3.04 0c-.27.62-.45 1.29-.56 2h4.5c-.11-.71-.29-1.38-.56-2Zm5.42 0c.23.64.4 1.31.5 2h3.05a7 7 0 0 0-2.15-2Zm-7.58 4H5.1a7 7 0 0 0 2.17 2h1.38c-.23-.64-.4-1.31-.5-2Zm1.6 0c.11.71.29 1.38.56 2h3.38c.27-.62.45-1.29.56-2Zm6.1 0c-.1.69-.27 1.36-.5 2h1.38a7 7 0 0 0 2.17-2ZM10.35 17.96A4.94 4.94 0 0 0 12 19c.64 0 1.2-.12 1.65-.34.59-.29 1.14-.72 1.65-1.3Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              ) : null}
+              {link.type === "linkedin" ? (
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M6.72 8.34a1.62 1.62 0 1 1 0-3.24 1.62 1.62 0 0 1 0 3.24ZM5.3 18.7h2.84V9.72H5.3Zm4.63 0h2.83v-4.45c0-1.18.22-2.32 1.68-2.32 1.43 0 1.45 1.34 1.45 2.4v4.37h2.84v-4.94c0-2.43-.52-4.3-3.36-4.3-1.36 0-2.28.75-2.66 1.47h-.04v-1.21H9.93c.04.78 0 8.98 0 8.98Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              ) : null}
+              {link.type === "scholar" ? (
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="m12 4 9 5-9 5-9-5 9-5Zm-5.75 7.25L12 14.44l5.75-3.19V15c0 .54-.35 1.03-.88 1.21l-4.37 1.54a1.5 1.5 0 0 1-1 0l-4.37-1.54A1.28 1.28 0 0 1 6.25 15Zm2.25 5.53 2.67.94c.54.19 1.13.19 1.67 0l2.66-.94V19.5c0 .4-.25.75-.62.88l-2.9 1.02a1.5 1.5 0 0 1-.96 0l-2.9-1.02a.93.93 0 0 1-.62-.88Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              ) : null}
+              {link.type === "researchgate" ? (
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M5 4h7.27c3.09 0 4.96 1.64 4.96 4.45 0 2.08-1 3.42-2.84 3.98L18 20h-3.2l-3.24-7.02H8V20H5Zm3 2.5v4.08h3.59c1.68 0 2.63-.7 2.63-2.03 0-1.36-.95-2.05-2.63-2.05Zm8.44 8.48h2.56v.79c0 1.14.72 1.82 1.96 1.82.77 0 1.36-.2 1.87-.48v2.08c-.58.3-1.38.51-2.37.51-2.53 0-4.02-1.48-4.02-3.91Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              ) : null}
+              <span class="sr-only">{label}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  ) : null
+}

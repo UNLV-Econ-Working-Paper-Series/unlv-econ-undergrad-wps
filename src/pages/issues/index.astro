@@ -6,7 +6,7 @@ import { withBase } from "../../lib/urls";
 
 const issues = await getIssueGroups();
 const issuesIntro =
-  "Browse issues by semester. Each issue groups the papers posted for that term.";
+  "Browse issues by semester. Each issue groups the papers posted for that term";
 
 const issueCategoryMap = new Map(
   issues.map((issue) => [
@@ -75,7 +75,7 @@ const latestIssue = issues[0] ?? null;
     <section class="issues-cards" aria-label="Issue cards">
       {issues.length === 0 ? (
         <article class="card empty-state-card">
-          <p class="muted">No issues have been published yet.</p>
+          <p class="muted">No issues have been published yet</p>
         </article>
       ) : (
         issues.map((issue) => {
@@ -128,7 +128,7 @@ const latestIssue = issues[0] ?? null;
         })
       )}
     </section>
-    <p id="issues-empty" class="muted small" hidden>No issues match those filters.</p>
+    <p id="issues-empty" class="muted small" hidden>No issues match those filters</p>
 
     <section class="issues-archive-container">
       <a class="issue-archive-card issue-archive-link card" data-motion="gsap" href={withBase("/issues/archive/")}>

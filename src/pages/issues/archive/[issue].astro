@@ -17,7 +17,7 @@ const availablePapers = issue.papers.filter((paper) => paper.fileAvailable);
   <PageBanner
     kicker="Archive Issue"
     title={issue.label}
-    subtitle={`Archive issue with ${issue.papers.length} working paper(s) and ${issue.categories.length} topic categories.`}
+    subtitle={`Archive issue with ${issue.papers.length} working paper(s) and ${issue.categories.length} topic categories`}
   />
 
   <section class="content-section">
@@ -50,7 +50,7 @@ const availablePapers = issue.papers.filter((paper) => paper.fileAvailable);
       </div>
 
       {availablePapers.length === 0 ? (
-        <p class="muted small">PDF files for this archive issue are not online yet.</p>
+        <p class="muted small">PDF files for this archive issue are not online yet</p>
       ) : null}
     </article>
 
@@ -63,7 +63,7 @@ const availablePapers = issue.papers.filter((paper) => paper.fileAvailable);
             {paper.fileAvailable ? (
               <a class="btn btn-small btn-primary" href={withBase(paper.file)}>Download PDF</a>
             ) : (
-              <p class="muted small">PDF not currently available online.</p>
+              <p class="muted small">PDF not currently available online</p>
             )}
           </div>
         </article>

@@ -11,7 +11,7 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
 <BaseLayout title="Archive | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-issues page-archive">
   <PageBanner
     title="Archive"
-    subtitle="Archived working papers from the pre-2024 UNLV undergraduate economics series, organized by semester issue."
+    subtitle="Archived working papers from the pre-2024 UNLV undergraduate economics series, organized by semester issue"
   />
 
   <section class="issues-explorer content-section">
@@ -35,7 +35,7 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
     <section class="issues-cards issues-cards--archive" aria-label="Archive issue cards">
       {archiveIssues.length === 0 ? (
         <article class="card empty-state-card">
-          <p class="muted">No archive papers are listed yet.</p>
+          <p class="muted">No archive papers are listed yet</p>
         </article>
       ) : (
         archiveIssues.map((issue) => {
@@ -83,14 +83,14 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
               </div>
 
               {availablePapers.length === 0 ? (
-                <p class="muted small">PDF files for this archive issue are not online yet.</p>
+                <p class="muted small">PDF files for this archive issue are not online yet</p>
               ) : null}
             </article>
           );
         })
       )}
     </section>
-    <p id="archive-empty" class="muted small" hidden>No archive issues match those filters.</p>
+    <p id="archive-empty" class="muted small" hidden>No archive issues match those filters</p>
   </section>
 
   <script is:inline>

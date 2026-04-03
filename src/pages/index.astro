@@ -59,7 +59,7 @@ const defaultLatestIssueHref = latestIssue ? `/issues/${latestIssue.slug}/` : "/
 const latestIssueTitle = latestIssueEditable.title?.trim() || latestIssue?.label || "Latest Issue";
 const latestIssueHref = toDisplayHref(latestIssueEditable.href, defaultLatestIssueHref);
 const latestIssueMeta = latestIssueEditable.metaText?.trim() || (latestIssue ? `${latestIssue.papers.length} papers` : "");
-const latestIssueEmptyStateText = latestIssueEditable.emptyStateText?.trim() || "No papers posted in this issue yet.";
+const latestIssueEmptyStateText = latestIssueEditable.emptyStateText?.trim() || "No papers posted in this issue yet";
 
 const latestIssuePrimaryCta = {
   label: latestIssueEditable.primaryCta?.label?.trim() || "Browse Issue",
@@ -98,7 +98,7 @@ const newsHeading = newsAndEventsEditable.title?.trim() || "News and Events";
 const newsItems = ((newsAndEventsEditable.items ?? []).length > 0 ? newsAndEventsEditable.items ?? [] : NEWS_EVENTS)
   .map((item) => item.trim())
   .filter((item) => item.length > 0);
-const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News and event updates will be posted here.";
+const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News and event updates will be posted here";
 ---
 
 <BaseLayout title="UNLV Undergraduate Economics Working Paper Series" bodyClass="page-home">
@@ -111,9 +111,9 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News
         <p class="hero-kicker">UNLV Department of Economics</p>
         <h1>UNLV Undergraduate Economics Working Paper Series</h1>
         <p class="hero-subtitle">
-          Official archive for undergraduate economics working papers at UNLV.
+          Official archive for undergraduate economics working papers at UNLV
           <br />
-          Published by semester issue.
+          Published by semester issue
         </p>
         <div class="hero-actions">
           <a class="btn btn-home-primary" href={withBase("/issues/")}>Browse Issues</a>
@@ -179,7 +179,7 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News
       </article>
     ) : (
       <article class="card home-surface" data-motion="gsap">
-        <p class="muted">No issues have been published yet.</p>
+          <p class="muted">No issues have been published yet</p>
       </article>
     )}
   </section>
@@ -224,7 +224,7 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News
         </div>
       ) : (
         <>
-          <p class="muted">Category pages will fill in as current-series papers are published.</p>
+          <p class="muted">Category pages will fill in as current-series papers are published</p>
           <div class="card-actions">
             <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive topics</a>
           </div>
@@ -244,9 +244,9 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News
 
     <article class="card home-surface" data-motion="gsap">
       <ul class="home-about-bullets">
-        <li>Open-access archive of UNLV Department of Economics working papers, organized by semester issue.</li>
-        <li>Working papers are posted for public reading; they are not peer-reviewed journal articles.</li>
-        <li>Each paper stays available on its own page with a downloadable PDF.</li>
+        <li>Open-access archive of UNLV Department of Economics working papers, organized by semester issue</li>
+        <li>Working papers are posted for public reading; they are not peer-reviewed journal articles</li>
+        <li>Each paper stays available on its own page with a downloadable PDF</li>
       </ul>
     </article>
   </section>

@@ -17,7 +17,7 @@ const categoryName = category?.name ?? categorySlug;
 ---
 
 <BaseLayout title={`${categoryName} | Categories`} bodyClass="section-categories page-category-detail">
-  <PageBanner kicker="Category" title={categoryName} subtitle={`Working papers tagged for ${categoryName}.`} />
+  <PageBanner kicker="Category" title={categoryName} subtitle={`Working papers tagged for ${categoryName}`} />
 
   <section class="content-section">
     <div class="page-intro-actions">
@@ -26,7 +26,7 @@ const categoryName = category?.name ?? categorySlug;
 
     {papers.length === 0 ? (
       <article class="accent-card empty-state-card">
-        <p class="muted">No papers yet in this category.</p>
+        <p class="muted">No papers yet in this category</p>
       </article>
     ) : (
       <div class="card-grid">

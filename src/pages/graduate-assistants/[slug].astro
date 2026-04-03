@@ -1,6 +1,8 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import PageBanner from "../../components/PageBanner.astro";
+import ProfileLinks from "../../components/ProfileLinks.astro";
+import { PUBLIC_PROFILES } from "../../data/public-profiles";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { withBase } from "../../lib/urls";
 
@@ -14,21 +16,26 @@ export async function getStaticPaths() {
 
 const { assistant } = Astro.props as { assistant: CollectionEntry<"graduateAssistants"> };
 const { Content } = await render(assistant);
+const assistantProfile = PUBLIC_PROFILES.find(
+  (profile) => profile.profileHref === `/graduate-assistants/${assistant.slug}/`
+);
 ---
 
-<BaseLayout title={`${assistant.data.name} | Graduate Assistants`} bodyClass="section-about page-ga-profile">
+<BaseLayout title={`${assistant.data.name} | Graduate Assistants`} bodyClass="section-about page-profile">
   <PageBanner title={assistant.data.name} lead={`${assistant.data.role} (${assistant.data.term})`} />
 
-  <section class="content-section ga-profile-shell">
+  <section class="content-section profile-shell">
     {assistant.data.headshot ? (
-      <img class="ga-profile-thumb" src={withBase(assistant.data.headshot)} alt={assistant.data.name} loading="lazy" />
+      <img class="profile-thumb" src={withBase(assistant.data.headshot)} alt={assistant.data.name} loading="lazy" />
     ) : null}
 
-    <article class="ga-profile-bio">
+    <article class="profile-bio">
       <Content />
     </article>
 
-    <p class="ga-back-link">
+    <ProfileLinks links={assistantProfile?.links} className="profile-page-links" />
+
+    <p class="profile-back-link">
       <a href={withBase("/graduate-assistants/")}>← Back to Graduate Assistants</a>
     </p>
   </section>

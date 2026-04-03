@@ -9,12 +9,12 @@ const publishedIssues = issues.filter((issue) => issue.papers.length > 0);
 ---
 
 <BaseLayout title="Papers | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-papers page-papers">
-  <PageBanner title="Papers" subtitle="Browse every working paper organized by semester issue." />
+  <PageBanner title="Papers" subtitle="Browse every working paper organized by semester issue" />
 
   <section class="content-section">
     {publishedIssues.length === 0 ? (
       <article class="accent-card empty-state-card">
-        <h2>No current-series papers are available yet.</h2>
+        <h2>No current-series papers are available yet</h2>
         <p class="muted">
           Current semester issues are live, but papers have not been posted yet. You can still browse the issue listings and the legacy archive.
         </p>

@@ -14,8 +14,8 @@ const bibtexTemplate = `@misc{unlv_econ_wp_author_year,
 export const ABOUT_PAGE_CONTENT: AboutPageContent = {
   banner: {
     title: "About",
-    lead: "An open-access archive of working papers from the UNLV Department of Economics.",
-    note: "Working papers (not peer reviewed). Published by semester issue.",
+    lead: "An open-access archive of working papers from the UNLV Department of Economics",
+    note: "Working papers (not peer reviewed), published by semester issue",
   },
   tocItems: [
     { id: "about-glance-title", label: "At a Glance" },
@@ -23,7 +23,6 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
     { id: "about-process-title", label: "How Publication Works" },
     { id: "about-policies-title", label: "Policies" },
     { id: "about-team-title", label: "Editorial Team" },
-    { id: "about-credits-title", label: "Credits" },
     { id: "about-ga-title", label: "Graduate Assistants" },
     { id: "about-cta-title", label: "Get Involved" },
   ],
@@ -182,20 +181,11 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
   editorialTeam: {
     title: "Editorial Board",
   },
-  credits: {
-    title: "Credits",
-    items: [
-      { label: "Founding Builder / Platform Architecture", value: "Mark Jayson Farol" },
-      { label: "Editorial Lead", value: "Professor Djeto Assané" },
-      { label: "Co-Editor", value: "Professor Eric Chiang" },
-      { label: "Operations", value: "Graduate Assistants (rotating)" },
-    ],
-  },
   graduateAssistants: {
     title: "Graduate Assistants",
     linkLabel: "View all Graduate Assistants →",
     linkHref: "/graduate-assistants/",
-    emptyText: "No current graduate assistants are listed.",
+    emptyText: "No current graduate assistants are listed",
   },
   cta: {
     title: "Get Involved",

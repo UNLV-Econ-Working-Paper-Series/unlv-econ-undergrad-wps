@@ -5,15 +5,15 @@ import type { ContactPageContent } from "./contact-content.types";
 export const CONTACT_PAGE_CONTENT: ContactPageContent = {
   banner: {
     title: "Contact",
-    lead: "Reach the series team or the Department of Economics office.",
+    lead: "Reach the series team or the Department of Economics office",
   },
   routingTitle: "Who are you trying to reach?",
   contact: {
     series: {
       title: "Series Team",
-      desc: "Questions about papers, corrections, permissions, takedown requests, and site issues.",
+      desc: "Questions about papers, corrections, permissions, takedown requests, and site issues",
       email: "series-team@unlv.edu",
-      hint: "Placeholder address until the department assigns a permanent series inbox.",
+      hint: "Placeholder address until the department assigns a permanent series inbox",
       actions: [
         { label: "Email Series Team", href: "mailto:series-team@unlv.edu", primary: true },
         { label: "Common Requests", href: "#requests" },
@@ -21,7 +21,7 @@ export const CONTACT_PAGE_CONTENT: ContactPageContent = {
     },
     dept: {
       title: "Department of Economics",
-      desc: "Department office contact information and general departmental inquiries.",
+      desc: "Department office contact information and general departmental inquiries",
       phone: "+1-702-895-3776",
       locationLine: "Frank and Estella Beam Hall (BEH), Room 508",
       addressLines: [

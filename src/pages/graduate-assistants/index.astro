@@ -22,13 +22,13 @@ const termGroups = Array.from(termMap.entries());
 <BaseLayout title="Graduate Assistants | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-about page-ga-index">
   <PageBanner
     title="Graduate Assistants"
-    lead="Graduate assistants help prepare papers and organize each semester's issue."
+    lead="Graduate assistants help prepare papers and organize each semester's issue"
   />
 
   <section class="content-section ga-archive-shell">
     {termGroups.length === 0 ? (
       <article class="about-card ga-empty">
-        <p class="muted">No graduate assistants are listed yet.</p>
+        <p class="muted">No graduate assistants are listed yet</p>
       </article>
     ) : (
       termGroups.map(([term, items]) => (

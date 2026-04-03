@@ -48,14 +48,6 @@ export interface AboutPoliciesSection {
   sections: AboutPolicySectionItem[];
 }
 
-export interface AboutCreditsSection {
-  title: string;
-  items: Array<{
-    label: string;
-    value: string;
-  }>;
-}
-
 export interface AboutPeopleSection {
   title: string;
 }
@@ -80,7 +72,6 @@ export interface AboutPageContent {
   publication: AboutPublicationSection;
   policies: AboutPoliciesSection;
   editorialTeam: AboutPeopleSection;
-  credits: AboutCreditsSection;
   graduateAssistants: AboutGraduateAssistantsSection;
   cta: AboutCtaSection;
 }

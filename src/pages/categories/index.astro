@@ -16,13 +16,13 @@ const visibleCategories = categories.filter((category) => category.count > 0);
 ---
 
 <BaseLayout title="Categories | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-categories page-categories page-categories-modern">
-  <PageBanner title="Categories" subtitle="Choose a category to view all working papers in that topic area." />
+  <PageBanner title="Categories" subtitle="Choose a category to view all working papers in that topic area" />
 
   <section class="content-section categories-shell categories-shell-modern">
     {visibleCategories.length === 0 ? (
       <article class="accent-card empty-state-card">
-        <h2>No current-series categories are available yet.</h2>
-        <p class="muted">Category pages will appear once current-series papers are posted.</p>
+        <h2>No current-series categories are available yet</h2>
+        <p class="muted">Category pages will appear once current-series papers are posted</p>
         <div class="card-actions">
           <a class="btn btn-small" href={withBase("/issues/")}>Browse issues</a>
           <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive</a>
@@ -62,7 +62,7 @@ const visibleCategories = categories.filter((category) => category.count > 0);
             </div>
           ))}
         </div>
-        <p id="cat-empty" class="muted small" hidden>No categories match that search.</p>
+        <p id="cat-empty" class="muted small" hidden>No categories match that search</p>
       </>
     )}
   </section>

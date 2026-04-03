@@ -1,5 +1,6 @@
 ---
 import PageBanner from "../components/PageBanner.astro";
+import ProfileLinks from "../components/ProfileLinks.astro";
 import RichTextInline from "../components/RichTextInline.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import { ABOUT_PAGE_CONTENT } from "../data/about-content";
@@ -91,7 +92,7 @@ const currentGraduateAssistants = sortedProfiles.filter(
             <h2 id="about-team-title">{ABOUT_PAGE_CONTENT.editorialTeam.title}</h2>
 
             {editorialTeam.length === 0 ? (
-              <p class="about-empty">No editorial team members are listed.</p>
+              <p class="about-empty">No editorial team members are listed</p>
             ) : (
               <div class="about-team-grid about-team-grid--editorial">
                 {editorialTeam.map((person) => (
@@ -99,26 +100,27 @@ const currentGraduateAssistants = sortedProfiles.filter(
                     {person.headshot ? (
                       <img class="about-person-thumb" src={withBase(person.headshot)} alt={person.name} />
                     ) : null}
-                    <div>
+                    <div class="about-person-copy">
                       <p class="about-role">{person.displayRole}</p>
-                      <h3>{person.name}</h3>
+                      <h3>
+                        {person.profileHref ? (
+                          <a class="about-person-link" href={withBase(person.profileHref)}>{person.name}</a>
+                        ) : (
+                          person.name
+                        )}
+                      </h3>
                       <p>{person.summary}</p>
+                      <ProfileLinks links={person.links} className="about-person-links" />
+                      {person.profileHref ? (
+                        <a class="about-read-more" href={withBase(person.profileHref)}>
+                          Read more →
+                        </a>
+                      ) : null}
                     </div>
                   </article>
                 ))}
               </div>
             )}
-          </section>
-
-          <section class="about-block about-card" aria-labelledby="about-credits-title">
-            <h2 id="about-credits-title">{ABOUT_PAGE_CONTENT.credits.title}</h2>
-            <ul class="about-glance-list">
-              {ABOUT_PAGE_CONTENT.credits.items.map((item) => (
-                <li>
-                  <strong>{item.label}:</strong> {item.value}
-                </li>
-              ))}
-            </ul>
           </section>
 
           <section class="about-block about-card" aria-labelledby="about-ga-title">
@@ -138,7 +140,7 @@ const currentGraduateAssistants = sortedProfiles.filter(
                     {assistant.headshot ? (
                       <img class="about-person-thumb" src={withBase(assistant.headshot)} alt={assistant.name} />
                     ) : null}
-                    <div>
+                    <div class="about-person-copy">
                       <p class="about-role">{assistant.displayRole}</p>
                       <h3>
                         {assistant.profileHref ? (
@@ -148,6 +150,12 @@ const currentGraduateAssistants = sortedProfiles.filter(
                         )}
                       </h3>
                       <p>{assistant.summary}</p>
+                      <ProfileLinks links={assistant.links} className="about-person-links" />
+                      {assistant.profileHref ? (
+                        <a class="about-read-more" href={withBase(assistant.profileHref)}>
+                          Read more →
+                        </a>
+                      ) : null}
                     </div>
                   </article>
                 ))}

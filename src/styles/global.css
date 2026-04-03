@@ -3627,6 +3627,13 @@ a:hover {
   gap: 0.16rem;
 }
 
+.site-footer.modern-footer .footer-links-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.2rem 1.2rem;
+  align-items: start;
+}
+
 .site-footer.modern-footer .footer-links a {
   color: #c8d0d9;
   font-size: 0.79rem;
@@ -3726,6 +3733,13 @@ a:hover {
   .site-footer.modern-footer .footer-utility-links {
     flex-wrap: wrap;
     gap: 0.56rem 0.68rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-footer.modern-footer .footer-links-grid {
+    grid-template-columns: 1fr;
+    gap: 0.24rem;
   }
 }
 
@@ -4517,6 +4531,87 @@ a:hover {
   line-height: 1.55;
 }
 
+.page-about-modern .about-person-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.72rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.profile-links__link {
+  --profile-link-color: #44505d;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  border: 1px solid rgba(28, 32, 40, 0.12);
+  border-radius: 999px;
+  color: var(--profile-link-color);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(20, 24, 32, 0.06);
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.profile-links__link svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.profile-links__link[data-profile-link-type="website"] {
+  --profile-link-color: #8a2f2f;
+}
+
+.profile-links__link[data-profile-link-type="linkedin"] {
+  --profile-link-color: #0a66c2;
+}
+
+.profile-links__link[data-profile-link-type="scholar"] {
+  --profile-link-color: #356ac3;
+}
+
+.profile-links__link[data-profile-link-type="researchgate"] {
+  --profile-link-color: #00a693;
+}
+
+.profile-links__link:hover,
+.profile-links__link:focus-visible {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--profile-link-color) 30%, #cfd6df);
+  background: color-mix(in srgb, var(--profile-link-color) 8%, #ffffff);
+  box-shadow: 0 6px 14px rgba(20, 24, 32, 0.08);
+}
+
+.profile-links__link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--profile-link-color) 35%, transparent);
+  outline-offset: 2px;
+}
+
 .page-about-modern .about-cta {
   border-top: 3px solid rgba(177, 2, 2, 0.22);
 }
@@ -4873,6 +4968,18 @@ a:hover {
   color: var(--accent);
 }
 
+.page-about-modern .about-read-more {
+  margin-top: 0.65rem;
+  color: var(--accent);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.page-about-modern .about-read-more:hover,
+.page-about-modern .about-read-more:focus-visible {
+  color: var(--accent-dark);
+}
+
 .page-about-modern .about-team-grid--editorial {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -4954,14 +5061,14 @@ a:hover {
   line-height: 1.3;
 }
 
-.page-ga-profile .ga-profile-shell {
+.page-profile .profile-shell {
   width: min(100%, 920px);
   margin: 0 auto;
   padding-top: 1rem;
   padding-bottom: 1.9rem;
 }
 
-.page-ga-profile .ga-profile-thumb {
+.page-profile .profile-thumb {
   width: 96px;
   height: 96px;
   border-radius: 18px;
@@ -4969,7 +5076,7 @@ a:hover {
   border: 1px solid #d7dde4;
 }
 
-.page-ga-profile .ga-profile-bio {
+.page-profile .profile-bio {
   margin-top: 0.8rem;
   background: #ffffff;
   border: 1px solid var(--border);
@@ -4978,24 +5085,32 @@ a:hover {
   padding: 0.95rem 1rem;
 }
 
-.page-ga-profile .ga-profile-bio p {
-  margin: 0;
+.page-profile .profile-bio p {
+  margin: 0.8rem 0 0;
   color: #2f353d;
   font-size: 1rem;
   line-height: 1.65;
 }
 
-.page-ga-profile .ga-back-link {
+.page-profile .profile-bio p:first-child {
+  margin-top: 0;
+}
+
+.page-profile .profile-page-links {
   margin-top: 0.85rem;
 }
 
-.page-ga-profile .ga-back-link a {
+.page-profile .profile-back-link {
+  margin-top: 0.85rem;
+}
+
+.page-profile .profile-back-link a {
   color: var(--accent);
   font-weight: 700;
 }
 
-.page-ga-profile .ga-back-link a:hover,
-.page-ga-profile .ga-back-link a:focus-visible {
+.page-profile .profile-back-link a:hover,
+.page-profile .profile-back-link a:focus-visible {
   color: var(--accent-dark);
 }
 

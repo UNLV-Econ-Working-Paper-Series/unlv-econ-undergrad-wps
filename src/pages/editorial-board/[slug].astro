@@ -1,0 +1,43 @@
+---
+import PageBanner from "../../components/PageBanner.astro";
+import ProfileLinks from "../../components/ProfileLinks.astro";
+import { PUBLIC_PROFILES } from "../../data/public-profiles";
+import type { PublicProfile } from "../../data/public-profiles.types";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+export function getStaticPaths() {
+  return PUBLIC_PROFILES.filter(
+    (profile) => profile.sections.includes("editorial_team") && profile.profileHref?.startsWith("/editorial-board/")
+  ).map((profile) => ({
+    params: {
+      slug: profile.profileHref?.replace(/^\/editorial-board\//, "").replace(/\/$/, ""),
+    },
+    props: { profile },
+  }));
+}
+
+const { profile } = Astro.props as { profile: PublicProfile };
+---
+
+<BaseLayout title={`${profile.name} | Editorial Board`} bodyClass="section-about page-profile">
+  <PageBanner title={profile.name} lead={profile.displayRole} />
+
+  <section class="content-section profile-shell">
+    {profile.headshot ? (
+      <img class="profile-thumb" src={withBase(profile.headshot)} alt={profile.name} loading="lazy" />
+    ) : null}
+
+    <article class="profile-bio">
+      {(profile.profileBio ?? [profile.summary]).map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </article>
+
+    <ProfileLinks links={profile.links} className="profile-page-links" />
+
+    <p class="profile-back-link">
+      <a href={withBase("/about/#about-team-title")}>← Back to About</a>
+    </p>
+  </section>
+</BaseLayout>
