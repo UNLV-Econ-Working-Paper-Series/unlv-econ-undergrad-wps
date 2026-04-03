@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Accessibility
-lead: The Series supports access needs and provides accommodation pathways for posted papers.
+lead: If a paper is difficult to use, you can request help or another format.
 bodyClass: page-policy-accessibility
 ---
 
@@ -27,4 +27,4 @@ The team will respond and coordinate reasonable accommodations where feasible.
 
 ## Ongoing improvements
 
-Because papers are authored and exported in many formats, accessibility varies. The Series encourages accessible document practices and will continue improving guidance over time.
+Because papers are uploaded in different formats, accessibility can vary. The Series encourages accessible files and will make improvements when feasible.

@@ -6,7 +6,7 @@ import { withBase } from "../../lib/urls";
 
 const issues = await getIssueGroups();
 const issuesIntro =
-  "Browse semester-based issues from the UNLV Department of Economics. Each release groups working papers into one citable issue for discovery and reuse.";
+  "Browse issues by semester. Each issue groups the papers posted for that term.";
 
 const issueCategoryMap = new Map(
   issues.map((issue) => [
@@ -128,6 +128,7 @@ const latestIssue = issues[0] ?? null;
         })
       )}
     </section>
+    <p id="issues-empty" class="muted small" hidden>No issues match those filters.</p>
 
     <section class="issues-archive-container">
       <a class="issue-archive-card issue-archive-link card" data-motion="gsap" href={withBase("/issues/archive/")}>
@@ -142,6 +143,7 @@ const latestIssue = issues[0] ?? null;
     const yearSelect = document.getElementById("issues-year");
     const categorySelect = document.getElementById("issues-category");
     const issueCards = Array.from(document.querySelectorAll("[data-issue-card]"));
+    const emptyState = document.getElementById("issues-empty");
 
     function applyFilters() {
       const query = (searchInput?.value || "").trim().toLowerCase();
@@ -159,6 +161,10 @@ const latestIssue = issues[0] ?? null;
 
         card.hidden = !(matchesYear && matchesCategory && matchesQuery);
       });
+
+      if (emptyState) {
+        emptyState.hidden = issueCards.some((card) => !card.hidden);
+      }
     }
 
     searchInput?.addEventListener("input", applyFilters);

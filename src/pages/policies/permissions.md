@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Copyright, Licensing & Permissions
-lead: Authors retain rights while granting a non-exclusive license for hosting and public dissemination.
+lead: Authors keep their rights while allowing the Series to host the paper online.
 bodyClass: page-policy-permissions
 ---
 
@@ -9,13 +9,13 @@ bodyClass: page-policy-permissions
 
 Unless otherwise noted, **authors retain copyright** in their working papers.
 
-## License to host and disseminate
+## License to host and distribute
 
 By publishing a paper in this Series, authors grant the Series (and, if applicable, the University of Nevada, Las Vegas as publisher) a **non-exclusive, worldwide license** to:
 
 - host, reproduce, display, and distribute the work online
 - preserve the work as part of an educational archive
-- identify the author(s) and associated metadata for discovery and citation
+- identify the author(s) and show related metadata on the site
 
 This license is non-exclusive: authors may share and publish elsewhere.
 

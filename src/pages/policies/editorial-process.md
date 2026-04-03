@@ -1,13 +1,13 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Editorial Screening Process (Not Peer Review)
-lead: The Series uses editorial screening for archive readiness and policy compliance, not peer review.
+lead: The Series checks papers for posting requirements and policy compliance. It does not peer review them.
 bodyClass: page-policy-editorial-process
 ---
 
 ## Summary
 
-The Series uses **editorial screening** to prepare working papers for publication as an educational archive. This screening is **not peer review**.
+The Series uses **editorial screening** to prepare working papers for posting. This screening is **not peer review**.
 
 ## What published means here
 
@@ -16,14 +16,14 @@ A paper is published when it has:
 - met the Focus & Scope criteria for department-affiliated economics research, and
 - passed baseline editorial checks for posting and policy compliance.
 
-Publication indicates readiness for public archiving, **not** validation of methods or results.
+Posting means the paper is ready to appear in the archive, **not** that its methods or results have been verified.
 
 ## What we check (screening)
 
 Editorial screening may include:
 
 - **Completeness** of required metadata (title, authors, issue/semester, category, keywords, advisor if provided)
-- **File readiness** (readable PDF, correct naming, stable links)
+- **Files** (readable PDF, correct naming, stable links)
 - **Policy compliance**, including rights and privacy review
 - **Basic formatting** for accessibility and readability when feasible
 
@@ -33,7 +33,7 @@ The editorial team does not:
 
 - conduct peer review
 - guarantee replication or verify statistical results
-- certify originality beyond reasonable academic-integrity checks
+- certify originality beyond basic source and plagiarism checks
 - provide legal approval for third-party rights claims
 
 ## Grounds for postponing or declining posting

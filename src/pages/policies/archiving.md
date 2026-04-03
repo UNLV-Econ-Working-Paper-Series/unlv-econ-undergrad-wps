@@ -1,16 +1,16 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Archiving & Preservation
-lead: The Series preserves department-affiliated economics scholarship with stable URLs and continuity practices.
+lead: How the site keeps papers available and records updates or withdrawals.
 bodyClass: page-policy-archiving
 ---
 
-The Series aims to preserve department-affiliated economics scholarship in a stable, citable form.
+The Series keeps paper pages and PDFs online when possible.
 
 ## Stable access
 
 - Paper pages are designed to remain available at stable URLs.
-- Metadata is maintained to support discovery and citation.
+- Basic metadata is kept on each paper page.
 
 ## Preservation practices
 
@@ -26,4 +26,4 @@ When a paper is updated or withdrawn, a public record page (tombstone page) may 
 
 ## Repository and indexing (optional)
 
-If repository mirroring or additional indexing is enabled in the future, the Series may also distribute metadata or copies through approved university or scholarly platforms that support preservation and discovery.
+If repository mirroring or additional indexing is enabled in the future, the Series may also send records or files to approved university or scholarly platforms.

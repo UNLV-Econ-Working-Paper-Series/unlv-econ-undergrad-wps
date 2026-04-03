@@ -1,7 +1,7 @@
 ---
 import PageBanner from "../../../components/PageBanner.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { getArchiveIssueGroups } from "../../../lib/archive";
+import { getArchiveIssueGroups, type ArchiveIssueGroup } from "../../../lib/archive";
 import { withBase } from "../../../lib/urls";
 
 export async function getStaticPaths() {
@@ -9,7 +9,8 @@ export async function getStaticPaths() {
   return issues.map((issue) => ({ params: { issue: issue.slug }, props: { issue } }));
 }
 
-const { issue } = Astro.props;
+const { issue } = Astro.props as { issue: ArchiveIssueGroup };
+const availablePapers = issue.papers.filter((paper) => paper.fileAvailable);
 ---
 
 <BaseLayout title={`${issue.label} | Archive`} bodyClass="section-issues page-archive-issue">
@@ -36,15 +37,21 @@ const { issue } = Astro.props;
 
       <div class="issue-card-actions">
         <a class="btn btn-small" href={withBase("/issues/archive/")}>Back to archive</a>
-        <button
-          type="button"
-          class="btn btn-small btn-outline"
-          data-download-all
-          data-urls={issue.papers.map((paper) => withBase(paper.file)).join("|")}
-        >
-          Download PDFs
-        </button>
+        {availablePapers.length > 0 ? (
+          <button
+            type="button"
+            class="btn btn-small btn-outline"
+            data-download-all
+            data-urls={availablePapers.map((paper) => withBase(paper.file)).join("|")}
+          >
+            Download PDFs
+          </button>
+        ) : null}
       </div>
+
+      {availablePapers.length === 0 ? (
+        <p class="muted small">PDF files for this archive issue are not online yet.</p>
+      ) : null}
     </article>
 
     <div class="archive-paper-list archive-paper-list--issue" aria-label="Papers in this archive issue">
@@ -53,7 +60,11 @@ const { issue } = Astro.props;
           <h3>{paper.title}</h3>
           <p class="muted small">Authors: {paper.authors || "Not listed"}</p>
           <div class="issue-card-actions">
-            <a class="btn btn-small btn-primary" href={withBase(paper.file)}>Download PDF</a>
+            {paper.fileAvailable ? (
+              <a class="btn btn-small btn-primary" href={withBase(paper.file)}>Download PDF</a>
+            ) : (
+              <p class="muted small">PDF not currently available online.</p>
+            )}
           </div>
         </article>
       ))}

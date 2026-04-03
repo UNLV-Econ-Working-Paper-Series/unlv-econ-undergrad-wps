@@ -1,11 +1,11 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Publication Ethics & Integrity
-lead: The Series promotes responsible scholarship, citation discipline, and good-faith correction.
+lead: Basic rules on plagiarism, data, disclosure, and corrections.
 bodyClass: page-policy-ethics
 ---
 
-The UNLV Undergraduate Economics Working Paper Series supports responsible scholarship and academic integrity.
+The UNLV Undergraduate Economics Working Paper Series expects normal academic standards for citation, data use, and correction of errors.
 
 ## Academic integrity
 
@@ -33,8 +33,8 @@ Authors should disclose any relevant conflicts of interest (for example, financi
 
 ## Use of AI tools (optional disclosure)
 
-If AI tools materially assisted in drafting, translation, coding, or analysis, authors are encouraged to disclose that use in a brief note. Authors remain responsible for the accuracy and integrity of their work.
+If AI tools materially assisted in drafting, translation, coding, or analysis, authors are encouraged to note that use briefly. Authors remain responsible for the content of the paper.
 
 ## Corrections and withdrawal
 
-The Series supports good-faith corrections and responsible updating. See [Corrections, Updates & Versioning](../corrections-versioning/) and [Takedown / Rights & Privacy Requests](../takedown/).
+Authors may request corrections or updates. See [Corrections, Updates & Versioning](../corrections-versioning/) and [Takedown / Rights & Privacy Requests](../takedown/).

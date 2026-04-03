@@ -17,4 +17,4 @@ Access is free. Reuse depends on each paper's copyright and licensing terms. See
 
 ## Purpose
 
-Open access supports UNLV's educational mission by increasing the visibility of economics research and enabling citation and discovery.
+The goal is simple: readers should be able to access the papers without a paywall.

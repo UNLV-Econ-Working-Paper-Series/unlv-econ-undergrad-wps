@@ -1,15 +1,15 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Focus & Scope
-lead: The Series publishes department-affiliated economics working papers as an open-access educational archive.
+lead: What the Series posts and what it does not.
 bodyClass: page-policy-focus-scope
 ---
 
-The **UNLV Undergraduate Economics Working Paper Series** is an open-access archive of working papers authored by students, graduate assistants, faculty, and collaborators affiliated with the UNLV Department of Economics.
+The **UNLV Undergraduate Economics Working Paper Series** is a public archive of working papers connected to the UNLV Department of Economics.
 
 ## What we publish
 
-The Series publishes **department-affiliated working papers**. Papers typically include an original research question, evidence or data analysis, and a written manuscript suitable for public reading and citation.
+The Series publishes **department-affiliated working papers**. Papers usually include a research question, evidence or data analysis, and a manuscript that can be posted publicly.
 
 ## What we do not publish
 
@@ -18,7 +18,7 @@ The Series does **not** publish:
 - Peer-reviewed journal articles
 - Grades, evaluations, or instructional materials intended for private classroom use
 - Content containing confidential information or restricted data that cannot be shared publicly
-- Submissions that do not comply with site policies (including rights, privacy, and integrity requirements)
+- Submissions that do not comply with site policies on rights, privacy, or misconduct
 
 ## Working paper notice (not peer reviewed)
 
@@ -26,7 +26,7 @@ Papers published here are **working papers**. They are **not peer reviewed**, an
 
 ## Audience
 
-This archive serves students, faculty, researchers, alumni, and the public by making economics research **discoverable, readable, and citable**.
+Anyone may use the archive to read current economics work from UNLV.
 
 ## Contact
 

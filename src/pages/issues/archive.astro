@@ -11,7 +11,7 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
 <BaseLayout title="Archive | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-issues page-archive">
   <PageBanner
     title="Archive"
-    subtitle="Archived UNLV Economics Hub working papers (pre-2024), organized by semester issue for quick browsing and download."
+    subtitle="Archived working papers from the pre-2024 UNLV undergraduate economics series, organized by semester issue."
   />
 
   <section class="issues-explorer content-section">
@@ -38,48 +38,59 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
           <p class="muted">No archive papers are listed yet.</p>
         </article>
       ) : (
-        archiveIssues.map((issue) => (
-          <article
-            class="issue-archive-card card"
-            data-motion="gsap"
-            data-archive-issue-card
-            data-year={String(issue.year)}
-            data-search={[
-              issue.label,
-              ...issue.categories,
-              ...issue.papers.map((paper) => `${paper.title} ${paper.authors}`),
-            ]
-              .join(" ")
-              .toLowerCase()}
-          >
-            <header class="issue-archive-head">
-              <h2>{issue.label}</h2>
-              <p class="issue-card-meta">
-                {issue.papers.length} papers • {issue.categories.length} categories
-              </p>
-            </header>
+        archiveIssues.map((issue) => {
+          const availablePapers = issue.papers.filter((paper) => paper.fileAvailable);
 
-            <div class="issue-topic-chips" aria-label={`Categories in ${issue.label}`}>
-              {issue.categories.map((category) => (
-                <span class="issue-topic-chip">{category}</span>
-              ))}
-            </div>
+          return (
+            <article
+              class="issue-archive-card card"
+              data-motion="gsap"
+              data-archive-issue-card
+              data-year={String(issue.year)}
+              data-search={[
+                issue.label,
+                ...issue.categories,
+                ...issue.papers.map((paper) => `${paper.title} ${paper.authors}`),
+              ]
+                .join(" ")
+                .toLowerCase()}
+            >
+              <header class="issue-archive-head">
+                <h2>{issue.label}</h2>
+                <p class="issue-card-meta">
+                  {issue.papers.length} papers • {issue.categories.length} categories
+                </p>
+              </header>
 
-            <div class="issue-card-actions">
-              <a class="btn btn-small btn-primary" href={withBase(`/issues/archive/${issue.slug}/`)}>Browse issue</a>
-              <button
-                type="button"
-                class="btn btn-small btn-outline"
-                data-download-all
-                data-urls={issue.papers.map((paper) => withBase(paper.file)).join("|")}
-              >
-                Download PDFs
-              </button>
-            </div>
-          </article>
-        ))
+              <div class="issue-topic-chips" aria-label={`Categories in ${issue.label}`}>
+                {issue.categories.map((category) => (
+                  <span class="issue-topic-chip">{category}</span>
+                ))}
+              </div>
+
+              <div class="issue-card-actions">
+                <a class="btn btn-small btn-primary" href={withBase(`/issues/archive/${issue.slug}/`)}>Browse issue</a>
+                {availablePapers.length > 0 ? (
+                  <button
+                    type="button"
+                    class="btn btn-small btn-outline"
+                    data-download-all
+                    data-urls={availablePapers.map((paper) => withBase(paper.file)).join("|")}
+                  >
+                    Download PDFs
+                  </button>
+                ) : null}
+              </div>
+
+              {availablePapers.length === 0 ? (
+                <p class="muted small">PDF files for this archive issue are not online yet.</p>
+              ) : null}
+            </article>
+          );
+        })
       )}
     </section>
+    <p id="archive-empty" class="muted small" hidden>No archive issues match those filters.</p>
   </section>
 
   <script is:inline>
@@ -87,6 +98,7 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
     const yearSelect = document.getElementById("archive-year");
     const issueCards = Array.from(document.querySelectorAll("[data-archive-issue-card]"));
     const downloadButtons = Array.from(document.querySelectorAll("[data-download-all]"));
+    const emptyState = document.getElementById("archive-empty");
 
     function applyFilters() {
       const query = (searchInput?.value || "").trim().toLowerCase();
@@ -101,6 +113,10 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
 
         card.hidden = !(matchesYear && matchesQuery);
       });
+
+      if (emptyState) {
+        emptyState.hidden = issueCards.some((card) => !card.hidden);
+      }
     }
 
     searchInput?.addEventListener("input", applyFilters);

@@ -87,38 +87,6 @@ function initScrollReveal({
   );
 }
 
-function initHeaderMotion(): void {
-  const logo = document.querySelector<HTMLElement>(".site-header .site-logo");
-  const navItems = gsap.utils.toArray<HTMLElement>(".site-header .main-nav li");
-  const managedLogo = markManaged([logo]);
-  const managedNavItems = markManaged(navItems);
-
-  if (managedLogo.length === 0 && managedNavItems.length === 0) {
-    return;
-  }
-
-  const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-  if (managedLogo.length > 0) {
-    timeline.fromTo(
-      managedLogo,
-      { autoAlpha: 0, y: -10 },
-      { autoAlpha: 1, y: 0, duration: 0.42, clearProps: CLEAR_PROPS }
-    );
-  }
-
-  if (managedNavItems.length > 0) {
-    timeline.fromTo(
-      managedNavItems,
-      { autoAlpha: 0, y: -8 },
-      { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.04, clearProps: CLEAR_PROPS },
-      managedLogo.length > 0 ? "-=0.28" : 0
-    );
-  }
-
-  trackTween(timeline);
-}
-
 function initHomeHeroMotion(): void {
   if (!document.body.classList.contains("page-home")) {
     return;
@@ -222,22 +190,6 @@ function initInteriorBannerMotion(): void {
   );
 }
 
-function initTocMotion(): void {
-  const toc = document.querySelector<HTMLElement>(".toc");
-  if (!toc) {
-    return;
-  }
-
-  markManaged([toc]);
-  trackTween(
-    gsap.fromTo(
-      toc,
-      { autoAlpha: 0, x: -10 },
-      { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out", delay: 0.12, clearProps: CLEAR_PROPS }
-    )
-  );
-}
-
 function initIssuesPageMotion(): void {
   const explorer = document.querySelector<HTMLElement>(".page-issues .issues-explorer");
   if (!explorer) {
@@ -328,21 +280,6 @@ function initOurPageMotion(): void {
   }
 }
 
-function initFooterMotion(): void {
-  const footer = document.querySelector<HTMLElement>(".site-footer");
-  if (!footer) {
-    return;
-  }
-
-  initScrollReveal({
-    trigger: footer,
-    targets: gsap.utils.toArray<HTMLElement>(".site-footer .footer-brand, .site-footer .footer-nav, .site-footer .footer-utility"),
-    start: "top bottom-=80",
-    from: { autoAlpha: 0, y: 18 },
-    to: { autoAlpha: 1, y: 0, duration: 0.52, ease: "power3.out", stagger: 0.08 },
-  });
-}
-
 function initSiteMotion(): void {
   cleanupMotion();
   ScrollTrigger.refresh();
@@ -351,17 +288,14 @@ function initSiteMotion(): void {
     return;
   }
 
-  initHeaderMotion();
   initHomeHeroMotion();
   initHomeSectionMotion();
   initInteriorBannerMotion();
-  initTocMotion();
   initIssuesPageMotion();
   initArchivePageMotion();
   initCategoriesPageMotion();
   initPolicyIndexMotion();
   initOurPageMotion();
-  initFooterMotion();
 }
 
 export function bootSiteMotion(): void {

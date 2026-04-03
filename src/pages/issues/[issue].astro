@@ -1,20 +1,22 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { cleanPaperTitle, getAllPapers, getIssueLabelForPaper, getIssueSlugForPaper, paperHref } from "../../lib/papers";
+import { cleanPaperTitle, getIssueGroups, type IssueGroup, paperHref } from "../../lib/papers";
+import { publicAssetExists } from "../../lib/publicAssets";
 import { withBase } from "../../lib/urls";
 
 export async function getStaticPaths() {
-  const papers = await getAllPapers();
-  const slugs = [...new Set(papers.map((paper) => getIssueSlugForPaper(paper)))];
-  return slugs.map((issue) => ({ params: { issue } }));
+  const issues = await getIssueGroups();
+  return issues.map((issue) => ({ params: { issue: issue.slug }, props: { issue } }));
 }
 
-const issueSlug = Astro.params.issue ?? "";
-const papers = (await getAllPapers()).filter((paper) => getIssueSlugForPaper(paper) === issueSlug);
-const issueLabel = papers[0] ? getIssueLabelForPaper(papers[0]) : issueSlug;
-
-const issueZipHref = withBase(`/assets/issues/${issueSlug}/${issueSlug}-pdfs.zip`);
+const { issue } = Astro.props as { issue: IssueGroup };
+const issueSlug = issue.slug;
+const papers = issue.papers;
+const issueLabel = issue.label;
+const issueZipPath = `/assets/issues/${issueSlug}/${issueSlug}-pdfs.zip`;
+const issueZipHref = withBase(issueZipPath);
+const issueZipAvailable = publicAssetExists(issueZipPath);
 ---
 
 <BaseLayout title={`${issueLabel} | Issues`} bodyClass="section-issues page-issue-detail">
@@ -25,14 +27,14 @@ const issueZipHref = withBase(`/assets/issues/${issueSlug}/${issueSlug}-pdfs.zip
       <div class="page-intro-actions">
         <a class="btn btn-small" href={withBase("/issues/")}>Back to issues</a>
 
-        {papers.length > 0 ? (
+        {papers.length > 0 && issueZipAvailable ? (
           <a class="btn btn-small btn-primary" href={issueZipHref}>
             Download ZIP (PDFs)
           </a>
         ) : null}
       </div>
 
-      {papers.length > 0 ? (
+      {papers.length > 0 && issueZipAvailable ? (
         <p class="muted small" style="margin: 0.6rem 0 0;">
           This download packages all PDFs from <strong>{issueLabel}</strong> into a single ZIP file.
         </p>
@@ -42,6 +44,10 @@ const issueZipHref = withBase(`/assets/issues/${issueSlug}/${issueSlug}-pdfs.zip
         <article class="accent-card empty-state-card">
           <h2>No papers available yet</h2>
           <p class="muted">This issue page is published, but paper records have not been posted yet.</p>
+          <div class="card-actions">
+            <a class="btn btn-small" href={withBase("/issues/")}>Browse all issues</a>
+            <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive</a>
+          </div>
         </article>
       ) : (
         <>

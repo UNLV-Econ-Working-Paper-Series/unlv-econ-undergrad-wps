@@ -1,12 +1,18 @@
 import { ARCHIVE_PAPERS, type ArchivePaper } from "../data/archive-papers";
+import { publicAssetExists } from "./publicAssets";
+
+export interface ArchiveIssuePaper extends ArchivePaper {
+  fileAvailable: boolean;
+}
 
 export interface ArchiveIssueGroup {
   slug: string;
   label: string;
   year: number;
   term: string;
-  papers: ArchivePaper[];
+  papers: ArchiveIssuePaper[];
   categories: string[];
+  availablePaperCount: number;
 }
 
 const TERM_ORDER: Record<string, number> = {
@@ -66,13 +72,20 @@ export function getArchiveIssueGroups(): ArchiveIssueGroup[] {
   const bySemester = new Map<string, ArchiveIssueGroup>();
 
   for (const paper of ARCHIVE_PAPERS) {
+    const resolvedPaper: ArchiveIssuePaper = {
+      ...paper,
+      fileAvailable: publicAssetExists(paper.file),
+    };
     const semester = paper.semester?.trim() || `Archive ${paper.year}`;
     const parsed = parseSemester(semester);
     const slug = semesterSlug(semester);
 
     const existing = bySemester.get(slug);
     if (existing) {
-      existing.papers.push(paper);
+      existing.papers.push(resolvedPaper);
+      if (resolvedPaper.fileAvailable) {
+        existing.availablePaperCount += 1;
+      }
       const tags = new Set(existing.categories);
       for (const category of inferCategories(paper.title)) {
         tags.add(category);
@@ -86,8 +99,9 @@ export function getArchiveIssueGroups(): ArchiveIssueGroup[] {
       label: semesterLabel(parsed.term, parsed.year || paper.year),
       year: parsed.year || paper.year,
       term: parsed.term,
-      papers: [paper],
+      papers: [resolvedPaper],
       categories: inferCategories(paper.title),
+      availablePaperCount: resolvedPaper.fileAvailable ? 1 : 0,
     });
   }
 

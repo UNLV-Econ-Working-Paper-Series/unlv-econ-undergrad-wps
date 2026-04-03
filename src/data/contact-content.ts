@@ -13,7 +13,7 @@ export const CONTACT_PAGE_CONTENT: ContactPageContent = {
       title: "Series Team",
       desc: "Questions about papers, corrections, permissions, takedown requests, and site issues.",
       email: "series-team@unlv.edu",
-      hint: "Use this for corrections, permissions, takedown requests, author updates, and site issues.",
+      hint: "Placeholder address until the department assigns a permanent series inbox.",
       actions: [
         { label: "Email Series Team", href: "mailto:series-team@unlv.edu", primary: true },
         { label: "Common Requests", href: "#requests" },

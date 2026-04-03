@@ -12,44 +12,59 @@ const categories = categoryGroups.map((group) => ({
   count: group.count,
   latestIssue: group.papers[0] ? getIssueLabelForPaper(group.papers[0]) : "No papers yet",
 }));
+const visibleCategories = categories.filter((category) => category.count > 0);
 ---
 
 <BaseLayout title="Categories | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-categories page-categories page-categories-modern">
   <PageBanner title="Categories" subtitle="Choose a category to view all working papers in that topic area." />
 
   <section class="content-section categories-shell categories-shell-modern">
-    <header class="categories-controls" aria-label="Category discovery tools">
-      <div class="categories-search">
-        <label for="cat-search">Search categories</label>
-        <input id="cat-search" type="search" placeholder="Search categories..." />
-      </div>
-
-      <div class="categories-sort">
-        <label for="cat-sort">Sort</label>
-        <select id="cat-sort">
-          <option value="az">A-Z</option>
-          <option value="count">Most papers</option>
-        </select>
-      </div>
-    </header>
-
-    <div id="cat-grid" class="cat-grid cat-grid-modern" aria-live="polite">
-      {categories.map((category) => (
-        <div
-          class="cat-grid-item"
-          data-motion="gsap"
-          data-category-item
-          data-title={category.title.toLowerCase()}
-          data-count={String(category.count)}
-        >
-          <CategoryCard
-            title={category.title}
-            href={category.href}
-            meta={category.count > 0 ? `Latest: ${category.latestIssue}` : "No papers yet"}
-          />
+    {visibleCategories.length === 0 ? (
+      <article class="accent-card empty-state-card">
+        <h2>No current-series categories are available yet.</h2>
+        <p class="muted">Category pages will appear once current-series papers are posted.</p>
+        <div class="card-actions">
+          <a class="btn btn-small" href={withBase("/issues/")}>Browse issues</a>
+          <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive</a>
         </div>
-      ))}
-    </div>
+      </article>
+    ) : (
+      <>
+        <header class="categories-controls" aria-label="Category discovery tools">
+          <div class="categories-search">
+            <label for="cat-search">Search categories</label>
+            <input id="cat-search" type="search" placeholder="Search categories..." />
+          </div>
+
+          <div class="categories-sort">
+            <label for="cat-sort">Sort</label>
+            <select id="cat-sort">
+              <option value="az">A-Z</option>
+              <option value="count">Most papers</option>
+            </select>
+          </div>
+        </header>
+
+        <div id="cat-grid" class="cat-grid cat-grid-modern" aria-live="polite">
+          {visibleCategories.map((category) => (
+            <div
+              class="cat-grid-item"
+              data-motion="gsap"
+              data-category-item
+              data-title={category.title.toLowerCase()}
+              data-count={String(category.count)}
+            >
+              <CategoryCard
+                title={category.title}
+                href={category.href}
+                meta={`Latest: ${category.latestIssue}`}
+              />
+            </div>
+          ))}
+        </div>
+        <p id="cat-empty" class="muted small" hidden>No categories match that search.</p>
+      </>
+    )}
   </section>
 
   <script is:inline>
@@ -57,6 +72,7 @@ const categories = categoryGroups.map((group) => ({
     const sortSelect = document.getElementById("cat-sort");
     const grid = document.getElementById("cat-grid");
     const items = Array.from(document.querySelectorAll("[data-category-item]"));
+    const emptyState = document.getElementById("cat-empty");
 
     function applyCategoryFilters() {
       const query = (searchInput?.value || "").trim().toLowerCase();
@@ -88,6 +104,10 @@ const categories = categoryGroups.map((group) => ({
         visibleItems.forEach((item) => {
           grid.appendChild(item);
         });
+      }
+
+      if (emptyState) {
+        emptyState.hidden = visibleItems.length !== 0;
       }
     }
 

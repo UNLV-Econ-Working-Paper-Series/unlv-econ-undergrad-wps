@@ -1,24 +1,20 @@
 # Governance
 
-This document defines operating roles and change control for the public website repository of the UNLV Economics Research Working Paper Series.
-
-Canonical operations/process governance is also maintained in:
-- https://github.com/markjayson13/private-ops-repo/blob/main/GOVERNANCE.md
+This document defines stewardship and change control for the public website repository of the UNLV Undergraduate Economics Working Paper Series.
 
 ## 1) Roles
 
 - Editorial Lead
-  - Final editorial/program owner for publication-facing decisions.
+  - Final owner for publication-facing decisions.
 
 - Co-Editor
-  - Supports Editorial Lead on policy and publication approvals.
+  - Supports the Editorial Lead on policy and publication approvals.
 
-- Operations (Graduate Assistants; rotating)
-  - Day-to-day website support, metadata QA, and publication coordination.
+- Technical Maintainer
+  - Maintains the site code, build, deployment, and structural changes.
 
-- Founding Technical Editor (Mark Jayson Farol)
-  - Founding architect and original technical author of the public platform.
-  - Provides continuity guidance on major technical changes when available.
+- Operations Support
+  - Assists with metadata checks, content preparation, and routine site updates.
 
 ## 2) Change Control
 
@@ -29,7 +25,7 @@ Examples:
 - docs updates
 
 Approval:
-- Operations plus one editor role.
+- one editor role plus one technical maintainer
 
 ### Major changes
 Examples:
@@ -39,8 +35,8 @@ Examples:
 - legal/policy model changes
 
 Approval:
-- Editorial Lead plus one additional approver (Co-Editor or designated technical owner).
-- Founding Technical Editor consultation is recommended.
+- Editorial Lead plus one additional approver
+- at least one approver should be responsible for the technical implementation when code changes are involved
 
 ## 3) Attribution and Credit Expectations
 

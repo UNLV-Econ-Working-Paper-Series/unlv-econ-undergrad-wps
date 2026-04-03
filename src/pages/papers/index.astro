@@ -5,20 +5,26 @@ import { cleanPaperTitle, getIssueGroups, paperHref } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
 
 const issues = await getIssueGroups();
+const publishedIssues = issues.filter((issue) => issue.papers.length > 0);
 ---
 
 <BaseLayout title="Papers | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-papers page-papers">
   <PageBanner title="Papers" subtitle="Browse every working paper organized by semester issue." />
 
   <section class="content-section">
-    {issues.length === 0 ? (
+    {publishedIssues.length === 0 ? (
       <article class="accent-card empty-state-card">
-        <p class="muted">No papers available yet.</p>
+        <h2>No current-series papers are available yet.</h2>
+        <p class="muted">
+          Current semester issues are live, but papers have not been posted yet. You can still browse the issue listings and the legacy archive.
+        </p>
+        <div class="card-actions">
+          <a class="btn btn-small" href={withBase("/issues/")}>Browse issues</a>
+          <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive</a>
+        </div>
       </article>
     ) : (
-      issues
-        .filter((issue) => issue.papers.length > 0)
-        .map((issue) => (
+      publishedIssues.map((issue) => (
           <section class="paper-issue-group" id={issue.slug}>
             <h2>{issue.label}</h2>
             <div class="card-grid">

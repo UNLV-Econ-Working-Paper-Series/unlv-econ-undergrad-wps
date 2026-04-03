@@ -40,9 +40,9 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
         { text: " as a single issue." },
       ],
       [
-        { text: "Each paper has a ", tone: "strong" },
-        { text: "citable page", tone: "strong" },
-        { text: " with abstract, metadata, and downloadable PDF." },
+        { text: "Each paper has its own ", tone: "strong" },
+        { text: "paper page", tone: "strong" },
+        { text: " with an abstract, metadata, and a downloadable PDF." },
       ],
       [
         { text: "Projects are developed with ", tone: "strong" },
@@ -58,16 +58,12 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
         type: "paragraph",
         segments: [
           {
-            text: "The UNLV Undergraduate Economics Working Paper Series preserves and showcases department-affiliated economics research by turning economic questions into ",
+            text: "The UNLV Undergraduate Economics Working Paper Series is a public archive for papers connected to the UNLV Department of Economics. It gives students, graduate assistants, faculty, and collaborators one place to post ",
           },
-          { text: "evidence, analysis, and defensible arguments", tone: "strong" },
-          { text: ", and is designed to keep that work " },
-          { text: "discoverable, readable, and citable", tone: "strong" },
-          { text: " for a wider audience; it is a working-paper archive for the UNLV Economics community, " },
+          { text: "working papers", tone: "strong" },
+          { text: ". The site is " },
           { text: "not a peer-reviewed journal", tone: "strong" },
-          {
-            text: ", and papers may evolve across versions as authors refine methods, writing, and interpretation.",
-          },
+          { text: ", and authors may revise papers over time." },
         ],
       },
     ],
@@ -135,7 +131,7 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
             type: "paragraph",
             segments: [
               {
-                text: "Posting is intended to make work discoverable and citable. For reuse beyond brief quotation, contact the author or the series team.",
+                text: "Posting a paper here makes it publicly available. For reuse beyond brief quotation, contact the author or the series team.",
               },
             ],
           },
@@ -203,7 +199,7 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
   },
   cta: {
     title: "Get Involved",
-    body: "Contact the series team for publication questions, corrections, or collaboration with department research workflows.",
+    body: "Contact the series team with questions about posting a paper, fixing a record, or helping with the site.",
     actions: [
       { label: "Contact", href: "/contact/", primary: true },
       { label: "Explore Research Pathway", href: "/our/" },

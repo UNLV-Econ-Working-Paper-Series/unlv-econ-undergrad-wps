@@ -7,10 +7,12 @@ import { withBase } from "../lib/urls";
 
 const issues = await getIssueGroups();
 const categories = await getCategoryGroups();
+const publishedIssues = issues.filter((issue) => issue.papers.length > 0);
 
 const latestIssue = issues[0] ?? null;
 const latestIssueTitles = (latestIssue?.papers ?? []).slice(0, 3);
 const categoryChips = categories.filter((group) => group.count > 0).sort((a, b) => b.count - a.count).slice(0, 10);
+const hasPublishedPapers = publishedIssues.length > 0;
 
 const heroImage = withBase("/assets/images/lee-business-school.jpg");
 
@@ -115,7 +117,9 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News
         </p>
         <div class="hero-actions">
           <a class="btn btn-home-primary" href={withBase("/issues/")}>Browse Issues</a>
-          <a class="btn btn-home-secondary" href={withBase("/papers/")}>Search Papers</a>
+          <a class="btn btn-home-secondary" href={withBase(hasPublishedPapers ? "/papers/" : "/issues/archive/")}>
+            {hasPublishedPapers ? "Search Papers" : "Browse Archive"}
+          </a>
         </div>
       </div>
     </div>
@@ -210,13 +214,22 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News
     </div>
 
     <article class="card home-surface" data-motion="gsap">
-      <div class="home-category-chips" role="list" aria-label="Top categories">
-        {categoryChips.map((category) => (
-          <a class="home-category-chip" role="listitem" href={withBase(`/categories/${category.slug}/`)}>
-            {category.name}
-          </a>
-        ))}
-      </div>
+      {categoryChips.length > 0 ? (
+        <div class="home-category-chips" role="list" aria-label="Top categories">
+          {categoryChips.map((category) => (
+            <a class="home-category-chip" role="listitem" href={withBase(`/categories/${category.slug}/`)}>
+              {category.name}
+            </a>
+          ))}
+        </div>
+      ) : (
+        <>
+          <p class="muted">Category pages will fill in as current-series papers are published.</p>
+          <div class="card-actions">
+            <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive topics</a>
+          </div>
+        </>
+      )}
     </article>
   </section>
 
@@ -232,8 +245,8 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News
     <article class="card home-surface" data-motion="gsap">
       <ul class="home-about-bullets">
         <li>Open-access archive of UNLV Department of Economics working papers, organized by semester issue.</li>
-        <li>Working paper series for discovery and citation; papers are not peer-reviewed journal articles.</li>
-        <li>Authors retain visible, citable research records with downloadable PDFs.</li>
+        <li>Working papers are posted for public reading; they are not peer-reviewed journal articles.</li>
+        <li>Each paper stays available on its own page with a downloadable PDF.</li>
       </ul>
     </article>
   </section>

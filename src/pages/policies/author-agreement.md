@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Author Posting Agreement (Summary)
-lead: This summary outlines author rights, posting permissions, and publication responsibilities.
+lead: Plain-language summary of what authors allow when a paper is posted.
 bodyClass: page-policy-author-agreement
 ---
 

@@ -28,7 +28,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
     name: "Mark Jayson Farol, M.A.",
     displayRole: "Series Organizer",
     summary:
-      "Maintains the series workflow and publication structure to keep department research accessible, organized, and citable.",
+      "Built the site and manages page setup, metadata, and issue posting for the series.",
     sections: ["editorial_team"],
     headshot: "/assets/images/mark-jayson.jpg",
     sortOrder: 20,
@@ -37,7 +37,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
     id: "brandon-penticoff",
     name: "Brandon Penticoff",
     displayRole: "Spring 2026",
-    summary: "Supports manuscript quality checks and publication readiness across the semester issue workflow.",
+    summary: "Helps prepare papers for posting and checks issue materials before publication.",
     sections: ["graduate_assistants"],
     headshot: "/assets/images/brandon-penticoff.jpg",
     profileHref: "/graduate-assistants/brandon-penticoff/",
