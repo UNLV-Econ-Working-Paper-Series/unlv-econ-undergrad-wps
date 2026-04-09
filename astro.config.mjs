@@ -3,8 +3,8 @@ import basicSsl from "@vitejs/plugin-basic-ssl";
 
 export default defineConfig({
   output: "static",
-  site: "https://markjayson13.github.io",
-  base: "/econ495journal_site",
+  site: "https://unlv-econ-working-paper-series.github.io/unlv-econ-undergrad-wps/",
+  base: "/unlv-econ-undergrad-wps",
   server: {
     host: true,
     port: 4321,
