@@ -1,18 +1,35 @@
-import { defineConfig } from "astro/config";
-import basicSsl from "@vitejs/plugin-basic-ssl";
+name: Deploy to GitHub Pages
 
-export default defineConfig({
-  output: "static",
-  site: "https://unlv-econ-working-paper-series.github.io/unlv-econ-undergrad-wps/",
-  base: "/unlv-econ-undergrad-wps",
-  server: {
-    host: true,
-    port: 4321,
-  },
-  vite: {
-    plugins: [basicSsl()],
-    server: {
-      https: true,
-    },
-  },
-});
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repository using git
+        uses: actions/checkout@v6
+
+      - name: Install, build, and upload your site
+        uses: withastro/action@v6
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
