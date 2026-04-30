@@ -1,0 +1,22 @@
+{
+  "name": "UNLV Undergraduate Economics Working Paper Series",
+  "short_name": "UNLV Econ WPS",
+  "description": "Open-access working paper archive for the UNLV Department of Economics.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b10202",
+  "icons": [
+    {
+      "src": "/assets/brand/site-logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

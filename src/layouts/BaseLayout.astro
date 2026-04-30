@@ -50,6 +50,22 @@ function isActive(href: string): boolean {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href={withBase("/favicon.svg")} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={withBase("/apple-touch-icon.png")} />
+    <link rel="manifest" href={withBase("/site.webmanifest")} />
+    <meta name="theme-color" content="#b10202" />
+
+    <meta property="og:site_name" content="UNLV Undergraduate Economics Working Paper Series" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={new URL(withBase("/assets/brand/og-image.png"), siteUrl).toString()} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(withBase("/assets/brand/og-image.png"), siteUrl).toString()} />
     <style is:inline set:html={globalCss}></style>
     <ClientRouter />
   </head>
