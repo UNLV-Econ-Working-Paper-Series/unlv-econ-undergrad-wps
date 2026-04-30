@@ -56,10 +56,13 @@ const featuredItems =
       }));
 
 const defaultLatestIssueHref = latestIssue ? `/issues/${latestIssue.slug}/` : "/issues/";
-const latestIssueTitle = latestIssueEditable.title?.trim() || latestIssue?.label || "Latest Issue";
+const latestIssueFallbackTitle =
+  latestIssue && latestIssue.papers.length === 0 ? `Upcoming Issue, ${latestIssue.label}` : latestIssue?.label || "Latest Issue";
+const latestIssueTitle = latestIssueEditable.title?.trim() || latestIssueFallbackTitle;
 const latestIssueHref = toDisplayHref(latestIssueEditable.href, defaultLatestIssueHref);
-const latestIssueMeta = latestIssueEditable.metaText?.trim() || (latestIssue ? `${latestIssue.papers.length} papers` : "");
-const latestIssueEmptyStateText = latestIssueEditable.emptyStateText?.trim() || "No papers posted in this issue yet";
+const latestIssueMeta =
+  latestIssueEditable.metaText?.trim() || (latestIssue && latestIssue.papers.length > 0 ? `${latestIssue.papers.length} papers` : "");
+const latestIssueEmptyStateText = latestIssueEditable.emptyStateText?.trim() || "Papers for this issue will be posted soon.";
 
 const latestIssuePrimaryCta = {
   label: latestIssueEditable.primaryCta?.label?.trim() || "Browse Issue",
@@ -98,7 +101,7 @@ const newsHeading = newsAndEventsEditable.title?.trim() || "News and Events";
 const newsItems = ((newsAndEventsEditable.items ?? []).length > 0 ? newsAndEventsEditable.items ?? [] : NEWS_EVENTS)
   .map((item) => item.trim())
   .filter((item) => item.length > 0);
-const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News and event updates will be posted here";
+const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "Updates about the series will be posted here.";
 ---
 
 <BaseLayout title="UNLV Undergraduate Economics Working Paper Series" bodyClass="page-home">
@@ -156,17 +159,17 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News
           {latestIssueMeta ? <p class="home-issue-meta">{latestIssueMeta}</p> : null}
         </header>
 
-        <ol class="home-featured-list">
-          {featuredItems.length > 0 ? (
-            featuredItems.map((item) => (
+        {featuredItems.length > 0 ? (
+          <ol class="home-featured-list">
+            {featuredItems.map((item) => (
               <li>
                 {item.href ? <a href={item.href}>{item.label}</a> : item.label}
               </li>
-            ))
-          ) : (
-            <li class="muted">{latestIssueEmptyStateText}</li>
-          )}
-        </ol>
+            ))}
+          </ol>
+        ) : (
+          <p class="muted home-featured-empty">{latestIssueEmptyStateText}</p>
+        )}
 
         <div class="card-actions">
           {latestIssuePrimaryCta.label ? (
@@ -228,7 +231,7 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "News
         </div>
       ) : (
         <>
-          <p class="muted">Category pages will fill in as current-series papers are published</p>
+          <p class="muted">Topic pages will populate as papers are added to the series.</p>
           <div class="card-actions">
             <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive topics</a>
           </div>

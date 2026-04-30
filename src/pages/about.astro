@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import PageBanner from "../components/PageBanner.astro";
 import ProfileLinks from "../components/ProfileLinks.astro";
 import RichTextInline from "../components/RichTextInline.astro";
@@ -98,10 +99,13 @@ const currentGraduateAssistants = sortedProfiles.filter(
                 {editorialTeam.map((person) => (
                   <article class="about-person-card">
                     {person.headshot ? (
-                      <img
+                      <Image
                         class="about-person-thumb"
                         src={withBase(person.headshot)}
                         alt={person.name}
+                        width={72}
+                        height={72}
+                        loading="lazy"
                         title={person.photoSource}
                       />
                     ) : null}
@@ -145,10 +149,13 @@ const currentGraduateAssistants = sortedProfiles.filter(
                 {currentGraduateAssistants.map((assistant) => (
                   <article class="about-person-card">
                     {assistant.headshot ? (
-                      <img
+                      <Image
                         class="about-person-thumb"
                         src={withBase(assistant.headshot)}
                         alt={assistant.name}
+                        width={72}
+                        height={72}
+                        loading="lazy"
                         title={assistant.photoSource}
                       />
                     ) : null}

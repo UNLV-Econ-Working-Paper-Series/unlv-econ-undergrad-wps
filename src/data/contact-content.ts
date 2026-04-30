@@ -12,10 +12,10 @@ export const CONTACT_PAGE_CONTENT: ContactPageContent = {
     series: {
       title: "Series Team",
       desc: "Questions about papers, corrections, permissions, takedown requests, and site issues",
-      email: "series-team@unlv.edu",
-      hint: "Placeholder address until the department assigns a permanent series inbox",
+      email: "contact@econ-undergrad-wps.sites.unlv.edu",
+      hint: "",
       actions: [
-        { label: "Email Series Team", href: "mailto:series-team@unlv.edu", primary: true },
+        { label: "Email Series Team", href: "mailto:contact@econ-undergrad-wps.sites.unlv.edu", primary: true },
         { label: "Common Requests", href: "#requests" },
       ],
     },

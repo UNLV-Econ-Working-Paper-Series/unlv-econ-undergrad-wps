@@ -16,6 +16,8 @@ const {
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
+const siteUrl = Astro.site ?? new URL("https://econ-undergrad-wps.sites.unlv.edu");
+const canonicalUrl = new URL(pathname, siteUrl).toString();
 const currentYear = new Date().getFullYear();
 const navItems = [
   { href: withBase("/"), label: "Home" },
@@ -47,6 +49,7 @@ function isActive(href: string): boolean {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
     <style is:inline set:html={globalCss}></style>
     <ClientRouter />
   </head>

@@ -21,7 +21,11 @@ const issueZipAvailable = publicAssetExists(issueZipPath);
 
 <BaseLayout title={`${issueLabel} | Issues`} bodyClass="section-issues page-issue-detail">
   <div class="issue-layout">
-    <PageBanner kicker="Issue" title={issueLabel} subtitle={`Browse working papers published in ${issueLabel}`} />
+    <PageBanner
+      kicker="Issue"
+      title={issueLabel}
+      subtitle={papers.length > 0 ? `Browse working papers published in ${issueLabel}` : "Papers for this issue will be posted soon."}
+    />
 
     <section class="content-section issue-content">
       <div class="page-intro-actions">
@@ -42,10 +46,10 @@ const issueZipAvailable = publicAssetExists(issueZipPath);
 
       {papers.length === 0 ? (
         <article class="accent-card empty-state-card">
-          <h2>No papers available yet</h2>
-          <p class="muted">This issue page is published, but paper records have not been posted yet</p>
+          <h2>Coming soon</h2>
+          <p class="muted">Papers for this issue will be posted soon.</p>
           <div class="card-actions">
-            <a class="btn btn-small" href={withBase("/issues/")}>Browse all issues</a>
+            <a class="btn btn-small" href={withBase("/issues/")}>Back to issues</a>
             <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive</a>
           </div>
         </article>

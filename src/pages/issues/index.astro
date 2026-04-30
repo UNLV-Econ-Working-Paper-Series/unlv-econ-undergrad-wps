@@ -5,11 +5,14 @@ import { getIssueGroups } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
 
 const issues = await getIssueGroups();
-const issuesIntro =
-  "Browse issues by semester. Each issue groups the papers posted for that term";
+const publishedIssues = issues.filter((issue) => issue.papers.length > 0);
+const hasPublishedIssues = publishedIssues.length > 0;
+const issuesIntro = hasPublishedIssues
+  ? "Browse issues by semester. Each issue groups the papers posted for that term"
+  : "Current issue listings will be posted soon.";
 
 const issueCategoryMap = new Map(
-  issues.map((issue) => [
+  publishedIssues.map((issue) => [
     issue.slug,
     [...new Set(issue.papers.map((paper) => paper.data.category.trim()).filter((category) => category.length > 0))].sort((a, b) =>
       a.localeCompare(b)
@@ -17,118 +20,115 @@ const issueCategoryMap = new Map(
   ])
 );
 
-const years = [...new Set(issues.map((issue) => issue.year).filter((year): year is number => typeof year === "number"))].sort(
+const years = [...new Set(publishedIssues.map((issue) => issue.year).filter((year): year is number => typeof year === "number"))].sort(
   (a, b) => b - a
 );
 const categories = [...new Set([...issueCategoryMap.values()].flat())].sort((a, b) => a.localeCompare(b));
-const latestIssue = issues[0] ?? null;
+const latestIssue = publishedIssues[0] ?? null;
 ---
 
 <BaseLayout title="Issues | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-issues page-issues">
   <PageBanner title="Issues" subtitle={issuesIntro} />
 
   <section class="issues-explorer content-section">
-    <section class="issues-controls issues-controls--modern" aria-label="Issue filters">
-      <div class="issues-search">
-        <label for="issues-search">Search papers</label>
-        <input id="issues-search" type="search" placeholder="Search papers..." />
-      </div>
+    {hasPublishedIssues ? (
+      <>
+        <section class="issues-controls issues-controls--modern" aria-label="Issue filters">
+          <div class="issues-search">
+            <label for="issues-search">Search papers</label>
+            <input id="issues-search" type="search" placeholder="Search papers..." />
+          </div>
 
-      <div class="issues-filter-row issues-filter-row--selects" aria-label="Issue filters">
-        <div class="issues-year-filter">
-          <label class="issues-filter-label" for="issues-year">Year</label>
-          <select id="issues-year">
-            <option value="">All years</option>
-            {years.map((year) => (
-              <option value={String(year)}>{year}</option>
-            ))}
-          </select>
-        </div>
+          <div class="issues-filter-row issues-filter-row--selects" aria-label="Issue filters">
+            <div class="issues-year-filter">
+              <label class="issues-filter-label" for="issues-year">Year</label>
+              <select id="issues-year">
+                <option value="">All years</option>
+                {years.map((year) => (
+                  <option value={String(year)}>{year}</option>
+                ))}
+              </select>
+            </div>
 
-        <div class="issues-category-filter">
-          <label class="issues-filter-label" for="issues-category">Category</label>
-          <select id="issues-category">
-            <option value="">All categories</option>
-            {categories.map((category) => (
-              <option value={category.toLowerCase()}>{category}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-    </section>
+            <div class="issues-category-filter">
+              <label class="issues-filter-label" for="issues-category">Category</label>
+              <select id="issues-category">
+                <option value="">All categories</option>
+                {categories.map((category) => (
+                  <option value={category.toLowerCase()}>{category}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </section>
 
-    {latestIssue ? (
-      <section class="issues-latest-line" data-motion="gsap" aria-label="Latest issue">
-        <p class="issues-latest-line__text">
-          <span class="issues-latest-line__label">Latest issue:</span>{" "}
-          <a class="issues-latest-line__link" href={withBase(`/issues/${latestIssue.slug}/`)}>
-            {latestIssue.label}
-          </a>
-        </p>
+        {latestIssue ? (
+          <section class="issues-latest-line" data-motion="gsap" aria-label="Latest issue">
+            <p class="issues-latest-line__text">
+              <span class="issues-latest-line__label">Latest issue:</span>{" "}
+              <a class="issues-latest-line__link" href={withBase(`/issues/${latestIssue.slug}/`)}>
+                {latestIssue.label}
+              </a>
+            </p>
 
-        <a class="btn btn-small btn-primary" href={withBase(`/issues/${latestIssue.slug}/`)}>
-          Browse
-        </a>
-      </section>
-    ) : null}
+            <a class="btn btn-small btn-primary" href={withBase(`/issues/${latestIssue.slug}/`)}>
+              Browse
+            </a>
+          </section>
+        ) : null}
 
-    <section class="issues-cards" aria-label="Issue cards">
-      {issues.length === 0 ? (
-        <article class="card empty-state-card">
-          <p class="muted">No issues have been published yet</p>
-        </article>
-      ) : (
-        issues.map((issue) => {
-          const issueCategories = issueCategoryMap.get(issue.slug) ?? [];
-          const searchText = [
-            issue.label,
-            ...issue.papers.map((paper) => paper.data.title),
-            ...issue.papers.flatMap((paper) => paper.data.authors),
-            ...issue.papers.flatMap((paper) => paper.data.keywords),
-            ...issue.papers.map((paper) => paper.data.abstract),
-            ...issueCategories,
-          ]
-            .join(" ")
-            .toLowerCase();
+        <section class="issues-cards" aria-label="Issue cards">
+          {publishedIssues.map((issue) => {
+            const issueCategories = issueCategoryMap.get(issue.slug) ?? [];
+            const searchText = [
+              issue.label,
+              ...issue.papers.map((paper) => paper.data.title),
+              ...issue.papers.flatMap((paper) => paper.data.authors),
+              ...issue.papers.flatMap((paper) => paper.data.keywords),
+              ...issue.papers.map((paper) => paper.data.abstract),
+              ...issueCategories,
+            ]
+              .join(" ")
+              .toLowerCase();
 
-          return (
-            <article
-              class="issue-archive-card card"
-              data-motion="gsap"
-              data-issue-card
-              data-year={issue.year === null ? "unknown" : String(issue.year)}
-              data-categories={issueCategories.map((category) => category.toLowerCase()).join("|")}
-              data-search={searchText}
-            >
-              <header class="issue-archive-head">
-                <h2>{issue.label}</h2>
-                <p class="issue-card-meta">
-                  {issue.papers.length} papers • {issueCategories.length} categories
-                </p>
-              </header>
+            return (
+              <article
+                class="issue-archive-card card"
+                data-motion="gsap"
+                data-issue-card
+                data-year={issue.year === null ? "unknown" : String(issue.year)}
+                data-categories={issueCategories.map((category) => category.toLowerCase()).join("|")}
+                data-search={searchText}
+              >
+                <header class="issue-archive-head">
+                  <h2>{issue.label}</h2>
+                  <p class="issue-card-meta">
+                    {issue.papers.length} papers • {issueCategories.length} categories
+                  </p>
+                </header>
 
-              <div class="issue-topic-chips" aria-label={`Categories in ${issue.label}`}>
-                {issueCategories.length === 0 ? (
-                  <span class="issue-topic-chip">Uncategorized</span>
-                ) : (
-                  <>
-                    {issueCategories.slice(0, 5).map((category) => (
-                      <span class="issue-topic-chip">{category}</span>
-                    ))}
-                    {issueCategories.length > 5 ? <span class="issue-topic-chip">+{issueCategories.length - 5} more</span> : null}
-                  </>
-                )}
-              </div>
+                <div class="issue-topic-chips" aria-label={`Categories in ${issue.label}`}>
+                  {issueCategories.slice(0, 5).map((category) => (
+                    <span class="issue-topic-chip">{category}</span>
+                  ))}
+                  {issueCategories.length > 5 ? <span class="issue-topic-chip">+{issueCategories.length - 5} more</span> : null}
+                </div>
 
-              <div class="issue-card-actions">
-                <a class="btn btn-small btn-primary" href={withBase(`/issues/${issue.slug}/`)}>Browse issue</a>
-              </div>
-            </article>
-          );
-        })
-      )}
-    </section>
-    <p id="issues-empty" class="muted small" hidden>No issues match those filters</p>
+                <div class="issue-card-actions">
+                  <a class="btn btn-small btn-primary" href={withBase(`/issues/${issue.slug}/`)}>Browse issue</a>
+                </div>
+              </article>
+            );
+          })}
+        </section>
+        <p id="issues-empty" class="muted small" hidden>No issues match those filters</p>
+      </>
+    ) : (
+      <article class="accent-card empty-state-card" data-motion="gsap">
+        <h2>Coming soon</h2>
+        <p class="muted">Issue listings will be posted soon.</p>
+      </article>
+    )}
 
     <section class="issues-archive-container">
       <a class="issue-archive-card issue-archive-link card" data-motion="gsap" href={withBase("/issues/archive/")}>

@@ -23,9 +23,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <strong>Email:</strong>
           <a href={`mailto:${CONTACT_PAGE_CONTENT.contact.series.email}`}>{CONTACT_PAGE_CONTENT.contact.series.email}</a>
         </p>
-        <p class="contact-hint">
-          {CONTACT_PAGE_CONTENT.contact.series.hint}
-        </p>
+        {CONTACT_PAGE_CONTENT.contact.series.hint ? (
+          <p class="contact-hint">
+            {CONTACT_PAGE_CONTENT.contact.series.hint}
+          </p>
+        ) : null}
       </ContactCard>
 
       <ContactCard

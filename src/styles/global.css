@@ -3505,6 +3505,13 @@ a:hover {
   gap: 0.55rem;
 }
 
+.page-home .home-featured-empty {
+  margin: 0.85rem 0 0;
+  color: #2e343b;
+  font-size: 0.96rem;
+  line-height: 1.52;
+}
+
 .page-home .home-featured-list li,
 .page-home .home-featured-list a {
   color: #2e343b;

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://econ-undergrad-wps.sites.unlv.edu/sitemap.xml

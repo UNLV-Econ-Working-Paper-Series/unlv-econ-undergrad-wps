@@ -48,6 +48,8 @@ const { title, desc = "", actions = [] } = Astro.props;
     border-radius: 18px;
     box-shadow: 0 2px 8px rgba(20, 24, 32, 0.06);
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
   }
 
   .contact-card-head h2 {
@@ -70,7 +72,8 @@ const { title, desc = "", actions = [] } = Astro.props;
   }
 
   .contact-card-actions {
-    margin-top: 0.92rem;
+    margin-top: auto;
+    padding-top: 0.92rem;
     display: flex;
     gap: 0.55rem;
     flex-wrap: wrap;
