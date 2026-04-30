@@ -9,7 +9,7 @@ authors:
       - author
       - maintainer
 license: "SEE LICENSE FILE"
-repository-code: "https://github.com/markjayson13/econ495journal_site"
-url: "https://github.com/markjayson13/econ495journal_site"
+repository-code: "https://github.com/UNLV-Econ-Working-Paper-Series/unlv-econ-undergrad-wps"
+url: "https://econ-undergrad-wps.sites.unlv.edu"
 date-released: "2026-03-06"
 abstract: "Public-facing website for the UNLV Undergraduate Economics Working Paper Series."

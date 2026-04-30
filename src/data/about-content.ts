@@ -5,7 +5,7 @@ const bibtexTemplate = `@misc{unlv_econ_wp_author_year,
   author       = {Last, First and Last, First},
   year         = {2026},
   howpublished = {UNLV Undergraduate Economics Working Paper Series, Issue: Spring 2026},
-  url          = {https://markjayson13.github.io/<site-path>/papers/<paper-slug>/},
+  url          = {https://econ-undergrad-wps.sites.unlv.edu/papers/<paper-slug>/},
   note         = {Working paper (Department of Economics research).}
 }`;
 

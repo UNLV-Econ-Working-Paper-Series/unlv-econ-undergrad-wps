@@ -43,3 +43,7 @@ Approval:
 - `NOTICE` must remain present in this repository.
 - `CONTRIBUTORS.md` should be updated as contributors join.
 - Public-facing credit should remain visible in footer and About/Credits.
+
+## 4) Public Writing Standards
+
+Public-facing copy should follow [`docs/WRITING-STANDARDS.md`](docs/WRITING-STANDARDS.md). Use plain institutional language, describe the project as a working paper series or archive, and keep working-paper disclaimers direct.
