@@ -1,7 +1,14 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { cleanPaperTitle, getCategoryGroups, getIssueLabelForPaper, paperHref } from "../../lib/papers";
+import {
+  cleanPaperTitle,
+  formatPaperDate,
+  getCategoryGroups,
+  getIssueLabelForPaper,
+  paperHref,
+  paperPdfHref,
+} from "../../lib/papers";
 import { withBase } from "../../lib/urls";
 
 export async function getStaticPaths() {
@@ -33,7 +40,7 @@ const categoryName = category?.name ?? categorySlug;
         {papers.map((paper) => (
           <article class="card paper-card accent-card">
             <div class="paper-meta">
-              {paper.data.published_at ? <span class="pill">{paper.data.published_at}</span> : null}
+              {paper.data.published_at ? <span class="pill">{formatPaperDate(paper.data.published_at)}</span> : null}
               <span class="pill light">{getIssueLabelForPaper(paper)}</span>
             </div>
             <h3><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h3>
@@ -41,7 +48,7 @@ const categoryName = category?.name ?? categorySlug;
             <p class="muted">{paper.data.abstract.slice(0, 220)}{paper.data.abstract.length > 220 ? "..." : ""}</p>
             <div class="card-actions">
               <a class="btn btn-small" href={paperHref(paper)}>Read abstract</a>
-              <a class="btn btn-small btn-primary" href={withBase(paper.data.pdf)}>Download PDF</a>
+              <a class="btn btn-small btn-primary" href={paperPdfHref(paper)}>Read PDF</a>
             </div>
           </article>
         ))}

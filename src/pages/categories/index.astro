@@ -57,7 +57,7 @@ const visibleCategories = categories.filter((category) => category.count > 0);
               <CategoryCard
                 title={category.title}
                 href={category.href}
-                meta={`Latest: ${category.latestIssue}`}
+                meta={`${category.count} ${category.count === 1 ? "paper" : "papers"} • Latest: ${category.latestIssue}`}
               />
             </div>
           ))}

@@ -27,9 +27,9 @@ const currentGraduateAssistants = sortedProfiles.filter(
 
   <section class="content-section">
     <div class="page-with-toc">
-      <aside class="page-with-toc__toc">
+      <div class="page-with-toc__toc">
         <TableOfContents items={ABOUT_PAGE_CONTENT.tocItems} />
-      </aside>
+      </div>
 
       <div class="page-with-toc__main">
         <section class="about-modern-shell">
@@ -50,7 +50,7 @@ const currentGraduateAssistants = sortedProfiles.filter(
               ) : block.type === "heading" ? (
                 <h3>{block.text}</h3>
               ) : (
-                <pre class="about-code"><code>{block.code}</code></pre>
+                <pre class="about-code" tabindex="0"><code>{block.code}</code></pre>
               )
             )}
           </section>
@@ -81,7 +81,7 @@ const currentGraduateAssistants = sortedProfiles.filter(
                     ) : block.type === "heading" ? (
                       <h3>{block.text}</h3>
                     ) : (
-                      <pre class="about-code"><code>{block.code}</code></pre>
+                      <pre class="about-code" tabindex="0"><code>{block.code}</code></pre>
                     )
                   )}
                 </div>

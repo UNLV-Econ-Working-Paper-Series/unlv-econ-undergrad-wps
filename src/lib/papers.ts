@@ -145,6 +145,41 @@ export function paperHref(paper: PaperEntry): string {
   return withBase(`/papers/${paperSlug(paper)}/`);
 }
 
+export function paperPdfHref(paper: PaperEntry): string {
+  const href = paper.data.pdf.trim();
+  return /^https?:\/\//i.test(href) ? href : withBase(href);
+}
+
+export function formatPaperDate(raw: string | undefined): string {
+  const value = raw?.trim();
+  if (!value) {
+    return "Date not provided";
+  }
+
+  const isoDate = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  const parsed = isoDate
+    ? new Date(Date.UTC(Number(isoDate[1]), Number(isoDate[2]) - 1, Number(isoDate[3])))
+    : new Date(value);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(parsed);
+}
+
+export function repositoryIssueLabel(paper: PaperEntry): string | null {
+  if (!paper.data.volume || !paper.data.issue) {
+    return null;
+  }
+  return `Volume ${paper.data.volume}, Issue ${paper.data.issue}`;
+}
+
 export async function getAllPapers(): Promise<PaperEntry[]> {
   const papers = await getCollection("papers");
   return [...papers].sort(comparePapersDesc);
@@ -247,7 +282,11 @@ export function formatCitation(paper: PaperEntry): string {
   const year = yearMatch?.[1] ?? "n.d.";
   const oasisUrl = paper.data.oasis_url?.trim();
   const url = OASIS_MIRROR_ACTIVE && oasisUrl ? oasisUrl : paperHref(paper);
-  return `${authors} (${year}). ${title}. ${issue}. UNLV Undergraduate Economics Working Paper Series. ${url}`;
+  const repositoryIssue = repositoryIssueLabel(paper);
+  const pages = paper.data.pages ? `, ${paper.data.pages}` : "";
+  const seriesDetails = repositoryIssue ? ` ${repositoryIssue}${pages}.` : ` ${issue}.`;
+  const persistentUrl = paper.data.doi ? `https://doi.org/${paper.data.doi}` : url;
+  return `${authors} (${year}). ${title}. UNLV Undergraduate Economics Working Paper Series.${seriesDetails} ${persistentUrl}`;
 }
 
 export function groupPapersBySemester(papers: PaperEntry[]): SemesterGroup[] {

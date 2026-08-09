@@ -39,7 +39,7 @@ const latestIssue = publishedIssues[0] ?? null;
             <input id="issues-search" type="search" placeholder="Search papers..." />
           </div>
 
-          <div class="issues-filter-row issues-filter-row--selects" aria-label="Issue filters">
+          <div class="issues-filter-row issues-filter-row--selects">
             <div class="issues-year-filter">
               <label class="issues-filter-label" for="issues-year">Year</label>
               <select id="issues-year">
@@ -107,11 +107,11 @@ const latestIssue = publishedIssues[0] ?? null;
                   </p>
                 </header>
 
-                <div class="issue-topic-chips" aria-label={`Categories in ${issue.label}`}>
+                <div class="issue-topic-chips" role="list" aria-label={`Categories in ${issue.label}`}>
                   {issueCategories.slice(0, 5).map((category) => (
-                    <span class="issue-topic-chip">{category}</span>
+                    <span class="issue-topic-chip" role="listitem">{category}</span>
                   ))}
-                  {issueCategories.length > 5 ? <span class="issue-topic-chip">+{issueCategories.length - 5} more</span> : null}
+                  {issueCategories.length > 5 ? <span class="issue-topic-chip" role="listitem">+{issueCategories.length - 5} more</span> : null}
                 </div>
 
                 <div class="issue-card-actions">

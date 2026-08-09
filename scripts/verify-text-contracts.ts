@@ -18,20 +18,22 @@ const pageContracts: PageContract[] = [
       "Published by semester issue",
       "Latest Issue",
       "Latest Semester Release",
-      "Upcoming Issue, Spring 2026",
-      "Papers for this issue will be posted soon.",
+      "Spring 2026",
+      "12 papers",
+      "Browse Issue",
       "View all issues",
       "News and Events",
       "Updates about the series will be posted here.",
       "Browse by Category",
       "Explore Topic Areas",
-      "Topic pages will populate as papers are added to the series.",
+      "Applied Microeconomics",
       "What This Series Is",
       "Read full about",
     ],
     absentTexts: [
       '<ol class="home-featured-list"> <li class="muted">Papers for this issue will be posted soon.</li> </ol>',
       '<p class="home-issue-meta">0 papers</p>',
+      "Upcoming Issue, Spring 2026",
     ],
   },
   {
@@ -39,10 +41,14 @@ const pageContracts: PageContract[] = [
     texts: [
       '<link rel="canonical" href="https://econ-undergrad-wps.sites.unlv.edu/issues/2026-spring/">',
       "Spring 2026",
-      "Coming soon",
-      "Papers for this issue will be posted soon.",
+      "Papers in This Issue",
+      "Hedonics of Used Car Attributes on Market Price",
+      "Volume 3, Issue 1",
+      "Read PDF",
     ],
     absentTexts: [
+      "Coming soon",
+      "Papers for this issue will be posted soon.",
       "No papers available yet",
       "paper records have not been posted yet",
     ],
@@ -69,16 +75,59 @@ const pageContracts: PageContract[] = [
     file: "dist/issues/index.html",
     texts: [
       "Issues",
-      "Coming soon",
-      "Issue listings will be posted soon.",
+      "Search papers",
+      "Latest issue:",
+      "Spring 2026",
+      "All years",
+      "All categories",
+      "12 papers",
       "Legacy Archive",
     ],
     absentTexts: [
-      "Latest issue:",
-      "All years",
-      "All categories",
+      "Coming soon",
+      "Issue listings will be posted soon.",
       "0 papers • 0 categories",
       "Uncategorized",
+    ],
+  },
+  {
+    file: "dist/papers/index.html",
+    texts: [
+      '<link rel="canonical" href="https://econ-undergrad-wps.sites.unlv.edu/papers/">',
+      "Working Papers",
+      "Search open-access undergraduate economics research",
+      "15",
+      "Open-access papers",
+      "9",
+      "Research categories",
+      "Browse all working papers",
+      "All categories",
+      "All semesters",
+      "Hedonics of Used Car Attributes on Market Price",
+      "View the OASIS collection",
+    ],
+    absentTexts: [
+      "No current-series papers are available yet",
+      "Date not provided",
+    ],
+  },
+  {
+    file: "dist/papers/hedonics-used-car-attributes/index.html",
+    texts: [
+      "Hedonics of Used Car Attributes on Market Price",
+      "Alexander Bent, Jason Gutierrez",
+      "Research summary",
+      "Publication details",
+      "Applied Microeconomics",
+      "Volume 3, Issue 1",
+      "May 21, 2026",
+      "10.34917/40601193",
+      "Preserved by UNLV Libraries",
+      "Official OASIS record",
+    ],
+    absentTexts: [
+      "Advisor</dt><dd>Not provided",
+      "PDF Preview",
     ],
   },
   {
@@ -159,7 +208,7 @@ function verifyContracts(): void {
 
 try {
   verifyContracts();
-  console.log("OK: verified Homepage/Issues/About/Contact/SEO text contracts in built output.");
+  console.log("OK: verified Homepage/Issues/Papers/About/Contact/SEO text contracts in built output.");
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error(`ERROR: ${message}`);

@@ -50,9 +50,9 @@ const tocItems = [
   />
 
   <div class="page-with-toc">
-    <aside class="page-with-toc__toc">
+    <div class="page-with-toc__toc">
       <TableOfContents items={tocItems} />
-    </aside>
+    </div>
 
     <div class="page-with-toc__main">
       <div class="our-modern-page">
@@ -65,9 +65,9 @@ const tocItems = [
         </p>
       </header>
 
-      <div class="our-path-grid" role="list" aria-label="Research pathway overview">
+      <div class="our-path-grid">
         {pathwayCards.map((card) => (
-          <article class="our-surface our-path-card" data-motion="gsap" role="listitem">
+          <article class="our-surface our-path-card" data-motion="gsap">
             <p class="our-path-kicker">{card.kicker}</p>
             <h3>{card.title}</h3>
             <p>{card.summary}</p>
@@ -134,7 +134,7 @@ const tocItems = [
         </p>
       </header>
 
-      <div class="our-mini-grid" aria-label="Spectra publication details">
+      <div class="our-mini-grid">
         <article class="our-surface our-mini-card" data-motion="gsap">
           <h3>What Spectra publishes</h3>
           <ul class="our-list our-list--compact">

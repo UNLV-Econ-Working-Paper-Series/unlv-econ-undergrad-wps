@@ -1,14 +1,18 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
 import { OASIS_MIRROR_ACTIVE } from "../../config/repositoryStatus";
+import { categorySlugForName } from "../../data/categories";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   cleanPaperTitle,
   formatCitation,
+  formatPaperDate,
   getAllPapers,
   getIssueLabelForPaper,
   getIssueSlugForPaper,
+  paperPdfHref,
   paperSlug,
+  repositoryIssueLabel,
 } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
 
@@ -21,101 +25,131 @@ const { paper } = Astro.props;
 const title = cleanPaperTitle(paper.data.title);
 const issueLabel = getIssueLabelForPaper(paper);
 const issueSlug = getIssueSlugForPaper(paper);
+const categorySlug = categorySlugForName(paper.data.category);
 const citation = formatCitation(paper);
-const pdfHref = withBase(paper.data.pdf);
+const pdfHref = paperPdfHref(paper);
 const oasisUrl = paper.data.oasis_url?.trim();
 const showOasisLink = OASIS_MIRROR_ACTIVE && Boolean(oasisUrl);
-const authorsDisplay = paper.data.authors.length > 0 ? paper.data.authors.join(", ") : "Author information not provided";
-const publicationLabel = (() => {
-  const raw = paper.data.published_at?.trim();
-  if (!raw) {
-    return "Not provided";
-  }
-  const parsed = new Date(raw);
-  if (Number.isNaN(parsed.getTime())) {
-    return raw;
-  }
-  return parsed.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-})();
+const authorsDisplay = paper.data.authors.join(", ");
+const publicationLabel = formatPaperDate(paper.data.published_at);
+const repositoryLabel = repositoryIssueLabel(paper);
+const doiHref = paper.data.doi ? `https://doi.org/${paper.data.doi}` : null;
 ---
 
-<BaseLayout title={`${title} | Papers`} bodyClass="section-papers page-paper-detail">
+<BaseLayout
+  title={`${title} | Papers`}
+  description={paper.data.abstract}
+  bodyClass="section-papers page-paper-detail"
+>
   <div class="paper-page">
     <PageBanner
-      kicker="Working paper (not peer-reviewed unless stated)"
+      kicker="Undergraduate economics working paper"
       title={title}
       subtitle={`${authorsDisplay} • ${issueLabel} • ${publicationLabel}`}
     />
 
-    <section class="content-section paper-detail-quick-actions">
-      <div class="page-intro-actions">
-        <a class="btn btn-primary" href={pdfHref}>Download PDF</a>
-        {showOasisLink && (
-          <a class="btn btn-small" href={oasisUrl} target="_blank" rel="noopener noreferrer">
-            View in OAsis (UNLV Repository)
-          </a>
-        )}
-        <a class="btn btn-small" href={withBase(`/issues/${issueSlug}/`)}>Back to issue</a>
+    <nav class="paper-detail-quick-actions content-section" aria-label="Paper actions">
+      <a class="btn btn-primary" href={pdfHref}>Read full paper (PDF)</a>
+      {showOasisLink ? (
+        <a class="btn btn-small btn-outline" href={oasisUrl} rel="external">View OASIS record</a>
+      ) : null}
+      <a class="btn btn-small btn-outline" href={withBase("/papers/")}>All papers</a>
+      <a class="btn btn-small btn-outline" href={withBase(`/issues/${issueSlug}/`)}>Back to {issueLabel}</a>
+    </nav>
+
+    <div class="paper-detail-layout content-section">
+      <div class="paper-detail-main">
+        <section class="paper-detail-section paper-abstract-card" aria-labelledby="paper-abstract-title">
+          <p class="paper-library-eyebrow">Abstract</p>
+          <h2 id="paper-abstract-title">Research summary</h2>
+          <p class="paper-detail-abstract">{paper.data.abstract}</p>
+        </section>
+
+        <section class="paper-detail-section paper-citation-card" aria-labelledby="paper-citation-heading">
+          <div class="paper-citation-head">
+            <div>
+              <p class="paper-library-eyebrow">Citation</p>
+              <h2 id="paper-citation-heading">Recommended citation</h2>
+            </div>
+            <button
+              type="button"
+              class="btn btn-small btn-outline copy-btn"
+              data-copy-target="#paper-citation"
+              aria-live="polite"
+            >Copy citation</button>
+          </div>
+          <div id="paper-citation" class="citation-copy">{citation}</div>
+        </section>
       </div>
-    </section>
 
-    <section class="content-section paper-detail-grid">
-      <article class="card accent-card paper-meta-card">
-        <h2>Article Details</h2>
-        <dl class="paper-detail-list">
-          <div class="paper-detail-row">
-            <dt>Issue</dt>
-            <dd>{issueLabel}</dd>
-          </div>
-          <div class="paper-detail-row">
-            <dt>Publication Date</dt>
-            <dd>{publicationLabel}</dd>
-          </div>
-          <div class="paper-detail-row">
-            <dt>Authors</dt>
-            <dd>{authorsDisplay}</dd>
-          </div>
-          <div class="paper-detail-row">
-            <dt>Advisor</dt>
-            <dd>{paper.data.advisor || "Not provided"}</dd>
-          </div>
-          <div class="paper-detail-row">
-            <dt>Category</dt>
-            <dd>{paper.data.category || "Not provided"}</dd>
-          </div>
-          <div class="paper-detail-row">
-            <dt>Keywords</dt>
-            <dd>{paper.data.keywords.length > 0 ? paper.data.keywords.join(", ") : "Not provided"}</dd>
-          </div>
-        </dl>
+      <aside class="paper-detail-sidebar" aria-label="Paper metadata and repository record">
+        <section class="paper-detail-section paper-meta-card" aria-labelledby="paper-details-title">
+          <p class="paper-library-eyebrow">Paper record</p>
+          <h2 id="paper-details-title">Publication details</h2>
+          <dl class="paper-detail-list">
+            <div class="paper-detail-row">
+              <dt>Authors</dt>
+              <dd>{authorsDisplay}</dd>
+            </div>
+            <div class="paper-detail-row">
+              <dt>Semester</dt>
+              <dd><a href={withBase(`/issues/${issueSlug}/`)}>{issueLabel}</a></dd>
+            </div>
+            {repositoryLabel ? (
+              <div class="paper-detail-row">
+                <dt>Repository issue</dt>
+                <dd>{repositoryLabel}</dd>
+              </div>
+            ) : null}
+            <div class="paper-detail-row">
+              <dt>Published</dt>
+              <dd>{publicationLabel}</dd>
+            </div>
+            <div class="paper-detail-row">
+              <dt>Category</dt>
+              <dd><a href={withBase(`/categories/${categorySlug}/`)}>{paper.data.category}</a></dd>
+            </div>
+            {paper.data.pages ? (
+              <div class="paper-detail-row">
+                <dt>Pages</dt>
+                <dd>{paper.data.pages}</dd>
+              </div>
+            ) : null}
+            {paper.data.advisor ? (
+              <div class="paper-detail-row">
+                <dt>Advisor</dt>
+                <dd>{paper.data.advisor}</dd>
+              </div>
+            ) : null}
+            {doiHref ? (
+              <div class="paper-detail-row">
+                <dt>DOI</dt>
+                <dd><a href={doiHref} rel="external">{paper.data.doi}</a></dd>
+              </div>
+            ) : null}
+          </dl>
+        </section>
 
-        <div class="paper-citation-head">
-          <h3 class="paper-citation-heading">Recommended Citation</h3>
-          <button
-            type="button"
-            class="btn btn-small btn-outline copy-btn"
-            data-copy-target="#paper-citation"
-          >
-            Copy citation
-          </button>
-        </div>
-        <div id="paper-citation" class="citation-copy">{citation}</div>
-      </article>
+        <section class="paper-detail-section paper-keywords-card" aria-labelledby="paper-keywords-title">
+          <p class="paper-library-eyebrow">Topics</p>
+          <h2 id="paper-keywords-title">Keywords</h2>
+          <ul class="paper-detail-keywords">
+            {paper.data.keywords.map((keyword) => <li>{keyword}</li>)}
+          </ul>
+        </section>
 
-      <article class="card accent-card paper-abstract-card">
-        <h2>Abstract</h2>
-        <p class="prose">{paper.data.abstract || "Abstract not provided"}</p>
-      </article>
-
-      <article class="card accent-card paper-preview-card">
-        <h2>PDF Preview</h2>
-        <iframe
-          class="paper-preview-frame"
-          src={`${pdfHref}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0`}
-          title={`PDF preview: ${title}`}
-          loading="lazy"
-        ></iframe>
-      </article>
-    </section>
+        {showOasisLink ? (
+          <section class="paper-repository-card" aria-labelledby="paper-repository-title">
+            <p class="paper-repository-card__status">Preserved by UNLV Libraries</p>
+            <h2 id="paper-repository-title">Official OASIS record</h2>
+            <p>The institutional repository provides the permanent record, DOI, and full-text PDF.</p>
+            <div class="paper-repository-card__actions">
+              <a class="btn btn-small btn-primary" href={pdfHref}>Read PDF</a>
+              <a class="paper-library-details-link" href={oasisUrl} rel="external">Repository record</a>
+            </div>
+          </section>
+        ) : null}
+      </aside>
+    </div>
   </div>
 </BaseLayout>

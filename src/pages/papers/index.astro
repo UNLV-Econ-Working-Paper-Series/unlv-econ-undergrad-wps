@@ -1,51 +1,294 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { cleanPaperTitle, getIssueGroups, paperHref } from "../../lib/papers";
+import { categorySlugForName } from "../../data/categories";
+import {
+  cleanPaperTitle,
+  formatPaperDate,
+  getAllPapers,
+  getCategoryGroups,
+  getIssueGroups,
+  getIssueLabelForPaper,
+  getIssueSlugForPaper,
+  paperHref,
+  paperPdfHref,
+  repositoryIssueLabel,
+} from "../../lib/papers";
 import { withBase } from "../../lib/urls";
 
-const issues = await getIssueGroups();
-const publishedIssues = issues.filter((issue) => issue.papers.length > 0);
+const papers = await getAllPapers();
+const categories = (await getCategoryGroups()).filter((category) => category.count > 0);
+const issues = (await getIssueGroups()).filter((issue) => issue.papers.length > 0);
+const publicationYears = [...new Set(papers.map((paper) => paper.data.published_at?.slice(0, 4)).filter(Boolean))].sort((a, b) =>
+  String(b).localeCompare(String(a))
+);
+const paperCount = papers.length;
+const categoryCount = categories.length;
+const volumeCount = new Set(papers.map((paper) => paper.data.volume).filter(Boolean)).size;
+const paperCountLabel = `${paperCount} ${paperCount === 1 ? "paper" : "papers"}`;
+
+const excerpt = (abstract: string, length = 280): string => {
+  if (abstract.length <= length) return abstract;
+  const clipped = abstract.slice(0, length);
+  const lastSpace = clipped.lastIndexOf(" ");
+  return `${clipped.slice(0, lastSpace > length * 0.72 ? lastSpace : length).trim()}…`;
+};
 ---
 
-<BaseLayout title="Papers | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-papers page-papers">
-  <PageBanner title="Papers" subtitle="Browse every working paper organized by semester issue" />
+<BaseLayout
+  title="Papers | UNLV Undergraduate Economics Working Paper Series"
+  description="Search and browse open-access undergraduate economics working papers by author, semester, and research category."
+  bodyClass="section-papers page-papers page-papers-library"
+>
+  <PageBanner
+    title="Working Papers"
+    subtitle="Search open-access undergraduate economics research by topic, author, or semester"
+  />
 
-  <section class="content-section">
-    {publishedIssues.length === 0 ? (
+  {paperCount === 0 ? (
+    <section class="content-section">
       <article class="accent-card empty-state-card">
         <h2>No current-series papers are available yet</h2>
-        <p class="muted">
-          Current semester issues are live, but papers have not been posted yet. You can still browse the issue listings and the legacy archive.
-        </p>
+        <p class="muted">You can still browse issue listings and the legacy archive.</p>
         <div class="card-actions">
           <a class="btn btn-small" href={withBase("/issues/")}>Browse issues</a>
           <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive</a>
         </div>
       </article>
-    ) : (
-      publishedIssues.map((issue) => (
-          <section class="paper-issue-group" id={issue.slug}>
-            <h2>{issue.label}</h2>
-            <div class="card-grid">
-              {issue.papers.map((paper) => (
-                <article class="card paper-card accent-card">
-                  <div class="paper-meta">
-                    {paper.data.published_at ? <span class="pill">{paper.data.published_at}</span> : null}
-                    <span class="pill light">{issue.label}</span>
+    </section>
+  ) : (
+    <>
+      <section class="paper-library-overview content-section" aria-labelledby="paper-library-overview-title">
+        <div class="paper-library-overview__copy">
+          <p class="paper-library-eyebrow">UNLV undergraduate research</p>
+          <h2 id="paper-library-overview-title">One catalog, two ways to explore</h2>
+          <p>
+            Browse the series here for readable abstracts and economics categories. Each record also links to the official OASIS
+            repository copy, DOI, and full PDF preserved by UNLV Libraries.
+          </p>
+          <div class="paper-library-overview__actions">
+            <a class="btn btn-small btn-primary" href="#paper-catalog">Search the catalog</a>
+            <a
+              class="btn btn-small btn-outline"
+              href="https://oasis.library.unlv.edu/econ_ug_papers/"
+              rel="external"
+            >View the OASIS collection</a>
+          </div>
+        </div>
+
+        <dl class="paper-library-stats" aria-label="Collection summary">
+          <div>
+            <dt>{paperCount}</dt>
+            <dd>Open-access papers</dd>
+          </div>
+          <div>
+            <dt>{categoryCount}</dt>
+            <dd>Research categories</dd>
+          </div>
+          <div>
+            <dt>{volumeCount}</dt>
+            <dd>Published volumes</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="paper-library-catalog content-section" id="paper-catalog" aria-labelledby="paper-catalog-title">
+        <header class="paper-library-catalog__header">
+          <div>
+            <p class="paper-library-eyebrow">Catalog</p>
+            <h2 id="paper-catalog-title">Browse all working papers</h2>
+          </div>
+          <p class="paper-library-result-count" id="paper-result-count" role="status" aria-live="polite" aria-atomic="true">
+            Showing {paperCountLabel}
+          </p>
+        </header>
+
+        <form class="paper-library-filters" data-paper-filters>
+          <div class="paper-library-filter paper-library-filter--search">
+            <label for="paper-search">Search papers</label>
+            <input
+              id="paper-search"
+              type="search"
+              inputmode="search"
+              autocomplete="off"
+              placeholder="Title, author, keyword, or topic"
+              data-paper-search
+            />
+          </div>
+
+          <div class="paper-library-filter">
+            <label for="paper-category">Category</label>
+            <select id="paper-category" data-paper-category>
+              <option value="">All categories</option>
+              {categories.map((category) => (
+                <option value={category.slug}>{category.name} ({category.count})</option>
+              ))}
+            </select>
+          </div>
+
+          <div class="paper-library-filter">
+            <label for="paper-issue">Semester</label>
+            <select id="paper-issue" data-paper-issue>
+              <option value="">All semesters</option>
+              {issues.map((issue) => (
+                <option value={issue.slug}>{issue.label} ({issue.papers.length})</option>
+              ))}
+            </select>
+          </div>
+
+          <div class="paper-library-filter">
+            <label for="paper-year">Year</label>
+            <select id="paper-year" data-paper-year>
+              <option value="">All years</option>
+              {publicationYears.map((year) => <option value={year}>{year}</option>)}
+            </select>
+          </div>
+
+          <div class="paper-library-filter">
+            <label for="paper-sort">Sort</label>
+            <select id="paper-sort" data-paper-sort>
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="title">Title A–Z</option>
+            </select>
+          </div>
+
+          <button class="btn btn-small btn-outline paper-library-clear" type="button" data-paper-clear>Clear filters</button>
+        </form>
+
+        <ol class="paper-library-grid" data-paper-grid aria-label="Working paper results">
+          {papers.map((paper) => {
+            const title = cleanPaperTitle(paper.data.title);
+            const categorySlug = categorySlugForName(paper.data.category);
+            const issueSlug = getIssueSlugForPaper(paper);
+            const issueLabel = getIssueLabelForPaper(paper);
+            const repositoryLabel = repositoryIssueLabel(paper);
+            const year = paper.data.published_at?.slice(0, 4) ?? "";
+            const searchText = [title, ...paper.data.authors, paper.data.category, ...paper.data.keywords, paper.data.abstract]
+              .join(" ")
+              .toLowerCase();
+
+            return (
+              <li
+                class="paper-library-item"
+                data-paper-item
+                data-search={searchText}
+                data-category={categorySlug}
+                data-issue={issueSlug}
+                data-year={year}
+                data-published={paper.data.published_at ?? ""}
+                data-title={title.toLowerCase()}
+              >
+                <article class="paper-library-card">
+                  <div class="paper-library-card__meta">
+                    <a class="paper-library-topic" href={withBase(`/categories/${categorySlug}/`)}>{paper.data.category}</a>
+                    <span aria-hidden="true">•</span>
+                    <a href={withBase(`/issues/${issueSlug}/`)}>{issueLabel}</a>
                   </div>
-                  <h3><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h3>
-                  <p class="muted small">By {paper.data.authors.join(", ")}</p>
-                  <p class="muted">{paper.data.abstract.slice(0, 190)}{paper.data.abstract.length > 190 ? "..." : ""}</p>
-                  <div class="card-actions">
-                    <a class="btn btn-small" href={paperHref(paper)}>Read abstract</a>
-                    <a class="btn btn-small btn-primary" href={withBase(paper.data.pdf)}>Download PDF</a>
+
+                  <h3><a href={paperHref(paper)}>{title}</a></h3>
+                  <p class="paper-library-authors">{paper.data.authors.join(", ")}</p>
+
+                  <p class="paper-library-abstract">{excerpt(paper.data.abstract)}</p>
+
+                  <ul class="paper-library-keywords" aria-label={`Keywords for ${title}`}>
+                    {paper.data.keywords.slice(0, 3).map((keyword) => <li>{keyword}</li>)}
+                  </ul>
+
+                  <div class="paper-library-card__footer">
+                    <p class="paper-library-publication">
+                      <span>{formatPaperDate(paper.data.published_at)}</span>
+                      {repositoryLabel ? <span>{repositoryLabel}</span> : null}
+                    </p>
+                    <div class="paper-library-card__actions">
+                      <a class="paper-library-details-link" href={paperHref(paper)}>View details</a>
+                      <a class="btn btn-small btn-primary" href={paperPdfHref(paper)}>Read PDF</a>
+                    </div>
                   </div>
                 </article>
-              ))}
-            </div>
-          </section>
-        ))
-    )}
-  </section>
+              </li>
+            );
+          })}
+        </ol>
+
+        <div class="paper-library-empty" data-paper-empty hidden>
+          <h3>No papers match these filters</h3>
+          <p>Try a broader search or clear one of the selected filters.</p>
+          <button class="btn btn-small btn-primary" type="button" data-paper-empty-clear>Clear filters</button>
+        </div>
+      </section>
+    </>
+  )}
+
+  <script is:inline>
+    (() => {
+      const initPaperCatalog = () => {
+        const form = document.querySelector("[data-paper-filters]");
+        const grid = document.querySelector("[data-paper-grid]");
+        if (!(form instanceof HTMLFormElement) || !(grid instanceof HTMLOListElement)) return;
+        if (form.dataset.paperFiltersInit === "true") return;
+        form.dataset.paperFiltersInit = "true";
+
+        const search = form.querySelector("[data-paper-search]");
+        const category = form.querySelector("[data-paper-category]");
+        const issue = form.querySelector("[data-paper-issue]");
+        const year = form.querySelector("[data-paper-year]");
+        const sort = form.querySelector("[data-paper-sort]");
+        const clearButtons = document.querySelectorAll("[data-paper-clear], [data-paper-empty-clear]");
+        const empty = document.querySelector("[data-paper-empty]");
+        const count = document.getElementById("paper-result-count");
+        const items = Array.from(grid.querySelectorAll("[data-paper-item]"));
+
+        const valueOf = (element) =>
+          element instanceof HTMLInputElement || element instanceof HTMLSelectElement ? element.value.trim().toLowerCase() : "";
+
+        const apply = () => {
+          const query = valueOf(search);
+          const selectedCategory = valueOf(category);
+          const selectedIssue = valueOf(issue);
+          const selectedYear = valueOf(year);
+          const sortMode = valueOf(sort) || "newest";
+
+          items.forEach((item) => {
+            const matchesSearch = !query || (item.dataset.search || "").includes(query);
+            const matchesCategory = !selectedCategory || item.dataset.category === selectedCategory;
+            const matchesIssue = !selectedIssue || item.dataset.issue === selectedIssue;
+            const matchesYear = !selectedYear || item.dataset.year === selectedYear;
+            item.hidden = !(matchesSearch && matchesCategory && matchesIssue && matchesYear);
+          });
+
+          const ordered = [...items].sort((a, b) => {
+            if (sortMode === "title") return (a.dataset.title || "").localeCompare(b.dataset.title || "");
+            const direction = sortMode === "oldest" ? 1 : -1;
+            return (a.dataset.published || "").localeCompare(b.dataset.published || "") * direction ||
+              (a.dataset.title || "").localeCompare(b.dataset.title || "");
+          });
+          ordered.forEach((item) => grid.appendChild(item));
+
+          const visibleCount = items.filter((item) => !item.hidden).length;
+          if (count) count.textContent = `Showing ${visibleCount} of ${items.length} ${items.length === 1 ? "paper" : "papers"}`;
+          if (empty instanceof HTMLElement) empty.hidden = visibleCount !== 0;
+        };
+
+        const clear = () => {
+          form.reset();
+          apply();
+          if (search instanceof HTMLInputElement) search.focus();
+        };
+
+        form.addEventListener("submit", (event) => event.preventDefault());
+        form.addEventListener("input", apply);
+        form.addEventListener("change", apply);
+        clearButtons.forEach((button) => button.addEventListener("click", clear));
+        apply();
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initPaperCatalog, { once: true });
+      } else {
+        initPaperCatalog();
+      }
+      document.addEventListener("astro:page-load", initPaperCatalog);
+    })();
+  </script>
 </BaseLayout>

@@ -22,6 +22,7 @@ const currentYear = new Date().getFullYear();
 const navItems = [
   { href: withBase("/"), label: "Home" },
   { href: withBase("/issues/"), label: "Issues" },
+  { href: withBase("/papers/"), label: "Papers" },
   { href: withBase("/categories/"), label: "Categories" },
   { href: withBase("/our/"), label: "Research Pathway" },
   { href: withBase("/about/"), label: "About" },
@@ -122,13 +123,13 @@ function isActive(href: string): boolean {
               <ul class="footer-links">
                 <li><a href={withBase("/")}>Home</a></li>
                 <li><a href={withBase("/issues/")}>Issues</a></li>
-                <li><a href={withBase("/categories/")}>Categories</a></li>
+                <li><a href={withBase("/papers/")}>Papers</a></li>
               </ul>
 
               <ul class="footer-links">
+                <li><a href={withBase("/categories/")}>Categories</a></li>
                 <li><a href={withBase("/our/")}>Research Pathway</a></li>
                 <li><a href={withBase("/about/")}>About</a></li>
-                <li><a href={withBase("/contact/")}>Contact</a></li>
               </ul>
             </div>
           </nav>
@@ -139,6 +140,7 @@ function isActive(href: string): boolean {
               <li><a href="https://www.unlv.edu/business" target="_blank" rel="noopener noreferrer">Lee Business School</a></li>
               <li><a href="https://www.unlv.edu/economics" target="_blank" rel="noopener noreferrer">Department of Economics</a></li>
               <li><a href="https://www.unlv.edu/our" target="_blank" rel="noopener noreferrer">Office of Undergraduate Research</a></li>
+              <li><a href={withBase("/contact/")}>Contact</a></li>
             </ul>
           </nav>
         </div>
@@ -305,6 +307,10 @@ function isActive(href: string): boolean {
           const setOpen = (open) => {
             toggle.setAttribute("aria-expanded", String(open));
             panel.classList.toggle("is-open", open);
+            const label = toggle.querySelector(".site-nav-toggle__label");
+            if (label) {
+              label.textContent = open ? "Close" : "Menu";
+            }
           };
 
           if (toggle.dataset.navInit === "true") {
@@ -318,6 +324,14 @@ function isActive(href: string): boolean {
           toggle.addEventListener("click", () => {
             const isOpen = toggle.getAttribute("aria-expanded") === "true";
             setOpen(!isOpen);
+          });
+
+          const header = toggle.closest(".site-header");
+          header?.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+              setOpen(false);
+              toggle.focus();
+            }
           });
 
           panel.querySelectorAll("a").forEach((link) => {
