@@ -23,7 +23,7 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
     { id: "about-process-title", label: "How Publication Works" },
     { id: "about-policies-title", label: "Policies" },
     { id: "about-team-title", label: "Editorial Team" },
-    { id: "about-ga-title", label: "Graduate Assistants" },
+    { id: "about-ga-title", label: "Junior Editors" },
     { id: "about-cta-title", label: "Get Involved" },
   ],
   atAGlance: {
@@ -57,7 +57,7 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
         type: "paragraph",
         segments: [
           {
-            text: "The UNLV Undergraduate Economics Working Paper Series is a public archive for papers connected to the UNLV Department of Economics. It gives students, graduate assistants, faculty, and collaborators one place to post ",
+            text: "The UNLV Undergraduate Economics Working Paper Series is a public archive for papers connected to the UNLV Department of Economics. It gives student authors, junior editors, faculty, and collaborators one place to post ",
           },
           { text: "working papers", tone: "strong" },
           { text: ". The site is " },
@@ -182,10 +182,10 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
     title: "Editorial Board",
   },
   graduateAssistants: {
-    title: "Graduate Assistants",
-    linkLabel: "View all Graduate Assistants →",
+    title: "Junior Editors",
+    linkLabel: "View all Junior Editors →",
     linkHref: "/graduate-assistants/",
-    emptyText: "No current graduate assistants are listed",
+    emptyText: "No current junior editors are listed",
   },
   cta: {
     title: "Get Involved",

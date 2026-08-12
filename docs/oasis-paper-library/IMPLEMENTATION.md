@@ -16,6 +16,8 @@ Add all published OASIS records to the Astro site, build a searchable catalog an
 2. Build the catalog and paper-detail experience.
 3. Integrate issue, category, navigation, sitemap, and repository links.
 4. Repair mobile navigation and complete accessibility verification.
+5. Correct Fall 2025, redesign the paper record, and add citation styles.
+6. Publish launch announcements and complete the editorial-quality UI pass.
 
 ---
 
@@ -89,6 +91,46 @@ Meet WCAG 2.1 AA-oriented automated and manual checks across key journeys.
 ### Success Criteria
 
 Key pages have no automated axe findings at 390px, no horizontal overflow, and usable keyboard navigation.
+
+## Phase 5: Issue and Citation Correction
+
+### Objective
+
+Restore the missing Fall 2025 issue and make each paper record easier to read and cite.
+
+### Tasks
+
+- [x] Map Volume 3, Issue 1 to Fall 2025 using manuscript received-date evidence.
+- [x] Add the Fall 2025 issue route and move its five papers from Spring 2026.
+- [x] Generate OASIS, APA 7, MLA 9, and Chicago author-date citations from repository metadata.
+- [x] Replace the narrow card stack and redundant action buttons with a wider editorial layout.
+- [x] Re-run citation interaction, responsive, keyboard, overflow, and axe checks.
+
+### Success Criteria
+
+Fall 2025 appears throughout issue discovery, citation year remains tied to publication date, and the redesigned record passes desktop and mobile accessibility checks.
+
+## Phase 6: Editorial Release Presentation
+
+### Objective
+
+Present the live series and released issues with the visual quality of a university research publication.
+
+### Tasks
+
+- [x] Add separate homepage announcements for the live series and the four released semester issues.
+- [x] Rename the public Graduate Assistants role to Junior Editors while preserving existing profile URLs.
+- [x] Replace issue-card grids with a numbered, responsive table of contents.
+- [x] Replace solid-red issue and paper banners with restrained library-record mastheads.
+- [x] Remove the remaining dashboard-card treatment from paper metadata and repository sections.
+- [x] Keep citation tools collapsed on initial load with an accessible native disclosure.
+- [x] Add coordinated issue, paper-record, citation-disclosure, hover, and focus motion using the existing GSAP system.
+- [x] Verify the reduced-motion path uses immediate state changes without animated transforms or opacity.
+- [x] Re-run production, responsive, interaction, overflow, and axe checks.
+
+### Success Criteria
+
+The homepage clearly announces the launch and released issues; About uses Junior Editors; and issue and paper pages read as one coherent, accessible editorial system at desktop and mobile sizes.
 
 ## Post-Implementation
 

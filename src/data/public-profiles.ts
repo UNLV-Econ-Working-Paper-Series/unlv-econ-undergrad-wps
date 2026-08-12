@@ -74,9 +74,9 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
   {
     id: "brandon-penticoff",
     name: "Brandon Penticoff",
-    displayRole: "Spring 2026",
+    displayRole: "Junior Editor · Spring 2026",
     summary:
-      "UNLV student in the accelerated B.A./M.A. program in Economics and Quantitative Business Economics and Spring 2026 Graduate Assistant for the series",
+      "UNLV student in the accelerated B.A./M.A. program in Economics and Quantitative Business Economics and a Spring 2026 Junior Editor for the series",
     sections: ["graduate_assistants"],
     headshot: "/assets/images/brandon-penticoff.jpg",
     photoSource: "Photo source: LinkedIn profile",

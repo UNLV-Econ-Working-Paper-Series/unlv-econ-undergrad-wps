@@ -1,5 +1,6 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
+import { categorySlugForName } from "../../data/categories";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   cleanPaperTitle,
@@ -25,64 +26,137 @@ const issueLabel = issue.label;
 const issueZipPath = `/assets/issues/${issueSlug}/${issueSlug}-pdfs.zip`;
 const issueZipHref = withBase(issueZipPath);
 const issueZipAvailable = publicAssetExists(issueZipPath);
+const categoryCount = new Set(papers.map((paper) => paper.data.category)).size;
+const repositoryLabels = [...new Set(papers.map(repositoryIssueLabel).filter(Boolean))];
+const repositoryLabel = repositoryLabels.length === 1 ? repositoryLabels[0] : null;
+
+const abstractLead = (abstract: string): string => {
+  const firstSentence = abstract.trim().match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim();
+  if (firstSentence && firstSentence.length <= 360) {
+    return firstSentence;
+  }
+
+  const shortened = abstract.trim().slice(0, 330);
+  const lastSpace = shortened.lastIndexOf(" ");
+  return `${shortened.slice(0, lastSpace > 250 ? lastSpace : shortened.length).trim()}…`;
+};
 ---
 
 <BaseLayout title={`${issueLabel} | Issues`} bodyClass="section-issues page-issue-detail">
   <div class="issue-layout">
+    <nav class="issue-breadcrumb content-section" aria-label="Breadcrumb" data-motion="gsap">
+      <ol>
+        <li><a href={withBase("/issues/")}>Issues</a></li>
+        <li><span aria-current="page">{issueLabel}</span></li>
+      </ol>
+    </nav>
+
     <PageBanner
-      kicker="Issue"
+      class="issue-record-masthead"
+      kicker="Semester issue"
       title={issueLabel}
-      subtitle={papers.length > 0 ? `Browse working papers published in ${issueLabel}` : "Papers for this issue will be posted soon."}
+      subtitle={papers.length > 0 ? `${papers.length} undergraduate economics working papers` : "Papers for this issue will be posted soon."}
     />
 
-    <section class="content-section issue-content">
-      <div class="page-intro-actions">
-        <a class="btn btn-small" href={withBase("/issues/")}>Back to issues</a>
-
-        {papers.length > 0 && issueZipAvailable ? (
-          <a class="btn btn-small btn-primary" href={issueZipHref}>
-            Download ZIP (PDFs)
-          </a>
-        ) : null}
-      </div>
-
-      {papers.length > 0 && issueZipAvailable ? (
-        <p class="muted small" style="margin: 0.6rem 0 0;">
-          This download packages all PDFs from <strong>{issueLabel}</strong> into a single ZIP file.
-        </p>
-      ) : null}
-
+    <section class="content-section issue-content" data-motion="gsap">
       {papers.length === 0 ? (
-        <article class="accent-card empty-state-card">
-          <h2>Coming soon</h2>
-          <p class="muted">Papers for this issue will be posted soon.</p>
-          <div class="card-actions">
-            <a class="btn btn-small" href={withBase("/issues/")}>Back to issues</a>
-            <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive</a>
+        <article class="issue-empty" aria-labelledby="issue-empty-title">
+          <p class="issue-library-eyebrow">Publication status</p>
+          <h2 id="issue-empty-title">Coming soon</h2>
+          <p>Papers for this issue will be posted soon.</p>
+          <div class="issue-overview-actions">
+            <a class="btn btn-small" href={withBase("/issues/")}>Back to all issues</a>
+            <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse the archive</a>
           </div>
         </article>
       ) : (
         <>
-          <h2 class="section-title">Papers in This Issue</h2>
-          <div class="card-grid issue-paper-grid">
-            {papers.map((paper) => (
-              <article class="card paper-card accent-card">
-                <div class="paper-meta">
-                  {paper.data.published_at ? <span class="pill">{formatPaperDate(paper.data.published_at)}</span> : null}
-                  {repositoryIssueLabel(paper) ? <span class="pill light">{repositoryIssueLabel(paper)}</span> : null}
+          <header class="issue-overview">
+            <div class="issue-overview-copy">
+              <p class="issue-library-eyebrow">Issue overview</p>
+              <h2 id="issue-overview-title">Research published in {issueLabel}</h2>
+              <p>
+                Explore {papers.length} working {papers.length === 1 ? "paper" : "papers"} across {categoryCount} editorial {categoryCount === 1 ? "subject area" : "subject areas"}. Full text and permanent records are preserved by UNLV Libraries in OASIS.
+              </p>
+              <p class="issue-taxonomy-note">Subject areas are editorial groupings used for discovery on this site.</p>
+              <div class="issue-overview-actions">
+                <a class="issue-text-link" href={withBase("/issues/")}>← All issues</a>
+                {issueZipAvailable ? (
+                  <a class="btn btn-small btn-primary" href={issueZipHref}>Download issue PDFs</a>
+                ) : null}
+              </div>
+            </div>
+
+            <dl class="issue-facts" aria-label={`${issueLabel} publication facts`}>
+              <div>
+                <dt>Papers</dt>
+                <dd>{papers.length}</dd>
+              </div>
+              <div>
+                <dt>Editorial areas</dt>
+                <dd>{categoryCount}</dd>
+              </div>
+              {repositoryLabel ? (
+                <div>
+                  <dt>Repository issue</dt>
+                  <dd>{repositoryLabel}</dd>
                 </div>
-                <h3><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h3>
-                <p class="muted small">By {paper.data.authors.join(", ")}</p>
-                <p class="muted small">Category: {paper.data.category}</p>
-                <p class="muted">{paper.data.abstract.slice(0, 240)}{paper.data.abstract.length > 240 ? "..." : ""}</p>
-                <div class="card-actions">
-                  <a class="btn btn-small" href={paperHref(paper)}>Read abstract</a>
-                  <a class="btn btn-small btn-primary" href={paperPdfHref(paper)}>Read PDF</a>
-                </div>
-              </article>
-            ))}
-          </div>
+              ) : null}
+            </dl>
+          </header>
+
+          <section class="issue-contents" aria-labelledby="issue-contents-title">
+            <header class="issue-contents-head">
+              <p class="issue-library-eyebrow">Table of contents</p>
+              <h2 id="issue-contents-title">Papers in This Issue</h2>
+            </header>
+
+            <ol class="issue-paper-list">
+              {papers.map((paper, index) => {
+                const paperTitle = cleanPaperTitle(paper.data.title);
+                const paperRepositoryLabel = repositoryIssueLabel(paper);
+                return (
+                  <li>
+                    <article class="issue-paper-entry">
+                      <p class="issue-paper-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p>
+                      <div class="issue-paper-copy">
+                        <p class="issue-paper-kicker">
+                          <a href={withBase(`/categories/${categorySlugForName(paper.data.category)}/`)}>{paper.data.category}</a>
+                        </p>
+                        <h3><a href={paperHref(paper)}>{paperTitle}</a></h3>
+                        <p class="issue-paper-authors">By {paper.data.authors.join(", ")}</p>
+                        <p class="issue-paper-abstract">{abstractLead(paper.data.abstract)}</p>
+                        <nav class="issue-paper-actions" aria-label={`Actions for ${paperTitle}`}>
+                          <a class="issue-entry-primary" href={paperHref(paper)}>Read paper details →</a>
+                          <a href={paperPdfHref(paper)}>Full text PDF</a>
+                        </nav>
+                      </div>
+                      <dl class="issue-paper-record">
+                        <div>
+                          <dt>Published</dt>
+                          <dd>{formatPaperDate(paper.data.published_at)}</dd>
+                        </div>
+                        {paperRepositoryLabel ? (
+                          <div>
+                            <dt>Record</dt>
+                            <dd>{paperRepositoryLabel}</dd>
+                          </div>
+                        ) : null}
+                        {paper.data.pages ? (
+                          <div>
+                            <dt>Pages</dt>
+                            <dd>{paper.data.pages}</dd>
+                          </div>
+                        ) : null}
+                      </dl>
+                    </article>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
         </>
       )}
     </section>
-  </div></BaseLayout>
+  </div>
+</BaseLayout>

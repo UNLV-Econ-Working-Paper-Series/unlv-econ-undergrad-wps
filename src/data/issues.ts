@@ -12,6 +12,10 @@ export const ISSUE_DEFINITIONS: IssueDefinition[] = [
     label: "Spring 2026",
   },
   {
+    slug: "2025-fall",
+    label: "Fall 2025",
+  },
+  {
     slug: "2025-spring",
     label: "Spring 2025",
   },

@@ -21,7 +21,7 @@ const assistantProfile = PUBLIC_PROFILES.find(
 );
 ---
 
-<BaseLayout title={`${assistant.data.name} | Graduate Assistants`} bodyClass="section-about page-profile">
+<BaseLayout title={`${assistant.data.name} | Junior Editors`} bodyClass="section-about page-profile">
   <PageBanner title={assistant.data.name} lead={`${assistant.data.role} (${assistant.data.term})`} />
 
   <section class="content-section profile-shell">
@@ -42,7 +42,7 @@ const assistantProfile = PUBLIC_PROFILES.find(
     <ProfileLinks links={assistantProfile?.links} className="profile-page-links" />
 
     <p class="profile-back-link">
-      <a href={withBase("/graduate-assistants/")}>← Back to Graduate Assistants</a>
+      <a href={withBase("/graduate-assistants/")}>← Back to Junior Editors</a>
     </p>
   </section>
 </BaseLayout>

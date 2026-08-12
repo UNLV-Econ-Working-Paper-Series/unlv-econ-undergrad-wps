@@ -98,9 +98,17 @@ const showLatestIssueCard = Boolean(latestIssue || hasLatestIssueOverride);
 
 const newsEyebrow = newsAndEventsEditable.eyebrow?.trim() || "Updates";
 const newsHeading = newsAndEventsEditable.title?.trim() || "News and Events";
-const newsItems = ((newsAndEventsEditable.items ?? []).length > 0 ? newsAndEventsEditable.items ?? [] : NEWS_EVENTS)
+const editableNewsItems = (newsAndEventsEditable.items ?? [])
   .map((item) => item.trim())
-  .filter((item) => item.length > 0);
+  .filter((item) => item.length > 0)
+  .map((item) => ({
+    date: "Update",
+    title: item,
+    summary: "",
+    href: "",
+    linkLabel: "",
+  }));
+const newsItems = editableNewsItems.length > 0 ? editableNewsItems : NEWS_EVENTS;
 const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "Updates about the series will be posted here.";
 ---
 
@@ -199,13 +207,24 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "Upda
       </div>
     </div>
 
-    <article class="card home-surface" data-motion="gsap">
+    <article class="home-surface home-news-surface" data-motion="gsap">
       {newsItems.length > 0 ? (
-        <ul class="home-about-bullets">
+        <ol class="home-news-list">
           {newsItems.map((item) => (
-            <li>{item}</li>
+            <li>
+              <article class="home-news-item">
+                <p class="home-news-date">{item.date}</p>
+                <div class="home-news-copy">
+                  <h3>{item.title}</h3>
+                  {item.summary ? <p>{item.summary}</p> : null}
+                  {item.href && item.linkLabel ? (
+                    <a class="home-news-link" href={toDisplayHref(item.href, item.href)}>{item.linkLabel} →</a>
+                  ) : null}
+                </div>
+              </article>
+            </li>
           ))}
-        </ul>
+        </ol>
       ) : (
         <p class="muted">{newsEmptyStateText}</p>
       )}
@@ -222,13 +241,15 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "Upda
 
     <article class="card home-surface" data-motion="gsap">
       {categoryChips.length > 0 ? (
-        <div class="home-category-chips" role="list" aria-label="Top categories">
+        <ul class="home-category-chips" aria-label="Top categories">
           {categoryChips.map((category) => (
-            <a class="home-category-chip" role="listitem" href={withBase(`/categories/${category.slug}/`)}>
-              {category.name}
-            </a>
+            <li>
+              <a class="home-category-chip" href={withBase(`/categories/${category.slug}/`)}>
+                {category.name}
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
       ) : (
         <>
           <p class="muted">Topic pages will populate as papers are added to the series.</p>

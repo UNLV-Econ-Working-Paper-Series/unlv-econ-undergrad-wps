@@ -28,6 +28,14 @@ export interface SemesterGroup {
   sortKey: number;
 }
 
+export type CitationStyle = "repository" | "apa" | "mla" | "chicago";
+
+export interface CitationOption {
+  id: CitationStyle;
+  label: string;
+  citation: string;
+}
+
 const TERM_ORDER: Record<string, number> = {
   spring: 1,
   summer: 2,
@@ -274,19 +282,149 @@ export function categoryNameFromSlug(slug: string): string {
   return categoryNameForSlug(slug) ?? slug.replace(/-/g, " ").replace(/\b\w/g, (s) => s.toUpperCase());
 }
 
-export function formatCitation(paper: PaperEntry): string {
-  const authors = paper.data.authors.join(", ");
-  const issue = getIssueLabelForPaper(paper);
-  const title = cleanPaperTitle(paper.data.title);
-  const yearMatch = issue.match(/(\d{4})/);
-  const year = yearMatch?.[1] ?? "n.d.";
+function citationYear(paper: PaperEntry): string {
+  const publishedYear = paper.data.published_at?.trim().match(/^(\d{4})/)?.[1];
+  if (publishedYear) {
+    return publishedYear;
+  }
+
+  return getIssueLabelForPaper(paper).match(/(\d{4})/)?.[1] ?? "n.d.";
+}
+
+function splitAuthor(author: string): { given: string; family: string } {
+  const parts = author.trim().split(/\s+/);
+  const family = parts.pop() ?? author.trim();
+  return { given: parts.join(" "), family };
+}
+
+function initials(given: string): string {
+  return given
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .map((part) => `${part[0]?.toLocaleUpperCase() ?? ""}.`)
+    .join(" ");
+}
+
+function joinWithFinal(items: string[], conjunction: string): string {
+  if (items.length <= 1) {
+    return items[0] ?? "";
+  }
+  if (items.length === 2) {
+    return `${items[0]}, ${conjunction} ${items[1]}`;
+  }
+  return `${items.slice(0, -1).join(", ")}, ${conjunction} ${items.at(-1)}`;
+}
+
+function apaAuthors(authors: string[]): string {
+  const names = authors.map((author) => {
+    const { given, family } = splitAuthor(author);
+    return `${family}, ${initials(given)}`.trim();
+  });
+  if (names.length <= 1) {
+    return names[0] ?? "";
+  }
+  return `${names.slice(0, -1).join(", ")}, & ${names.at(-1)}`;
+}
+
+function repositoryAuthors(authors: string[]): string {
+  return authors
+    .map((author) => {
+      const { given, family } = splitAuthor(author);
+      return `${family}, ${initials(given)}`.trim();
+    })
+    .join(", ");
+}
+
+function invertedFirstAuthor(authors: string[], shortenAfterTwo = false): string {
+  const [first, ...rest] = authors;
+  if (!first) {
+    return "";
+  }
+
+  const { given, family } = splitAuthor(first);
+  const inverted = `${family}, ${given}`.trim();
+  if (shortenAfterTwo && authors.length >= 3) {
+    return `${inverted}, et al.`;
+  }
+  return joinWithFinal([inverted, ...rest], "and");
+}
+
+function withTerminalPeriod(value: string): string {
+  return value.endsWith(".") ? value : `${value}.`;
+}
+
+function apaSentenceCase(title: string): string {
+  const sentenceCase = title
+    .toLocaleLowerCase()
+    .replace(/(^|[:?!]\s+)([a-z])/g, (_, prefix: string, letter: string) => `${prefix}${letter.toLocaleUpperCase()}`);
+
+  return sentenceCase
+    .replace(/\bu\.s\./g, "U.S.")
+    .replace(/\b(ai|nba|mlb|ncaa|ols)\b/gi, (value) => value.toLocaleUpperCase())
+    .replace(/\blas vegas\b/gi, "Las Vegas")
+    .replace(/\bmarch madness\b/gi, "March Madness")
+    .replace(/\bnevada\b/gi, "Nevada")
+    .replace(/\bcraigslist\b/gi, "Craigslist");
+}
+
+function citationPages(paper: PaperEntry): string | null {
+  return paper.data.pages?.trim().replace(/(\d)\s*-\s*(\d)/g, "$1–$2") ?? null;
+}
+
+function citationPersistentUrl(paper: PaperEntry): string {
   const oasisUrl = paper.data.oasis_url?.trim();
   const url = OASIS_MIRROR_ACTIVE && oasisUrl ? oasisUrl : paperHref(paper);
-  const repositoryIssue = repositoryIssueLabel(paper);
-  const pages = paper.data.pages ? `, ${paper.data.pages}` : "";
-  const seriesDetails = repositoryIssue ? ` ${repositoryIssue}${pages}.` : ` ${issue}.`;
-  const persistentUrl = paper.data.doi ? `https://doi.org/${paper.data.doi}` : url;
-  return `${authors} (${year}). ${title}. UNLV Undergraduate Economics Working Paper Series.${seriesDetails} ${persistentUrl}`;
+  return paper.data.doi ? `https://doi.org/${paper.data.doi}` : url;
+}
+
+export function formatCitations(paper: PaperEntry): CitationOption[] {
+  const title = cleanPaperTitle(paper.data.title);
+  const year = citationYear(paper);
+  const volume = paper.data.volume;
+  const issue = paper.data.issue;
+  const pages = citationPages(paper);
+  const persistentUrl = citationPersistentUrl(paper);
+  const series = "UNLV Undergraduate Economics Working Paper Series";
+  const repositoryPublication = volume && issue
+    ? `${series}, ${volume}(${issue})${pages ? `, ${pages}` : ""}.`
+    : `${series}.`;
+  const mlaPublication = [
+    series,
+    volume ? `vol. ${volume}` : null,
+    issue ? `no. ${issue}` : null,
+    year,
+    pages ? `pp. ${pages}` : null,
+  ].filter(Boolean).join(", ");
+  const chicagoPublication = volume
+    ? `${series} ${volume}${issue ? ` (${issue})` : ""}${pages ? `: ${pages}` : ""}.`
+    : `${series}.`;
+
+  return [
+    {
+      id: "repository",
+      label: "OASIS repository",
+      citation: `${repositoryAuthors(paper.data.authors)} (${year}). ${title}. ${repositoryPublication} Available at: ${persistentUrl}`,
+    },
+    {
+      id: "apa",
+      label: "APA 7th",
+      citation: `${apaAuthors(paper.data.authors)} (${year}). ${apaSentenceCase(title)}. ${repositoryPublication} ${persistentUrl}`,
+    },
+    {
+      id: "mla",
+      label: "MLA 9th",
+      citation: `${withTerminalPeriod(invertedFirstAuthor(paper.data.authors, true))} “${title}.” ${mlaPublication}. ${persistentUrl}`,
+    },
+    {
+      id: "chicago",
+      label: "Chicago 17th (author-date)",
+      citation: `${invertedFirstAuthor(paper.data.authors)}. ${year}. “${title}.” ${chicagoPublication} ${persistentUrl}`,
+    },
+  ];
+}
+
+export function formatCitation(paper: PaperEntry): string {
+  return formatCitations(paper)[0].citation;
 }
 
 export function groupPapersBySemester(papers: PaperEntry[]): SemesterGroup[] {

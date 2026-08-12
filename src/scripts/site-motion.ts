@@ -280,9 +280,171 @@ function initOurPageMotion(): void {
   }
 }
 
+function initIssueDetailMotion(): void {
+  if (!document.body.classList.contains("page-issue-detail")) {
+    return;
+  }
+
+  const breadcrumb = document.querySelector<HTMLElement>(".issue-breadcrumb");
+  const overview = document.querySelector<HTMLElement>(".issue-overview");
+  const contents = document.querySelector<HTMLElement>(".issue-contents");
+
+  const introNodes = markManaged([breadcrumb]);
+  if (introNodes.length > 0) {
+    trackTween(
+      gsap.fromTo(
+        introNodes,
+        { autoAlpha: 0, x: -10 },
+        { autoAlpha: 1, x: 0, duration: 0.38, ease: "power2.out", clearProps: CLEAR_PROPS }
+      )
+    );
+  }
+
+  if (overview) {
+    initScrollReveal({
+      trigger: overview,
+      targets: [overview.querySelector(".issue-overview-copy"), overview.querySelector(".issue-facts")],
+      start: "top bottom-=45",
+      from: { autoAlpha: 0, y: 20 },
+      to: { autoAlpha: 1, y: 0, duration: 0.58, ease: "power3.out", stagger: 0.11 },
+    });
+  }
+
+  if (contents) {
+    initScrollReveal({
+      trigger: contents,
+      targets: [contents.querySelector(".issue-contents-head")],
+      start: "top bottom-=60",
+      from: { autoAlpha: 0, y: 16 },
+      to: { autoAlpha: 1, y: 0, duration: 0.46, ease: "power2.out" },
+    });
+
+    contents.querySelectorAll<HTMLElement>(".issue-paper-entry").forEach((entry) => {
+      initScrollReveal({
+        trigger: entry,
+        targets: [entry.querySelector(".issue-paper-number"), entry.querySelector(".issue-paper-copy"), entry.querySelector(".issue-paper-record")],
+        start: "top bottom-=55",
+        from: { autoAlpha: 0, y: 18 },
+        to: { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.07 },
+      });
+    });
+  }
+}
+
+function initPaperDetailMotion(): void {
+  if (!document.body.classList.contains("page-paper-detail")) {
+    return;
+  }
+
+  const breadcrumb = document.querySelector<HTMLElement>(".paper-breadcrumb");
+  const toolbar = document.querySelector<HTMLElement>(".paper-detail-toolbar");
+  const abstract = document.querySelector<HTMLElement>(".paper-abstract-card");
+  const citation = document.querySelector<HTMLElement>(".paper-citation-card");
+  const record = document.querySelector<HTMLElement>(".paper-record-card");
+  const repository = document.querySelector<HTMLElement>(".paper-repository-card");
+
+  const introNodes = markManaged([breadcrumb, toolbar]);
+  if (introNodes.length > 0) {
+    trackTween(
+      gsap.fromTo(
+        introNodes,
+        { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.42, ease: "power2.out", stagger: 0.08, clearProps: CLEAR_PROPS }
+      )
+    );
+  }
+
+  for (const [trigger, targets] of [
+    [abstract, [abstract?.querySelector(".paper-library-eyebrow"), abstract?.querySelector("h2"), abstract?.querySelector(".paper-detail-abstract")]],
+    [citation, [citation?.querySelector(".paper-citation-disclosure")]],
+    [record, [record?.querySelector(".paper-library-eyebrow"), record?.querySelector("h2"), record?.querySelector(".paper-detail-list"), record?.querySelector(".paper-record-topics")]],
+    [repository, [repository?.querySelector(".paper-repository-card__status"), repository?.querySelector("h2"), repository?.querySelector("p:not(.paper-repository-card__status)"), repository?.querySelector(".paper-repository-card__actions")]],
+  ] as const) {
+    if (!trigger) {
+      continue;
+    }
+    initScrollReveal({
+      trigger,
+      targets,
+      start: "top bottom-=55",
+      from: { autoAlpha: 0, y: 16 },
+      to: { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.06 },
+    });
+  }
+}
+
+function initCitationDisclosureMotion(): void {
+  const details = document.querySelector<HTMLDetailsElement>(".paper-citation-disclosure");
+  const summary = details?.querySelector<HTMLElement>("summary");
+  const panel = details?.querySelector<HTMLElement>(".paper-citation-panel");
+  if (!details || !summary || !panel || details.dataset.motionInit === "true") {
+    return;
+  }
+
+  details.dataset.motionInit = "true";
+  markManaged([panel]);
+
+  summary.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (details.dataset.animating === "true") {
+      return;
+    }
+
+    if (prefersReducedMotion()) {
+      details.open = !details.open;
+      return;
+    }
+
+    details.dataset.animating = "true";
+
+    if (!details.open) {
+      details.open = true;
+      trackTween(
+        gsap.fromTo(
+          panel,
+          { height: 0, autoAlpha: 0, y: -8 },
+          {
+            height: "auto",
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.34,
+            ease: "power3.out",
+            onComplete: () => {
+              gsap.set(panel, { clearProps: `height,${CLEAR_PROPS}` });
+              delete details.dataset.animating;
+            },
+          }
+        )
+      );
+      return;
+    }
+
+    trackTween(
+      gsap.fromTo(
+        panel,
+        { height: panel.offsetHeight, autoAlpha: 1, y: 0 },
+        {
+          height: 0,
+          autoAlpha: 0,
+          y: -6,
+          duration: 0.24,
+          ease: "power2.in",
+          onComplete: () => {
+            details.open = false;
+            gsap.set(panel, { clearProps: `height,${CLEAR_PROPS}` });
+            delete details.dataset.animating;
+          },
+        }
+      )
+    );
+  });
+}
+
 function initSiteMotion(): void {
   cleanupMotion();
   ScrollTrigger.refresh();
+
+  initCitationDisclosureMotion();
 
   if (prefersReducedMotion()) {
     return;
@@ -296,6 +458,8 @@ function initSiteMotion(): void {
   initCategoriesPageMotion();
   initPolicyIndexMotion();
   initOurPageMotion();
+  initIssueDetailMotion();
+  initPaperDetailMotion();
 }
 
 export function bootSiteMotion(): void {

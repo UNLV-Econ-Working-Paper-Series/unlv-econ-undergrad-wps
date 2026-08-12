@@ -5,7 +5,7 @@ import { categorySlugForName } from "../../data/categories";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   cleanPaperTitle,
-  formatCitation,
+  formatCitations,
   formatPaperDate,
   getAllPapers,
   getIssueLabelForPaper,
@@ -26,7 +26,8 @@ const title = cleanPaperTitle(paper.data.title);
 const issueLabel = getIssueLabelForPaper(paper);
 const issueSlug = getIssueSlugForPaper(paper);
 const categorySlug = categorySlugForName(paper.data.category);
-const citation = formatCitation(paper);
+const citations = formatCitations(paper);
+const defaultCitation = citations[0];
 const pdfHref = paperPdfHref(paper);
 const oasisUrl = paper.data.oasis_url?.trim();
 const showOasisLink = OASIS_MIRROR_ACTIVE && Boolean(oasisUrl);
@@ -42,48 +43,88 @@ const doiHref = paper.data.doi ? `https://doi.org/${paper.data.doi}` : null;
   bodyClass="section-papers page-paper-detail"
 >
   <div class="paper-page">
+    <nav class="paper-breadcrumb content-section" aria-label="Breadcrumb" data-motion="gsap">
+      <ol>
+        <li><a href={withBase("/papers/")}>Papers</a></li>
+        <li><a href={withBase(`/issues/${issueSlug}/`)}>{issueLabel}</a></li>
+        <li><span aria-current="page">{title}</span></li>
+      </ol>
+    </nav>
+
     <PageBanner
+      class="paper-record-masthead"
       kicker="Undergraduate economics working paper"
       title={title}
       subtitle={`${authorsDisplay} • ${issueLabel} • ${publicationLabel}`}
     />
 
-    <nav class="paper-detail-quick-actions content-section" aria-label="Paper actions">
-      <a class="btn btn-primary" href={pdfHref}>Read full paper (PDF)</a>
-      {showOasisLink ? (
-        <a class="btn btn-small btn-outline" href={oasisUrl} rel="external">View OASIS record</a>
+    <div class="paper-detail-toolbar content-section" data-motion="gsap">
+      <nav class="paper-detail-quick-actions" aria-label="Paper actions">
+        <a class="btn btn-primary" href={pdfHref}>Read full paper (PDF)</a>
+        {showOasisLink ? (
+          <a class="btn btn-small btn-outline" href={oasisUrl} rel="external">View OASIS record</a>
+        ) : null}
+      </nav>
+      {doiHref ? (
+        <p class="paper-detail-toolbar__doi">
+          Permanent link: <a href={doiHref} rel="external">doi.org/{paper.data.doi}</a>
+        </p>
       ) : null}
-      <a class="btn btn-small btn-outline" href={withBase("/papers/")}>All papers</a>
-      <a class="btn btn-small btn-outline" href={withBase(`/issues/${issueSlug}/`)}>Back to {issueLabel}</a>
-    </nav>
+    </div>
 
-    <div class="paper-detail-layout content-section">
+    <article class="paper-detail-layout content-section" data-motion="gsap">
       <div class="paper-detail-main">
         <section class="paper-detail-section paper-abstract-card" aria-labelledby="paper-abstract-title">
-          <p class="paper-library-eyebrow">Abstract</p>
-          <h2 id="paper-abstract-title">Research summary</h2>
+          <p class="paper-library-eyebrow">Research summary</p>
+          <h2 id="paper-abstract-title">Abstract</h2>
           <p class="paper-detail-abstract">{paper.data.abstract}</p>
         </section>
 
         <section class="paper-detail-section paper-citation-card" aria-labelledby="paper-citation-heading">
-          <div class="paper-citation-head">
-            <div>
-              <p class="paper-library-eyebrow">Citation</p>
-              <h2 id="paper-citation-heading">Recommended citation</h2>
+          <details class="paper-citation-disclosure">
+            <summary>
+              <span class="paper-citation-summary-copy">
+                <span class="paper-library-eyebrow">Citation tools</span>
+                <span id="paper-citation-heading" class="paper-citation-summary-title" role="heading" aria-level="2">
+                  Cite this paper
+                </span>
+              </span>
+              <span class="paper-citation-summary-action">
+                <span class="paper-citation-summary-closed">Show citation options</span>
+                <span class="paper-citation-summary-open">Hide citation options</span>
+                <span class="paper-citation-summary-icon" aria-hidden="true"></span>
+              </span>
+            </summary>
+
+            <div class="paper-citation-panel">
+              <div class="paper-citation-controls">
+                <div class="paper-citation-style">
+                  <label for="paper-citation-style">Citation style</label>
+                  <select id="paper-citation-style" data-citation-selector>
+                    {citations.map((citation) => (
+                      <option value={citation.id} data-citation={citation.citation}>{citation.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-small btn-outline copy-btn"
+                  data-copy-target="#paper-citation"
+                  aria-live="polite"
+                >Copy citation</button>
+              </div>
+
+              <p id="paper-citation" class="citation-copy" aria-live="polite">{defaultCitation.citation}</p>
+              <p class="paper-citation-note">
+                Citation formats are generated from the official OASIS record. Confirm punctuation and capitalization against your instructor or publisher’s current style guide.
+              </p>
             </div>
-            <button
-              type="button"
-              class="btn btn-small btn-outline copy-btn"
-              data-copy-target="#paper-citation"
-              aria-live="polite"
-            >Copy citation</button>
-          </div>
-          <div id="paper-citation" class="citation-copy">{citation}</div>
+          </details>
         </section>
       </div>
 
       <aside class="paper-detail-sidebar" aria-label="Paper metadata and repository record">
-        <section class="paper-detail-section paper-meta-card" aria-labelledby="paper-details-title">
+        <section class="paper-detail-section paper-record-card" aria-labelledby="paper-details-title">
           <p class="paper-library-eyebrow">Paper record</p>
           <h2 id="paper-details-title">Publication details</h2>
           <dl class="paper-detail-list">
@@ -128,14 +169,13 @@ const doiHref = paper.data.doi ? `https://doi.org/${paper.data.doi}` : null;
               </div>
             ) : null}
           </dl>
-        </section>
 
-        <section class="paper-detail-section paper-keywords-card" aria-labelledby="paper-keywords-title">
-          <p class="paper-library-eyebrow">Topics</p>
-          <h2 id="paper-keywords-title">Keywords</h2>
-          <ul class="paper-detail-keywords">
-            {paper.data.keywords.map((keyword) => <li>{keyword}</li>)}
-          </ul>
+          <div class="paper-record-topics">
+            <h3 id="paper-keywords-title">Keywords</h3>
+            <ul class="paper-detail-keywords">
+              {paper.data.keywords.map((keyword) => <li>{keyword}</li>)}
+            </ul>
+          </div>
         </section>
 
         {showOasisLink ? (
@@ -150,6 +190,30 @@ const doiHref = paper.data.doi ? `https://doi.org/${paper.data.doi}` : null;
           </section>
         ) : null}
       </aside>
-    </div>
+    </article>
   </div>
 </BaseLayout>
+
+<script>
+  const initializeCitationSelector = () => {
+    const selector = document.querySelector("[data-citation-selector]");
+    const output = document.querySelector("#paper-citation");
+    if (!(selector instanceof HTMLSelectElement) || !(output instanceof HTMLElement)) {
+      return;
+    }
+
+    const updateCitation = () => {
+      const selected = selector.selectedOptions[0];
+      const citation = selected?.dataset.citation;
+      if (citation) {
+        output.textContent = citation;
+      }
+    };
+
+    selector.addEventListener("change", updateCitation);
+    updateCitation();
+  };
+
+  document.addEventListener("astro:page-load", initializeCitationSelector);
+  initializeCitationSelector();
+</script>
