@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const activeTweens: Array<gsap.core.Tween | gsap.core.Timeline> = [];
 const activeTriggers: ScrollTrigger[] = [];
-const CLEAR_PROPS = "opacity,visibility,transform,filter,willChange";
+const CLEAR_PROPS = "opacity,transform,filter,willChange";
 
 function markManaged(targets: Array<Element | null | undefined>): HTMLElement[] {
   const nodes = Array.from(new Set(targets.filter((target): target is HTMLElement => target instanceof HTMLElement)));
@@ -26,7 +26,7 @@ function cleanupMotion(): void {
   activeTweens.splice(0).forEach((animation) => animation.kill());
 
   document.querySelectorAll<HTMLElement>("[data-gsap-motion]").forEach((node) => {
-    gsap.set(node, { clearProps: "opacity,visibility,transform,filter,willChange" });
+    gsap.set(node, { clearProps: CLEAR_PROPS });
     delete node.dataset.gsapMotion;
   });
 }
@@ -57,8 +57,8 @@ function initScrollReveal({
   trigger,
   targets,
   start = "top bottom-=110",
-  from = { autoAlpha: 0, y: 18 },
-  to = { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out", stagger: 0.08 },
+  from = { opacity: 0, y: 14 },
+  to = { opacity: 1, y: 0, duration: 0.42, ease: "power2.out", stagger: 0.06 },
 }: ScrollRevealConfig): void {
   const nodes = markManaged(targets);
   if (nodes.length === 0) {
@@ -118,8 +118,8 @@ function initHomeHeroMotion(): void {
   if (managedHeroPanel.length > 0) {
     timeline.fromTo(
       managedHeroPanel,
-      { autoAlpha: 0, y: 24, filter: "blur(8px)" },
-      { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.7, clearProps: CLEAR_PROPS },
+      { opacity: 0, y: 16, filter: "blur(3px)" },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.48, clearProps: CLEAR_PROPS },
       0.04
     );
   }
@@ -127,8 +127,8 @@ function initHomeHeroMotion(): void {
   if (managedText.length > 0) {
     timeline.fromTo(
       managedText,
-      { autoAlpha: 0, y: 14 },
-      { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.07, clearProps: CLEAR_PROPS },
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.4, stagger: 0.055, clearProps: CLEAR_PROPS },
       managedHeroPanel.length > 0 ? 0.18 : 0
     );
   }
@@ -136,8 +136,8 @@ function initHomeHeroMotion(): void {
   if (managedActions.length > 0) {
     timeline.fromTo(
       managedActions,
-      { autoAlpha: 0, y: 10 },
-      { autoAlpha: 1, y: 0, duration: 0.34, stagger: 0.07, clearProps: CLEAR_PROPS },
+      { opacity: 0, y: 8 },
+      { opacity: 1, y: 0, duration: 0.3, stagger: 0.055, clearProps: CLEAR_PROPS },
       managedText.length > 0 || managedHeroPanel.length > 0 ? 0.36 : 0
     );
   }
@@ -145,8 +145,8 @@ function initHomeHeroMotion(): void {
   if (managedCredit.length > 0) {
     timeline.fromTo(
       managedCredit,
-      { autoAlpha: 0, y: 8 },
-      { autoAlpha: 1, y: 0, duration: 0.3, clearProps: CLEAR_PROPS },
+      { opacity: 0, y: 6 },
+      { opacity: 1, y: 0, duration: 0.26, clearProps: CLEAR_PROPS },
       managedActions.length > 0 || managedText.length > 0 || managedHeroPanel.length > 0 ? 0.5 : 0
     );
   }
@@ -162,8 +162,8 @@ function initHomeSectionMotion(): void {
       trigger: section,
       targets: [section.querySelector(".section-head"), ...section.querySelectorAll('[data-motion="gsap"]')],
       start: "top bottom-=90",
-      from: { autoAlpha: 0, y: 20 },
-      to: { autoAlpha: 1, y: 0, duration: 0.52, ease: "power2.out", stagger: 0.1 },
+      from: { opacity: 0, y: 14 },
+      to: { opacity: 1, y: 0, duration: 0.42, ease: "power2.out", stagger: 0.07 },
     });
   }
 }
@@ -184,8 +184,8 @@ function initInteriorBannerMotion(): void {
   trackTween(
     gsap.fromTo(
       bannerNodes,
-      { autoAlpha: 0, y: 16 },
-      { autoAlpha: 1, y: 0, duration: 0.44, ease: "power3.out", stagger: 0.05, clearProps: CLEAR_PROPS }
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.38, ease: "power3.out", stagger: 0.045, clearProps: CLEAR_PROPS }
     )
   );
 }
@@ -206,8 +206,8 @@ function initIssuesPageMotion(): void {
       explorer.querySelector(".empty-state-card"),
     ],
     start: "top bottom-=110",
-    from: { autoAlpha: 0, y: 18 },
-    to: { autoAlpha: 1, y: 0, duration: 0.48, ease: "power2.out", stagger: 0.07 },
+    from: { opacity: 0, y: 14 },
+    to: { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", stagger: 0.055 },
   });
 }
 
@@ -225,8 +225,8 @@ function initArchivePageMotion(): void {
       explorer.querySelector(".empty-state-card"),
     ],
     start: "top bottom-=110",
-    from: { autoAlpha: 0, y: 18 },
-    to: { autoAlpha: 1, y: 0, duration: 0.48, ease: "power2.out", stagger: 0.07 },
+    from: { opacity: 0, y: 14 },
+    to: { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", stagger: 0.055 },
   });
 }
 
@@ -240,8 +240,8 @@ function initCategoriesPageMotion(): void {
     trigger: shell,
     targets: [shell.querySelector(".categories-controls"), ...shell.querySelectorAll('[data-category-item][data-motion="gsap"]')],
     start: "top bottom-=110",
-    from: { autoAlpha: 0, y: 16 },
-    to: { autoAlpha: 1, y: 0, duration: 0.46, ease: "power2.out", stagger: 0.05 },
+    from: { opacity: 0, y: 12 },
+    to: { opacity: 1, y: 0, duration: 0.38, ease: "power2.out", stagger: 0.045 },
   });
 }
 
@@ -255,8 +255,8 @@ function initPolicyIndexMotion(): void {
     trigger: shell,
     targets: [shell.querySelector("h2"), shell.querySelector(".policy-article > p"), ...shell.querySelectorAll('[data-motion="gsap"]')],
     start: "top bottom-=110",
-    from: { autoAlpha: 0, y: 16 },
-    to: { autoAlpha: 1, y: 0, duration: 0.46, ease: "power2.out", stagger: 0.05 },
+    from: { opacity: 0, y: 12 },
+    to: { opacity: 1, y: 0, duration: 0.38, ease: "power2.out", stagger: 0.045 },
   });
 }
 
@@ -274,8 +274,8 @@ function initOurPageMotion(): void {
         section.querySelector(".our-accordion"),
       ],
       start: "top bottom-=110",
-      from: { autoAlpha: 0, y: 18 },
-      to: { autoAlpha: 1, y: 0, duration: 0.48, ease: "power2.out", stagger: 0.07 },
+      from: { opacity: 0, y: 14 },
+      to: { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", stagger: 0.055 },
     });
   }
 }
@@ -294,8 +294,8 @@ function initIssueDetailMotion(): void {
     trackTween(
       gsap.fromTo(
         introNodes,
-        { autoAlpha: 0, x: -10 },
-        { autoAlpha: 1, x: 0, duration: 0.38, ease: "power2.out", clearProps: CLEAR_PROPS }
+        { opacity: 0, x: -8 },
+        { opacity: 1, x: 0, duration: 0.32, ease: "power2.out", clearProps: CLEAR_PROPS }
       )
     );
   }
@@ -305,8 +305,8 @@ function initIssueDetailMotion(): void {
       trigger: overview,
       targets: [overview.querySelector(".issue-overview-copy"), overview.querySelector(".issue-facts")],
       start: "top bottom-=45",
-      from: { autoAlpha: 0, y: 20 },
-      to: { autoAlpha: 1, y: 0, duration: 0.58, ease: "power3.out", stagger: 0.11 },
+      from: { opacity: 0, y: 14 },
+      to: { opacity: 1, y: 0, duration: 0.44, ease: "power3.out", stagger: 0.08 },
     });
   }
 
@@ -315,8 +315,8 @@ function initIssueDetailMotion(): void {
       trigger: contents,
       targets: [contents.querySelector(".issue-contents-head")],
       start: "top bottom-=60",
-      from: { autoAlpha: 0, y: 16 },
-      to: { autoAlpha: 1, y: 0, duration: 0.46, ease: "power2.out" },
+      from: { opacity: 0, y: 12 },
+      to: { opacity: 1, y: 0, duration: 0.38, ease: "power2.out" },
     });
 
     contents.querySelectorAll<HTMLElement>(".issue-paper-entry").forEach((entry) => {
@@ -324,8 +324,8 @@ function initIssueDetailMotion(): void {
         trigger: entry,
         targets: [entry.querySelector(".issue-paper-number"), entry.querySelector(".issue-paper-copy"), entry.querySelector(".issue-paper-record")],
         start: "top bottom-=55",
-        from: { autoAlpha: 0, y: 18 },
-        to: { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.07 },
+        from: { opacity: 0, y: 14 },
+        to: { opacity: 1, y: 0, duration: 0.42, ease: "power3.out", stagger: 0.055 },
       });
     });
   }
@@ -348,8 +348,8 @@ function initPaperDetailMotion(): void {
     trackTween(
       gsap.fromTo(
         introNodes,
-        { autoAlpha: 0, y: 10 },
-        { autoAlpha: 1, y: 0, duration: 0.42, ease: "power2.out", stagger: 0.08, clearProps: CLEAR_PROPS }
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.34, ease: "power2.out", stagger: 0.06, clearProps: CLEAR_PROPS }
       )
     );
   }
@@ -367,8 +367,8 @@ function initPaperDetailMotion(): void {
       trigger,
       targets,
       start: "top bottom-=55",
-      from: { autoAlpha: 0, y: 16 },
-      to: { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.06 },
+      from: { opacity: 0, y: 12 },
+      to: { opacity: 1, y: 0, duration: 0.4, ease: "power3.out", stagger: 0.05 },
     });
   }
 }
@@ -402,10 +402,10 @@ function initCitationDisclosureMotion(): void {
       trackTween(
         gsap.fromTo(
           panel,
-          { height: 0, autoAlpha: 0, y: -8 },
+          { height: 0, opacity: 0, y: -8 },
           {
             height: "auto",
-            autoAlpha: 1,
+            opacity: 1,
             y: 0,
             duration: 0.34,
             ease: "power3.out",
@@ -422,10 +422,10 @@ function initCitationDisclosureMotion(): void {
     trackTween(
       gsap.fromTo(
         panel,
-        { height: panel.offsetHeight, autoAlpha: 1, y: 0 },
+        { height: panel.offsetHeight, opacity: 1, y: 0 },
         {
           height: 0,
-          autoAlpha: 0,
+          opacity: 0,
           y: -6,
           duration: 0.24,
           ease: "power2.in",

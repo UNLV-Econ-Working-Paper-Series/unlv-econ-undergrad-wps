@@ -10,7 +10,12 @@ interface Props {
   bodyClass?: string;
 }
 
-const { title, lead, description = lead, bodyClass = "" } = Astro.props;
+const policy = (Astro.props.frontmatter ?? Astro.props) as Props;
+const { title, lead, description = lead, bodyClass = "" } = policy;
+
+if (!title || !lead) {
+  throw new Error("Policy pages require non-empty title and lead frontmatter.");
+}
 ---
 
 <BaseLayout

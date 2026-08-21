@@ -5,12 +5,9 @@ import { withBase } from "../../lib/urls";
 const target = withBase("/categories/");
 ---
 
-<BaseLayout title="Redirecting Category">
-  <article class="card">
-    <p>This legacy category is archived</p>
+<BaseLayout title="Category Moved" canonicalPath={target} robots="noindex, follow" redirectTo={target}>
+  <article class="card content-section redirect-page">
+    <h1>This legacy category is archived</h1>
     <p><a href={target}>Continue to Categories</a></p>
   </article>
-  <script is:inline define:vars={{ target }}>
-    window.location.replace(target);
-  </script>
 </BaseLayout>

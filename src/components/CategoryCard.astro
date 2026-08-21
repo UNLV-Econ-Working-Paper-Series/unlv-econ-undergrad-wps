@@ -10,7 +10,7 @@ const { title, href, meta = "" } = Astro.props;
 
 <a class="cat-card" href={href}>
   <div class="cat-card-top">
-    <h3 class="cat-card-title">{title}</h3>
+    <h2 class="cat-card-title">{title}</h2>
   </div>
 
   {meta ? <p class="cat-card-meta">{meta}</p> : null}

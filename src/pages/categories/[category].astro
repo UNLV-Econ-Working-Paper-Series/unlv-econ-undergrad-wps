@@ -43,7 +43,7 @@ const categoryName = category?.name ?? categorySlug;
               {paper.data.published_at ? <span class="pill">{formatPaperDate(paper.data.published_at)}</span> : null}
               <span class="pill light">{getIssueLabelForPaper(paper)}</span>
             </div>
-            <h3><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h3>
+            <h2><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h2>
             <p class="muted small">By {paper.data.authors.join(", ")}</p>
             <p class="muted">{paper.data.abstract.slice(0, 220)}{paper.data.abstract.length > 220 ? "..." : ""}</p>
             <div class="card-actions">

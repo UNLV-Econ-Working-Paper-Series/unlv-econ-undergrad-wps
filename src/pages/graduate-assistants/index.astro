@@ -45,6 +45,8 @@ const assistantProfiles = new Map(PUBLIC_PROFILES.map((profile) => [profile.prof
                     class="ga-thumb"
                     src={withBase(assistant.data.headshot)}
                     alt={assistant.data.name}
+                    width="64"
+                    height="64"
                     loading="lazy"
                     title={assistantProfiles.get(`/graduate-assistants/${assistant.slug}/`)?.photoSource}
                   />

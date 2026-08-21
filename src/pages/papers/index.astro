@@ -27,7 +27,7 @@ const categoryCount = categories.length;
 const volumeCount = new Set(papers.map((paper) => paper.data.volume).filter(Boolean)).size;
 const paperCountLabel = `${paperCount} ${paperCount === 1 ? "paper" : "papers"}`;
 
-const excerpt = (abstract: string, length = 280): string => {
+const excerpt = (abstract: string, length = 220): string => {
   if (abstract.length <= length) return abstract;
   const clipped = abstract.slice(0, length);
   const lastSpace = clipped.lastIndexOf(" ");

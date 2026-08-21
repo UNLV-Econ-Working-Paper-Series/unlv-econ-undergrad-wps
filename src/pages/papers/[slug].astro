@@ -201,6 +201,10 @@ const doiHref = paper.data.doi ? `https://doi.org/${paper.data.doi}` : null;
     if (!(selector instanceof HTMLSelectElement) || !(output instanceof HTMLElement)) {
       return;
     }
+    if (selector.dataset.citationInit === "true") {
+      return;
+    }
+    selector.dataset.citationInit = "true";
 
     const updateCitation = () => {
       const selected = selector.selectedOptions[0];

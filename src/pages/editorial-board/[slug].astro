@@ -29,6 +29,8 @@ const { profile } = Astro.props as { profile: PublicProfile };
         class="profile-thumb"
         src={withBase(profile.headshot)}
         alt={profile.name}
+        width="128"
+        height="128"
         loading="lazy"
         title={profile.photoSource}
       />

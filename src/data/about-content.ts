@@ -93,7 +93,7 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
     sections: [
       {
         summary: "How to cite",
-        open: true,
+        open: false,
         blocks: [
           {
             type: "paragraph",

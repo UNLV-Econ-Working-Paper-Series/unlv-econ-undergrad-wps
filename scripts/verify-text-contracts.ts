@@ -113,7 +113,7 @@ const pageContracts: PageContract[] = [
     texts: [
       "Issues",
       "Search papers",
-      "Latest issue:",
+      "Latest issue",
       "Spring 2026",
       "Fall 2025",
       "All years",
@@ -230,6 +230,50 @@ function readBuiltPage(relativePath: string): string {
   return fs.readFileSync(absolutePath, "utf8");
 }
 
+function listBuiltHtmlFiles(directory: string): string[] {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const absolutePath = path.join(directory, entry.name);
+    if (entry.isDirectory()) return listBuiltHtmlFiles(absolutePath);
+    return entry.isFile() && entry.name.endsWith(".html") ? [absolutePath] : [];
+  });
+}
+
+function visibleText(fragment: string): string {
+  return fragment.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function verifyBuiltHtmlInvariants(failures: string[]): void {
+  const distDirectory = path.resolve(process.cwd(), "dist");
+  for (const absolutePath of listBuiltHtmlFiles(distDirectory)) {
+    if (/\/google[^/]*\.html$/i.test(absolutePath)) continue;
+    const relativePath = path.relative(process.cwd(), absolutePath);
+    const html = fs.readFileSync(absolutePath, "utf8");
+    const title = html.match(/<title>([\s\S]*?)<\/title>/i)?.[1] ?? "";
+    const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)];
+    const headingLevels = [...html.matchAll(/<h([1-6])\b/gi)].map((match) => Number.parseInt(match[1], 10));
+
+    if (!visibleText(title) || /undefined/i.test(title)) {
+      failures.push(`${relativePath} has an empty or undefined document title.`);
+    }
+    if (headings.length !== 1) {
+      failures.push(`${relativePath} must contain exactly one h1; found ${headings.length}.`);
+    } else if (!visibleText(headings[0][1])) {
+      failures.push(`${relativePath} has an empty h1.`);
+    }
+    if (/>\s*undefined\s*</i.test(html)) {
+      failures.push(`${relativePath} renders undefined as visible content.`);
+    }
+    for (let index = 1; index < headingLevels.length; index += 1) {
+      if (headingLevels[index] > headingLevels[index - 1] + 1) {
+        failures.push(
+          `${relativePath} skips a heading level from h${headingLevels[index - 1]} to h${headingLevels[index]}.`
+        );
+        break;
+      }
+    }
+  }
+}
+
 function verifyContracts(): void {
   const failures: string[] = [];
 
@@ -247,6 +291,8 @@ function verifyContracts(): void {
     }
   }
 
+  verifyBuiltHtmlInvariants(failures);
+
   if (failures.length > 0) {
     throw new Error(failures.join("\n"));
   }
@@ -254,7 +300,7 @@ function verifyContracts(): void {
 
 try {
   verifyContracts();
-  console.log("OK: verified Homepage/Issues/Papers/About/Contact/SEO text contracts in built output.");
+  console.log("OK: verified page text contracts and built HTML title/heading invariants.");
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error(`ERROR: ${message}`);

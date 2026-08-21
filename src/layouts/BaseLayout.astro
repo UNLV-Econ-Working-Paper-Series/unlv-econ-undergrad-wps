@@ -1,23 +1,30 @@
 ---
 import { ClientRouter, fade } from "astro:transitions";
 import globalCss from "../styles/global.css?raw";
+import viewerReadinessCssUrl from "../styles/viewer-readiness.css?url";
 import { withBase } from "../lib/urls";
 
 interface Props {
   title: string;
   description?: string;
   bodyClass?: string;
+  canonicalPath?: string;
+  robots?: string;
+  redirectTo?: string;
 }
 
 const {
   title,
   description = "UNLV Undergraduate Economics Working Paper Series - open-access working papers from the UNLV Department of Economics.",
   bodyClass = "",
+  canonicalPath = Astro.url.pathname,
+  robots = "",
+  redirectTo = "",
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
 const siteUrl = Astro.site ?? new URL("https://econ-undergrad-wps.sites.unlv.edu");
-const canonicalUrl = new URL(pathname, siteUrl).toString();
+const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
 const currentYear = new Date().getFullYear();
 const navItems = [
   { href: withBase("/"), label: "Home" },
@@ -50,7 +57,9 @@ function isActive(href: string): boolean {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {robots ? <meta name="robots" content={robots} /> : null}
     <link rel="canonical" href={canonicalUrl} />
+    {redirectTo ? <meta http-equiv="refresh" content={`0;url=${redirectTo}`} /> : null}
     <link rel="icon" href={withBase("/favicon.svg")} type="image/svg+xml" />
     <link rel="apple-touch-icon" href={withBase("/apple-touch-icon.png")} />
     <link rel="manifest" href={withBase("/site.webmanifest")} />
@@ -68,6 +77,7 @@ function isActive(href: string): boolean {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(withBase("/assets/brand/og-image.png"), siteUrl).toString()} />
     <style is:inline set:html={globalCss}></style>
+    <link rel="stylesheet" href={viewerReadinessCssUrl} />
     <ClientRouter />
   </head>
   <body class={bodyClass || undefined}>
@@ -76,7 +86,14 @@ function isActive(href: string): boolean {
     <header class="site-header modern-header">
       <div class="site-shell site-topbar">
         <div class="site-topbar__brand">
-          <a class="site-title site-logo" href={withBase("/")}>UNLV Undergraduate Economics Working Paper Series</a>
+          <a
+            class="site-title site-logo"
+            href={withBase("/")}
+            aria-label="UNLV Undergraduate Economics Working Paper Series"
+          >
+            <span class="site-logo__primary">UNLV Economics</span>
+            <span class="site-logo__secondary">Undergraduate Working Paper Series</span>
+          </a>
           <button
             class="site-nav-toggle"
             type="button"
@@ -93,7 +110,11 @@ function isActive(href: string): boolean {
           <ul>
             {navItems.map((item) => (
               <li>
-                <a href={item.href} class={isActive(item.href) ? "is-active" : undefined}>{item.label}</a>
+                <a
+                  href={item.href}
+                  class={isActive(item.href) ? "is-active" : undefined}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                >{item.label}</a>
               </li>
             ))}
           </ul>
@@ -109,7 +130,7 @@ function isActive(href: string): boolean {
 
     <footer class="site-footer modern-footer">
       <div class="site-shell footer-shell">
-        <div class="footer-main" role="navigation" aria-label="Footer navigation">
+        <div class="footer-main">
           <section class="footer-brand">
             <h2 class="footer-journal">UNLV Undergraduate Economics Working Paper Series</h2>
             <p class="footer-description">
@@ -324,6 +345,11 @@ function isActive(href: string): boolean {
           toggle.addEventListener("click", () => {
             const isOpen = toggle.getAttribute("aria-expanded") === "true";
             setOpen(!isOpen);
+            if (!isOpen) {
+              // Safari does not consistently focus buttons after a pointer click.
+              // Keeping focus in the header lets Escape close the disclosed menu.
+              toggle.focus({ preventScroll: true });
+            }
           });
 
           const header = toggle.closest(".site-header");
@@ -336,13 +362,13 @@ function isActive(href: string): boolean {
 
           panel.querySelectorAll("a").forEach((link) => {
             link.addEventListener("click", () => {
-              if (window.matchMedia("(max-width: 760px)").matches) {
+              if (window.matchMedia("(max-width: 1180px)").matches) {
                 setOpen(false);
               }
             });
           });
 
-          const media = window.matchMedia("(max-width: 760px)");
+          const media = window.matchMedia("(max-width: 1180px)");
           const handleViewportChange = (event) => {
             if (!event.matches) {
               setOpen(false);

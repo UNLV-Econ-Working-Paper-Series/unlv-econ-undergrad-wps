@@ -32,6 +32,10 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
       </div>
     </section>
 
+    <p class="filter-result-count" id="archive-result-count" role="status" aria-live="polite" aria-atomic="true">
+      Showing {archiveIssues.length} {archiveIssues.length === 1 ? "issue" : "issues"}
+    </p>
+
     <section class="issues-cards issues-cards--archive" aria-label="Archive issue cards">
       {archiveIssues.length === 0 ? (
         <article class="card empty-state-card">
@@ -94,55 +98,63 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
   </section>
 
   <script is:inline>
-    const searchInput = document.getElementById("archive-search");
-    const yearSelect = document.getElementById("archive-year");
-    const issueCards = Array.from(document.querySelectorAll("[data-archive-issue-card]"));
-    const downloadButtons = Array.from(document.querySelectorAll("[data-download-all]"));
-    const emptyState = document.getElementById("archive-empty");
+    (() => {
+      const initArchiveFilters = () => {
+        const explorer = document.querySelector(".page-archive .issues-explorer");
+        if (!(explorer instanceof HTMLElement) || explorer.dataset.filtersInit === "true") return;
+        explorer.dataset.filtersInit = "true";
 
-    function applyFilters() {
-      const query = (searchInput?.value || "").trim().toLowerCase();
-      const selectedYear = yearSelect?.value || "";
+        const searchInput = explorer.querySelector("#archive-search");
+        const yearSelect = explorer.querySelector("#archive-year");
+        const issueCards = Array.from(explorer.querySelectorAll("[data-archive-issue-card]"));
+        const emptyState = explorer.querySelector("#archive-empty");
+        const resultCount = explorer.querySelector("#archive-result-count");
 
-      issueCards.forEach((card) => {
-        const year = card.dataset.year || "";
-        const search = card.dataset.search || "";
+        const applyFilters = () => {
+          const query = (searchInput?.value || "").trim().toLowerCase();
+          const selectedYear = yearSelect?.value || "";
+          issueCards.forEach((card) => {
+            const visible = (!selectedYear || card.dataset.year === selectedYear) &&
+              (!query || (card.dataset.search || "").includes(query));
+            card.hidden = !visible;
+          });
 
-        const matchesYear = selectedYear === "" || year === selectedYear;
-        const matchesQuery = query === "" || search.includes(query);
+          const visibleCount = issueCards.filter((card) => !card.hidden).length;
+          if (emptyState instanceof HTMLElement) emptyState.hidden = visibleCount !== 0;
+          if (resultCount instanceof HTMLElement) {
+            resultCount.textContent = `Showing ${visibleCount} of ${issueCards.length} ${issueCards.length === 1 ? "issue" : "issues"}`;
+          }
+        };
 
-        card.hidden = !(matchesYear && matchesQuery);
-      });
+        searchInput?.addEventListener("input", applyFilters);
+        yearSelect?.addEventListener("change", applyFilters);
 
-      if (emptyState) {
-        emptyState.hidden = issueCards.some((card) => !card.hidden);
-      }
-    }
-
-    searchInput?.addEventListener("input", applyFilters);
-    yearSelect?.addEventListener("change", applyFilters);
-
-    downloadButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const urls = (button.dataset.urls || "").split("|").filter(Boolean);
-        if (urls.length === 0) {
-          return;
-        }
-
-        urls.forEach((url, index) => {
-          window.setTimeout(() => {
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "";
-            link.rel = "noopener noreferrer";
-            document.body.append(link);
-            link.click();
-            link.remove();
-          }, index * 180);
+        explorer.querySelectorAll("[data-download-all]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const urls = (button.dataset.urls || "").split("|").filter(Boolean);
+            urls.forEach((url, index) => {
+              window.setTimeout(() => {
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = "";
+                link.rel = "noopener noreferrer";
+                document.body.append(link);
+                link.click();
+                link.remove();
+              }, index * 180);
+            });
+          });
         });
-      });
-    });
 
-    applyFilters();
+        applyFilters();
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initArchiveFilters, { once: true });
+      } else {
+        initArchiveFilters();
+      }
+      document.addEventListener("astro:page-load", initArchiveFilters);
+    })();
   </script>
 </BaseLayout>

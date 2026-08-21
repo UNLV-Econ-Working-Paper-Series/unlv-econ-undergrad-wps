@@ -24,7 +24,6 @@ const years = [...new Set(publishedIssues.map((issue) => issue.year).filter((yea
   (a, b) => b - a
 );
 const categories = [...new Set([...issueCategoryMap.values()].flat())].sort((a, b) => a.localeCompare(b));
-const latestIssue = publishedIssues[0] ?? null;
 ---
 
 <BaseLayout title="Issues | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-issues page-issues">
@@ -62,23 +61,12 @@ const latestIssue = publishedIssues[0] ?? null;
           </div>
         </section>
 
-        {latestIssue ? (
-          <section class="issues-latest-line" data-motion="gsap" aria-label="Latest issue">
-            <p class="issues-latest-line__text">
-              <span class="issues-latest-line__label">Latest issue:</span>{" "}
-              <a class="issues-latest-line__link" href={withBase(`/issues/${latestIssue.slug}/`)}>
-                {latestIssue.label}
-              </a>
-            </p>
-
-            <a class="btn btn-small btn-primary" href={withBase(`/issues/${latestIssue.slug}/`)}>
-              Browse
-            </a>
-          </section>
-        ) : null}
+        <p class="filter-result-count" id="issues-result-count" role="status" aria-live="polite" aria-atomic="true">
+          Showing {publishedIssues.length} {publishedIssues.length === 1 ? "issue" : "issues"}
+        </p>
 
         <section class="issues-cards" aria-label="Issue cards">
-          {publishedIssues.map((issue) => {
+          {publishedIssues.map((issue, index) => {
             const issueCategories = issueCategoryMap.get(issue.slug) ?? [];
             const searchText = [
               issue.label,
@@ -101,6 +89,7 @@ const latestIssue = publishedIssues[0] ?? null;
                 data-search={searchText}
               >
                 <header class="issue-archive-head">
+                  {index === 0 ? <p class="issue-latest-badge">Latest issue</p> : null}
                   <h2>{issue.label}</h2>
                   <p class="issue-card-meta">
                     {issue.papers.length} papers • {issueCategories.length} categories
@@ -139,41 +128,53 @@ const latestIssue = publishedIssues[0] ?? null;
   </section>
 
   <script is:inline>
-    const searchInput = document.getElementById("issues-search");
-    const yearSelect = document.getElementById("issues-year");
-    const categorySelect = document.getElementById("issues-category");
-    const issueCards = Array.from(document.querySelectorAll("[data-issue-card]"));
-    const emptyState = document.getElementById("issues-empty");
+    (() => {
+      const initIssueFilters = () => {
+        const explorer = document.querySelector(".page-issues .issues-explorer");
+        if (!(explorer instanceof HTMLElement) || explorer.dataset.filtersInit === "true") return;
+        explorer.dataset.filtersInit = "true";
 
-    function applyFilters() {
-      const query = (searchInput?.value || "").trim().toLowerCase();
-      const selectedYear = (yearSelect?.value || "").trim();
-      const selectedCategory = (categorySelect?.value || "").trim();
+        const searchInput = explorer.querySelector("#issues-search");
+        const yearSelect = explorer.querySelector("#issues-year");
+        const categorySelect = explorer.querySelector("#issues-category");
+        const issueCards = Array.from(explorer.querySelectorAll("[data-issue-card]"));
+        const emptyState = explorer.querySelector("#issues-empty");
+        const resultCount = explorer.querySelector("#issues-result-count");
 
-      issueCards.forEach((card) => {
-        const year = card.dataset.year || "";
-        const search = card.dataset.search || "";
-        const categories = (card.dataset.categories || "").split("|").filter(Boolean);
+        const applyFilters = () => {
+          const query = (searchInput?.value || "").trim().toLowerCase();
+          const selectedYear = (yearSelect?.value || "").trim();
+          const selectedCategory = (categorySelect?.value || "").trim();
 
-        const matchesYear = selectedYear === "" || year === selectedYear;
-        const matchesCategory = selectedCategory === "" || categories.includes(selectedCategory);
-        const matchesQuery = query === "" || search.includes(query);
+          issueCards.forEach((card) => {
+            const year = card.dataset.year || "";
+            const search = card.dataset.search || "";
+            const categories = (card.dataset.categories || "").split("|").filter(Boolean);
+            const visible = (!selectedYear || year === selectedYear) &&
+              (!selectedCategory || categories.includes(selectedCategory)) &&
+              (!query || search.includes(query));
+            card.hidden = !visible;
+          });
 
-        card.hidden = !(matchesYear && matchesCategory && matchesQuery);
-      });
+          const visibleCount = issueCards.filter((card) => !card.hidden).length;
+          if (emptyState instanceof HTMLElement) emptyState.hidden = visibleCount !== 0;
+          if (resultCount instanceof HTMLElement) {
+            resultCount.textContent = `Showing ${visibleCount} of ${issueCards.length} ${issueCards.length === 1 ? "issue" : "issues"}`;
+          }
+        };
 
-      if (emptyState) {
-        emptyState.hidden = issueCards.some((card) => !card.hidden);
+        searchInput?.addEventListener("input", applyFilters);
+        yearSelect?.addEventListener("change", applyFilters);
+        categorySelect?.addEventListener("change", applyFilters);
+        applyFilters();
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initIssueFilters, { once: true });
+      } else {
+        initIssueFilters();
       }
-    }
-
-    searchInput?.addEventListener("input", applyFilters);
-    yearSelect?.addEventListener("change", applyFilters);
-    categorySelect?.addEventListener("change", applyFilters);
-
-    // init
-    if (yearSelect) yearSelect.value = "";
-    if (categorySelect) categorySelect.value = "";
-    applyFilters();
+      document.addEventListener("astro:page-load", initIssueFilters);
+    })();
   </script>
 </BaseLayout>

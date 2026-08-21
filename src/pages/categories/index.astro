@@ -45,7 +45,11 @@ const visibleCategories = categories.filter((category) => category.count > 0);
           </div>
         </header>
 
-        <div id="cat-grid" class="cat-grid cat-grid-modern" aria-live="polite">
+        <p class="filter-result-count" id="category-result-count" role="status" aria-live="polite" aria-atomic="true">
+          Showing {visibleCategories.length} {visibleCategories.length === 1 ? "category" : "categories"}
+        </p>
+
+        <div id="cat-grid" class="cat-grid cat-grid-modern">
           {visibleCategories.map((category) => (
             <div
               class="cat-grid-item"
@@ -68,52 +72,50 @@ const visibleCategories = categories.filter((category) => category.count > 0);
   </section>
 
   <script is:inline>
-    const searchInput = document.getElementById("cat-search");
-    const sortSelect = document.getElementById("cat-sort");
-    const grid = document.getElementById("cat-grid");
-    const items = Array.from(document.querySelectorAll("[data-category-item]"));
-    const emptyState = document.getElementById("cat-empty");
+    (() => {
+      const initCategoryFilters = () => {
+        const shell = document.querySelector(".page-categories .categories-shell");
+        if (!(shell instanceof HTMLElement) || shell.dataset.filtersInit === "true") return;
+        shell.dataset.filtersInit = "true";
 
-    function applyCategoryFilters() {
-      const query = (searchInput?.value || "").trim().toLowerCase();
-      const sortMode = sortSelect?.value || "az";
+        const searchInput = shell.querySelector("#cat-search");
+        const sortSelect = shell.querySelector("#cat-sort");
+        const grid = shell.querySelector("#cat-grid");
+        const items = Array.from(shell.querySelectorAll("[data-category-item]"));
+        const emptyState = shell.querySelector("#cat-empty");
+        const resultCount = shell.querySelector("#category-result-count");
 
-      items.forEach((item) => {
-        const title = item.dataset.title || "";
-        item.hidden = query.length > 0 && !title.includes(query);
-      });
+        const applyCategoryFilters = () => {
+          const query = (searchInput?.value || "").trim().toLowerCase();
+          const sortMode = sortSelect?.value || "az";
+          items.forEach((item) => {
+            item.hidden = Boolean(query && !(item.dataset.title || "").includes(query));
+          });
 
-      const visibleItems = items.filter((item) => !item.hidden);
+          const visibleItems = items.filter((item) => !item.hidden).sort((a, b) => {
+            const countDifference = Number.parseInt(b.dataset.count || "0", 10) - Number.parseInt(a.dataset.count || "0", 10);
+            if (sortMode === "count" && countDifference !== 0) return countDifference;
+            return (a.dataset.title || "").localeCompare(b.dataset.title || "");
+          });
 
-      visibleItems.sort((a, b) => {
-        const titleA = a.dataset.title || "";
-        const titleB = b.dataset.title || "";
-        const countA = Number.parseInt(a.dataset.count || "0", 10);
-        const countB = Number.parseInt(b.dataset.count || "0", 10);
-
-        if (sortMode === "count") {
-          if (countA !== countB) {
-            return countB - countA;
+          if (grid instanceof HTMLElement) visibleItems.forEach((item) => grid.appendChild(item));
+          if (emptyState instanceof HTMLElement) emptyState.hidden = visibleItems.length !== 0;
+          if (resultCount instanceof HTMLElement) {
+            resultCount.textContent = `Showing ${visibleItems.length} of ${items.length} ${items.length === 1 ? "category" : "categories"}`;
           }
-        }
+        };
 
-        return titleA.localeCompare(titleB);
-      });
+        searchInput?.addEventListener("input", applyCategoryFilters);
+        sortSelect?.addEventListener("change", applyCategoryFilters);
+        applyCategoryFilters();
+      };
 
-      if (grid) {
-        visibleItems.forEach((item) => {
-          grid.appendChild(item);
-        });
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initCategoryFilters, { once: true });
+      } else {
+        initCategoryFilters();
       }
-
-      if (emptyState) {
-        emptyState.hidden = visibleItems.length !== 0;
-      }
-    }
-
-    searchInput?.addEventListener("input", applyCategoryFilters);
-    sortSelect?.addEventListener("change", applyCategoryFilters);
-
-    applyCategoryFilters();
+      document.addEventListener("astro:page-load", initCategoryFilters);
+    })();
   </script>
 </BaseLayout>

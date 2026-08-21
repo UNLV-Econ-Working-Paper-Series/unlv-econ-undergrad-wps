@@ -72,25 +72,34 @@ const availablePapers = issue.papers.filter((paper) => paper.fileAvailable);
   </section>
 
   <script is:inline>
-    const button = document.querySelector("[data-download-all]");
+    (() => {
+      const initArchiveDownload = () => {
+        const button = document.querySelector(".page-archive-issue [data-download-all]");
+        if (!(button instanceof HTMLButtonElement) || button.dataset.downloadInit === "true") return;
+        button.dataset.downloadInit = "true";
 
-    button?.addEventListener("click", () => {
-      const urls = (button.dataset.urls || "").split("|").filter(Boolean);
-      if (urls.length === 0) {
-        return;
+        button.addEventListener("click", () => {
+          const urls = (button.dataset.urls || "").split("|").filter(Boolean);
+          urls.forEach((url, index) => {
+            window.setTimeout(() => {
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = "";
+              link.rel = "noopener noreferrer";
+              document.body.append(link);
+              link.click();
+              link.remove();
+            }, index * 180);
+          });
+        });
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initArchiveDownload, { once: true });
+      } else {
+        initArchiveDownload();
       }
-
-      urls.forEach((url, index) => {
-        window.setTimeout(() => {
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = "";
-          link.rel = "noopener noreferrer";
-          document.body.append(link);
-          link.click();
-          link.remove();
-        }, index * 180);
-      });
-    });
+      document.addEventListener("astro:page-load", initArchiveDownload);
+    })();
   </script>
 </BaseLayout>

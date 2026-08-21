@@ -5,12 +5,9 @@ import { withBase } from "../../lib/urls";
 const target = withBase("/issues/");
 ---
 
-<BaseLayout title="Redirecting to Issues">
-  <article class="card">
-    <p>This legacy pagination URL has moved</p>
+<BaseLayout title="Issues Page Moved" canonicalPath={target} robots="noindex, follow" redirectTo={target}>
+  <article class="card content-section redirect-page">
+    <h1>This legacy pagination URL has moved</h1>
     <p><a href={target}>Continue to Issues</a></p>
   </article>
-  <script is:inline define:vars={{ target }}>
-    window.location.replace(target);
-  </script>
 </BaseLayout>
