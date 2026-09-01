@@ -1,6 +1,5 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
-import { categorySlugForName } from "../../data/categories";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   cleanPaperTitle,
@@ -11,6 +10,8 @@ import {
   paperPdfHref,
   repositoryIssueLabel,
 } from "../../lib/papers";
+import { formatAuthorDisplay } from "../../lib/publication";
+import { researchFieldSlug } from "../../lib/research-fields";
 import { publicAssetExists } from "../../lib/publicAssets";
 import { withBase } from "../../lib/urls";
 
@@ -26,7 +27,7 @@ const issueLabel = issue.label;
 const issueZipPath = `/assets/issues/${issueSlug}/${issueSlug}-pdfs.zip`;
 const issueZipHref = withBase(issueZipPath);
 const issueZipAvailable = publicAssetExists(issueZipPath);
-const categoryCount = new Set(papers.map((paper) => paper.data.category)).size;
+const fieldCount = new Set(papers.map((paper) => paper.data.field)).size;
 const repositoryLabels = [...new Set(papers.map(repositoryIssueLabel).filter(Boolean))];
 const repositoryLabel = repositoryLabels.length === 1 ? repositoryLabels[0] : null;
 
@@ -76,9 +77,9 @@ const abstractLead = (abstract: string): string => {
               <p class="issue-library-eyebrow">Issue overview</p>
               <h2 id="issue-overview-title">Research published in {issueLabel}</h2>
               <p>
-                Explore {papers.length} working {papers.length === 1 ? "paper" : "papers"} across {categoryCount} editorial {categoryCount === 1 ? "subject area" : "subject areas"}. Deposited full text and permanent records are preserved by UNLV University Libraries in OAsis.
+                Explore {papers.length} working {papers.length === 1 ? "paper" : "papers"} across {fieldCount} research {fieldCount === 1 ? "field" : "fields"}. Deposited full text and permanent records are preserved by UNLV University Libraries in OAsis.
               </p>
-              <p class="issue-taxonomy-note">Subject areas are editorial groupings used for discovery on this site.</p>
+              <p class="issue-taxonomy-note">Research fields are controlled editorial groupings used for discovery on this site.</p>
               <div class="issue-overview-actions">
                 <a class="issue-text-link" href={withBase("/issues/")}>← All issues</a>
                 {issueZipAvailable ? (
@@ -93,8 +94,8 @@ const abstractLead = (abstract: string): string => {
                 <dd>{papers.length}</dd>
               </div>
               <div>
-                <dt>Editorial areas</dt>
-                <dd>{categoryCount}</dd>
+                <dt>Research fields</dt>
+                <dd>{fieldCount}</dd>
               </div>
               {repositoryLabel ? (
                 <div>
@@ -121,10 +122,10 @@ const abstractLead = (abstract: string): string => {
                       <p class="issue-paper-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p>
                       <div class="issue-paper-copy">
                         <p class="issue-paper-kicker">
-                          <a href={withBase(`/categories/${categorySlugForName(paper.data.category)}/`)}>{paper.data.category}</a>
+                          <a href={withBase(`/fields/${researchFieldSlug(paper.data.field)}/`)}>{paper.data.field}</a>
                         </p>
                         <h3><a href={paperHref(paper)}>{paperTitle}</a></h3>
-                        <p class="issue-paper-authors">By {paper.data.authors.join(", ")}</p>
+                        <p class="issue-paper-authors">By {formatAuthorDisplay(paper.data.authors)}</p>
                         <p class="issue-paper-abstract">{abstractLead(paper.data.abstract)}</p>
                         <nav class="issue-paper-actions" aria-label={`Actions for ${paperTitle}`}>
                           <a class="issue-entry-primary" href={paperHref(paper)}>Read paper details →</a>
@@ -133,8 +134,12 @@ const abstractLead = (abstract: string): string => {
                       </div>
                       <dl class="issue-paper-record">
                         <div>
-                          <dt>Published</dt>
-                          <dd>{formatPaperDate(paper.data.published_at)}</dd>
+                          <dt>Citable date</dt>
+                          <dd>{formatPaperDate(paper.data.citable_published_at)}</dd>
+                        </div>
+                        <div>
+                          <dt>OAsis online</dt>
+                          <dd>{formatPaperDate(paper.data.repository_published_at)}</dd>
                         </div>
                         {paperRepositoryLabel ? (
                           <div>

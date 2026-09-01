@@ -9,12 +9,12 @@ import {
   getIssueLabelForPaper,
   paperHref,
 } from "../../lib/papers";
-import { requireResearchField, researchFieldFromSlug, researchFieldSlug } from "../../lib/research-fields";
+import { researchFieldFromSlug, researchFieldSlug } from "../../lib/research-fields";
 import { withBase } from "../../lib/urls";
 
 export async function getStaticPaths() {
   const papers = await getAllPapers();
-  const populated = new Set<ResearchField>(papers.map((paper) => requireResearchField(paper.data.category)));
+  const populated = new Set<ResearchField>(papers.map((paper) => paper.data.field));
   return RESEARCH_FIELDS.filter((field) => populated.has(field)).map((field) => ({
     params: { field: researchFieldSlug(field) },
   }));
@@ -24,7 +24,7 @@ const fieldSlug = Astro.params.field ?? "";
 const field = researchFieldFromSlug(fieldSlug);
 if (!field) throw new Error(`Research field route not found: ${fieldSlug}`);
 
-const papers = (await getAllPapers()).filter((paper) => requireResearchField(paper.data.category) === field);
+const papers = (await getAllPapers()).filter((paper) => paper.data.field === field);
 ---
 
 <BaseLayout
@@ -41,9 +41,11 @@ const papers = (await getAllPapers()).filter((paper) => requireResearchField(pap
       {papers.map((paper) => (
         <li>
           <article>
-            <p class="eyebrow">{getIssueLabelForPaper(paper)} · Added to OAsis {formatPaperDate(paper.data.published_at)}</p>
+            <p class="eyebrow">
+              {getIssueLabelForPaper(paper)} · Citable date {formatPaperDate(paper.data.citable_published_at)} · OAsis online {formatPaperDate(paper.data.repository_published_at)}
+            </p>
             <h2><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h2>
-            <p>{paper.data.authors.join(", ")}</p>
+            <p>{paper.data.authors.map((author) => author.name).join(", ")}</p>
             <p>{paper.data.abstract}</p>
           </article>
         </li>

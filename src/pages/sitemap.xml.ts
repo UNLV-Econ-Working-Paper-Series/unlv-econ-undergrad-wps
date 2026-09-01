@@ -3,7 +3,7 @@ import { RESEARCH_FIELDS } from "../config/publication";
 import { PUBLIC_PROFILES } from "../data/public-profiles";
 import { getArchiveIssueGroups } from "../lib/archive";
 import { getIssueGroups, paperSlug } from "../lib/papers";
-import { requireResearchField, researchFieldSlug } from "../lib/research-fields";
+import { researchFieldSlug } from "../lib/research-fields";
 
 const SITE_URL = "https://econ-undergrad-wps.sites.unlv.edu";
 
@@ -56,7 +56,7 @@ export async function GET(): Promise<Response> {
   const archiveIssues = getArchiveIssueGroups();
 
   const visibleIssues = issues.filter((issue, index) => issue.papers.length > 0 || index === 0);
-  const populatedFields = new Set(papers.map((paper) => requireResearchField(paper.data.category)));
+  const populatedFields = new Set(papers.map((paper) => paper.data.field));
 
   const paths = uniquePaths([
     "/",

@@ -3,12 +3,12 @@ import PageBanner from "../../components/PageBanner.astro";
 import { RESEARCH_FIELDS } from "../../config/publication";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getAllPapers, getIssueLabelForPaper } from "../../lib/papers";
-import { requireResearchField, researchFieldSlug } from "../../lib/research-fields";
+import { researchFieldSlug } from "../../lib/research-fields";
 import { withBase } from "../../lib/urls";
 
 const papers = await getAllPapers();
 const fieldGroups = RESEARCH_FIELDS.map((field) => {
-  const fieldPapers = papers.filter((paper) => requireResearchField(paper.data.category) === field);
+  const fieldPapers = papers.filter((paper) => paper.data.field === field);
   return {
     field,
     slug: researchFieldSlug(field),

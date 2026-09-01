@@ -1,7 +1,6 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { requireResearchField } from "../../lib/research-fields";
 import { getIssueGroups } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
 
@@ -15,7 +14,7 @@ const issuesIntro = hasPublishedIssues
 const issueFieldMap = new Map(
   publishedIssues.map((issue) => [
     issue.slug,
-    [...new Set(issue.papers.map((paper) => requireResearchField(paper.data.category)))].sort((a, b) => a.localeCompare(b)),
+    [...new Set(issue.papers.map((paper) => paper.data.field))].sort((a, b) => a.localeCompare(b)),
   ])
 );
 
@@ -72,7 +71,7 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
             const searchText = [
               issue.label,
               ...issue.papers.map((paper) => paper.data.title),
-              ...issue.papers.flatMap((paper) => paper.data.authors),
+              ...issue.papers.flatMap((paper) => paper.data.authors.map((author) => author.name)),
               ...issue.papers.flatMap((paper) => paper.data.keywords),
               ...issue.papers.map((paper) => paper.data.abstract),
               ...issueFields,

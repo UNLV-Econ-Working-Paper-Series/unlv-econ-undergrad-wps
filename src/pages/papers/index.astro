@@ -2,7 +2,7 @@
 import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { RESEARCH_FIELDS } from "../../config/publication";
-import { requireResearchField, researchFieldSlug } from "../../lib/research-fields";
+import { researchFieldSlug } from "../../lib/research-fields";
 import {
   cleanPaperTitle,
   formatPaperDate,
@@ -20,10 +20,10 @@ const papers = await getAllPapers();
 const fields = RESEARCH_FIELDS.map((field) => ({
   name: field,
   slug: researchFieldSlug(field),
-  count: papers.filter((paper) => requireResearchField(paper.data.category) === field).length,
+  count: papers.filter((paper) => paper.data.field === field).length,
 })).filter((field) => field.count > 0);
 const issues = (await getIssueGroups()).filter((issue) => issue.papers.length > 0);
-const publicationYears = [...new Set(papers.map((paper) => paper.data.published_at?.slice(0, 4)).filter(Boolean))].sort((a, b) =>
+const publicationYears = [...new Set(papers.map((paper) => paper.data.citable_published_at.slice(0, 4)))].sort((a, b) =>
   String(b).localeCompare(String(a))
 );
 const paperCount = papers.length;
@@ -163,13 +163,21 @@ const excerpt = (abstract: string, length = 220): string => {
         <ol class="paper-library-grid" data-paper-grid aria-label="Working paper results">
           {papers.map((paper) => {
             const title = cleanPaperTitle(paper.data.title);
-            const field = requireResearchField(paper.data.category);
+            const field = paper.data.field;
             const fieldSlug = researchFieldSlug(field);
             const issueSlug = getIssueSlugForPaper(paper);
             const issueLabel = getIssueLabelForPaper(paper);
             const repositoryLabel = repositoryIssueLabel(paper);
-            const year = paper.data.published_at?.slice(0, 4) ?? "";
-            const searchText = [title, ...paper.data.authors, paper.data.category, ...paper.data.keywords, paper.data.abstract]
+            const year = paper.data.citable_published_at.slice(0, 4);
+            const searchText = [
+              title,
+              ...paper.data.authors.map((author) => author.name),
+              paper.data.field,
+              paper.data.series_number,
+              paper.data.doi ?? "",
+              ...paper.data.keywords,
+              paper.data.abstract,
+            ]
               .join(" ")
               .toLowerCase();
 
@@ -181,7 +189,7 @@ const excerpt = (abstract: string, length = 220): string => {
                 data-category={fieldSlug}
                 data-issue={issueSlug}
                 data-year={year}
-                data-published={paper.data.published_at ?? ""}
+                data-published={paper.data.citable_published_at}
                 data-title={title.toLowerCase()}
               >
                 <article class="paper-library-card">
@@ -192,7 +200,7 @@ const excerpt = (abstract: string, length = 220): string => {
                   </div>
 
                   <h3><a href={paperHref(paper)}>{title}</a></h3>
-                  <p class="paper-library-authors">{paper.data.authors.join(", ")}</p>
+                  <p class="paper-library-authors">{paper.data.authors.map((author) => author.name).join(", ")}</p>
 
                   <p class="paper-library-abstract">{excerpt(paper.data.abstract)}</p>
 
@@ -202,7 +210,8 @@ const excerpt = (abstract: string, length = 220): string => {
 
                   <div class="paper-library-card__footer">
                     <p class="paper-library-publication">
-                      <span>{formatPaperDate(paper.data.published_at)}</span>
+                      <span>Citable date {formatPaperDate(paper.data.citable_published_at)}</span>
+                      <span>OAsis online {formatPaperDate(paper.data.repository_published_at)}</span>
                       {repositoryLabel ? <span>{repositoryLabel}</span> : null}
                     </p>
                     <div class="paper-library-card__actions">

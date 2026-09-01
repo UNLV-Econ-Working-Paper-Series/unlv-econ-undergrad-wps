@@ -1,7 +1,6 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
 import { OASIS_MIRROR_ACTIVE } from "../../config/repositoryStatus";
-import { categorySlugForName } from "../../data/categories";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   cleanPaperTitle,
@@ -14,6 +13,8 @@ import {
   paperSlug,
   repositoryIssueLabel,
 } from "../../lib/papers";
+import { doiUrl, formatAuthorDisplay, currentVersionLabel, versionTimeline } from "../../lib/publication";
+import { researchFieldSlug } from "../../lib/research-fields";
 import { withBase } from "../../lib/urls";
 
 export async function getStaticPaths() {
@@ -25,20 +26,24 @@ const { paper } = Astro.props;
 const title = cleanPaperTitle(paper.data.title);
 const issueLabel = getIssueLabelForPaper(paper);
 const issueSlug = getIssueSlugForPaper(paper);
-const categorySlug = categorySlugForName(paper.data.category);
+const fieldSlug = researchFieldSlug(paper.data.field);
 const citations = formatCitations(paper);
 const defaultCitation = citations[0];
 const pdfHref = paperPdfHref(paper);
-const oasisUrl = paper.data.oasis_url?.trim();
+const oasisUrl = paper.data.oasis_url;
 const showOasisLink = OASIS_MIRROR_ACTIVE && Boolean(oasisUrl);
-const authorsDisplay = paper.data.authors.join(", ");
-const publicationLabel = formatPaperDate(paper.data.published_at);
+const authorsDisplay = formatAuthorDisplay(paper.data.authors);
+const citablePublicationLabel = formatPaperDate(paper.data.citable_published_at);
+const repositoryOnlineLabel = formatPaperDate(paper.data.repository_published_at);
+const currentVersionPublicationLabel = formatPaperDate(paper.data.current_version.published_at);
+const versionLabel = currentVersionLabel(paper.data.current_version);
+const versions = versionTimeline(paper.data);
 const repositoryLabel = repositoryIssueLabel(paper);
-const doiHref = paper.data.doi ? `https://doi.org/${paper.data.doi}` : null;
+const doiHref = paper.data.doi ? doiUrl(paper.data.doi) : null;
 ---
 
 <BaseLayout
-  title={`${title} | Papers`}
+  title={`${title} | UNLV Undergraduate Economics Working Paper Series`}
   description={paper.data.abstract}
   bodyClass="section-papers page-paper-detail"
 >
@@ -55,7 +60,7 @@ const doiHref = paper.data.doi ? `https://doi.org/${paper.data.doi}` : null;
       class="paper-record-masthead"
       kicker="Undergraduate economics working paper"
       title={title}
-      subtitle={`${authorsDisplay} • ${issueLabel} • ${publicationLabel}`}
+      subtitle={`${authorsDisplay} • ${issueLabel}`}
     />
 
     <div class="paper-detail-toolbar content-section" data-motion="gsap">
@@ -143,12 +148,24 @@ const doiHref = paper.data.doi ? `https://doi.org/${paper.data.doi}` : null;
               </div>
             ) : null}
             <div class="paper-detail-row">
-              <dt>Published</dt>
-              <dd>{publicationLabel}</dd>
+              <dt>Series number</dt>
+              <dd>{paper.data.series_number}</dd>
             </div>
             <div class="paper-detail-row">
-              <dt>Category</dt>
-              <dd><a href={withBase(`/categories/${categorySlug}/`)}>{paper.data.category}</a></dd>
+              <dt>Citable publication date</dt>
+              <dd>{citablePublicationLabel}</dd>
+            </div>
+            <div class="paper-detail-row">
+              <dt>OAsis online date</dt>
+              <dd>{repositoryOnlineLabel}</dd>
+            </div>
+            <div class="paper-detail-row">
+              <dt>Current version</dt>
+              <dd>{versionLabel} · {currentVersionPublicationLabel}</dd>
+            </div>
+            <div class="paper-detail-row">
+              <dt>Research field</dt>
+              <dd><a href={withBase(`/fields/${fieldSlug}/`)}>{paper.data.field}</a></dd>
             </div>
             {paper.data.pages ? (
               <div class="paper-detail-row">
@@ -156,10 +173,10 @@ const doiHref = paper.data.doi ? `https://doi.org/${paper.data.doi}` : null;
                 <dd>{paper.data.pages}</dd>
               </div>
             ) : null}
-            {paper.data.advisor ? (
+            {paper.data.faculty_sponsor ? (
               <div class="paper-detail-row">
-                <dt>Advisor</dt>
-                <dd>{paper.data.advisor}</dd>
+                <dt>Faculty sponsor</dt>
+                <dd>{paper.data.faculty_sponsor.name}</dd>
               </div>
             ) : null}
             {doiHref ? (
@@ -176,6 +193,18 @@ const doiHref = paper.data.doi ? `https://doi.org/${paper.data.doi}` : null;
               {paper.data.keywords.map((keyword) => <li>{keyword}</li>)}
             </ul>
           </div>
+        </section>
+
+        <section class="paper-detail-section paper-record-card" aria-labelledby="paper-version-history-title">
+          <h2 id="paper-version-history-title">Version history</h2>
+          <ol>
+            {versions.map((version) => (
+              <li>
+                <strong>{version.label}</strong> — {formatPaperDate(version.publishedAt)}
+                {version.note ? <span> · {version.note}</span> : null}
+              </li>
+            ))}
+          </ol>
         </section>
 
         {showOasisLink ? (

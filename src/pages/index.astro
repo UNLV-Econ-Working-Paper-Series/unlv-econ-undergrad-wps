@@ -4,24 +4,22 @@ import { HOMEPAGE_EDITABLE_CONTENT } from "../data/homepage-content";
 import { NEWS_EVENTS } from "../data/news";
 import { INSTITUTION } from "../config/institution";
 import { SERIES } from "../config/publication";
-import { cleanPaperTitle, getCategoryGroups, getIssueGroups, paperHref } from "../lib/papers";
-import { requireResearchField, researchFieldSlug } from "../lib/research-fields";
+import { cleanPaperTitle, getFieldGroups, getIssueGroups, paperHref } from "../lib/papers";
 import { withBase } from "../lib/urls";
 
 const issues = await getIssueGroups();
-const categories = await getCategoryGroups();
+const fields = await getFieldGroups();
 const publishedIssues = issues.filter((issue) => issue.papers.length > 0);
 
 const latestIssue = issues[0] ?? null;
 const latestIssueTitles = (latestIssue?.papers ?? []).slice(0, 3);
 const fieldCounts = new Map<string, number>();
-for (const group of categories) {
+for (const group of fields) {
   if (group.count === 0) continue;
-  const field = requireResearchField(group.name);
-  fieldCounts.set(field, (fieldCounts.get(field) ?? 0) + group.count);
+  fieldCounts.set(group.name, (fieldCounts.get(group.name) ?? 0) + group.count);
 }
 const fieldLinks = [...fieldCounts.entries()]
-  .map(([name, count]) => ({ name, count, slug: researchFieldSlug(requireResearchField(name)) }))
+  .map(([name, count]) => ({ name, count, slug: fields.find((field) => field.name === name)?.slug ?? "" }))
   .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
   .slice(0, 10);
 const hasPublishedPapers = publishedIssues.length > 0;
