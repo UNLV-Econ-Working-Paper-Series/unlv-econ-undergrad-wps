@@ -1,28 +1,12 @@
-import { execFileSync } from "node:child_process";
 import packageMetadata from "../../package.json";
 import { SERIES } from "../config/publication";
+import { detectSourceTree, readGitOutput } from "../lib/build-fingerprint";
 
 export const prerender = true;
 
-function gitValue(args: string[], fallback: string): string {
-  try {
-    return (
-      execFileSync("git", args, { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() || fallback
-    );
-  } catch {
-    return fallback;
-  }
-}
-
-function detectedSourceTree(): "clean" | "dirty" | "unknown" {
-  const status = gitValue(["status", "--porcelain"], "unknown");
-  if (status === "") return "clean";
-  return status === "unknown" ? "unknown" : "dirty";
-}
-
 export function GET(): Response {
-  const observedCommit = gitValue(["rev-parse", "HEAD"], "unknown");
-  const observedSourceTree = detectedSourceTree();
+  const observedCommit = readGitOutput(["rev-parse", "HEAD"]) || "unknown";
+  const observedSourceTree = detectSourceTree();
   const declaredCommit = process.env.RELEASE_COMMIT_SHA?.trim();
   const declaredSourceTree = process.env.RELEASE_SOURCE_TREE?.trim();
   if (declaredCommit && declaredCommit !== observedCommit) {
