@@ -1,45 +1,46 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
 title: Copyright, Licensing & Permissions
-lead: Authors keep their rights while allowing the Series to host the paper online.
+lead: Authors retain their rights unless a separate agreement says otherwise and must clear material they do not own.
 bodyClass: page-policy-permissions
 ---
 
 ## Copyright ownership
 
-Unless otherwise noted, **authors retain copyright** in their working papers.
+Authors retain copyright in their working papers unless they have transferred copyright through a separate written agreement. The copyright holder and license may differ by paper, so the rights statement on the paper page and OAsis item record controls for that record.
 
-## License to host and distribute
+The Series does not apply a blanket Creative Commons license to every paper and does not imply that free access permits unrestricted reuse.
 
-By publishing a paper in this Series, authors grant the Series (and, if applicable, the University of Nevada, Las Vegas as publisher) a **non-exclusive, worldwide license** to:
+## Permission to publish and preserve
 
-- host, reproduce, display, and distribute the work online
-- preserve the work as part of an educational archive
-- identify the author(s) and show related metadata on the site
+Before publication, every author must approve the final manuscript and grant the non-exclusive permissions stated in the executed Author Posting Agreement. Those permissions must be sufficient for the Series and approved repository services to reproduce, display, distribute, preserve, and describe the paper and its public metadata.
 
-This license is non-exclusive: authors may share and publish elsewhere.
+Non-exclusive permission allows an author to retain copyright and pursue other lawful publication, subject to the policies of any later venue. The agreement does not by itself identify UNLV, OAsis, or the Series as a legal publisher. No Series publisher value is asserted unless it is formally decided and documented.
 
-## Third-party content
+See the plain-language [Author Posting Agreement summary](../author-agreement/). The signed agreement—not the summary page—controls the permission granted for a paper.
 
-Authors are responsible for ensuring they have permission to include third-party content (for example, figures, images, tables, extensive excerpts, or proprietary instruments) or that use qualifies under applicable exceptions. When in doubt, authors should replace, remove, or properly license the material before publication.
+## Third-party material
 
-## How to reuse content from this site
+Authors must identify material they do not own, including figures, photographs, maps, tables, survey instruments, datasets, software, substantial excerpts, and adapted material. Before submission, they must either:
 
-### Quotation and citation
+- obtain written permission that covers the intended public and repository use;
+- document a license or other legal basis that permits that use; or
+- remove or replace the material.
 
-Brief quotation with proper attribution is generally acceptable. Use the recommended citation shown on each paper page.
+A citation alone is not a substitute for permission when permission is required. The Series may request documentation and may defer publication, restrict access, or require revision when rights are unclear. Editorial screening is not legal advice or a guarantee that a use is lawful.
 
-### Reuse beyond brief quotation
+## Reusing Series content
 
-For reuse beyond brief quotation (including reproducing figures/tables or distributing full PDFs), contact:
+Readers may link to paper pages and quote within the limits of applicable law with appropriate attribution. Reproducing a figure, table, substantial excerpt, or full paper may require permission from the copyright holder. Consult the record-specific rights statement and contact the author or identified rights holder when permission is required.
 
-- the author(s), and/or
-- the series team listed on the [Contact page](../../contact/)
+UNLV names and marks remain subject to applicable university trademark and brand requirements. Publication of a paper does not authorize use of a UNLV mark to imply endorsement.
 
-## Trademarks and branding
+## Author profiles and personal information
 
-UNLV names and marks may be subject to university trademark and brand guidelines. Use of UNLV marks should follow UNLV requirements.
+Permission to publish a manuscript does not include permission to publish an optional biography, photograph, personal profile link, or personal contact information. Those elements require separate consent, and declining them does not affect manuscript eligibility.
 
-## Disclaimer
+## Rights concerns
 
-The views expressed in each paper are those of the author(s) and do not necessarily reflect the views of UNLV or its faculty.
+Report a specific rights issue through the [Contact page](../../contact/) and identify the paper, URL, material, basis of the claim, and requested remedy. Do not send unnecessary identity documents or confidential evidence by ordinary email. Requests are handled under [Expressions of Concern, Withdrawal & Takedown](../takedown/).
+
+The views expressed in a paper are those of its authors and do not necessarily reflect the views of UNLV, Lee Business School, the department, the Editorial Board, a faculty sponsor, or OAsis.

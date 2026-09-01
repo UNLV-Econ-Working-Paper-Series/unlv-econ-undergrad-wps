@@ -2,12 +2,12 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { withBase } from "../../lib/urls";
 
-const target = withBase("/categories/");
+const target = withBase("/fields/");
 ---
 
-<BaseLayout title="Category Moved" canonicalPath={target} robots="noindex, follow" redirectTo={target}>
-  <article class="card content-section redirect-page">
-    <h1>This legacy category is archived</h1>
-    <p><a href={target}>Continue to Categories</a></p>
-  </article>
+<BaseLayout title="Research Fields" canonicalPath="/fields/" robots="noindex, follow" redirectTo={target} bodyClass="redirect-page">
+  <section class="content-section">
+    <h1>This legacy category has moved</h1>
+    <p><a href={target}>Continue to Research Fields</a></p>
+  </section>
 </BaseLayout>

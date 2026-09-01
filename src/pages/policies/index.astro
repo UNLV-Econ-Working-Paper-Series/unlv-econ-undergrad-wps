@@ -6,88 +6,120 @@ import { withBase } from "../../lib/urls";
 const policies = [
   {
     slug: "focus-scope",
-    title: "Focus & Scope",
-    summary: "What belongs in the Series, what does not, and the working-paper notice",
+    title: "Focus, Scope & Eligibility",
+    summary: "Who may submit, what the Series publishes, and what working-paper status means",
   },
   {
     slug: "open-access",
-    title: "Open Access Policy",
-    summary: "Free public access for readers; no author fees",
+    title: "Open Access",
+    summary: "Free reader access, record-specific reuse rights, and the OAsis relationship",
+  },
+  {
+    slug: "editorial-governance",
+    title: "Editorial Governance",
+    summary: "Board authority, voting rules, Junior Editor duties, and decision records",
   },
   {
     slug: "editorial-process",
-    title: "Editorial Screening Process (Not Peer Review)",
-    summary: "What the editorial check covers before a paper is posted",
+    title: "Editorial Screening Process",
+    summary: "The five-stage process and the distinction between screening and peer review",
   },
   {
     slug: "conflicts-recusal",
     title: "Conflicts of Interest and Recusal",
-    summary: "How conflicts are disclosed and independent editorial decisions are protected",
+    summary: "Required disclosures, recusal, independent approval, and ad hoc review",
+  },
+  {
+    slug: "authorship-ai",
+    title: "Authorship, Contributions, and AI-Assisted Work",
+    summary: "Human accountability, material AI-use disclosure, and optional public profiles",
+  },
+  {
+    slug: "ethics",
+    title: "Research Integrity, Human Subjects, and Research Ethics",
+    summary: "Academic integrity, human subjects, IRB, private data, and prior dissemination",
+  },
+  {
+    slug: "data-code",
+    title: "Data and Code Availability",
+    summary: "Required public availability statements and appropriate models for restrictions",
   },
   {
     slug: "permissions",
     title: "Copyright, Licensing & Permissions",
-    summary: "Who owns the paper, what the Series may host, and how reuse works",
-  },
-  {
-    slug: "privacy",
-    title: "Privacy Statement",
-    summary: "What the site collects and how contact messages are handled",
-  },
-  {
-    slug: "corrections-versioning",
-    title: "Corrections, Updates & Versioning",
-    summary: "How updates, revisions, and stable links are handled",
-  },
-  {
-    slug: "ethics",
-    title: "Publication Ethics & Integrity",
-    summary: "Rules on plagiarism, data, disclosure, and corrections",
-  },
-  {
-    slug: "takedown",
-    title: "Takedown / Rights & Privacy Requests",
-    summary: "When a removal request may be made and how it is handled",
-  },
-  {
-    slug: "archiving",
-    title: "Archiving & Preservation",
-    summary: "How the site keeps pages available and records updates or withdrawals",
+    summary: "Author rights, posting permission, third-party material, and record-specific reuse",
   },
   {
     slug: "accessibility",
     title: "Accessibility",
-    summary: "How to request accessible formats or help using a paper",
+    summary: "Manuscript requirements, editorial checks, barrier reporting, and remediation",
+  },
+  {
+    slug: "corrections-versioning",
+    title: "Corrections, Revisions & Versioning",
+    summary: "Change classifications, approval authority, version history, and repository coordination",
+  },
+  {
+    slug: "takedown",
+    title: "Expressions of Concern and Withdrawals",
+    summary: "Proportionate responses to serious integrity, rights, privacy, legal, or safety concerns",
+  },
+  {
+    slug: "appeals",
+    title: "Appeals",
+    summary: "Who may appeal, acceptable grounds, independent review, outcomes, and finality",
+  },
+  {
+    slug: "privacy",
+    title: "Privacy & Records",
+    summary: "Public/private boundaries, contact information, retention, and public-record obligations",
+  },
+  {
+    slug: "archiving",
+    title: "Archiving & Preservation",
+    summary: "OAsis records, custom-site continuity, historical material, and preservation boundaries",
   },
   {
     slug: "author-agreement",
-    title: "Author Posting Agreement (Summary)",
-    summary: "Plain-language summary of what authors allow when a paper is posted",
+    title: "Author Posting Agreement",
+    summary: "Plain-language summary of author approvals, permissions, assurances, and records",
   },
-];
+] as const;
 ---
 
 <BaseLayout
   title="Policies | UNLV Undergraduate Economics Working Paper Series"
-  description="Policies for posting, rights, privacy, corrections, and access in the UNLV Undergraduate Economics Working Paper Series."
+  description="Editorial, authorship, research-integrity, rights, accessibility, correction, privacy, and preservation policies for the UNLV Undergraduate Economics Working Paper Series."
   bodyClass="page-policy-index"
 >
   <PageBanner
     title="Policies"
-    lead="Policies for posting papers, reader access, rights, corrections, and accessibility"
+    lead="Standards for authors, editors, working-paper records, reader access, and post-publication action"
     compact
   />
 
   <section class="content-section policy-shell">
     <article class="policy-article">
-      <h2>Policy Directory</h2>
+      <h2>Policy directory</h2>
       <p>
-        Browse the Series policies on scope, access, rights, privacy, corrections, and archiving.
+        These policies define the public rules for eligibility, editorial screening, authorship,
+        research ethics, rights, accessibility, corrections, privacy, and preservation. Related
+        subjects are consolidated where one complete policy is easier to use than several thin pages.
+      </p>
+      <p>
+        Working papers are editorially screened, are not peer reviewed, and may be revised. A public
+        policy does not replace the paper-specific author, faculty, rights, ethics, consent, or
+        repository records retained through authorized private processes.
       </p>
 
-      <div class="policy-directory" role="list" aria-label="Policy pages">
+      <div class="policy-directory" role="list" aria-label="Series policy pages">
         {policies.map((policy) => (
-          <a role="listitem" class="policy-directory-item" data-motion="gsap" href={withBase(`/policies/${policy.slug}/`)}>
+          <a
+            role="listitem"
+            class="policy-directory-item"
+            data-motion="gsap"
+            href={withBase(`/policies/${policy.slug}/`)}
+          >
             <h3>{policy.title}</h3>
             <p>{policy.summary}</p>
           </a>

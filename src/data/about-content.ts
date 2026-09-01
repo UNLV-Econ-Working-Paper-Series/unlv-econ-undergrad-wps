@@ -1,198 +1,85 @@
+import { ELIGIBILITY, OASIS, SERIES } from "../config/publication";
 import type { AboutPageContent } from "./about-content.types";
 
-const bibtexTemplate = `@misc{unlv_econ_wp_author_year,
-  title        = {Title of Paper},
-  author       = {Last, First and Last, First},
-  year         = {2026},
-  howpublished = {UNLV Undergraduate Economics Working Paper Series, Issue: Spring 2026},
-  url          = {https://econ-undergrad-wps.sites.unlv.edu/papers/<paper-slug>/},
-  note         = {Working paper (Department of Economics research).}
-}`;
-
-// Backend sync target:
-// keep the object shape stable so backend can overwrite text without changing page markup.
 export const ABOUT_PAGE_CONTENT: AboutPageContent = {
   banner: {
-    title: "About",
-    lead: "An undergraduate economics working-paper publication at the University of Nevada, Las Vegas",
-    note: "Working papers (not peer reviewed), published by semester issue",
+    title: "About the Series",
+    lead: "Undergraduate economics research, organized for discovery and preserved through UNLV's institutional repository",
+    note: SERIES.workingPaperNotice,
   },
   tocItems: [
-    { id: "about-glance-title", label: "At a Glance" },
-    { id: "about-series-scope", label: "Series Scope" },
-    { id: "about-process-title", label: "How Publication Works" },
-    { id: "about-policies-title", label: "Policies" },
-    { id: "about-team-title", label: "Editorial Team" },
-    { id: "about-ga-title", label: "Junior Editors" },
-    { id: "about-cta-title", label: "Get Involved" },
+    { id: "purpose", label: "Purpose and home" },
+    { id: "scope", label: "Scope and eligibility" },
+    { id: "publication-status", label: "Working papers and issues" },
+    { id: "publication-process", label: "Publication process" },
+    { id: "repository", label: "OAsis repository record" },
   ],
-  atAGlance: {
-    title: "At a Glance",
-    items: [
-      [
-        { text: "Open-access archive", tone: "strong" },
-        { text: " of economics-related working papers by UNLV undergraduates." },
-      ],
-      [
-        { text: "Published ", tone: "strong" },
-        { text: "once per semester", tone: "strong" },
-        { text: " as a single issue." },
-      ],
-      [
-        { text: "Each paper has its own ", tone: "strong" },
-        { text: "paper page", tone: "strong" },
-        { text: " with an abstract, metadata, and a downloadable PDF." },
-      ],
-      [
-        { text: "Projects are developed with ", tone: "strong" },
-        { text: "faculty mentorship", tone: "strong" },
-        { text: " and may be revised over time." },
-      ],
+  purpose: {
+    id: "purpose",
+    title: "Purpose and institutional home",
+    paragraphs: [
+      SERIES.description,
+      "The Series gives readers a stable way to discover undergraduate economics research and gives qualifying student authors a structured publication process with faculty sponsorship, editorial screening, accessible document preparation, and durable repository records.",
     ],
   },
-  seriesScope: {
-    title: "Series Scope",
-    blocks: [
-      {
-        type: "paragraph",
-        segments: [
-          {
-            text: "The UNLV Undergraduate Economics Working Paper Series is operated by its Editorial Board within the Molasky Family Department of Economics and Real Estate. It gives readers one place to discover ",
-          },
-          { text: "working papers", tone: "strong" },
-          { text: ". The site is " },
-          { text: "not a peer-reviewed journal", tone: "strong" },
-          { text: ", and authors may revise papers over time." },
-        ],
-      },
+  scope: {
+    id: "scope",
+    title: "Scope and eligibility",
+    paragraphs: [ELIGIBILITY.summary, ELIGIBILITY.capstonePriority, ELIGIBILITY.inclusiveSummary],
+    points: [
+      "The work must make a substantive economics-related contribution.",
+      "A UNLV faculty sponsor is required before the Series begins intake.",
+      "The Series does not currently accept unsupported direct submissions from students.",
     ],
   },
-  publication: {
-    title: "How Publication Works",
+  publicationStatus: {
+    id: "publication-status",
+    title: "Working-paper status and semester issues",
+    paragraphs: [
+      SERIES.scope,
+      "Accepted papers are organized into semester issues. An issue is an editorial and discovery grouping for papers released together; it does not convert a working paper into a peer-reviewed journal article.",
+    ],
+  },
+  process: {
+    id: "publication-process",
+    title: "A five-stage publication process",
+    introduction:
+      "The Editorial Board applies one documented process to each proposed paper. Detailed requirements and decision authority are set out in the public policies.",
     steps: [
       {
-        title: "Department research",
-        description: "UNLV undergraduate authors develop original economics-related research with faculty mentorship and sponsorship.",
+        title: "Intake and eligibility",
+        description: "Confirm undergraduate eligibility, faculty sponsorship, scope, authorship, required materials, rights, and consent records.",
       },
       {
-        title: "Semester issue",
-        description: "Each semester can be published as one issue containing newly accepted papers.",
+        title: "Editorial screening",
+        description: "Review the research question, contribution, evidence, methods, conclusions, citations, writing, and research readiness.",
       },
       {
-        title: "Paper pages",
-        description: "Every paper has a page with abstract, key metadata, and a downloadable PDF.",
+        title: "Compliance screening",
+        description: "Review authorship, permissions, disclosures, research ethics, restricted data, accessibility, and data and code statements.",
       },
       {
-        title: "Updates",
-        description: "When authors revise, the most current version is displayed and prior versions may be retained when feasible.",
+        title: "Editorial decision",
+        description: "Issue a documented outcome under the voting, conflict-of-interest, and recusal rules.",
+      },
+      {
+        title: "Production",
+        description: "Verify metadata and document accessibility, prepare citations, coordinate the OAsis record, release the issue, and check public links.",
       },
     ],
   },
-  policies: {
-    title: "Policies",
-    sections: [
-      {
-        summary: "How to cite",
-        open: false,
-        blocks: [
-          {
-            type: "paragraph",
-            segments: [
-              { text: "Use the paper's page URL as the stable link. Suggested format:" },
-            ],
-          },
-          {
-            type: "paragraph",
-            segments: [
-              { text: "Author Last Name, First Name.", tone: "strong" },
-              { text: " (Year). " },
-              { text: "Title of Paper.", tone: "em" },
-              { text: " UNLV Undergraduate Economics Working Paper Series, " },
-              { text: "Issue: [Semester Year]", tone: "strong" },
-              { text: ". URL" },
-            ],
-          },
-          { type: "heading", text: "BibTeX template" },
-          { type: "code", code: bibtexTemplate },
-        ],
-      },
-      {
-        summary: "Rights and reuse",
-        blocks: [
-          {
-            type: "paragraph",
-            segments: [
-              { text: "Authors retain copyright", tone: "strong" },
-              { text: " unless otherwise noted." },
-            ],
-          },
-          {
-            type: "paragraph",
-            segments: [
-              {
-                text: "Posting a paper here makes it publicly available. For reuse beyond brief quotation, contact the author or the series team.",
-              },
-            ],
-          },
-          {
-            type: "paragraph",
-            segments: [
-              { text: "The views in each paper are those of the author(s) and do not necessarily reflect UNLV or its faculty." },
-            ],
-          },
-        ],
-      },
-      {
-        summary: "Corrections and versioning",
-        blocks: [
-          {
-            type: "paragraph",
-            segments: [
-              {
-                text: "Papers may be updated over time as methods, interpretation, or presentation improve. The latest public version is displayed on each paper page.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        summary: "Takedown and accessibility support",
-        blocks: [
-          {
-            type: "paragraph",
-            segments: [
-              {
-                text: "If a paper contains an error, requires an update, or needs removal for rights reasons, contact the series team with the paper title and URL.",
-              },
-            ],
-          },
-          {
-            type: "paragraph",
-            segments: [
-              {
-                text: "For accessibility support or format requests, use the Contact page and include the page link plus the requested accommodation.",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  editorialTeam: {
-    title: "Editorial Board",
-  },
-  graduateAssistants: {
-    title: "Junior Editors",
-    linkLabel: "View all Junior Editors →",
-    linkHref: "/graduate-assistants/",
-    emptyText: "No current junior editors are listed",
+  repository: {
+    id: "repository",
+    title: "The OAsis repository record",
+    paragraphs: [OASIS.safeDescription, OASIS.relationship],
   },
   cta: {
-    title: "Get Involved",
-    body: "Contact the series team with questions about posting a paper, fixing a record, or helping with the site.",
+    title: "Learn more",
+    body: "Meet the Editorial Board, review the submission path for student authors, or read the policies that govern screening and publication.",
     actions: [
-      { label: "Contact", href: "/contact/", primary: true },
-      { label: "Explore Research Pathway", href: "/our/" },
+      { label: "Editorial Board", href: "/editorial-board/", primary: true },
+      { label: "For Student Authors", href: "/for-authors/" },
+      { label: "Publication Policies", href: "/policies/" },
     ],
   },
 };

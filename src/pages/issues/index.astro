@@ -1,6 +1,7 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { requireResearchField } from "../../lib/research-fields";
 import { getIssueGroups } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
 
@@ -11,19 +12,17 @@ const issuesIntro = hasPublishedIssues
   ? "Browse issues by semester. Each issue groups the papers posted for that term"
   : "Current issue listings will be posted soon.";
 
-const issueCategoryMap = new Map(
+const issueFieldMap = new Map(
   publishedIssues.map((issue) => [
     issue.slug,
-    [...new Set(issue.papers.map((paper) => paper.data.category.trim()).filter((category) => category.length > 0))].sort((a, b) =>
-      a.localeCompare(b)
-    ),
+    [...new Set(issue.papers.map((paper) => requireResearchField(paper.data.category)))].sort((a, b) => a.localeCompare(b)),
   ])
 );
 
 const years = [...new Set(publishedIssues.map((issue) => issue.year).filter((year): year is number => typeof year === "number"))].sort(
   (a, b) => b - a
 );
-const categories = [...new Set([...issueCategoryMap.values()].flat())].sort((a, b) => a.localeCompare(b));
+const fields = [...new Set([...issueFieldMap.values()].flat())].sort((a, b) => a.localeCompare(b));
 const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
   `${count} ${count === 1 ? singular : plural}`;
 ---
@@ -52,11 +51,11 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
             </div>
 
             <div class="issues-category-filter">
-              <label class="issues-filter-label" for="issues-category">Category</label>
-              <select id="issues-category">
-                <option value="">All categories</option>
-                {categories.map((category) => (
-                  <option value={category.toLowerCase()}>{category}</option>
+              <label class="issues-filter-label" for="issues-field">Research field</label>
+              <select id="issues-field">
+                <option value="">All research fields</option>
+                {fields.map((field) => (
+                  <option value={field.toLowerCase()}>{field}</option>
                 ))}
               </select>
             </div>
@@ -69,14 +68,14 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
 
         <section class="issues-cards" aria-label="Issue cards">
           {publishedIssues.map((issue, index) => {
-            const issueCategories = issueCategoryMap.get(issue.slug) ?? [];
+            const issueFields = issueFieldMap.get(issue.slug) ?? [];
             const searchText = [
               issue.label,
               ...issue.papers.map((paper) => paper.data.title),
               ...issue.papers.flatMap((paper) => paper.data.authors),
               ...issue.papers.flatMap((paper) => paper.data.keywords),
               ...issue.papers.map((paper) => paper.data.abstract),
-              ...issueCategories,
+              ...issueFields,
             ]
               .join(" ")
               .toLowerCase();
@@ -87,22 +86,22 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
                 data-motion="gsap"
                 data-issue-card
                 data-year={issue.year === null ? "unknown" : String(issue.year)}
-                data-categories={issueCategories.map((category) => category.toLowerCase()).join("|")}
+                data-fields={issueFields.map((field) => field.toLowerCase()).join("|")}
                 data-search={searchText}
               >
                 <header class="issue-archive-head">
                   {index === 0 ? <p class="issue-latest-badge">Latest issue</p> : null}
                   <h2>{issue.label}</h2>
                   <p class="issue-card-meta">
-                    {countLabel(issue.papers.length, "paper")} • {countLabel(issueCategories.length, "category", "categories")}
+                    {countLabel(issue.papers.length, "paper")} • {countLabel(issueFields.length, "research field")}
                   </p>
                 </header>
 
-                <div class="issue-topic-chips" role="list" aria-label={`Categories in ${issue.label}`}>
-                  {issueCategories.slice(0, 5).map((category) => (
-                    <span class="issue-topic-chip" role="listitem">{category}</span>
+                <div class="issue-topic-chips" role="list" aria-label={`Research fields in ${issue.label}`}>
+                  {issueFields.slice(0, 5).map((field) => (
+                    <span class="issue-topic-chip" role="listitem">{field}</span>
                   ))}
-                  {issueCategories.length > 5 ? <span class="issue-topic-chip" role="listitem">+{issueCategories.length - 5} more</span> : null}
+                  {issueFields.length > 5 ? <span class="issue-topic-chip" role="listitem">+{issueFields.length - 5} more</span> : null}
                 </div>
 
                 <div class="issue-card-actions">
@@ -138,7 +137,7 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
 
         const searchInput = explorer.querySelector("#issues-search");
         const yearSelect = explorer.querySelector("#issues-year");
-        const categorySelect = explorer.querySelector("#issues-category");
+        const fieldSelect = explorer.querySelector("#issues-field");
         const issueCards = Array.from(explorer.querySelectorAll("[data-issue-card]"));
         const emptyState = explorer.querySelector("#issues-empty");
         const resultCount = explorer.querySelector("#issues-result-count");
@@ -146,14 +145,14 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
         const applyFilters = () => {
           const query = (searchInput?.value || "").trim().toLowerCase();
           const selectedYear = (yearSelect?.value || "").trim();
-          const selectedCategory = (categorySelect?.value || "").trim();
+          const selectedField = (fieldSelect?.value || "").trim();
 
           issueCards.forEach((card) => {
             const year = card.dataset.year || "";
             const search = card.dataset.search || "";
-            const categories = (card.dataset.categories || "").split("|").filter(Boolean);
+            const fields = (card.dataset.fields || "").split("|").filter(Boolean);
             const visible = (!selectedYear || year === selectedYear) &&
-              (!selectedCategory || categories.includes(selectedCategory)) &&
+              (!selectedField || fields.includes(selectedField)) &&
               (!query || search.includes(query));
             card.hidden = !visible;
           });
@@ -167,7 +166,7 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
 
         searchInput?.addEventListener("input", applyFilters);
         yearSelect?.addEventListener("change", applyFilters);
-        categorySelect?.addEventListener("change", applyFilters);
+        fieldSelect?.addEventListener("change", applyFilters);
         applyFilters();
       };
 

@@ -6,7 +6,7 @@ These standards apply to public-facing copy for the UNLV Undergraduate Economics
 
 - Use plain institutional language.
 - Prefer concrete nouns and verbs.
-- Use "working paper series" or "archive" as the default description.
+- Use "working paper Series" for the current publication and reserve "archive" for historical records or archival functions.
 - Do not describe working papers as peer-reviewed unless explicitly true.
 - Do not imply official institutional approval beyond what the series governance supports.
 - Make disclaimers direct and visible.
@@ -46,7 +46,7 @@ When writing about papers or issues, include specific facts where available:
 - semester
 - paper title
 - author
-- category
+- research field
 - PDF
 - citation
 - correction or versioning policy
@@ -69,4 +69,4 @@ Bad:
 
 Better:
 
-> This site publishes undergraduate economics working papers from the UNLV Department of Economics.
+> The Series publishes original economics-related working papers by UNLV undergraduates and operates within the Molasky Family Department of Economics and Real Estate.

@@ -1,40 +1,54 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
-title: Publication Ethics & Integrity
-lead: Basic rules on plagiarism, data, disclosure, and corrections.
+title: Research Integrity & Research Ethics
+lead: Authors must meet academic-integrity, human-subjects, and restricted-data requirements before publication.
 bodyClass: page-policy-ethics
 ---
 
-The UNLV Undergraduate Economics Working Paper Series expects normal academic standards for citation, data use, and correction of errors.
+## Research integrity
 
-## Academic integrity
+Authors must represent sources, data, methods, calculations, and findings accurately. The Series does not permit plagiarism, fabrication, falsification, misrepresentation, manipulated citation, undisclosed duplicate publication, or omission of information needed to understand a material limitation or conflict.
 
-Authors are expected to:
+Authors and faculty sponsors must respond to reasonable editorial questions and correct material errors they discover. The Editorial Board may pause publication or take a proportionate post-publication action while a credible concern is reviewed.
 
-- represent sources accurately and provide appropriate citations
-- avoid plagiarism, fabrication, falsification, and misrepresentation
-- disclose substantial reuse of prior work when applicable
+The Series conducts editorial screening; it does not independently replicate every analysis or certify that a paper is free of error. It also does not decide formal research-misconduct proceedings. Questions that require a university determination are referred to the responsible UNLV office under the [UNLV Research Misconduct Policy](https://www.unlv.edu/policies/research-misconduct-policy).
 
-## Plagiarism and misconduct
+## Human subjects and IRB
 
-If credible concerns arise, the Series may:
+Authors and faculty sponsors are responsible for determining, in consultation with the [UNLV Office of Research Integrity](https://www.unlv.edu/research/ORI-HSR) when appropriate, whether a project requires Institutional Review Board review. Any required approval or determination must be obtained **before research activities begin**. The Editorial Board cannot provide retroactive approval or substitute its judgment for the IRB.
 
-- request clarification or supporting materials from the author(s)
-- postpone posting or restrict access while concerns are reviewed
-- correct, label, or withdraw content when necessary
+The submission packet must state the applicable research-ethics status. Supported public statements may include:
 
-## Human subjects and sensitive data
+- **Not applicable:** This study did not involve human participants or identifiable private information.
+- **Approved:** Approved by the UNLV IRB, protocol [number].
+- **Determination obtained:** Determined exempt or not human-subjects research by [office], dated [date].
+- **Public or deidentified secondary data:** Uses public, deidentified secondary data and did not require IRB review, as confirmed by [appropriate determination if obtained].
 
-Authors are responsible for complying with applicable human-subjects policies, including IRB requirements when relevant. Manuscripts should not include confidential, private, or restricted data that cannot be publicly posted.
+Authors must use only a statement supported by their records. The Series does not infer, invent, or issue an IRB determination. Sensitive approval documents remain private; the public paper record includes only the approved status statement and identifier needed for transparency.
 
-## Conflicts of interest
+## Private, restricted, and licensed data
 
-Authors should disclose any relevant conflicts of interest (for example, financial relationships, affiliations, or funding sources materially related to the research).
+Before submission, authors and faculty sponsors must confirm their authority to use the data for the research and their authority to publish the manuscript's content. Authors may not publish or provide to the Series without authorization:
 
-## Use of AI tools (optional disclosure)
+- confidential data;
+- personally identifiable information;
+- FERPA-protected education records;
+- contract-restricted data;
+- licensed data that cannot be redistributed;
+- unlawfully obtained data;
+- credentials, keys, passwords, or other secrets; or
+- information whose disclosure would create an unlawful or unmanaged safety or privacy risk.
 
-If AI tools materially assisted in drafting, translation, coding, or analysis, authors are encouraged to note that use briefly. Authors remain responsible for the content of the paper.
+Deidentification is not assumed merely because direct names were removed. Authors must evaluate combinations of fields, small cells, quotations, images, geographic detail, and other information that could reidentify a person.
 
-## Corrections and withdrawal
+Do not send restricted datasets, IRB documents, student records, credentials, or sensitive personal evidence through an ordinary email message. Contact the Series first so an appropriate private intake method can be arranged.
 
-Authors may request corrections or updates. See [Corrections, Updates & Versioning](../corrections-versioning/) and [Takedown / Rights & Privacy Requests](../takedown/).
+## Originality and prior dissemination
+
+Authors must disclose substantial overlap with prior work, earlier public versions, conference proceedings, or another submission. A working-paper version may affect eligibility at a later journal. Authors should consult the intended journal and their faculty sponsor before authorizing public posting; the Series cannot guarantee another publication's eligibility or decision.
+
+## Concerns after publication
+
+Readers, authors, sponsors, and rights holders may report a specific concern through the [Contact page](../../contact/). Include the paper title or identifier and enough information to locate the issue, but avoid sending restricted material by ordinary email.
+
+Corrections follow [Corrections, Revisions & Versioning](../corrections-versioning/). Potential status notices, restrictions, or withdrawals follow [Expressions of Concern, Withdrawal & Takedown](../takedown/).

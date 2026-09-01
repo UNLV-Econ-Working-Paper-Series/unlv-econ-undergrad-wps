@@ -12,19 +12,20 @@ export const CONTACT_PAGE_CONTENT: ContactPageContent = {
   routingTitle: "Who are you trying to reach?",
   contact: {
     series: {
-      title: "Series Team",
-      desc: "Questions about papers, corrections, permissions, takedown requests, and site issues",
+      title: "Series Editorial Office",
+      desc: "Submissions, corrections, rights, accessibility, privacy, technical, and repository-record questions",
       email: SERIES.contactEmail,
       hint: "",
       actions: [
-        { label: "Email Series Team", href: `mailto:${SERIES.contactEmail}`, primary: true },
-        { label: "Common Requests", href: "#requests" },
+        { label: "Email the Series", href: `mailto:${SERIES.contactEmail}`, primary: true },
+        { label: "Choose a request category", href: "#requests" },
       ],
     },
     dept: {
       title: INSTITUTION.department.name,
       desc: "Department office contact information and general departmental inquiries",
-      phone: `+1-${INSTITUTION.department.phoneDisplay}`,
+      phone: INSTITUTION.department.phoneDisplay,
+      phoneHref: INSTITUTION.department.phoneHref,
       locationLine: INSTITUTION.department.office,
       addressLines: [
         INSTITUTION.department.name,
@@ -43,14 +44,22 @@ export const CONTACT_PAGE_CONTENT: ContactPageContent = {
   requests: {
     title: "Common Requests",
     items: [
-      { label: "Broken link", subject: "Report a broken link" },
-      { label: "Author update", subject: "Author update request" },
-      { label: "Correction / updated PDF", subject: "Correction or updated PDF" },
-      { label: "Permissions / reuse", subject: "Permissions or reuse" },
-      { label: "Takedown", subject: "Takedown request" },
+      { label: "Series submissions", subject: "Series submission inquiry" },
+      { label: "Corrections and revised files", subject: "Correction or revised file" },
+      { label: "Rights and permissions", subject: "Rights or permissions question" },
+      { label: "Accessibility", subject: "Accessibility request or barrier report" },
+      { label: "Takedown or privacy concerns", subject: "Takedown or privacy concern" },
+      { label: "Technical problems", subject: "Technical problem" },
+      { label: "Department office", href: `${INSTITUTION.department.url}/contact` },
+      { label: "OAsis record or DOI questions", subject: "OAsis record or DOI question" },
     ],
     note:
-      "For paper-specific issues, include the paper title and paper URL. For reuse requests, include what content you want to reuse and where it will be used.",
+      "Choose the closest category to prepare an email to the Series or reach the department office. For a paper-specific issue, include the paper title and URL. Do not send confidential, restricted, or personally identifiable research data by email.",
+  },
+  retention: {
+    title: "Communications and public records",
+    body:
+      "Communications to the Series are retained and managed according to applicable UNLV and Nevada System of Higher Education records-retention requirements. Messages related to university operations may constitute public records under Nevada law.",
   },
   directions: {
     title: "Directions",

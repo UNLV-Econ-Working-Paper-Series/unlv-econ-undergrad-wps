@@ -5,6 +5,7 @@ import { NEWS_EVENTS } from "../data/news";
 import { INSTITUTION } from "../config/institution";
 import { SERIES } from "../config/publication";
 import { cleanPaperTitle, getCategoryGroups, getIssueGroups, paperHref } from "../lib/papers";
+import { requireResearchField, researchFieldSlug } from "../lib/research-fields";
 import { withBase } from "../lib/urls";
 
 const issues = await getIssueGroups();
@@ -13,7 +14,16 @@ const publishedIssues = issues.filter((issue) => issue.papers.length > 0);
 
 const latestIssue = issues[0] ?? null;
 const latestIssueTitles = (latestIssue?.papers ?? []).slice(0, 3);
-const categoryChips = categories.filter((group) => group.count > 0).sort((a, b) => b.count - a.count).slice(0, 10);
+const fieldCounts = new Map<string, number>();
+for (const group of categories) {
+  if (group.count === 0) continue;
+  const field = requireResearchField(group.name);
+  fieldCounts.set(field, (fieldCounts.get(field) ?? 0) + group.count);
+}
+const fieldLinks = [...fieldCounts.entries()]
+  .map(([name, count]) => ({ name, count, slug: researchFieldSlug(requireResearchField(name)) }))
+  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+  .slice(0, 10);
 const hasPublishedPapers = publishedIssues.length > 0;
 
 const heroImage = withBase("/assets/images/lee-business-school.jpg");
@@ -233,30 +243,30 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "Upda
     </article>
   </section>
 
-  <section class="section home-section" aria-labelledby="browse-category-title">
+  <section class="section home-section" aria-labelledby="browse-field-title">
     <div class="section-head home-section-head">
       <div>
-        <p class="eyebrow">Browse by Category</p>
-        <h2 id="browse-category-title">Explore Topic Areas</h2>
+        <p class="eyebrow">Browse by field</p>
+        <h2 id="browse-field-title">Research Fields</h2>
       </div>
     </div>
 
     <article class="card home-surface" data-motion="gsap">
-      {categoryChips.length > 0 ? (
-        <ul class="home-category-chips" aria-label="Top categories">
-          {categoryChips.map((category) => (
+      {fieldLinks.length > 0 ? (
+        <ul class="home-category-chips" aria-label="Research fields represented in the Series">
+          {fieldLinks.map((field) => (
             <li>
-              <a class="home-category-chip" href={withBase(`/categories/${category.slug}/`)}>
-                {category.name}
+              <a class="home-category-chip" href={withBase(`/fields/${field.slug}/`)}>
+                {field.name}
               </a>
             </li>
           ))}
         </ul>
       ) : (
         <>
-          <p class="muted">Topic pages will populate as papers are added to the series.</p>
+          <p class="muted">Research-field pages will appear as papers are added to the Series.</p>
           <div class="card-actions">
-            <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive topics</a>
+            <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse historical records</a>
           </div>
         </>
       )}

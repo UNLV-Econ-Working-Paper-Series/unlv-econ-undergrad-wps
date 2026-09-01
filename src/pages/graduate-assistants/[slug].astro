@@ -1,8 +1,9 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
+import AboutNavigation from "../../components/AboutNavigation.astro";
 import PageBanner from "../../components/PageBanner.astro";
-import ProfileLinks from "../../components/ProfileLinks.astro";
-import { PUBLIC_PROFILES } from "../../data/public-profiles";
+import { JUNIOR_EDITORS, type EditorialMember } from "../../config/editorial";
+import { SERIES } from "../../config/publication";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { withBase } from "../../lib/urls";
 
@@ -10,41 +11,42 @@ export async function getStaticPaths() {
   const assistants = await getCollection("graduateAssistants");
   return assistants.map((assistant) => ({
     params: { slug: assistant.slug },
-    props: { assistant },
+    props: {
+      assistant,
+      member: JUNIOR_EDITORS.find((candidate) => candidate.name === assistant.data.name),
+    },
   }));
 }
 
-const { assistant } = Astro.props as { assistant: CollectionEntry<"graduateAssistants"> };
-const { Content } = await render(assistant);
-const assistantProfile = PUBLIC_PROFILES.find(
-  (profile) => profile.profileHref === `/graduate-assistants/${assistant.slug}/`
-);
+const { assistant, member } = Astro.props as {
+  assistant: CollectionEntry<"graduateAssistants">;
+  member: EditorialMember;
+};
 ---
 
-<BaseLayout title={`${assistant.data.name} | Junior Editors`} bodyClass="section-about page-profile">
-  <PageBanner title={assistant.data.name} lead={`${assistant.data.role} (${assistant.data.term})`} />
+<BaseLayout
+  title={`${member.name} | Junior Editors | UNLV Undergraduate Economics Working Paper Series`}
+  bodyClass="section-about page-profile"
+>
+  <PageBanner title={member.name} lead={`${member.publicTitle} · Non-voting`} />
+
+  <section class="content-section">
+    <AboutNavigation currentHref="/editorial-board/" />
+  </section>
 
   <section class="content-section profile-shell">
-    {assistant.data.headshot ? (
-      <img
-        class="profile-thumb"
-        src={withBase(assistant.data.headshot)}
-        alt={assistant.data.name}
-        width="128"
-        height="128"
-        loading="lazy"
-        title={assistantProfile?.photoSource}
-      />
-    ) : null}
-
     <article class="profile-bio">
-      <Content />
+      <h2>Role in the Series</h2>
+      <p>{member.description}</p>
+      <p>
+        The public record currently includes only the name, appointment term ({assistant.data.term}), and Series role. A biography,
+        photograph, personal contact information, and external profile links are not published without documented public-profile consent.
+      </p>
+      <p><a href={`mailto:${SERIES.contactEmail}`}>Contact the Series about editorial matters</a>.</p>
     </article>
 
-    <ProfileLinks links={assistantProfile?.links} className="profile-page-links" />
-
     <p class="profile-back-link">
-      <a href={withBase("/graduate-assistants/")}>← Back to Junior Editors</a>
+      <a href={withBase("/editorial-board/#junior-editors")}>← Back to Junior Editors</a>
     </p>
   </section>
 </BaseLayout>

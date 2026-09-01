@@ -1,12 +1,12 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { categorySlugForName } from "../../data/categories";
+import { RESEARCH_FIELDS } from "../../config/publication";
+import { requireResearchField, researchFieldSlug } from "../../lib/research-fields";
 import {
   cleanPaperTitle,
   formatPaperDate,
   getAllPapers,
-  getCategoryGroups,
   getIssueGroups,
   getIssueLabelForPaper,
   getIssueSlugForPaper,
@@ -17,13 +17,17 @@ import {
 import { withBase } from "../../lib/urls";
 
 const papers = await getAllPapers();
-const categories = (await getCategoryGroups()).filter((category) => category.count > 0);
+const fields = RESEARCH_FIELDS.map((field) => ({
+  name: field,
+  slug: researchFieldSlug(field),
+  count: papers.filter((paper) => requireResearchField(paper.data.category) === field).length,
+})).filter((field) => field.count > 0);
 const issues = (await getIssueGroups()).filter((issue) => issue.papers.length > 0);
 const publicationYears = [...new Set(papers.map((paper) => paper.data.published_at?.slice(0, 4)).filter(Boolean))].sort((a, b) =>
   String(b).localeCompare(String(a))
 );
 const paperCount = papers.length;
-const categoryCount = categories.length;
+const fieldCount = fields.length;
 const volumeCount = new Set(papers.map((paper) => paper.data.volume).filter(Boolean)).size;
 const paperCountLabel = `${paperCount} ${paperCount === 1 ? "paper" : "papers"}`;
 
@@ -37,7 +41,7 @@ const excerpt = (abstract: string, length = 220): string => {
 
 <BaseLayout
   title="Papers | UNLV Undergraduate Economics Working Paper Series"
-  description="Search and browse open-access undergraduate economics working papers by author, semester, and research category."
+  description="Search and browse open-access undergraduate economics working papers by author, semester, and research field."
   bodyClass="section-papers page-papers page-papers-library"
 >
   <PageBanner
@@ -82,8 +86,8 @@ const excerpt = (abstract: string, length = 220): string => {
             <dd>Open-access papers</dd>
           </div>
           <div>
-            <dt>{categoryCount}</dt>
-            <dd>Research categories</dd>
+            <dt>{fieldCount}</dt>
+            <dd>Research fields</dd>
           </div>
           <div>
             <dt>{volumeCount}</dt>
@@ -117,11 +121,11 @@ const excerpt = (abstract: string, length = 220): string => {
           </div>
 
           <div class="paper-library-filter">
-            <label for="paper-category">Category</label>
+            <label for="paper-category">Research field</label>
             <select id="paper-category" data-paper-category>
-              <option value="">All categories</option>
-              {categories.map((category) => (
-                <option value={category.slug}>{category.name} ({category.count})</option>
+              <option value="">All research fields</option>
+              {fields.map((field) => (
+                <option value={field.slug}>{field.name} ({field.count})</option>
               ))}
             </select>
           </div>
@@ -159,7 +163,8 @@ const excerpt = (abstract: string, length = 220): string => {
         <ol class="paper-library-grid" data-paper-grid aria-label="Working paper results">
           {papers.map((paper) => {
             const title = cleanPaperTitle(paper.data.title);
-            const categorySlug = categorySlugForName(paper.data.category);
+            const field = requireResearchField(paper.data.category);
+            const fieldSlug = researchFieldSlug(field);
             const issueSlug = getIssueSlugForPaper(paper);
             const issueLabel = getIssueLabelForPaper(paper);
             const repositoryLabel = repositoryIssueLabel(paper);
@@ -173,7 +178,7 @@ const excerpt = (abstract: string, length = 220): string => {
                 class="paper-library-item"
                 data-paper-item
                 data-search={searchText}
-                data-category={categorySlug}
+                data-category={fieldSlug}
                 data-issue={issueSlug}
                 data-year={year}
                 data-published={paper.data.published_at ?? ""}
@@ -181,7 +186,7 @@ const excerpt = (abstract: string, length = 220): string => {
               >
                 <article class="paper-library-card">
                   <div class="paper-library-card__meta">
-                    <a class="paper-library-topic" href={withBase(`/categories/${categorySlug}/`)}>{paper.data.category}</a>
+                    <a class="paper-library-topic" href={withBase(`/fields/${fieldSlug}/`)}>{field}</a>
                     <span aria-hidden="true">•</span>
                     <a href={withBase(`/issues/${issueSlug}/`)}>{issueLabel}</a>
                   </div>

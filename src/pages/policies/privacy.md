@@ -1,54 +1,42 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
-title: Privacy Statement
-lead: This statement explains how the Series handles visitor and inquiry information.
+title: Privacy & Records
+lead: The Series limits public personal information and manages operational records under applicable requirements.
 bodyClass: page-policy-privacy
 ---
 
-This Privacy Statement describes how the UNLV Undergraduate Economics Working Paper Series handles information from visitors and authors.
+## Public website information
 
-## Information we collect
+The public site contains approved paper metadata, abstracts, issue and field assignments, author names and affiliations, public rights and availability statements, policies, and status notices. Optional biographies, photographs, personal profile links, and personal contact information require separate consent and are not a condition of manuscript publication.
 
-### Website access data
+The site does not provide public access to unpublished manuscripts, student identifiers, grades, private consent records, editorial ballots, deliberation, disputes, IRB documents, rights correspondence, restricted datasets, authentication information, or mailbox recovery details.
 
-Like most websites, our hosting provider may automatically collect limited technical information such as:
+## Technical request data
 
-- IP address
-- browser type and device information
-- pages visited and timestamps
-- referring/exit pages
+Website and security infrastructure may process standard request information such as IP address, device and browser information, requested URL, referring page, timestamp, and security events. This information is used for delivery, security, troubleshooting, accessibility, and performance operations—not for selling personal information or behavioral advertising by the Series.
 
-This information supports basic security, troubleshooting, and performance monitoring.
+Third-party sites reached through a link, including OAsis, apply their own infrastructure and privacy practices. The Series does not control those services merely by linking to them.
 
-### Information you provide
+## Information sent to the Series
 
-If you contact the series team (for example, by email), we receive the information you choose to share, such as your name, email address, and message content.
+When someone contacts the Series, the message may include their name, email address, paper information, and content they choose to provide. The Series uses that information to respond, perform editorial or publication operations, document decisions, coordinate with responsible UNLV or OAsis personnel, protect rights and safety, and satisfy applicable legal or records obligations.
 
-## Cookies and analytics
-
-If the Series uses analytics or cookies, they are used to understand site usage and improve performance. Where applicable, analytics should minimize unnecessary personal-data collection.
-
-## How we use information
-
-We use collected information to:
-
-- operate and maintain the site
-- respond to inquiries and policy requests (corrections, permissions, takedown)
-- improve site performance and usability
-- support security and abuse prevention
-
-## What we do not publish
-
-We do not publish student or employee ID numbers, grades, or other education records. Authors should avoid including private personal data or confidential information in manuscripts.
+Do not send restricted research data, student records, credentials, medical records, unnecessary identity documents, or other sensitive evidence in an initial ordinary email. Describe the issue and ask for an appropriate private channel.
 
 ## Sharing and disclosure
 
-We do not sell personal information. Information may be disclosed when required by law or for legitimate university administrative needs if the Series is operated by UNLV.
+The Series does not sell personal information. Information may be shared with authorized editors, relevant UNLV offices, UNLV University Libraries/OAsis personnel, service providers, or legal authorities only as needed for an authorized operational, repository, safety, accessibility, records, or legal purpose.
 
-## Data retention
+Publication consent applies only to the fields and files approved for public release. Private evidence is not made public merely because it supports a publication decision.
 
-Messages and logs are retained only as long as needed for operations, policy compliance, and recordkeeping.
+## Retention and public records
 
-## Questions
+Communications to the Series are retained and managed according to applicable UNLV and Nevada System of Higher Education records-retention requirements. Messages related to university operations may constitute public records under Nevada law.
 
-For privacy concerns, including requests to remove personal information from a posted paper, contact the series team through the [Contact page](../../contact/).
+No fixed deletion period is promised on this page. The responsible records owner must classify each record series and follow the official retention and disposition requirements. Git history, an email inbox, a personal drive, or the public website is not by itself the official retention schedule.
+
+## Correction, privacy, or takedown request
+
+Use the [Contact page](../../contact/) to report inaccurate public personal information or a privacy concern. Identify the paper or page and the specific field at issue. An urgent request may lead to a temporary custom-site restriction while the responsible authority and, when applicable, OAsis review the matter under [Expressions of Concern, Withdrawal & Takedown](../takedown/).
+
+The Series may need to preserve a limited record of a request and action even when public content is corrected, restricted, or removed, subject to controlling privacy, legal, safety, and records requirements.

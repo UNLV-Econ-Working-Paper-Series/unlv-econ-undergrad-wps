@@ -28,6 +28,16 @@ This register separates externally verified facts from internal decisions and ap
 | [Google Scholar inclusion guidelines](https://scholar.google.com/intl/en/scholar/inclusion.html) | Google Scholar | Article pages need machine-readable title, at least one author, and publication year; Scholar recognizes Highwire/BE Press/PRISM tags and links HTML/PDF versions through supported metadata | Generate consistent per-paper scholarly metadata. Do not emit a cross-domain `citation_pdf_url` until repository-link behavior and canonical-version policy are validated. |
 | [Google Scholar publisher support](https://scholar.google.com/intl/en-us/scholar/publishers.html) | Google Scholar | Scholar indexes scholarly papers and technical reports, groups versions, and requires searchable/accessible article files | Treat inclusion as eligibility work, not a guaranteed indexing outcome. |
 
+## Historical primary sources
+
+These sources support bounded historical statements; they do not establish current appointments or policy.
+
+| Source | Provenance | Verified evidence | Release constraint |
+| --- | --- | --- | --- |
+| [Middle Eastern Immersion](https://www.unlv.edu/news/article/middle-eastern-immersion) | UNLV News, June 13, 2018 | Identifies a UNLV undergraduate as executive director of The House: Economics Hub | Corroborates that the Hub operated as a student initiative in 2018; it does not prove the current Series' legal or editorial continuity. |
+| [The UNLV Economics Hub](https://thehouseunlv.wordpress.com/about/) | Archived Hub-authored WordPress page | Describes an undergraduate, student-centered research environment supporting mentorship, ECON 495, research participation, conference presentation, and publication opportunities; its navigation identifies a Working Paper Series with three volumes | May support a carefully attributed history section. Treat it as a historical primary artifact, not current official UNLV policy. |
+| [Working Paper Series, Volume 1](https://thehouseunlv.wordpress.com/vol-1/) | Archived Hub-authored WordPress page | Identifies `UNLV Economics Department: Undergraduate Research Experience`, labels Volume I as Fall 2016, lists paper/PDF records, and names an editorial board | Supports the statement that the Hub maintained earlier undergraduate economics working-paper volumes. Current archive files, rights, and metadata still require record-level verification. |
+
 ## Verified repository and deployment evidence
 
 | Evidence | Finding |
@@ -56,4 +66,3 @@ These are owner actions, not facts the code may infer:
 9. Formal decision on whether the Series itself has a publisher field and, if so, its exact controlled value.
 
 Until these actions are closed, release language must remain factual and bounded. The appropriate final status is expected to be `CODE COMPLETE, EXTERNAL APPROVAL BLOCKED`, not `PRODUCTION READY`.
-

@@ -7,7 +7,8 @@ export interface ContactAction {
 
 export interface ContactRequest {
   label: string;
-  subject: string;
+  subject?: string;
+  href?: string;
 }
 
 export interface ContactSeriesCard {
@@ -22,6 +23,7 @@ export interface ContactDepartmentCard {
   title: string;
   desc: string;
   phone: string;
+  phoneHref: string;
   locationLine: string;
   addressLines: string[];
   directionsUrl: string;
@@ -42,6 +44,10 @@ export interface ContactPageContent {
     title: string;
     items: ContactRequest[];
     note: string;
+  };
+  retention: {
+    title: string;
+    body: string;
   };
   directions: {
     title: string;

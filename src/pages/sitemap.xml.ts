@@ -1,21 +1,28 @@
 import { getCollection } from "astro:content";
+import { RESEARCH_FIELDS } from "../config/publication";
 import { PUBLIC_PROFILES } from "../data/public-profiles";
 import { getArchiveIssueGroups } from "../lib/archive";
-import { getCategoryGroups, getIssueGroups, paperSlug } from "../lib/papers";
+import { getIssueGroups, paperSlug } from "../lib/papers";
+import { requireResearchField, researchFieldSlug } from "../lib/research-fields";
 
 const SITE_URL = "https://econ-undergrad-wps.sites.unlv.edu";
 
 const POLICY_SLUGS = [
   "focus-scope",
   "open-access",
+  "editorial-governance",
   "editorial-process",
-  "permissions",
-  "privacy",
-  "corrections-versioning",
+  "conflicts-recusal",
+  "authorship-ai",
   "ethics",
-  "takedown",
-  "archiving",
+  "data-code",
+  "permissions",
   "accessibility",
+  "corrections-versioning",
+  "takedown",
+  "appeals",
+  "privacy",
+  "archiving",
   "author-agreement",
 ];
 
@@ -46,26 +53,26 @@ function uniquePaths(paths: string[]): string[] {
 export async function GET(): Promise<Response> {
   const issues = await getIssueGroups();
   const papers = await getCollection("papers");
-  const categories = await getCategoryGroups();
   const archiveIssues = getArchiveIssueGroups();
 
   const visibleIssues = issues.filter((issue, index) => issue.papers.length > 0 || index === 0);
-  const visibleCategories = categories.filter((category) => category.count > 0);
+  const populatedFields = new Set(papers.map((paper) => requireResearchField(paper.data.category)));
 
   const paths = uniquePaths([
     "/",
     "/about/",
+    "/editorial-board/",
+    "/history/",
     "/contact/",
-    "/our/",
+    "/for-authors/",
     "/issues/",
     "/issues/archive/",
     "/papers/",
-    "/categories/",
+    "/fields/",
     "/policies/",
-    "/graduate-assistants/",
     ...visibleIssues.map((issue) => `/issues/${issue.slug}/`),
     ...archiveIssues.map((issue) => `/issues/archive/${issue.slug}/`),
-    ...visibleCategories.map((category) => `/categories/${category.slug}/`),
+    ...RESEARCH_FIELDS.filter((field) => populatedFields.has(field)).map((field) => `/fields/${researchFieldSlug(field)}/`),
     ...papers.map((paper) => `/papers/${paperSlug(paper)}/`),
     ...PUBLIC_PROFILES.map((profile) => profile.profileHref).filter((href): href is string => Boolean(href)),
     ...POLICY_SLUGS.map((slug) => `/policies/${slug}/`),

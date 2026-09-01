@@ -2,12 +2,13 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { withBase } from "../../lib/urls";
 
-const target = withBase("/categories/industrial-organization-io-and-strategy/");
+const fieldPath = "/fields/industrial-organization/";
+const target = withBase(fieldPath);
 ---
 
-<BaseLayout title="Category Moved" canonicalPath={target} robots="noindex, follow" redirectTo={target}>
-  <article class="card content-section redirect-page">
-    <h1>This category moved</h1>
-    <p><a href={target}>Continue to Industrial Organization (IO) & Strategy</a></p>
-  </article>
+<BaseLayout title="Industrial Organization" canonicalPath={fieldPath} robots="noindex, follow" redirectTo={target} bodyClass="redirect-page">
+  <section class="content-section">
+    <h1>This category is now Industrial Organization</h1>
+    <p><a href={target}>Continue to the research-field page</a></p>
+  </section>
 </BaseLayout>

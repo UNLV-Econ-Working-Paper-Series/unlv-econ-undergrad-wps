@@ -1,0 +1,64 @@
+---
+import type { PublicProfileLink } from "../data/public-profiles.types";
+
+const {
+  links = [],
+  contactEmail,
+  compact = false,
+} = Astro.props as {
+  links?: PublicProfileLink[];
+  contactEmail: string;
+  compact?: boolean;
+};
+
+const institutionalLinks = links.filter((link) => link.type === "website");
+const researchLinks = links.filter((link) => link.type === "scholar");
+const professionalLinks = links.filter((link) => link.type === "researchgate" || link.type === "linkedin");
+
+const linkLabels: Record<PublicProfileLink["type"], string> = {
+  website: "Academic or institutional website",
+  scholar: "Google Scholar",
+  researchgate: "ResearchGate",
+  linkedin: "LinkedIn",
+};
+---
+
+<div aria-label="Public contact and profile links">
+  <section>
+    {compact ? <h4>Contact</h4> : <h2>Contact</h2>}
+    <p><a href={`mailto:${contactEmail}`}>Series email</a></p>
+  </section>
+
+  {institutionalLinks.length > 0 ? (
+    <section>
+      {compact ? <h4>Institutional profiles</h4> : <h2>Institutional profiles</h2>}
+      <ul>
+        {institutionalLinks.map((link) => (
+          <li><a href={link.href}>{link.label ?? linkLabels[link.type]}</a></li>
+        ))}
+      </ul>
+    </section>
+  ) : null}
+
+  {researchLinks.length > 0 ? (
+    <section>
+      {compact ? <h4>Research identifiers</h4> : <h2>Research identifiers</h2>}
+      <ul>
+        {researchLinks.map((link) => (
+          <li><a href={link.href}>{link.label ?? linkLabels[link.type]}</a></li>
+        ))}
+      </ul>
+    </section>
+  ) : null}
+
+  {professionalLinks.length > 0 ? (
+    <section>
+      {compact ? <h4>Professional profiles</h4> : <h2>Professional profiles</h2>}
+      <ul>
+        {professionalLinks.map((link) => (
+          <li><a href={link.href}>{link.label ?? linkLabels[link.type]}</a></li>
+        ))}
+      </ul>
+    </section>
+  ) : null}
+</div>

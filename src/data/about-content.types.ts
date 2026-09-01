@@ -1,5 +1,3 @@
-import type { RichTextBlock, RichTextSegment } from "./rich-text.types";
-
 export interface AboutTocItem {
   id: string;
   label: string;
@@ -17,14 +15,11 @@ export interface AboutActionLink {
   primary?: boolean;
 }
 
-export interface AboutGlanceSection {
+export interface AboutProseSection {
+  id: string;
   title: string;
-  items: RichTextSegment[][];
-}
-
-export interface AboutSeriesScopeSection {
-  title: string;
-  blocks: RichTextBlock[];
+  paragraphs: string[];
+  points?: string[];
 }
 
 export interface AboutPublicationStep {
@@ -33,29 +28,10 @@ export interface AboutPublicationStep {
 }
 
 export interface AboutPublicationSection {
+  id: string;
   title: string;
+  introduction: string;
   steps: AboutPublicationStep[];
-}
-
-export interface AboutPolicySectionItem {
-  summary: string;
-  open?: boolean;
-  blocks: RichTextBlock[];
-}
-
-export interface AboutPoliciesSection {
-  title: string;
-  sections: AboutPolicySectionItem[];
-}
-
-export interface AboutPeopleSection {
-  title: string;
-}
-
-export interface AboutGraduateAssistantsSection extends AboutPeopleSection {
-  linkLabel: string;
-  linkHref: string;
-  emptyText: string;
 }
 
 export interface AboutCtaSection {
@@ -67,11 +43,10 @@ export interface AboutCtaSection {
 export interface AboutPageContent {
   banner: AboutBannerContent;
   tocItems: AboutTocItem[];
-  atAGlance: AboutGlanceSection;
-  seriesScope: AboutSeriesScopeSection;
-  publication: AboutPublicationSection;
-  policies: AboutPoliciesSection;
-  editorialTeam: AboutPeopleSection;
-  graduateAssistants: AboutGraduateAssistantsSection;
+  purpose: AboutProseSection;
+  scope: AboutProseSection;
+  publicationStatus: AboutProseSection;
+  process: AboutPublicationSection;
+  repository: AboutProseSection;
   cta: AboutCtaSection;
 }

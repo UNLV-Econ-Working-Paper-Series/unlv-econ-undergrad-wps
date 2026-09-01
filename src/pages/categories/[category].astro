@@ -1,58 +1,31 @@
 ---
-import PageBanner from "../../components/PageBanner.astro";
+import { CATEGORY_DEFINITIONS } from "../../data/categories";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import {
-  cleanPaperTitle,
-  formatPaperDate,
-  getCategoryGroups,
-  getIssueLabelForPaper,
-  paperHref,
-  paperPdfHref,
-} from "../../lib/papers";
+import { researchFieldHref } from "../../lib/research-fields";
 import { withBase } from "../../lib/urls";
 
-export async function getStaticPaths() {
-  const categories = await getCategoryGroups();
-  return categories.map((category) => ({ params: { category: category.slug } }));
+export function getStaticPaths() {
+  return CATEGORY_DEFINITIONS.map((category) => ({
+    params: { category: category.slug },
+    props: { categoryName: category.name },
+  }));
 }
 
-const categorySlug = Astro.params.category ?? "";
-const categories = await getCategoryGroups();
-const category = categories.find((item) => item.slug === categorySlug);
-const papers = category?.papers ?? [];
-const categoryName = category?.name ?? categorySlug;
+const { categoryName } = Astro.props as { categoryName: string };
+const fieldPath = researchFieldHref(categoryName);
+const target = withBase(fieldPath);
 ---
 
-<BaseLayout title={`${categoryName} | Categories`} bodyClass="section-categories page-category-detail">
-  <PageBanner kicker="Category" title={categoryName} subtitle={`Working papers tagged for ${categoryName}`} />
-
+<BaseLayout
+  title="Research Field Moved | UNLV Undergraduate Economics Working Paper Series"
+  description="This legacy category URL now redirects to the corresponding controlled research field."
+  canonicalPath={fieldPath}
+  robots="noindex, follow"
+  redirectTo={target}
+  bodyClass="redirect-page"
+>
   <section class="content-section">
-    <div class="page-intro-actions">
-      <a class="btn btn-small" href={withBase("/categories/")}>Back to categories</a>
-    </div>
-
-    {papers.length === 0 ? (
-      <article class="accent-card empty-state-card">
-        <p class="muted">No papers yet in this category</p>
-      </article>
-    ) : (
-      <div class="card-grid">
-        {papers.map((paper) => (
-          <article class="card paper-card accent-card">
-            <div class="paper-meta">
-              {paper.data.published_at ? <span class="pill">{formatPaperDate(paper.data.published_at)}</span> : null}
-              <span class="pill light">{getIssueLabelForPaper(paper)}</span>
-            </div>
-            <h2><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h2>
-            <p class="muted small">By {paper.data.authors.join(", ")}</p>
-            <p class="muted">{paper.data.abstract.slice(0, 220)}{paper.data.abstract.length > 220 ? "..." : ""}</p>
-            <div class="card-actions">
-              <a class="btn btn-small" href={paperHref(paper)}>Read abstract</a>
-              <a class="btn btn-small btn-primary" href={paperPdfHref(paper)}>Read PDF</a>
-            </div>
-          </article>
-        ))}
-      </div>
-    )}
+    <h1>This category is now a Research Field</h1>
+    <p><a href={target}>Continue to the research-field page</a></p>
   </section>
 </BaseLayout>

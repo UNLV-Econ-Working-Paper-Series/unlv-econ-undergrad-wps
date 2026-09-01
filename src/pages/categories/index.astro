@@ -1,121 +1,20 @@
 ---
-import CategoryCard from "../../components/CategoryCard.astro";
-import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCategoryGroups, getIssueLabelForPaper } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
 
-const categoryGroups = await getCategoryGroups();
-const categories = categoryGroups.map((group) => ({
-  title: group.name,
-  href: withBase(`/categories/${group.slug}/`),
-  count: group.count,
-  latestIssue: group.papers[0] ? getIssueLabelForPaper(group.papers[0]) : "No papers yet",
-}));
-const visibleCategories = categories.filter((category) => category.count > 0);
+const target = withBase("/fields/");
 ---
 
-<BaseLayout title="Categories | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-categories page-categories page-categories-modern">
-  <PageBanner title="Categories" subtitle="Choose a category to view all working papers in that topic area" />
-
-  <section class="content-section categories-shell categories-shell-modern">
-    {visibleCategories.length === 0 ? (
-      <article class="accent-card empty-state-card">
-        <h2>No current-series categories are available yet</h2>
-        <p class="muted">Category pages will appear once current-series papers are posted</p>
-        <div class="card-actions">
-          <a class="btn btn-small" href={withBase("/issues/")}>Browse issues</a>
-          <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse archive</a>
-        </div>
-      </article>
-    ) : (
-      <>
-        <header class="categories-controls" aria-label="Category discovery tools">
-          <div class="categories-search">
-            <label for="cat-search">Search categories</label>
-            <input id="cat-search" type="search" placeholder="Search categories..." />
-          </div>
-
-          <div class="categories-sort">
-            <label for="cat-sort">Sort</label>
-            <select id="cat-sort">
-              <option value="az">A-Z</option>
-              <option value="count">Most papers</option>
-            </select>
-          </div>
-        </header>
-
-        <p class="filter-result-count" id="category-result-count" role="status" aria-live="polite" aria-atomic="true">
-          Showing {visibleCategories.length} {visibleCategories.length === 1 ? "category" : "categories"}
-        </p>
-
-        <div id="cat-grid" class="cat-grid cat-grid-modern">
-          {visibleCategories.map((category) => (
-            <div
-              class="cat-grid-item"
-              data-motion="gsap"
-              data-category-item
-              data-title={category.title.toLowerCase()}
-              data-count={String(category.count)}
-            >
-              <CategoryCard
-                title={category.title}
-                href={category.href}
-                meta={`${category.count} ${category.count === 1 ? "paper" : "papers"} • Latest: ${category.latestIssue}`}
-              />
-            </div>
-          ))}
-        </div>
-        <p id="cat-empty" class="muted small" hidden>No categories match that search</p>
-      </>
-    )}
+<BaseLayout
+  title="Research Fields | UNLV Undergraduate Economics Working Paper Series"
+  description="The former category directory has moved to Research Fields."
+  canonicalPath="/fields/"
+  robots="noindex, follow"
+  redirectTo={target}
+  bodyClass="redirect-page"
+>
+  <section class="content-section">
+    <h1>Categories are now Research Fields</h1>
+    <p><a href={target}>Continue to Research Fields</a></p>
   </section>
-
-  <script is:inline>
-    (() => {
-      const initCategoryFilters = () => {
-        const shell = document.querySelector(".page-categories .categories-shell");
-        if (!(shell instanceof HTMLElement) || shell.dataset.filtersInit === "true") return;
-        shell.dataset.filtersInit = "true";
-
-        const searchInput = shell.querySelector("#cat-search");
-        const sortSelect = shell.querySelector("#cat-sort");
-        const grid = shell.querySelector("#cat-grid");
-        const items = Array.from(shell.querySelectorAll("[data-category-item]"));
-        const emptyState = shell.querySelector("#cat-empty");
-        const resultCount = shell.querySelector("#category-result-count");
-
-        const applyCategoryFilters = () => {
-          const query = (searchInput?.value || "").trim().toLowerCase();
-          const sortMode = sortSelect?.value || "az";
-          items.forEach((item) => {
-            item.hidden = Boolean(query && !(item.dataset.title || "").includes(query));
-          });
-
-          const visibleItems = items.filter((item) => !item.hidden).sort((a, b) => {
-            const countDifference = Number.parseInt(b.dataset.count || "0", 10) - Number.parseInt(a.dataset.count || "0", 10);
-            if (sortMode === "count" && countDifference !== 0) return countDifference;
-            return (a.dataset.title || "").localeCompare(b.dataset.title || "");
-          });
-
-          if (grid instanceof HTMLElement) visibleItems.forEach((item) => grid.appendChild(item));
-          if (emptyState instanceof HTMLElement) emptyState.hidden = visibleItems.length !== 0;
-          if (resultCount instanceof HTMLElement) {
-            resultCount.textContent = `Showing ${visibleItems.length} of ${items.length} ${items.length === 1 ? "category" : "categories"}`;
-          }
-        };
-
-        searchInput?.addEventListener("input", applyCategoryFilters);
-        sortSelect?.addEventListener("change", applyCategoryFilters);
-        applyCategoryFilters();
-      };
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initCategoryFilters, { once: true });
-      } else {
-        initCategoryFilters();
-      }
-      document.addEventListener("astro:page-load", initCategoryFilters);
-    })();
-  </script>
 </BaseLayout>

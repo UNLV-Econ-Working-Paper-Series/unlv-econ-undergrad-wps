@@ -1,63 +1,21 @@
 ---
-import { getCollection } from "astro:content";
-import PageBanner from "../../components/PageBanner.astro";
-import { PUBLIC_PROFILES } from "../../data/public-profiles";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { withBase } from "../../lib/urls";
 
-const assistants = (await getCollection("graduateAssistants")).sort(
-  (a, b) => b.data.termOrder - a.data.termOrder || a.data.name.localeCompare(b.data.name)
-);
-
-const termMap = new Map<string, typeof assistants>();
-for (const assistant of assistants) {
-  if (!termMap.has(assistant.data.term)) {
-    termMap.set(assistant.data.term, []);
-  }
-  termMap.get(assistant.data.term)?.push(assistant);
-}
-
-const termGroups = Array.from(termMap.entries());
-const assistantProfiles = new Map(PUBLIC_PROFILES.map((profile) => [profile.profileHref, profile]));
+const canonicalPath = "/editorial-board/";
+const target = withBase("/editorial-board/#junior-editors");
 ---
 
-<BaseLayout title="Junior Editors | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-about page-ga-index">
-  <PageBanner
-    title="Junior Editors"
-    lead="Junior editors help prepare papers and organize each semester's issue"
-  />
-
-  <section class="content-section ga-archive-shell">
-    {termGroups.length === 0 ? (
-      <article class="about-card ga-empty">
-        <p class="muted">No junior editors are listed yet</p>
-      </article>
-    ) : (
-      termGroups.map(([term, items]) => (
-        <section class="ga-term-block" aria-labelledby={`ga-term-${term.toLowerCase().replace(/\s+/g, "-")}`}>
-          <h2 id={`ga-term-${term.toLowerCase().replace(/\s+/g, "-")}`}>{term}</h2>
-
-          <div class="ga-grid">
-            {items.map((assistant) => (
-              <a class="ga-card" href={withBase(`/graduate-assistants/${assistant.slug}/`)}>
-                {assistant.data.headshot ? (
-                  <img
-                    class="ga-thumb"
-                    src={withBase(assistant.data.headshot)}
-                    alt={assistant.data.name}
-                    width="64"
-                    height="64"
-                    loading="lazy"
-                    title={assistantProfiles.get(`/graduate-assistants/${assistant.slug}/`)?.photoSource}
-                  />
-                ) : null}
-                <p class="ga-kicker">{assistant.data.role}</p>
-                <h3>{assistant.data.name}</h3>
-              </a>
-            ))}
-          </div>
-        </section>
-      ))
-    )}
+<BaseLayout
+  title="Junior Editors | UNLV Undergraduate Economics Working Paper Series"
+  description="This legacy team page has moved to the Junior Editors section of the Editorial Board."
+  canonicalPath={canonicalPath}
+  robots="noindex, follow"
+  redirectTo={target}
+  bodyClass="redirect-page"
+>
+  <section class="content-section">
+    <h1>This team page has moved to Junior Editors</h1>
+    <p><a href={target}>Continue to Junior Editors</a></p>
   </section>
 </BaseLayout>

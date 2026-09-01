@@ -1,0 +1,95 @@
+---
+import AboutNavigation from "../components/AboutNavigation.astro";
+import PageBanner from "../components/PageBanner.astro";
+import { OASIS } from "../config/publication";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/urls";
+---
+
+<BaseLayout
+  title="History and Acknowledgments | UNLV Undergraduate Economics Working Paper Series"
+  bodyClass="section-about page-about-modern page-history"
+>
+  <PageBanner
+    title="History and Acknowledgments"
+    lead="The earlier Economics Hub, the present Series, and the records still being verified"
+  />
+
+  <section class="content-section">
+    <AboutNavigation currentHref="/history/" />
+
+    <div class="about-modern-shell">
+      <section class="about-block about-card" aria-labelledby="history-hub-title">
+        <h2 id="history-hub-title">The Economics Hub</h2>
+        <p>
+          The UNLV Undergraduate Economics Working Paper Series continues a tradition of undergraduate research dissemination
+          previously supported through The House: UNLV Economics Hub.
+        </p>
+        <p>
+          The Hub described itself as a student-centered initiative promoting faculty mentorship, ECON 495 research,
+          undergraduate research participation, conference presentation, and publication opportunities. Its archived navigation
+          and Volume 1 page document earlier volumes of undergraduate economics working papers, including paper downloads and an
+          editorial board.
+        </p>
+        <p>
+          This bounded history is supported by an <a href="https://www.unlv.edu/news/article/middle-eastern-immersion">official 2018 UNLV News profile</a>,
+          the archived Hub <a href="https://thehouseunlv.wordpress.com/about/">About page</a>,
+          <a href="https://thehouseunlv.wordpress.com/working-paper-series/">Research page</a>, and
+          <a href="https://thehouseunlv.wordpress.com/vol-1/">Volume 1 record</a>. Those historical pages reflect their own
+          period and are not current Series policies.
+        </p>
+      </section>
+
+      <section class="about-block about-card" aria-labelledby="history-present-title">
+        <h2 id="history-present-title">The present Series</h2>
+        <p>
+          The present Series resumed semester-organized publication. The current platform provides individual paper records,
+          issue organization, research-field browsing, citation tools, and preservation through OAsis, UNLV's institutional repository.
+        </p>
+        <p>
+          Mark Jayson Martinez Farol rebuilt and organized the present web platform and public catalog beginning in 2026. This
+          contribution is recorded here as part of the Series history; current editorial authority remains defined by the published
+          governance and voting rules.
+        </p>
+        <p><a href={OASIS.collectionUrl}>Browse the current OAsis collection</a>.</p>
+      </section>
+
+      <section class="about-block about-card" aria-labelledby="history-archive-title">
+        <h2 id="history-archive-title">Historical records under review</h2>
+        <p>
+          Historical working papers from the earlier Economics Hub are being verified, preserved, and incorporated into the current
+          archive. Fourteen metadata records are presently listed, but their provenance, author-name display, rights, final-version
+          status, document accessibility, and intended OAsis status require record-by-record confirmation.
+        </p>
+        <p>
+          Until that work is complete, the site does not imply that missing historical full text is available or that every local
+          metadata field has been independently verified.
+        </p>
+        <p><a href={withBase("/issues/archive/")}>View the bounded historical archive inventory</a>.</p>
+      </section>
+
+      <section class="about-block about-card" aria-labelledby="acknowledgments-title">
+        <h2 id="acknowledgments-title">Acknowledgments</h2>
+        <p>
+          The Series acknowledges former Economics Hub student leaders and editors, historical paper authors, faculty mentors,
+          Djeto Assané, Eric Chiang, Junior Editors, students and instructors contributing papers, and the technical and design
+          contributors who built and maintain the public catalog.
+        </p>
+        <p>
+          The Series also recognizes UNLV University Libraries and OAsis personnel for repository infrastructure and support.
+          This acknowledgment does not substitute for confirmation of current appointments, institutional sponsorship, or a
+          particular repository workflow.
+        </p>
+      </section>
+
+      <section class="about-block about-card about-cta" aria-labelledby="history-next-title">
+        <h2 id="history-next-title">Questions or corrections</h2>
+        <p>Readers with documentary evidence about a historical paper, issue, contributor, or correction may contact the Series.</p>
+        <div class="page-intro-actions">
+          <a class="btn btn-small btn-primary" href={withBase("/contact/")}>Contact the Series</a>
+          <a class="btn btn-small btn-outline" href={withBase("/editorial-board/")}>Editorial Board</a>
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>

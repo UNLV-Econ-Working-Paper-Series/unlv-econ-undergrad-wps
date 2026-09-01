@@ -3,6 +3,11 @@ import ContactCard from "../components/ContactCard.astro";
 import PageBanner from "../components/PageBanner.astro";
 import { CONTACT_PAGE_CONTENT } from "../data/contact-content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const buildMailto = (email: string, subject: string): string => {
+  const params = new URLSearchParams({ subject });
+  return `mailto:${email}?${params.toString()}`;
+};
 ---
 
 <BaseLayout title="Contact | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-contact page-contact page-contact-modern">
@@ -35,7 +40,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       >
         <p class="contact-line">
           <strong>Phone:</strong>
-          <a href={`tel:${CONTACT_PAGE_CONTENT.contact.dept.phone}`}>{CONTACT_PAGE_CONTENT.contact.dept.phone}</a>
+          <a href={CONTACT_PAGE_CONTENT.contact.dept.phoneHref}>{CONTACT_PAGE_CONTENT.contact.dept.phone}</a>
         </p>
         <p class="contact-line"><strong>Location:</strong> {CONTACT_PAGE_CONTENT.contact.dept.locationLine}</p>
         <address class="contact-address">
@@ -53,13 +58,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <a
             role="listitem"
             class="contact-chip"
-            href={`mailto:${CONTACT_PAGE_CONTENT.contact.series.email}?subject=${encodeURIComponent(request.subject)}`}
+            href={request.href ?? buildMailto(CONTACT_PAGE_CONTENT.contact.series.email, request.subject ?? request.label)}
           >
             {request.label}
           </a>
         ))}
       </div>
       <p class="contact-note">{CONTACT_PAGE_CONTENT.requests.note}</p>
+    </section>
+
+    <section class="contact-map" aria-labelledby="retention-title">
+      <h2 id="retention-title">{CONTACT_PAGE_CONTENT.retention.title}</h2>
+      <p>{CONTACT_PAGE_CONTENT.retention.body}</p>
     </section>
 
     <section class="contact-map" aria-labelledby="directions-title">

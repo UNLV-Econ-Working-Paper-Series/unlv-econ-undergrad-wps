@@ -1,0 +1,53 @@
+---
+import PageBanner from "../../components/PageBanner.astro";
+import { RESEARCH_FIELDS, type ResearchField } from "../../config/publication";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  cleanPaperTitle,
+  formatPaperDate,
+  getAllPapers,
+  getIssueLabelForPaper,
+  paperHref,
+} from "../../lib/papers";
+import { requireResearchField, researchFieldFromSlug, researchFieldSlug } from "../../lib/research-fields";
+import { withBase } from "../../lib/urls";
+
+export async function getStaticPaths() {
+  const papers = await getAllPapers();
+  const populated = new Set<ResearchField>(papers.map((paper) => requireResearchField(paper.data.category)));
+  return RESEARCH_FIELDS.filter((field) => populated.has(field)).map((field) => ({
+    params: { field: researchFieldSlug(field) },
+  }));
+}
+
+const fieldSlug = Astro.params.field ?? "";
+const field = researchFieldFromSlug(fieldSlug);
+if (!field) throw new Error(`Research field route not found: ${fieldSlug}`);
+
+const papers = (await getAllPapers()).filter((paper) => requireResearchField(paper.data.category) === field);
+---
+
+<BaseLayout
+  title={`${field} | Research Fields | UNLV Undergraduate Economics Working Paper Series`}
+  description={`Working papers in ${field} from the UNLV Undergraduate Economics Working Paper Series.`}
+  bodyClass="section-fields page-field-detail"
+>
+  <PageBanner kicker="Research Field" title={field} subtitle={`${papers.length} ${papers.length === 1 ? "working paper" : "working papers"}`} />
+
+  <section class="content-section">
+    <p><a href={withBase("/fields/")}>← All research fields</a></p>
+
+    <ol class="paper-record-list" aria-label={`Working papers in ${field}`}>
+      {papers.map((paper) => (
+        <li>
+          <article>
+            <p class="eyebrow">{getIssueLabelForPaper(paper)} · Added to OAsis {formatPaperDate(paper.data.published_at)}</p>
+            <h2><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h2>
+            <p>{paper.data.authors.join(", ")}</p>
+            <p>{paper.data.abstract}</p>
+          </article>
+        </li>
+      ))}
+    </ol>
+  </section>
+</BaseLayout>

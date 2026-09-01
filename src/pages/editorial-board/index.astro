@@ -1,0 +1,145 @@
+---
+import AboutNavigation from "../../components/AboutNavigation.astro";
+import EditorialLinkGroups from "../../components/EditorialLinkGroups.astro";
+import PageBanner from "../../components/PageBanner.astro";
+import {
+  EDITORIAL_BOARD,
+  EDITORIAL_BOARD_DESCRIPTION,
+  JUNIOR_EDITORS,
+  JUNIOR_EDITOR_DESCRIPTION,
+  PUBLICATION_APPROVAL_RULE,
+} from "../../config/editorial";
+import { SERIES } from "../../config/publication";
+import { PUBLIC_PROFILES } from "../../data/public-profiles";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+const profileIdsByEditorialId: Record<string, string> = {
+  "mark-jayson-martinez-farol": "mark-jayson-farol",
+  "djeto-assane": "professor-djeto-assane",
+  "eric-chiang": "professor-eric-chiang",
+  "brandon-penticoff": "brandon-penticoff",
+};
+
+const profileFor = (editorialId: string) =>
+  PUBLIC_PROFILES.find((profile) => profile.id === profileIdsByEditorialId[editorialId]);
+---
+
+<BaseLayout
+  title="Editorial Board | UNLV Undergraduate Economics Working Paper Series"
+  bodyClass="section-about page-about-modern page-editorial-board"
+>
+  <PageBanner
+    title="Editorial Board"
+    lead="Publication authority, editorial responsibilities, and the people who carry out the Series' work"
+    note="Series roles are distinct from university employment titles"
+  />
+
+  <section class="content-section">
+    <AboutNavigation currentHref="/editorial-board/" />
+
+    <div class="about-modern-shell">
+      <section class="about-block about-card" aria-labelledby="editorial-authority-title">
+        <h2 id="editorial-authority-title">Board and team authority</h2>
+        <p>{EDITORIAL_BOARD_DESCRIPTION}</p>
+        <p>{JUNIOR_EDITOR_DESCRIPTION}</p>
+        <p><strong>Publication approval:</strong> {PUBLICATION_APPROVAL_RULE}</p>
+        <p>
+          A faculty sponsor may mentor and recommend a paper but cannot be its sole approving editor. Editors with a conflict
+          recuse themselves; an eligible UNLV faculty member may serve as an ad hoc reviewer when the Board cannot form the
+          required non-conflicted approval group.
+        </p>
+        <p>
+          The role labels below follow the Series governance specification. Written role acceptance and effective-term records
+          are maintained outside the public website and remain external confirmation items for this release.
+        </p>
+      </section>
+
+      <section class="about-block about-card" id="voting-board" aria-labelledby="voting-board-title">
+        <h2 id="voting-board-title">Voting Editorial Board</h2>
+        <p>These intended Board members participate in screening, policy, and publication decisions, subject to conflict and recusal rules.</p>
+
+        <div class="about-team-grid about-team-grid--editorial">
+          {EDITORIAL_BOARD.map((member) => {
+            const profile = profileFor(member.id);
+            return (
+              <article class="about-person-card">
+                {profile?.headshot ? (
+                  <img
+                    class="about-person-thumb"
+                    src={withBase(profile.headshot)}
+                    alt={`Portrait of ${member.name}`}
+                    width="72"
+                    height="72"
+                    loading="lazy"
+                  />
+                ) : null}
+
+                <div class="about-person-copy">
+                  <p class="about-role">{member.publicTitle}</p>
+                  <h3>{member.name}</h3>
+
+                  <h4>Role in the Series</h4>
+                  <p>{member.description}</p>
+
+                  {profile ? (
+                    <>
+                      <h4>Professional biography</h4>
+                      <p>{profile.summary}</p>
+
+                      <EditorialLinkGroups links={profile.links} contactEmail={SERIES.contactEmail} compact={true} />
+
+                      {profile.profileHref ? (
+                        <p><a href={withBase(profile.profileHref)}>Read the full profile for {member.name}</a></p>
+                      ) : null}
+                    </>
+                  ) : null}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section class="about-block about-card" id="junior-editors" aria-labelledby="junior-editors-title">
+        <h2 id="junior-editors-title">Junior Editors</h2>
+        <p>{JUNIOR_EDITOR_DESCRIPTION}</p>
+
+        <div class="about-team-grid about-team-grid--ga">
+          {JUNIOR_EDITORS.map((member) => {
+            const profile = profileFor(member.id);
+            return (
+              <article class="about-person-card">
+                <div class="about-person-copy">
+                  <p class="about-role">{member.publicTitle} · Non-voting</p>
+                  <h3>{member.name}</h3>
+                  <h4>Role in the Series</h4>
+                  <p>{member.description}</p>
+                  <p>
+                    Only the Series role is shown. A biography, photograph, personal contact information, and external profile
+                    links are not published without documented public-profile consent.
+                  </p>
+                  {profile?.profileHref ? (
+                    <p><a href={withBase(profile.profileHref)}>View the preserved Series role page</a></p>
+                  ) : null}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section class="about-block about-card about-cta" aria-labelledby="editorial-policies-title">
+        <h2 id="editorial-policies-title">How decisions are governed</h2>
+        <p>
+          The public policies explain screening, conflicts and recusal, corrections, revisions, withdrawals, and appeals. Questions
+          about a paper or the Series should go to the shared Series contact rather than a personal profile.
+        </p>
+        <div class="page-intro-actions">
+          <a class="btn btn-small btn-primary" href={withBase("/policies/")}>Read publication policies</a>
+          <a class="btn btn-small btn-outline" href={withBase("/contact/")}>Contact the Series</a>
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>

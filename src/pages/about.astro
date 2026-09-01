@@ -1,21 +1,10 @@
 ---
-import { Image } from "astro:assets";
+import AboutNavigation from "../components/AboutNavigation.astro";
 import PageBanner from "../components/PageBanner.astro";
-import ProfileLinks from "../components/ProfileLinks.astro";
-import RichTextInline from "../components/RichTextInline.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import { ABOUT_PAGE_CONTENT } from "../data/about-content";
-import { PUBLIC_PROFILES } from "../data/public-profiles";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { withBase } from "../lib/urls";
-
-const sortedProfiles = [...PUBLIC_PROFILES].sort(
-  (a, b) => (a.sortOrder ?? Number.MAX_SAFE_INTEGER) - (b.sortOrder ?? Number.MAX_SAFE_INTEGER) || a.name.localeCompare(b.name)
-);
-const editorialTeam = sortedProfiles.filter((profile) => profile.sections.includes("editorial_team"));
-const currentGraduateAssistants = sortedProfiles.filter(
-  (profile) => profile.sections.includes("graduate_assistants") && profile.current !== false
-);
 ---
 
 <BaseLayout title="About | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-about page-about page-about-modern">
@@ -26,41 +15,49 @@ const currentGraduateAssistants = sortedProfiles.filter(
   />
 
   <section class="content-section">
+    <AboutNavigation currentHref="/about/" />
+
     <div class="page-with-toc">
       <div class="page-with-toc__toc">
         <TableOfContents items={ABOUT_PAGE_CONTENT.tocItems} />
       </div>
 
       <div class="page-with-toc__main">
-        <section class="about-modern-shell">
-          <section class="about-block about-card" aria-labelledby="about-glance-title">
-            <h2 id="about-glance-title">{ABOUT_PAGE_CONTENT.atAGlance.title}</h2>
-            <ul class="about-glance-list">
-              {ABOUT_PAGE_CONTENT.atAGlance.items.map((item) => (
-                <li><RichTextInline segments={item} /></li>
-              ))}
-            </ul>
+        <div class="about-modern-shell">
+          <section class="about-block about-card" id={ABOUT_PAGE_CONTENT.purpose.id} aria-labelledby="purpose-title">
+            <h2 id="purpose-title">{ABOUT_PAGE_CONTENT.purpose.title}</h2>
+            {ABOUT_PAGE_CONTENT.purpose.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
           </section>
 
-          <section class="about-block about-card" aria-labelledby="about-series-scope">
-            <h2 id="about-series-scope">{ABOUT_PAGE_CONTENT.seriesScope.title}</h2>
-            {ABOUT_PAGE_CONTENT.seriesScope.blocks.map((block) =>
-              block.type === "paragraph" ? (
-                <p><RichTextInline segments={block.segments} /></p>
-              ) : block.type === "heading" ? (
-                <h3>{block.text}</h3>
-              ) : (
-                <pre class="about-code" tabindex="0"><code>{block.code}</code></pre>
-              )
-            )}
+          <section class="about-block about-card" id={ABOUT_PAGE_CONTENT.scope.id} aria-labelledby="scope-title">
+            <h2 id="scope-title">{ABOUT_PAGE_CONTENT.scope.title}</h2>
+            {ABOUT_PAGE_CONTENT.scope.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            {ABOUT_PAGE_CONTENT.scope.points ? (
+              <ul>
+                {ABOUT_PAGE_CONTENT.scope.points.map((point) => <li>{point}</li>)}
+              </ul>
+            ) : null}
+            <p>
+              <a href={withBase("/for-authors/")}>Read the complete guidance for student authors</a>.
+            </p>
           </section>
 
-          <section class="about-block about-card" aria-labelledby="about-process-title">
-            <h2 id="about-process-title">{ABOUT_PAGE_CONTENT.publication.title}</h2>
+          <section
+            class="about-block about-card"
+            id={ABOUT_PAGE_CONTENT.publicationStatus.id}
+            aria-labelledby="publication-status-title"
+          >
+            <h2 id="publication-status-title">{ABOUT_PAGE_CONTENT.publicationStatus.title}</h2>
+            {ABOUT_PAGE_CONTENT.publicationStatus.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          </section>
+
+          <section class="about-block about-card" id={ABOUT_PAGE_CONTENT.process.id} aria-labelledby="publication-process-title">
+            <h2 id="publication-process-title">{ABOUT_PAGE_CONTENT.process.title}</h2>
+            <p>{ABOUT_PAGE_CONTENT.process.introduction}</p>
             <ol class="about-stepper">
-              {ABOUT_PAGE_CONTENT.publication.steps.map((step, index) => (
+              {ABOUT_PAGE_CONTENT.process.steps.map((step, index) => (
                 <li class="about-step-card">
-                  <span class="about-step-number">{index + 1}</span>
+                  <span class="about-step-number" aria-hidden="true">{index + 1}</span>
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
                 </li>
@@ -68,120 +65,12 @@ const currentGraduateAssistants = sortedProfiles.filter(
             </ol>
           </section>
 
-          <section class="about-block about-card" aria-labelledby="about-policies-title">
-            <h2 id="about-policies-title">{ABOUT_PAGE_CONTENT.policies.title}</h2>
-
-            {ABOUT_PAGE_CONTENT.policies.sections.map((section) => (
-              <details class="about-policy" open={section.open}>
-                <summary>{section.summary}</summary>
-                <div class="about-policy-body">
-                  {section.blocks.map((block) =>
-                    block.type === "paragraph" ? (
-                      <p><RichTextInline segments={block.segments} /></p>
-                    ) : block.type === "heading" ? (
-                      <h3>{block.text}</h3>
-                    ) : (
-                      <pre class="about-code" tabindex="0"><code>{block.code}</code></pre>
-                    )
-                  )}
-                </div>
-              </details>
-            ))}
-          </section>
-
-          <section class="about-block about-card" aria-labelledby="about-team-title">
-            <h2 id="about-team-title">{ABOUT_PAGE_CONTENT.editorialTeam.title}</h2>
-
-            {editorialTeam.length === 0 ? (
-              <p class="about-empty">No editorial team members are listed</p>
-            ) : (
-              <div class="about-team-grid about-team-grid--editorial">
-                {editorialTeam.map((person) => (
-                  <article class="about-person-card">
-                    {person.headshot ? (
-                      <Image
-                        class="about-person-thumb"
-                        src={withBase(person.headshot)}
-                        alt={person.name}
-                        width={72}
-                        height={72}
-                        loading="lazy"
-                        title={person.photoSource}
-                      />
-                    ) : null}
-                    <div class="about-person-copy">
-                      <p class="about-role">{person.displayRole}</p>
-                      <h3>
-                        {person.profileHref ? (
-                          <a class="about-person-link" href={withBase(person.profileHref)}>{person.name}</a>
-                        ) : (
-                          person.name
-                        )}
-                      </h3>
-                      <p>{person.summary}</p>
-                      <div class="about-person-actions">
-                        <ProfileLinks links={person.links} className="about-person-links" />
-                        {person.profileHref ? (
-                          <a class="about-read-more" href={withBase(person.profileHref)}>
-                            Read more →
-                          </a>
-                        ) : null}
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
-          </section>
-
-          <section class="about-block about-card" aria-labelledby="about-ga-title">
-            <header class="about-section-head">
-              <h2 id="about-ga-title">{ABOUT_PAGE_CONTENT.graduateAssistants.title}</h2>
-              <a class="about-inline-link" href={withBase(ABOUT_PAGE_CONTENT.graduateAssistants.linkHref)}>
-                {ABOUT_PAGE_CONTENT.graduateAssistants.linkLabel}
-              </a>
-            </header>
-
-            {currentGraduateAssistants.length === 0 ? (
-              <p class="about-empty">{ABOUT_PAGE_CONTENT.graduateAssistants.emptyText}</p>
-            ) : (
-              <div class="about-team-grid about-team-grid--ga">
-                {currentGraduateAssistants.map((assistant) => (
-                  <article class="about-person-card">
-                    {assistant.headshot ? (
-                      <Image
-                        class="about-person-thumb"
-                        src={withBase(assistant.headshot)}
-                        alt={assistant.name}
-                        width={72}
-                        height={72}
-                        loading="lazy"
-                        title={assistant.photoSource}
-                      />
-                    ) : null}
-                    <div class="about-person-copy">
-                      <p class="about-role">{assistant.displayRole}</p>
-                      <h3>
-                        {assistant.profileHref ? (
-                          <a class="about-person-link" href={withBase(assistant.profileHref)}>{assistant.name}</a>
-                        ) : (
-                          assistant.name
-                        )}
-                      </h3>
-                      <p>{assistant.summary}</p>
-                      <div class="about-person-actions">
-                        <ProfileLinks links={assistant.links} className="about-person-links" />
-                        {assistant.profileHref ? (
-                          <a class="about-read-more" href={withBase(assistant.profileHref)}>
-                            Read more →
-                          </a>
-                        ) : null}
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
+          <section class="about-block about-card" id={ABOUT_PAGE_CONTENT.repository.id} aria-labelledby="repository-title">
+            <h2 id="repository-title">{ABOUT_PAGE_CONTENT.repository.title}</h2>
+            {ABOUT_PAGE_CONTENT.repository.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            <p>
+              <a href="https://oasis.library.unlv.edu/econ_ug_papers/">Visit the OAsis collection</a>.
+            </p>
           </section>
 
           <section class="about-block about-card about-cta" aria-labelledby="about-cta-title">
@@ -189,13 +78,16 @@ const currentGraduateAssistants = sortedProfiles.filter(
             <p>{ABOUT_PAGE_CONTENT.cta.body}</p>
             <div class="page-intro-actions">
               {ABOUT_PAGE_CONTENT.cta.actions.map((action) => (
-                <a class:list={["btn", "btn-small", action.primary ? "btn-primary" : null]} href={withBase(action.href)}>
+                <a
+                  class:list={["btn", "btn-small", action.primary ? "btn-primary" : "btn-outline"]}
+                  href={withBase(action.href)}
+                >
                   {action.label}
                 </a>
               ))}
             </div>
           </section>
-        </section>
+        </div>
       </div>
     </div>
   </section>

@@ -1,43 +1,69 @@
 ---
 layout: ../../layouts/PolicyLayout.astro
-title: Corrections, Updates & Versioning
-lead: Working papers may be refined over time while preserving stable citation access.
+title: Corrections, Revisions & Versioning
+lead: Changes are classified, approved, and disclosed so readers can identify the version they used.
 bodyClass: page-policy-corrections
 ---
 
-Because this Series publishes **working papers**, updates and refinements are expected.
+Working papers may be revised, but a public record must not change silently when the change affects authorship, citation, interpretation, analysis, or conclusions.
 
-## What can be updated
+## Types of change and required authority
 
-Updates may include:
+### Non-substantive metadata or presentation correction
 
-- corrected typos or formatting issues
-- clarified language or improved exposition
-- corrected metadata (authors, keywords, category, advisor)
-- revised analyses or updated figures/tables (author-provided)
+A typo, broken link, or non-substantive metadata error may be corrected by the Managing Editor with author notification. The record receives a public note when the change affects reader interpretation or citation.
 
-## Versioning approach
+An author name, title, abstract, or bibliographic correction requires written author confirmation, Managing Editor approval, and OAsis coordination when the repository record or DOI metadata is affected.
 
-- Each paper page URL is intended to be **stable** for citation.
-- The Series generally displays the **most current public version** of a paper.
-- When feasible, prior versions may be retained for recordkeeping; otherwise, the previous PDF may be replaced.
+### Accessibility- or formatting-only replacement
 
-## Corrections vs. revisions
+A PDF may be replaced solely to improve accessibility or formatting when the Managing Editor and author approve the replacement and verification confirms there is no substantive change. File hashes, the accessibility finding, and repository coordination are recorded privately. A public accessibility or version note is added when warranted.
 
-- **Correction:** fixes an error without materially changing the overall claims.
-- **Revision:** updates content that may change interpretation or results.
+### Substantive revision
 
-When appropriate, a short note may be added to the paper page indicating an update.
+A revision that changes analysis, evidence, results, interpretation, or conclusions requires:
 
-## How to request a correction or update
+- author approval;
+- faculty sponsor approval;
+- review by two non-conflicted voting editors, including one Faculty Editor; and
+- coordination with OAsis before a deposited record or file changes.
 
-Email the series team and include:
+The revision receives a new public version statement and a correction notice when the earlier version contained a material error.
 
-- paper title
-- paper page URL
-- brief description of the requested change
-- updated PDF (if applicable)
+### Formal correction notice
 
-## When content may be withdrawn
+A correction notice or corrigendum requires approval from two non-conflicted voting editors, including one Faculty Editor. It identifies the affected version, error, correction, date, and effect on the paper's findings, and links to the corrected record.
 
-See [Takedown / Rights & Privacy Requests](../takedown/) for circumstances where a paper may be removed or access restricted.
+## Required version history
+
+Every substantive revision must show:
+
+- a version label;
+- the version date;
+- a concise revision note;
+- the current status;
+- a prior-version link where the prior version is preserved and may lawfully remain accessible; and
+- a linked correction notice when warranted.
+
+The paper page presents the current public version and its relationship to earlier versions. The Series does not promise public access to every prior full-text file when rights, privacy, safety, repository, or legal limits require restriction.
+
+## Stable identifiers and dates
+
+The Series paper identifier and canonical paper-page URL remain associated with the work. Version dates, issue release dates, repository publication dates, and correction dates describe different events and must not be substituted for one another.
+
+Where a DOI or OAsis item record exists, repository metadata and file changes must be reconciled with the custom site. The custom site must not silently offer a substantively different PDF from the deposited full text.
+
+## Requesting a correction or revision
+
+Use the [Contact page](../../contact/) and include:
+
+- the paper title, identifier, and URL;
+- the version involved;
+- the exact field, page, table, figure, link, or passage at issue;
+- the requested correction and supporting source;
+- whether the change affects the analysis or conclusions; and
+- an updated editable manuscript and PDF when a file change is proposed.
+
+Do not send restricted data or sensitive evidence through ordinary email. The Series will arrange a private channel when needed.
+
+Concerns that may require a temporary status notice, access restriction, or withdrawal follow [Expressions of Concern, Withdrawal & Takedown](../takedown/).

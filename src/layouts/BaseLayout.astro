@@ -3,7 +3,7 @@ import { ClientRouter, fade } from "astro:transitions";
 import globalCss from "../styles/global.css?raw";
 import viewerReadinessCssUrl from "../styles/viewer-readiness.css?url";
 import { INSTITUTION } from "../config/institution";
-import { OASIS, SERIES } from "../config/publication";
+import { OASIS, PRIMARY_NAVIGATION, SERIES } from "../config/publication";
 import { withBase } from "../lib/urls";
 
 interface Props {
@@ -28,15 +28,7 @@ const pathname = Astro.url.pathname;
 const siteUrl = Astro.site ?? new URL("https://econ-undergrad-wps.sites.unlv.edu");
 const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
 const currentYear = new Date().getFullYear();
-const navItems = [
-  { href: withBase("/"), label: "Home" },
-  { href: withBase("/issues/"), label: "Issues" },
-  { href: withBase("/papers/"), label: "Papers" },
-  { href: withBase("/categories/"), label: "Categories" },
-  { href: withBase("/our/"), label: "Research Pathway" },
-  { href: withBase("/about/"), label: "About" },
-  { href: withBase("/contact/"), label: "Contact" },
-];
+const navItems = PRIMARY_NAVIGATION.map((item) => ({ ...item, href: withBase(item.href) }));
 
 function normalize(path: string): string {
   return path.endsWith("/") ? path : `${path}/`;
@@ -93,8 +85,8 @@ function isActive(href: string): boolean {
             href={withBase("/")}
             aria-label={SERIES.name}
           >
-            <span class="site-logo__primary">UNLV Economics</span>
-            <span class="site-logo__secondary">Undergraduate Working Paper Series</span>
+            <span class="site-logo__primary">UNLV</span>
+            <span class="site-logo__secondary">{INSTITUTION.department.name} · {SERIES.mastheadName}</span>
           </a>
           <button
             class="site-nav-toggle"
@@ -142,15 +134,15 @@ function isActive(href: string): boolean {
             <h3 class="footer-heading">Explore</h3>
             <div class="footer-links-grid">
               <ul class="footer-links">
-                <li><a href={withBase("/")}>Home</a></li>
-                <li><a href={withBase("/issues/")}>Issues</a></li>
-                <li><a href={withBase("/papers/")}>Papers</a></li>
+                {PRIMARY_NAVIGATION.slice(0, 3).map((item) => (
+                  <li><a href={withBase(item.href)}>{item.label}</a></li>
+                ))}
               </ul>
 
               <ul class="footer-links">
-                <li><a href={withBase("/categories/")}>Categories</a></li>
-                <li><a href={withBase("/our/")}>Research Pathway</a></li>
-                <li><a href={withBase("/about/")}>About</a></li>
+                {PRIMARY_NAVIGATION.slice(3).map((item) => (
+                  <li><a href={withBase(item.href)}>{item.label}</a></li>
+                ))}
               </ul>
             </div>
           </nav>
