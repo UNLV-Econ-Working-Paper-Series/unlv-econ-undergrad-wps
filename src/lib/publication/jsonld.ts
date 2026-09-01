@@ -22,9 +22,7 @@ export interface JsonLdOptions {
   issueUrl: string;
 }
 
-export function serializeJsonLd(
-  value: Record<string, unknown> | Array<Record<string, unknown>>,
-): string {
+export function serializeJsonLd(value: Record<string, unknown> | Array<Record<string, unknown>>): string {
   return JSON.stringify(value)
     .replace(/</gu, "\\u003c")
     .replace(/\u2028/gu, "\\u2028")
@@ -41,9 +39,7 @@ export function buildScholarlyJsonLd(
     "@type": "Person",
     name: author.name,
     ...(author.orcid ? { sameAs: absoluteHttpUrl(author.orcid, "author ORCID") } : {}),
-    ...(author.affiliation
-      ? { affiliation: { "@type": "Organization", name: author.affiliation } }
-      : {}),
+    ...(author.affiliation ? { affiliation: { "@type": "Organization", name: author.affiliation } } : {}),
   }));
   const identifiers: Array<Record<string, string>> = [
     { "@type": "PropertyValue", propertyID: "Series number", value: record.series_number },
@@ -102,8 +98,6 @@ export function buildScholarlyJsonLd(
     ...(historical?.original_url
       ? { isBasedOn: absoluteHttpUrl(historical.original_url, "historical_provenance.original_url") }
       : {}),
-    ...(historical?.original_publication_date
-      ? { dateCreated: historical.original_publication_date }
-      : {}),
+    ...(historical?.original_publication_date ? { dateCreated: historical.original_publication_date } : {}),
   };
 }

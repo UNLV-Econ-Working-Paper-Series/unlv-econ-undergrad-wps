@@ -41,6 +41,8 @@ export function assertUniqueSeriesIdentifiers(values: readonly string[]): void {
     seen.add(normalized);
   }
   if (duplicates.size > 0) {
-    throw new Error(`Duplicate Series identifier${duplicates.size === 1 ? "" : "s"}: ${[...duplicates].sort().join(", ")}.`);
+    throw new Error(
+      `Duplicate Series identifier${duplicates.size === 1 ? "" : "s"}: ${[...duplicates].sort().join(", ")}.`,
+    );
   }
 }

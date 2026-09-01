@@ -1,0 +1,57 @@
+name: Release verification
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-verification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Use Node.js 24.16.0
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24.16.0
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Install the representative CI browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run deterministic release verification
+        run: npm run verify:release:ci
+
+      - name: Package and verify the Faculty Sites artifact
+        env:
+          RELEASE_COMMIT_SHA: ${{ github.sha }}
+          RELEASE_SOURCE_TREE: clean
+        run: npm run package:faculty-sites
+
+      - name: Upload release and test evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-evidence-${{ github.sha }}
+          path: |
+            artifacts/
+            playwright-report/
+            test-results/
+          if-no-files-found: warn
+          retention-days: 30

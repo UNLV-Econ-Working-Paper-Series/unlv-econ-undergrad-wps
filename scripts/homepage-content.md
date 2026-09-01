@@ -13,9 +13,11 @@ news_empty_state_text: "Updates about the series will be posted here."
 ---
 
 ## Featured Items
+
 - [Sample featured paper](/papers/sample-featured-paper/)
 - Submission window opens April 1
 
 ## News and Events
+
 - Spring research showcase submissions are open.
 - New issue release is scheduled for May.

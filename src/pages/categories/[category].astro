@@ -1,24 +1,29 @@
 ---
 import { CATEGORY_DEFINITIONS } from "../../data/categories";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { legacyRedirectTarget } from "../../lib/legacy-redirects";
+import { getAllPapers } from "../../lib/papers";
 import { researchFieldHref } from "../../lib/research-fields";
 import { withBase } from "../../lib/urls";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const papers = await getAllPapers();
+  const availableFieldPaths = new Set(papers.map((paper) => researchFieldHref(paper.data.field)));
   return CATEGORY_DEFINITIONS.map((category) => ({
     params: { category: category.slug },
-    props: { categoryName: category.name },
+    props: {
+      fieldPath: legacyRedirectTarget(`/categories/${category.slug}/`, availableFieldPaths),
+    },
   }));
 }
 
-const { categoryName } = Astro.props as { categoryName: string };
-const fieldPath = researchFieldHref(categoryName);
+const { fieldPath } = Astro.props as { fieldPath: string };
 const target = withBase(fieldPath);
 ---
 
 <BaseLayout
   title="Research Field Moved | UNLV Undergraduate Economics Working Paper Series"
-  description="This legacy category URL now redirects to the corresponding controlled research field."
+  description="This legacy category URL now redirects to the current Research Fields directory."
   canonicalPath={fieldPath}
   robots="noindex, follow"
   redirectTo={target}
@@ -26,6 +31,6 @@ const target = withBase(fieldPath);
 >
   <section class="content-section">
     <h1>This category is now a Research Field</h1>
-    <p><a href={target}>Continue to the research-field page</a></p>
+    <p><a href={target}>Continue to Research Fields</a></p>
   </section>
 </BaseLayout>

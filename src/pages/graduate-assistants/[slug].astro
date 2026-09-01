@@ -10,7 +10,7 @@ import { withBase } from "../../lib/urls";
 export async function getStaticPaths() {
   const assistants = await getCollection("graduateAssistants");
   return assistants.map((assistant) => ({
-    params: { slug: assistant.slug },
+    params: { slug: assistant.id },
     props: {
       assistant,
       member: JUNIOR_EDITORS.find((candidate) => candidate.name === assistant.data.name),
@@ -39,8 +39,9 @@ const { assistant, member } = Astro.props as {
       <h2>Role in the Series</h2>
       <p>{member.description}</p>
       <p>
-        The public record currently includes only the name, appointment term ({assistant.data.term}), and Series role. A biography,
-        photograph, personal contact information, and external profile links are not published without documented public-profile consent.
+        The public record currently includes only the name, appointment term ({assistant.data.term}), and
+        Series role. A biography, photograph, personal contact information, and external profile links are not
+        published without documented public-profile consent.
       </p>
       <p><a href={`mailto:${SERIES.contactEmail}`}>Contact the Series about editorial matters</a>.</p>
     </article>

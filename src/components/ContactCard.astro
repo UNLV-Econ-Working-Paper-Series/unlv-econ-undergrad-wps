@@ -25,20 +25,25 @@ const { title, desc = "", actions = [] } = Astro.props;
     <slot />
   </div>
 
-  {actions.length > 0 ? (
-    <div class="contact-card-actions">
-      {actions.map((action) => (
-        <a
-          class:list={["contact-card-btn", action.primary ? "contact-card-btn--primary" : "contact-card-btn--secondary"]}
-          href={action.href}
-          target={action.external ? "_blank" : undefined}
-          rel={action.external ? "noopener noreferrer" : undefined}
-        >
-          {action.label}
-        </a>
-      ))}
-    </div>
-  ) : null}
+  {
+    actions.length > 0 ? (
+      <div class="contact-card-actions">
+        {actions.map((action) => (
+          <a
+            class:list={[
+              "contact-card-btn",
+              action.primary ? "contact-card-btn--primary" : "contact-card-btn--secondary",
+            ]}
+            href={action.href}
+            target={action.external ? "_blank" : undefined}
+            rel={action.external ? "noopener noreferrer" : undefined}
+          >
+            {action.label}
+          </a>
+        ))}
+      </div>
+    ) : null
+  }
 </section>
 
 <style>

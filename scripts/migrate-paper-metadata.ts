@@ -2,11 +2,7 @@ import { readdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseFrontmatter } from "@astrojs/markdown-remark";
-import {
-  RESEARCH_FIELD_ALIASES,
-  RESEARCH_FIELDS,
-  type ResearchField,
-} from "../src/config/publication";
+import { RESEARCH_FIELD_ALIASES, RESEARCH_FIELDS, type ResearchField } from "../src/config/publication";
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -97,14 +93,7 @@ const REPORT_PATH = resolve(REPOSITORY_ROOT, "docs/audits/PAPER_METADATA_MIGRATI
 const INITIAL_REPOSITORY_ONLINE_DATE = "2026-08-05";
 const EXPECTED_INITIAL_RECORD_COUNT = 15;
 
-const DEPRECATED_KEYS = new Set([
-  "semester",
-  "category",
-  "advisor",
-  "pdf",
-  "issue",
-  "published_at",
-]);
+const DEPRECATED_KEYS = new Set(["semester", "category", "advisor", "pdf", "issue", "published_at"]);
 
 const ALLOWED_PAPER_KEYS = new Set([
   "title",
@@ -225,11 +214,7 @@ function validateIsoDate(value: string, label: string, fileName: string): void {
   }
   const [year, month, day] = value.split("-").map(Number);
   const date = new Date(Date.UTC(year, month - 1, day));
-  if (
-    date.getUTCFullYear() !== year ||
-    date.getUTCMonth() !== month - 1 ||
-    date.getUTCDate() !== day
-  ) {
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) {
     fail(fileName, `${label} is not a valid calendar date`);
   }
 }
@@ -271,10 +256,7 @@ function oasisRecordOrder(oasisUrl: string, fileName: string): number {
   return Number(match[1]);
 }
 
-function migrateLegacyRecord(
-  paper: PaperFile,
-  seriesNumber: string,
-): PaperMetadata {
+function migrateLegacyRecord(paper: PaperFile, seriesNumber: string): PaperMetadata {
   const raw = paper.raw;
   const title = requireString(raw, "title", paper.fileName);
   const authorNames = requireStringArray(raw, "authors", paper.fileName);
@@ -413,10 +395,7 @@ function validateFacultySponsor(value: unknown, fileName: string): FacultySponso
   return sponsor;
 }
 
-function validateHistoricalProvenance(
-  value: unknown,
-  fileName: string,
-): HistoricalProvenance | undefined {
+function validateHistoricalProvenance(value: unknown, fileName: string): HistoricalProvenance | undefined {
   if (value === undefined) return undefined;
   if (!isRecord(value)) fail(fileName, "historical_provenance must be an object");
   assertAllowedKeys(
@@ -441,7 +420,8 @@ function validateHistoricalProvenance(
     const item = optionalString(value, key, fileName);
     if (item) provenance[key] = item;
   }
-  if (provenance.original_url) validateUrl(provenance.original_url, "historical_provenance.original_url", fileName);
+  if (provenance.original_url)
+    validateUrl(provenance.original_url, "historical_provenance.original_url", fileName);
   if (provenance.original_publication_date) {
     validateIsoDate(
       provenance.original_publication_date,
@@ -812,9 +792,7 @@ export async function runPaperMetadataMigration(
   const paperDirectory = options.paperDirectory ?? PAPER_DIRECTORY;
   const reportPath = options.reportPath ?? REPORT_PATH;
   const shouldWrite = options.write === true;
-  const fileNames = (await readdir(paperDirectory))
-    .filter((fileName) => fileName.endsWith(".md"))
-    .sort();
+  const fileNames = (await readdir(paperDirectory)).filter((fileName) => fileName.endsWith(".md")).sort();
   if (fileNames.length === 0) throw new Error("No paper Markdown files found");
 
   const papers: PaperFile[] = await Promise.all(
@@ -837,7 +815,9 @@ export async function runPaperMetadataMigration(
     ),
   );
   if (states.size !== 1) {
-    throw new Error("Mixed legacy and structured paper records are not supported; complete or revert the migration.");
+    throw new Error(
+      "Mixed legacy and structured paper records are not supported; complete or revert the migration.",
+    );
   }
   const state = [...states][0];
 

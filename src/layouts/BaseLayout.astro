@@ -82,12 +82,16 @@ const serializedJsonLd = jsonLd ? serializeJsonLd(jsonLd) : "";
     <meta property="og:image:alt" content={`${SERIES.name} social preview`} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    {ogType === "article" && articlePublishedAt ? (
-      <meta property="article:published_time" content={articlePublishedAt} />
-    ) : null}
-    {ogType === "article" && articleModifiedAt ? (
-      <meta property="article:modified_time" content={articleModifiedAt} />
-    ) : null}
+    {
+      ogType === "article" && articlePublishedAt ? (
+        <meta property="article:published_time" content={articlePublishedAt} />
+      ) : null
+    }
+    {
+      ogType === "article" && articleModifiedAt ? (
+        <meta property="article:modified_time" content={articleModifiedAt} />
+      ) : null
+    }
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={ogTitle} />
@@ -97,9 +101,7 @@ const serializedJsonLd = jsonLd ? serializeJsonLd(jsonLd) : "";
 
     {scholarlyMeta?.map((tag) => <meta name={tag.name} content={tag.content} />)}
 
-    {serializedJsonLd ? (
-      <script type="application/ld+json" is:inline set:html={serializedJsonLd}></script>
-    ) : null}
+    {serializedJsonLd ? <script type="application/ld+json" is:inline set:html={serializedJsonLd} /> : null}
     <slot name="head" />
   </head>
   <body class={bodyClass || undefined}>
@@ -145,7 +147,9 @@ const serializedJsonLd = jsonLd ? serializeJsonLd(jsonLd) : "";
           try {
             target = document.querySelector(selector);
           } catch {
-            announceCopyStatus("The citation could not be copied. Select the citation text and copy it manually.");
+            announceCopyStatus(
+              "The citation could not be copied. Select the citation text and copy it manually.",
+            );
             return;
           }
           const text = target?.textContent?.trim();
@@ -177,10 +181,16 @@ const serializedJsonLd = jsonLd ? serializeJsonLd(jsonLd) : "";
             textarea.className = "copy-fallback";
             document.body.append(textarea);
             textarea.select();
-            const copied = document.execCommand("copy");
+            const legacyDocument = document as unknown as {
+              execCommand?: (commandId: string) => boolean;
+            };
+            const copied = legacyDocument.execCommand?.call(document, "copy") ?? false;
             textarea.remove();
             if (copied) showSuccess();
-            else announceCopyStatus("The citation could not be copied. Select the citation text and copy it manually.");
+            else
+              announceCopyStatus(
+                "The citation could not be copied. Select the citation text and copy it manually.",
+              );
           }
         });
       });

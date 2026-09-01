@@ -39,9 +39,13 @@ const seriesLinks = [
     <nav class="site-footer__nav" aria-label="Series">
       <h3>Series</h3>
       <ul>
-        {seriesLinks.map((item) => (
-          <li><a href={withBase(item.href)}>{item.label}</a></li>
-        ))}
+        {
+          seriesLinks.map((item) => (
+            <li>
+              <a href={withBase(item.href)}>{item.label}</a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
 

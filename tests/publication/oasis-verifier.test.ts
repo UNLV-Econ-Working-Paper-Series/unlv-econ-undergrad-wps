@@ -56,9 +56,7 @@ test("bounded transport retries a transient HTTP response and then succeeds", as
   let calls = 0;
   const fetchImpl: typeof fetch = async () => {
     calls += 1;
-    return calls === 1
-      ? new Response("retry", { status: 503 })
-      : new Response("ok", { status: 200 });
+    return calls === 1 ? new Response("retry", { status: 503 }) : new Response("ok", { status: 200 });
   };
 
   const result = await requestWithRetry("https://oasis.library.unlv.edu/econ_ug_papers/1", {
@@ -87,14 +85,37 @@ test("network failure remains distinct from metadata mismatch", async () => {
 
   assert.equal(result.transport.status, "network_failure");
   assert.equal(result.transport.attempts, 2);
-  assert.equal(classifyRecordOutcome({
-    doiSyntaxValid: true,
-    comparisons: [],
-    transports: [result.transport],
-  }), "network_failure");
-  assert.equal(classifyRecordOutcome({
-    doiSyntaxValid: true,
-    comparisons: [{ field: "title", status: "mismatch", local: "A", remote: "B" }],
-    transports: [],
-  }), "mismatch");
+  assert.equal(
+    classifyRecordOutcome({
+      doiSyntaxValid: true,
+      comparisons: [],
+      transports: [result.transport],
+    }),
+    "network_failure",
+  );
+  assert.equal(
+    classifyRecordOutcome({
+      doiSyntaxValid: true,
+      comparisons: [{ field: "title", status: "mismatch", local: "A", remote: "B" }],
+      transports: [],
+    }),
+    "mismatch",
+  );
+});
+
+test("sample probes preserve content type and the bounded response prefix", async () => {
+  const result = await requestWithRetry("https://oasis.library.unlv.edu/example.pdf", {
+    timeoutMs: 1_000,
+    maxAttempts: 1,
+    fetchImpl: async () =>
+      new Response("%PDF-1.7 bounded sample", {
+        status: 200,
+        headers: { "Content-Type": "application/pdf" },
+      }),
+    readBody: "sample",
+  });
+
+  assert.equal(result.transport.status, "verified");
+  assert.equal(result.transport.content_type, "application/pdf");
+  assert.equal(new TextDecoder().decode(result.sample?.slice(0, 5)), "%PDF-");
 });

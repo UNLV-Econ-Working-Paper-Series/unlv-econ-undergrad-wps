@@ -30,7 +30,8 @@ const latestIssuePapers = latestIssue
       (a, b) =>
         b.data.repository_published_at.localeCompare(a.data.repository_published_at) ||
         b.data.current_version.published_at.localeCompare(a.data.current_version.published_at) ||
-        parseSeriesIdentifier(a.data.series_number).sequence - parseSeriesIdentifier(b.data.series_number).sequence,
+        parseSeriesIdentifier(a.data.series_number).sequence -
+          parseSeriesIdentifier(b.data.series_number).sequence,
     )
   : [];
 
@@ -53,7 +54,21 @@ const latestIssueOnlineLabel =
 >
   <header class="scholar-home-hero">
     <div class="scholar-home-hero__image" aria-hidden="true">
-      <img src={withBase("/assets/images/lee-business-school.jpg")} alt="" width="1600" height="900" fetchpriority="high" />
+      <picture>
+        <source
+          type="image/webp"
+          srcset={`${withBase("/assets/images/lee-business-school-960.webp")} 960w, ${withBase("/assets/images/lee-business-school-1600.webp")} 1600w`}
+          sizes="100vw"
+        />
+        <img
+          src={withBase("/assets/images/lee-business-school.jpg")}
+          alt=""
+          width="1920"
+          height="1280"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
     </div>
     <div class="scholar-home-shell scholar-home-hero__content">
       <p class="scholar-home-department">{INSTITUTION.department.name}</p>
@@ -65,14 +80,18 @@ const latestIssueOnlineLabel =
         Preliminary working papers. Editorially screened, not peer reviewed, and subject to revision.
       </p>
       <nav class="scholar-home-hero__actions" aria-label="Series actions">
-        <a class="scholar-home-button scholar-home-button--primary" href={withBase("/papers/")}>Browse Working Papers</a>
-        <a class="scholar-home-button scholar-home-button--quiet" href={withBase("/for-authors/")}>For Student Authors</a>
+        <a class="scholar-home-button scholar-home-button--primary" href={withBase("/papers/")}
+          >Browse Working Papers</a
+        >
+        <a class="scholar-home-button scholar-home-button--quiet" href={withBase("/for-authors/")}
+          >For Student Authors</a
+        >
       </nav>
       <p class="scholar-home-photo-credit">
         Campus photograph: <a
           href="https://www.unlv.edu/news/release/lee-business-school-maintains-accreditation-business-and-accounting-programs"
-          rel="external"
-        >UNLV News (Lee Business School)</a>
+          rel="external">UNLV News (Lee Business School)</a
+        >
       </p>
     </div>
   </header>
@@ -95,113 +114,135 @@ const latestIssueOnlineLabel =
       </form>
       <noscript>
         <p class="scholar-home-search__noscript">
-          Search filtering requires JavaScript. You can still <a href={withBase("/papers/")}>browse the complete working-paper list</a>.
+          Search filtering requires JavaScript. You can still <a href={withBase("/papers/")}
+            >browse the complete working-paper list</a
+          >.
         </p>
       </noscript>
     </div>
   </section>
 
   <div class="scholar-home-shell scholar-home-sections">
-    {latestIssue && latestIssueRecord ? (
-      <section class="scholar-home-section scholar-home-latest" aria-labelledby="latest-issue-heading">
-        <header class="scholar-home-section__header">
-          <div>
-            <h2 id="latest-issue-heading">Latest Issue</h2>
-            <p class="scholar-home-issue-name">{latestIssue.label}</p>
-          </div>
-          <dl class="scholar-home-issue-facts" aria-label={`${latestIssue.label} issue details`}>
+    {
+      latestIssue && latestIssueRecord ? (
+        <section class="scholar-home-section scholar-home-latest" aria-labelledby="latest-issue-heading">
+          <header class="scholar-home-section__header">
             <div>
-              <dt>Issue</dt>
-              <dd>{repositoryIssueLabel(latestIssueRecord)}</dd>
+              <h2 id="latest-issue-heading">Latest Issue</h2>
+              <p class="scholar-home-issue-name">{latestIssue.label}</p>
             </div>
-            <div>
-              <dt>Papers</dt>
-              <dd>{latestIssue.papers.length}</dd>
-            </div>
-            {latestIssueOnlineLabel ? (
+            <dl class="scholar-home-issue-facts" aria-label={`${latestIssue.label} issue details`}>
               <div>
-                <dt>Repository date</dt>
-                <dd>{latestIssueOnlineLabel}</dd>
+                <dt>Issue</dt>
+                <dd>{repositoryIssueLabel(latestIssueRecord)}</dd>
               </div>
-            ) : null}
-          </dl>
-        </header>
+              <div>
+                <dt>Papers</dt>
+                <dd>{latestIssue.papers.length}</dd>
+              </div>
+              {latestIssueOnlineLabel ? (
+                <div>
+                  <dt>Repository date</dt>
+                  <dd>{latestIssueOnlineLabel}</dd>
+                </div>
+              ) : null}
+            </dl>
+          </header>
 
-        <ol class="scholar-home-paper-list scholar-home-paper-list--issue">
-          {latestIssuePapers.map((paper) => (
-            <li>
-              <h3><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h3>
-              <p>{formatAuthorDisplay(paper.data.authors)}</p>
-            </li>
-          ))}
-        </ol>
-        <p class="scholar-home-section__link">
-          <a href={withBase(`/issues/${latestIssue.slug}/`)}>View the complete {latestIssue.label} issue</a>
-        </p>
-      </section>
-    ) : null}
+          <ol class="scholar-home-paper-list scholar-home-paper-list--issue">
+            {latestIssuePapers.map((paper) => (
+              <li>
+                <h3>
+                  <a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a>
+                </h3>
+                <p>{formatAuthorDisplay(paper.data.authors)}</p>
+              </li>
+            ))}
+          </ol>
+          <p class="scholar-home-section__link">
+            <a href={withBase(`/issues/${latestIssue.slug}/`)}>View the complete {latestIssue.label} issue</a>
+          </p>
+        </section>
+      ) : null
+    }
 
-    {newPapers.length > 0 ? (
-      <section class="scholar-home-section" aria-labelledby="new-papers-heading">
-        <header class="scholar-home-section__header scholar-home-section__header--simple">
-          <div>
-            <h2 id="new-papers-heading">New Working Papers</h2>
-            <p>Recently added records from the Series.</p>
-          </div>
-          <a href={withBase("/papers/")}>View all working papers</a>
-        </header>
-        <ol class="scholar-home-paper-list">
-          {newPapers.map((paper) => (
-            <li>
-              <h3><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h3>
-              <p class="scholar-home-paper-list__authors">{formatAuthorDisplay(paper.data.authors)}</p>
-              <dl class="scholar-home-paper-list__meta">
-                <div>
-                  <dt>Research field</dt>
-                  <dd>{paper.data.field}</dd>
-                </div>
-                <div>
-                  <dt>Issue</dt>
-                  <dd>{getIssueLabelForPaper(paper)}</dd>
-                </div>
-                <div>
-                  <dt>OAsis online</dt>
-                  <dd><time datetime={paper.data.repository_published_at}>{formatPaperDate(paper.data.repository_published_at)}</time></dd>
-                </div>
-                {paper.data.doi ? (
+    {
+      newPapers.length > 0 ? (
+        <section class="scholar-home-section" aria-labelledby="new-papers-heading">
+          <header class="scholar-home-section__header scholar-home-section__header--simple">
+            <div>
+              <h2 id="new-papers-heading">New Working Papers</h2>
+              <p>Recently added records from the Series.</p>
+            </div>
+            <a href={withBase("/papers/")}>View all working papers</a>
+          </header>
+          <ol class="scholar-home-paper-list">
+            {newPapers.map((paper) => (
+              <li>
+                <h3>
+                  <a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a>
+                </h3>
+                <p class="scholar-home-paper-list__authors">{formatAuthorDisplay(paper.data.authors)}</p>
+                <dl class="scholar-home-paper-list__meta">
                   <div>
-                    <dt>DOI</dt>
-                    <dd><a href={`https://doi.org/${paper.data.doi}`} rel="external">{paper.data.doi}</a></dd>
+                    <dt>Research field</dt>
+                    <dd>{paper.data.field}</dd>
                   </div>
-                ) : null}
-              </dl>
-            </li>
-          ))}
-        </ol>
-      </section>
-    ) : null}
+                  <div>
+                    <dt>Issue</dt>
+                    <dd>{getIssueLabelForPaper(paper)}</dd>
+                  </div>
+                  <div>
+                    <dt>OAsis online</dt>
+                    <dd>
+                      <time datetime={paper.data.repository_published_at}>
+                        {formatPaperDate(paper.data.repository_published_at)}
+                      </time>
+                    </dd>
+                  </div>
+                  {paper.data.doi ? (
+                    <div>
+                      <dt>DOI</dt>
+                      <dd>
+                        <a href={`https://doi.org/${paper.data.doi}`} rel="external">
+                          {paper.data.doi}
+                        </a>
+                      </dd>
+                    </div>
+                  ) : null}
+                </dl>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null
+    }
 
-    {fields.length > 0 ? (
-      <section class="scholar-home-section" aria-labelledby="research-fields-heading">
-        <header class="scholar-home-section__header scholar-home-section__header--simple">
-          <div>
-            <h2 id="research-fields-heading">Research Fields</h2>
-            <p>Browse the fields represented in the published collection.</p>
-          </div>
-          <a href={withBase("/fields/")}>Browse research fields</a>
-        </header>
-        <ul class="scholar-home-field-list">
-          {fields.map((field) => (
-            <li>
-              <a href={withBase(`/fields/${field.slug}/`)}>
-                <span>{field.name}</span>
-                <span>{field.count} {field.count === 1 ? "paper" : "papers"}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ) : null}
+    {
+      fields.length > 0 ? (
+        <section class="scholar-home-section" aria-labelledby="research-fields-heading">
+          <header class="scholar-home-section__header scholar-home-section__header--simple">
+            <div>
+              <h2 id="research-fields-heading">Research Fields</h2>
+              <p>Browse the fields represented in the published collection.</p>
+            </div>
+            <a href={withBase("/fields/")}>Browse research fields</a>
+          </header>
+          <ul class="scholar-home-field-list">
+            {fields.map((field) => (
+              <li>
+                <a href={withBase(`/fields/${field.slug}/`)}>
+                  <span>{field.name}</span>
+                  <span>
+                    {field.count} {field.count === 1 ? "paper" : "papers"}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null
+    }
 
     <section class="scholar-home-section scholar-home-repository" aria-labelledby="oasis-heading">
       <div>

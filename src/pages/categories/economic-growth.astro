@@ -1,11 +1,19 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { legacyRedirectTarget } from "../../lib/legacy-redirects";
 import { withBase } from "../../lib/urls";
 
-const target = withBase("/fields/");
+const fieldPath = legacyRedirectTarget("/categories/economic-growth/")!;
+const target = withBase(fieldPath);
 ---
 
-<BaseLayout title="Research Fields" canonicalPath="/fields/" robots="noindex, follow" redirectTo={target} bodyClass="redirect-page">
+<BaseLayout
+  title="Research Fields"
+  canonicalPath={fieldPath}
+  robots="noindex, follow"
+  redirectTo={target}
+  bodyClass="redirect-page"
+>
   <section class="content-section">
     <h1>This legacy category has moved</h1>
     <p><a href={target}>Continue to Research Fields</a></p>

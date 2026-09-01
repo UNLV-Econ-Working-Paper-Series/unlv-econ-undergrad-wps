@@ -8,11 +8,7 @@ import {
   serializeJsonLd,
   versionTimeline,
 } from "../../src/lib/publication/index";
-import {
-  historicalPublicationFixture,
-  minimalPublicationFixture,
-  publicationFixture,
-} from "./fixtures";
+import { historicalPublicationFixture, minimalPublicationFixture, publicationFixture } from "./fixtures";
 
 const CANONICAL_URL = "https://econ-undergrad-wps.sites.unlv.edu/papers/wage-study/";
 const ISSUE_URL = "https://econ-undergrad-wps.sites.unlv.edu/issues/2025-fall/";
@@ -50,7 +46,10 @@ test("scholarly meta repeats authors and omits unapproved cross-domain PDF tags"
     citationPdfUrl: record.pdf_url,
   });
   assert.equal(defaultTags.filter((tag) => tag.name === "citation_author").length, 2);
-  assert.equal(defaultTags.some((tag) => tag.name === "citation_pdf_url"), false);
+  assert.equal(
+    defaultTags.some((tag) => tag.name === "citation_pdf_url"),
+    false,
+  );
   assert.equal(defaultTags.find((tag) => tag.name === "citation_doi")?.content, "10.9741/2578-3170.1004");
   assert.equal(defaultTags.find((tag) => tag.name === "citation_publication_date")?.content, "2025/12/15");
   assert.equal(defaultTags.find((tag) => tag.name === "citation_online_date")?.content, "2026/08/05");
@@ -63,15 +62,20 @@ test("scholarly meta repeats authors and omits unapproved cross-domain PDF tags"
     canonicalUrl: CANONICAL_URL,
     citationPdfUrl: "https://econ-undergrad-wps.sites.unlv.edu/assets/wage-study.pdf",
   });
-  assert.equal(sameOriginTags.find((tag) => tag.name === "citation_pdf_url")?.content,
-    "https://econ-undergrad-wps.sites.unlv.edu/assets/wage-study.pdf");
+  assert.equal(
+    sameOriginTags.find((tag) => tag.name === "citation_pdf_url")?.content,
+    "https://econ-undergrad-wps.sites.unlv.edu/assets/wage-study.pdf",
+  );
 
   const approvedCrossDomain = buildScholarlyMetaTags(record, {
     canonicalUrl: CANONICAL_URL,
     citationPdfUrl: record.pdf_url,
     allowCrossDomainPdf: true,
   });
-  assert.equal(approvedCrossDomain.some((tag) => tag.name === "citation_pdf_url"), true);
+  assert.equal(
+    approvedCrossDomain.some((tag) => tag.name === "citation_pdf_url"),
+    true,
+  );
 });
 
 test("missing optional values are absent from JSON-LD and scholarly tags", () => {
@@ -81,8 +85,14 @@ test("missing optional values are absent from JSON-LD and scholarly tags", () =>
   assert.equal(json.license, undefined);
   assert.equal(json.copyrightNotice, undefined);
   assert.equal((json.identifier as Array<Record<string, string>>).length, 1);
-  assert.equal(tags.some((tag) => tag.name === "citation_doi"), false);
-  assert.equal(tags.some((tag) => tag.name === "citation_firstpage"), false);
+  assert.equal(
+    tags.some((tag) => tag.name === "citation_doi"),
+    false,
+  );
+  assert.equal(
+    tags.some((tag) => tag.name === "citation_firstpage"),
+    false,
+  );
 });
 
 test("historical provenance is machine-readable and searchable without replacing current dates", () => {
@@ -110,10 +120,12 @@ test("version timeline distinguishes current and previous versions", () => {
 test("JSON-LD serialization prevents a closing-script injection", () => {
   const record = publicationFixture();
   record.abstract = "Evidence </script><script>alert('x')</script> remains text.";
-  const serialized = serializeJsonLd(buildScholarlyJsonLd(record, {
-    canonicalUrl: CANONICAL_URL,
-    issueUrl: ISSUE_URL,
-  }));
+  const serialized = serializeJsonLd(
+    buildScholarlyJsonLd(record, {
+      canonicalUrl: CANONICAL_URL,
+      issueUrl: ISSUE_URL,
+    }),
+  );
   assert.doesNotMatch(serialized, /<\/script/iu);
   assert.match(serialized, /\\u003c\/script>/u);
   assert.equal(JSON.parse(serialized).abstract, record.abstract);

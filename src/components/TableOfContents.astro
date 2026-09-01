@@ -16,34 +16,36 @@ const { title = "On this page", items = [] } = Astro.props;
   <h2 class="toc__title">{title}</h2>
 
   <ol class="toc__list">
-    {items.map((item) => (
-      <li class="toc__item">
-        <a class="toc__link" href={`#${item.id}`} data-toc-link={item.id}>
-          {item.label}
-        </a>
-      </li>
-    ))}
+    {
+      items.map((item) => (
+        <li class="toc__item">
+          <a class="toc__link" href={`#${item.id}`} data-toc-link={item.id}>
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
   </ol>
 
-  <script is:inline>
+  <script>
     (() => {
       const init = () => {
-        document.querySelectorAll("[data-toc]").forEach((toc) => {
+        document.querySelectorAll<HTMLElement>("[data-toc]").forEach((toc) => {
           if (toc.dataset.tocInit === "true") {
             return;
           }
           toc.dataset.tocInit = "true";
 
-          const links = Array.from(toc.querySelectorAll("[data-toc-link]"));
+          const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"));
           const sections = links
             .map((link) => document.getElementById(link.dataset.tocLink || ""))
-            .filter(Boolean);
+            .filter((section): section is HTMLElement => section !== null);
 
           if (sections.length === 0) {
             return;
           }
 
-          const setActive = (id) => {
+          const setActive = (id: string) => {
             links.forEach((link) => {
               link.classList.toggle("is-active", (link.dataset.tocLink || "") === id);
             });
@@ -78,7 +80,7 @@ const { title = "On this page", items = [] } = Astro.props;
                 }
               });
             },
-            { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
+            { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
           );
 
           sections.forEach((section) => observer.observe(section));

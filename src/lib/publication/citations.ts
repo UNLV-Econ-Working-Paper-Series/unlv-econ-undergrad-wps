@@ -46,14 +46,19 @@ function mlaAuthors(authors: readonly PublicationAuthor[]): string {
 function chicagoAuthors(authors: readonly PublicationAuthor[]): string {
   validateAuthors(authors);
   const [first, ...rest] = authors;
-  return joinHumanList([formatInvertedAuthor(first), ...rest.map((author) => normalizeWhitespace(author.name))]);
+  return joinHumanList([
+    formatInvertedAuthor(first),
+    ...rest.map((author) => normalizeWhitespace(author.name)),
+  ]);
 }
 
 export function citationPersistentUrl(record: Pick<PublicationRecord, "doi" | "oasis_url">): string {
   return record.doi ? doiUrl(record.doi) : normalizeOasisUrl(record.oasis_url);
 }
 
-function seriesReference(record: Pick<PublicationRecord, "volume" | "issue_number" | "pages" | "series_number">): string {
+function seriesReference(
+  record: Pick<PublicationRecord, "volume" | "issue_number" | "pages" | "series_number">,
+): string {
   const pages = normalizedPages(record.pages);
   return `${SERIES_TITLE}, ${record.volume}(${record.issue_number})${pages ? `, ${pages}` : ""} (${record.series_number}).`;
 }
@@ -72,7 +77,9 @@ export function buildCitationOptions(record: PublicationRecord): CitationOption[
     year,
     pages ? `pp. ${pages}` : null,
     record.series_number,
-  ].filter(Boolean).join(", ");
+  ]
+    .filter(Boolean)
+    .join(", ");
 
   const chicagoPublication = `${SERIES_TITLE} ${record.volume} (${record.issue_number})${pages ? `: ${pages}` : ""}, ${record.series_number}.`;
 

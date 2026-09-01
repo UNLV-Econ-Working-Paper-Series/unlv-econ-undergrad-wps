@@ -1,5 +1,6 @@
 export * from "./authors";
 export * from "./bibtex";
+export * from "./catalog-state";
 export * from "./citations";
 export * from "./dates";
 export * from "./export-response";

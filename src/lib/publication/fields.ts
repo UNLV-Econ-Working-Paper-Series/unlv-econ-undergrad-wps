@@ -1,8 +1,4 @@
-import {
-  RESEARCH_FIELDS,
-  RESEARCH_FIELD_ALIASES,
-  type ResearchField,
-} from "../../config/publication";
+import { RESEARCH_FIELDS, RESEARCH_FIELD_ALIASES, type ResearchField } from "../../config/publication";
 
 export { RESEARCH_FIELDS };
 export type { ResearchField };

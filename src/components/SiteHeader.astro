@@ -29,17 +29,19 @@ function isActive(href: string): boolean {
 
     <nav class="site-nav site-nav--desktop" aria-label="Primary navigation">
       <ul>
-        {navItems.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              class={isActive(item.href) ? "is-active" : undefined}
-              aria-current={isActive(item.href) ? "page" : undefined}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class={isActive(item.href) ? "is-active" : undefined}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
 
@@ -51,17 +53,19 @@ function isActive(href: string): boolean {
 
       <nav class="site-nav site-nav--mobile" aria-label="Primary navigation">
         <ul>
-          {navItems.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class={isActive(item.href) ? "is-active" : undefined}
-                aria-current={isActive(item.href) ? "page" : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class={isActive(item.href) ? "is-active" : undefined}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </nav>
     </details>

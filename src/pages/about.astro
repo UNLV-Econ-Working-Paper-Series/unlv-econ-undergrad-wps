@@ -7,7 +7,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { withBase } from "../lib/urls";
 ---
 
-<BaseLayout title="About | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-about page-about page-about-modern">
+<BaseLayout
+  title="About | UNLV Undergraduate Economics Working Paper Series"
+  bodyClass="section-about page-about page-about-modern"
+>
   <PageBanner
     title={ABOUT_PAGE_CONTENT.banner.title}
     lead={ABOUT_PAGE_CONTENT.banner.lead}
@@ -24,19 +27,31 @@ import { withBase } from "../lib/urls";
 
       <div class="page-with-toc__main">
         <div class="about-modern-shell">
-          <section class="about-block about-card" id={ABOUT_PAGE_CONTENT.purpose.id} aria-labelledby="purpose-title">
+          <section
+            class="about-block about-card"
+            id={ABOUT_PAGE_CONTENT.purpose.id}
+            aria-labelledby="purpose-title"
+          >
             <h2 id="purpose-title">{ABOUT_PAGE_CONTENT.purpose.title}</h2>
             {ABOUT_PAGE_CONTENT.purpose.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
           </section>
 
-          <section class="about-block about-card" id={ABOUT_PAGE_CONTENT.scope.id} aria-labelledby="scope-title">
+          <section
+            class="about-block about-card"
+            id={ABOUT_PAGE_CONTENT.scope.id}
+            aria-labelledby="scope-title"
+          >
             <h2 id="scope-title">{ABOUT_PAGE_CONTENT.scope.title}</h2>
             {ABOUT_PAGE_CONTENT.scope.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-            {ABOUT_PAGE_CONTENT.scope.points ? (
-              <ul>
-                {ABOUT_PAGE_CONTENT.scope.points.map((point) => <li>{point}</li>)}
-              </ul>
-            ) : null}
+            {
+              ABOUT_PAGE_CONTENT.scope.points ? (
+                <ul>
+                  {ABOUT_PAGE_CONTENT.scope.points.map((point) => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+              ) : null
+            }
             <p>
               <a href={withBase("/for-authors/")}>Read the complete guidance for student authors</a>.
             </p>
@@ -51,21 +66,33 @@ import { withBase } from "../lib/urls";
             {ABOUT_PAGE_CONTENT.publicationStatus.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
           </section>
 
-          <section class="about-block about-card" id={ABOUT_PAGE_CONTENT.process.id} aria-labelledby="publication-process-title">
+          <section
+            class="about-block about-card"
+            id={ABOUT_PAGE_CONTENT.process.id}
+            aria-labelledby="publication-process-title"
+          >
             <h2 id="publication-process-title">{ABOUT_PAGE_CONTENT.process.title}</h2>
             <p>{ABOUT_PAGE_CONTENT.process.introduction}</p>
             <ol class="about-stepper">
-              {ABOUT_PAGE_CONTENT.process.steps.map((step, index) => (
-                <li class="about-step-card">
-                  <span class="about-step-number" aria-hidden="true">{index + 1}</span>
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
-                </li>
-              ))}
+              {
+                ABOUT_PAGE_CONTENT.process.steps.map((step, index) => (
+                  <li class="about-step-card">
+                    <span class="about-step-number" aria-hidden="true">
+                      {index + 1}
+                    </span>
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </li>
+                ))
+              }
             </ol>
           </section>
 
-          <section class="about-block about-card" id={ABOUT_PAGE_CONTENT.repository.id} aria-labelledby="repository-title">
+          <section
+            class="about-block about-card"
+            id={ABOUT_PAGE_CONTENT.repository.id}
+            aria-labelledby="repository-title"
+          >
             <h2 id="repository-title">{ABOUT_PAGE_CONTENT.repository.title}</h2>
             {ABOUT_PAGE_CONTENT.repository.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
             <p>
@@ -77,14 +104,16 @@ import { withBase } from "../lib/urls";
             <h2 id="about-cta-title">{ABOUT_PAGE_CONTENT.cta.title}</h2>
             <p>{ABOUT_PAGE_CONTENT.cta.body}</p>
             <div class="page-intro-actions">
-              {ABOUT_PAGE_CONTENT.cta.actions.map((action) => (
-                <a
-                  class:list={["btn", "btn-small", action.primary ? "btn-primary" : "btn-outline"]}
-                  href={withBase(action.href)}
-                >
-                  {action.label}
-                </a>
-              ))}
+              {
+                ABOUT_PAGE_CONTENT.cta.actions.map((action) => (
+                  <a
+                    class:list={["btn", "btn-small", action.primary ? "btn-primary" : "btn-outline"]}
+                    href={withBase(action.href)}
+                  >
+                    {action.label}
+                  </a>
+                ))
+              }
             </div>
           </section>
         </div>

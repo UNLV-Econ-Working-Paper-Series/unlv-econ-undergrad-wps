@@ -42,5 +42,10 @@ export function buildSearchIndexText(record: PublicationRecord): string {
     historical?.original_term,
     historical?.note,
   ];
-  return normalizeSearchText(values.filter((value): value is string => Boolean(value)).map(normalizeWhitespace).join(" "));
+  return normalizeSearchText(
+    values
+      .filter((value): value is string => Boolean(value))
+      .map(normalizeWhitespace)
+      .join(" "),
+  );
 }

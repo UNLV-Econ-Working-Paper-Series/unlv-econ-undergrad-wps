@@ -15,7 +15,10 @@ import { minimalPublicationFixture, publicationFixture } from "./fixtures";
 
 test("generates repository, APA, MLA, and Chicago citations for multiple Unicode authors", () => {
   const citations = buildCitationOptions(publicationFixture());
-  assert.deepEqual(citations.map((item) => item.id), ["repository", "apa", "mla", "chicago"]);
+  assert.deepEqual(
+    citations.map((item) => item.id),
+    ["repository", "apa", "mla", "chicago"],
+  );
   for (const option of citations) {
     assert.match(option.citation, /María|M\./u);
     assert.match(option.citation, /Assané/u);
@@ -23,7 +26,10 @@ test("generates repository, APA, MLA, and Chicago citations for multiple Unicode
     assert.match(option.citation, /UNLV-Econ-WPS-2025-004/u);
   }
   assert.match(citations.find((item) => item.id === "apa")?.citation ?? "", /O'Connor, M\., & Assané, D\./u);
-  assert.match(citations.find((item) => item.id === "mla")?.citation ?? "", /O'Connor, María, and Djeto Assané/u);
+  assert.match(
+    citations.find((item) => item.id === "mla")?.citation ?? "",
+    /O'Connor, María, and Djeto Assané/u,
+  );
 });
 
 test("escapes BibTeX special characters once while retaining Unicode and apostrophes", () => {
@@ -92,5 +98,8 @@ test("static export responses expose download-safe filenames and format-specific
 
   assert.equal(citationExportHref("paper", "wage-study", "bibtex"), "/papers/wage-study/citation.bib");
   assert.equal(citationExportHref("issue", "2025-fall", "ris"), "/issues/2025-fall/citations.ris");
-  assert.throws(() => citationExportHref("paper", "../unsafe", "bibtex"), /Unsafe citation download filename/u);
+  assert.throws(
+    () => citationExportHref("paper", "../unsafe", "bibtex"),
+    /Unsafe citation download filename/u,
+  );
 });

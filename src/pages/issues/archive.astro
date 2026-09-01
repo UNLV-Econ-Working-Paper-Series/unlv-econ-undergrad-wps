@@ -38,12 +38,13 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
       <p class="publication-label">Migration status</p>
       <h2 id="historical-inventory-title">Historical metadata under record-level review</h2>
       <p>
-        This inventory is not a claim of complete migration. It presents retained titles, author display lines, and original issue
-        terms while provenance, rights, final-version status, file availability, and accessibility are verified record by record.
+        This inventory is not a claim of complete migration. It presents retained titles, author display
+        lines, and original issue terms while provenance, rights, final-version status, file availability, and
+        accessibility are verified record by record.
       </p>
       <p>
-        Full text is not linked from this archive while those checks remain open, and no OAsis deposit is implied for these
-        historical records.
+        Full text is not linked from this archive while those checks remain open, and no OAsis deposit is
+        implied for these historical records.
       </p>
       <dl class="historical-archive__counts" aria-label="Historical inventory size">
         <div>
@@ -57,51 +58,55 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
       </dl>
     </header>
 
-    {archiveIssues.length > 0 ? (
-      <ol class="archive-issue-list" aria-label="Historical issues, newest first">
-        {archiveIssues.map((issue) => (
-          <li>
-            <article class="archive-issue-entry">
-              <header>
-                <p class="publication-label">Historical issue</p>
-                <h3><a href={withBase(`/issues/archive/${issue.slug}/`)}>{issue.label}</a></h3>
-                <p>{countLabel(issue.papers.length, "historical working paper")}</p>
-              </header>
+    {
+      archiveIssues.length > 0 ? (
+        <ol class="archive-issue-list" aria-label="Historical issues, newest first">
+          {archiveIssues.map((issue) => (
+            <li>
+              <article class="archive-issue-entry">
+                <header>
+                  <p class="publication-label">Historical issue</p>
+                  <h3>
+                    <a href={withBase(`/issues/archive/${issue.slug}/`)}>{issue.label}</a>
+                  </h3>
+                  <p>{countLabel(issue.papers.length, "historical working paper")}</p>
+                </header>
 
-              <dl class="archive-provenance-summary">
-                <div>
-                  <dt>Original issue term</dt>
-                  <dd>{issue.label}</dd>
-                </div>
-                <div>
-                  <dt>Current archive review</dt>
-                  <dd>{ARCHIVE_MIGRATION_YEAR} metadata migration</dd>
-                </div>
-              </dl>
+                <dl class="archive-provenance-summary">
+                  <div>
+                    <dt>Original issue term</dt>
+                    <dd>{issue.label}</dd>
+                  </div>
+                  <div>
+                    <dt>Current archive review</dt>
+                    <dd>{ARCHIVE_MIGRATION_YEAR} metadata migration</dd>
+                  </div>
+                </dl>
 
-              <ol class="archive-paper-toc" aria-label={`Historical paper records for ${issue.label}`}>
-                {issue.papers.map((paper) => (
-                  <li>
-                    <span>{paper.title}</span>
-                    <span>{paper.authors}</span>
-                  </li>
-                ))}
-              </ol>
+                <ol class="archive-paper-toc" aria-label={`Historical paper records for ${issue.label}`}>
+                  {issue.papers.map((paper) => (
+                    <li>
+                      <span>{paper.title}</span>
+                      <span>{paper.authors}</span>
+                    </li>
+                  ))}
+                </ol>
 
-              <p class="archive-issue-entry__action">
-                <a class="text-action" href={withBase(`/issues/archive/${issue.slug}/`)}>
-                  View {issue.label} metadata records<span aria-hidden="true"> →</span>
-                </a>
-              </p>
-            </article>
-          </li>
-        ))}
-      </ol>
-    ) : (
-      <section class="publication-empty" aria-labelledby="archive-empty-title">
-        <h3 id="archive-empty-title">No verified historical metadata is listed</h3>
-        <p>Records will appear only after the available historical evidence has been reviewed.</p>
-      </section>
-    )}
+                <p class="archive-issue-entry__action">
+                  <a class="text-action" href={withBase(`/issues/archive/${issue.slug}/`)}>
+                    View {issue.label} metadata records<span aria-hidden="true"> →</span>
+                  </a>
+                </p>
+              </article>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <section class="publication-empty" aria-labelledby="archive-empty-title">
+          <h3 id="archive-empty-title">No verified historical metadata is listed</h3>
+          <p>Records will appear only after the available historical evidence has been reviewed.</p>
+        </section>
+      )
+    }
   </section>
 </BaseLayout>

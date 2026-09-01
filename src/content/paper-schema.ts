@@ -7,20 +7,16 @@ const isoDate = z
   .refine((value) => {
     const [year, month, day] = value.split("-").map(Number);
     const date = new Date(Date.UTC(year, month - 1, day));
-    return (
-      date.getUTCFullYear() === year
-      && date.getUTCMonth() === month - 1
-      && date.getUTCDate() === day
-    );
+    return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
   }, "Use a valid calendar date");
 
 const publicAuthor = z
   .object({
     name: z.string().trim().min(1),
     affiliation: z.string().trim().min(1).optional(),
-    orcid: z.string().url().optional(),
-    institutional_profile: z.string().url().optional(),
-    public_profile: z.string().url().optional(),
+    orcid: z.url().optional(),
+    institutional_profile: z.url().optional(),
+    public_profile: z.url().optional(),
   })
   .strict();
 
@@ -29,8 +25,8 @@ const publicVersion = z
     label: z.string().trim().min(1).optional(),
     published_at: isoDate,
     note: z.string().trim().min(1).optional(),
-    oasis_url: z.string().url(),
-    pdf_url: z.string().url(),
+    oasis_url: z.url(),
+    pdf_url: z.url(),
   })
   .strict();
 
@@ -39,8 +35,8 @@ const previousVersion = z
     label: z.string().trim().min(1),
     published_at: isoDate,
     note: z.string().trim().min(1),
-    public_url: z.string().url().optional(),
-    oasis_url: z.string().url().optional(),
+    public_url: z.url().optional(),
+    oasis_url: z.url().optional(),
     status: z.enum(["superseded", "corrected", "withdrawn"]),
   })
   .strict();
@@ -48,14 +44,14 @@ const previousVersion = z
 const facultySponsor = z
   .object({
     name: z.string().trim().min(1),
-    profile_url: z.string().url().optional(),
+    profile_url: z.url().optional(),
   })
   .strict();
 
 const historicalProvenance = z
   .object({
     source_name: z.string().trim().min(1),
-    original_url: z.string().url().optional(),
+    original_url: z.url().optional(),
     original_term: z.string().trim().min(1),
     original_publication_date: isoDate.optional(),
     migrated_at: isoDate.optional(),
@@ -81,12 +77,16 @@ export const paperSchema = z
     current_version: publicVersion,
     previous_versions: z.array(previousVersion).default([]),
     faculty_sponsor: facultySponsor.optional(),
-    doi: z.string().trim().regex(/^10\.\d{4,9}\/\S+$/i).optional(),
-    oasis_url: z.string().url(),
-    pdf_url: z.string().url(),
+    doi: z
+      .string()
+      .trim()
+      .regex(/^10\.\d{4,9}\/\S+$/i)
+      .optional(),
+    oasis_url: z.url(),
+    pdf_url: z.url(),
     pages: z.string().trim().min(1).optional(),
     rights_statement: z.string().trim().min(1).optional(),
-    license_url: z.string().url().optional(),
+    license_url: z.url().optional(),
     copyright_holder: z.string().trim().min(1).optional(),
     conflict_statement: z.string().trim().min(1).optional(),
     ai_disclosure: z.string().trim().min(1).optional(),
@@ -102,7 +102,7 @@ export const paperSchema = z
 
     if (identifierYear !== citableYear) {
       context.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: ["series_number"],
         message: "Series identifier year must match the verified citable publication year",
       });
@@ -110,7 +110,7 @@ export const paperSchema = z
 
     if (paper.current_version.oasis_url !== paper.oasis_url) {
       context.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: ["current_version", "oasis_url"],
         message: "Current-version OAsis URL must match the canonical paper OAsis URL",
       });
@@ -118,7 +118,7 @@ export const paperSchema = z
 
     if (paper.current_version.pdf_url !== paper.pdf_url) {
       context.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: ["current_version", "pdf_url"],
         message: "Current-version PDF URL must match the canonical paper PDF URL",
       });
@@ -127,7 +127,7 @@ export const paperSchema = z
     paper.previous_versions.forEach((version, index) => {
       if (version.published_at > paper.current_version.published_at) {
         context.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: "custom",
           path: ["previous_versions", index, "published_at"],
           message: "A previous version cannot postdate the current version",
         });

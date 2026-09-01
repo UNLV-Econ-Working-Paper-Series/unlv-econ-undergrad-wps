@@ -22,7 +22,10 @@ const {
 const leadText = lead || subtitle;
 ---
 
-<section class:list={["page-banner", "full-bleed", compact && "page-banner--compact", className]} aria-label="Page header">
+<section
+  class:list={["page-banner", "full-bleed", compact && "page-banner--compact", className]}
+  aria-label="Page header"
+>
   <div class="page-banner__inner">
     {kicker ? <p class="page-banner__kicker">{kicker}</p> : null}
     <h1>{title}</h1>

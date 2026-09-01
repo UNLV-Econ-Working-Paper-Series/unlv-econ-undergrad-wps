@@ -70,11 +70,7 @@ const pageContracts: PageContract[] = [
       "Issue overview",
       "Full text PDF",
     ],
-    absentTexts: [
-      "Coming soon",
-      "Papers for this issue will be posted soon.",
-      "No papers available yet",
-    ],
+    absentTexts: ["Coming soon", "Papers for this issue will be posted soon.", "No papers available yet"],
   },
   {
     file: "dist/about/index.html",
@@ -106,10 +102,7 @@ const pageContracts: PageContract[] = [
       '<meta name="robots" content="noindex, follow">',
       '<link rel="canonical" href="https://econ-undergrad-wps.sites.unlv.edu/editorial-board/">',
     ],
-    absentTexts: [
-      "Graduate Assistants",
-      "Graduate Assistant",
-    ],
+    absentTexts: ["Graduate Assistants", "Graduate Assistant"],
   },
   {
     file: "dist/issues/index.html",
@@ -188,10 +181,7 @@ const pageContracts: PageContract[] = [
       "Permanent repository record",
       "Version history",
     ],
-    absentTexts: [
-      "Advisor</dt><dd>Not provided",
-      "PDF Preview",
-    ],
+    absentTexts: ["Advisor</dt><dd>Not provided", "PDF Preview"],
   },
   {
     file: "dist/contact/index.html",
@@ -217,17 +207,13 @@ const pageContracts: PageContract[] = [
   },
   {
     file: "dist/robots.txt",
-    texts: [
-      "User-agent: *",
-      "Allow: /",
-      "Sitemap: https://econ-undergrad-wps.sites.unlv.edu/sitemap.xml",
-    ],
+    texts: ["User-agent: *", "Allow: /", "Sitemap: https://econ-undergrad-wps.sites.unlv.edu/sitemap.xml"],
   },
   {
     file: "dist/sitemap.xml",
     texts: [
-      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
-      "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">",
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
       "<loc>https://econ-undergrad-wps.sites.unlv.edu/</loc>",
       "<loc>https://econ-undergrad-wps.sites.unlv.edu/about/</loc>",
       "<loc>https://econ-undergrad-wps.sites.unlv.edu/editorial-board/</loc>",
@@ -239,10 +225,7 @@ const pageContracts: PageContract[] = [
       "<loc>https://econ-undergrad-wps.sites.unlv.edu/issues/2025-fall/</loc>",
       "<loc>https://econ-undergrad-wps.sites.unlv.edu/contact/</loc>",
     ],
-    absentTexts: [
-      "localhost",
-      "127.0.0.1",
-    ],
+    absentTexts: ["localhost", "127.0.0.1"],
   },
 ];
 
@@ -263,7 +246,11 @@ function listBuiltHtmlFiles(directory: string): string[] {
 }
 
 function visibleText(fragment: string): string {
-  return fragment.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+  return fragment
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function verifyBuiltHtmlInvariants(failures: string[]): void {
@@ -290,7 +277,7 @@ function verifyBuiltHtmlInvariants(failures: string[]): void {
     for (let index = 1; index < headingLevels.length; index += 1) {
       if (headingLevels[index] > headingLevels[index - 1] + 1) {
         failures.push(
-          `${relativePath} skips a heading level from h${headingLevels[index - 1]} to h${headingLevels[index]}.`
+          `${relativePath} skips a heading level from h${headingLevels[index - 1]} to h${headingLevels[index]}.`,
         );
         break;
       }

@@ -73,14 +73,16 @@ function comparePapersNewest(a: PaperEntry, b: PaperEntry): number {
 
 function comparePapersInIssue(a: PaperEntry, b: PaperEntry): number {
   const sequenceDifference = seriesSequence(a) - seriesSequence(b);
-  return sequenceDifference || normalizePaperTitle(a.data.title).localeCompare(normalizePaperTitle(b.data.title));
+  return (
+    sequenceDifference || normalizePaperTitle(a.data.title).localeCompare(normalizePaperTitle(b.data.title))
+  );
 }
 
 export const cleanPaperTitle = normalizePaperTitle;
 export const formatPaperDate = formatIsoDate;
 
 export function paperSlug(paper: PaperEntry): string {
-  return paper.id.replace(/\.(md|mdx)$/iu, "");
+  return paper.id;
 }
 
 export function getIssueSlugForPaper(paper: PaperEntry): string {

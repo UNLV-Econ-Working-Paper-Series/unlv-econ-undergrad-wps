@@ -64,7 +64,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
       "He is the founding builder of the UNLV Undergraduate Economics Working Paper Series platform, where he established the site's publishing structure and continues to oversee page setup, metadata, and issue posting for the archive.",
     ],
     sections: ["editorial_team"],
-    headshot: "/assets/images/mark-jayson.jpg",
+    headshot: "/assets/images/mark-jayson-384.webp",
     photoSource: "Photo source: LinkedIn profile",
     profileHref: "/editorial-board/mark-jayson-farol/",
     links: [

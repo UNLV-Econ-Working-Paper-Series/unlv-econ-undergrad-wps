@@ -65,7 +65,11 @@ test("all current public records carry only the verified OAsis rights label", as
     const frontmatter = parseFrontmatter(source).frontmatter;
     const parsed = paperSchema.safeParse(frontmatter);
     assert.equal(parsed.success, true, `${fileName} must satisfy the public paper schema`);
-    assert.equal(frontmatter.rights_statement, "In Copyright", `${fileName} must use the verified OAsis label`);
+    assert.equal(
+      frontmatter.rights_statement,
+      "In Copyright",
+      `${fileName} must use the verified OAsis label`,
+    );
     assert.equal(Object.hasOwn(frontmatter, "consent_evidence"), false);
     assert.equal(Object.hasOwn(frontmatter, "rights_evidence"), false);
   }

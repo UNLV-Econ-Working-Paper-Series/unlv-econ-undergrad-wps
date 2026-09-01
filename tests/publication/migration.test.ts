@@ -1,13 +1,6 @@
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
-import {
-  mkdir,
-  mkdtemp,
-  readFile,
-  readdir,
-  rm,
-  writeFile,
-} from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test, { type TestContext } from "node:test";
@@ -26,21 +19,156 @@ interface InitialRecord {
 }
 
 const INITIAL_RECORDS: InitialRecord[] = [
-  { slug: "the-race-for-increasing-college-costs", item: 1, issueTerm: "Spring 2024", category: "Education", volume: 1, issueNumber: 1, citableDate: "2024-05-16", expectedSeriesNumber: "UNLV-Econ-WPS-2024-001" },
-  { slug: "used-electric-vehicle-tax-credit", item: 2, issueTerm: "Spring 2024", category: "Public Economics & Policy", volume: 1, issueNumber: 1, citableDate: "2024-05-16", expectedSeriesNumber: "UNLV-Econ-WPS-2024-002" },
-  { slug: "nba-real-team-value", item: 3, issueTerm: "Spring 2025", category: "Industrial Organization (IO) & Strategy", volume: 2, issueNumber: 1, citableDate: "2025-05-20", expectedSeriesNumber: "UNLV-Econ-WPS-2025-003" },
-  { slug: "hedonics-used-car-attributes", item: 4, issueTerm: "Fall 2025", category: "Applied Microeconomics", volume: 3, issueNumber: 1, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-004" },
-  { slug: "key-determinants-diamond-value", item: 5, issueTerm: "Fall 2025", category: "Applied Microeconomics", volume: 3, issueNumber: 1, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-005" },
-  { slug: "rural-metropolitan-gender-wage-gap", item: 6, issueTerm: "Fall 2025", category: "Labor and Demography", volume: 3, issueNumber: 1, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-006" },
-  { slug: "social-determinants-educational-attainment", item: 7, issueTerm: "Fall 2025", category: "Education", volume: 3, issueNumber: 1, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-007" },
-  { slug: "ai-wage-effects-us-occupations", item: 8, issueTerm: "Fall 2025", category: "Labor and Demography", volume: 3, issueNumber: 1, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-008" },
-  { slug: "residential-sale-prices-neighborhood-interior", item: 9, issueTerm: "Spring 2026", category: "Urban, Regional, & Real Estate Economics", volume: 3, issueNumber: 2, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-009" },
-  { slug: "mlb-speed-premium", item: 10, issueTerm: "Spring 2026", category: "Labor and Demography", volume: 3, issueNumber: 2, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-010" },
-  { slug: "nevada-mining-output-growth", item: 11, issueTerm: "Spring 2026", category: "Environmental and Resource", volume: 3, issueNumber: 2, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-011" },
-  { slug: "commercial-bank-failures", item: 12, issueTerm: "Spring 2026", category: "Finance", volume: 3, issueNumber: 2, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-012" },
-  { slug: "gambling-losses-future-wagers", item: 13, issueTerm: "Spring 2026", category: "Behavioral & Experimental Economics", volume: 3, issueNumber: 2, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-013" },
-  { slug: "las-vegas-casino-revenue", item: 14, issueTerm: "Spring 2026", category: "Industrial Organization (IO) & Strategy", volume: 3, issueNumber: 2, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-014" },
-  { slug: "march-madness-tournament-advancement", item: 15, issueTerm: "Spring 2026", category: "Applied Microeconomics", volume: 3, issueNumber: 2, citableDate: "2026-05-21", expectedSeriesNumber: "UNLV-Econ-WPS-2026-015" },
+  {
+    slug: "the-race-for-increasing-college-costs",
+    item: 1,
+    issueTerm: "Spring 2024",
+    category: "Education",
+    volume: 1,
+    issueNumber: 1,
+    citableDate: "2024-05-16",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2024-001",
+  },
+  {
+    slug: "used-electric-vehicle-tax-credit",
+    item: 2,
+    issueTerm: "Spring 2024",
+    category: "Public Economics & Policy",
+    volume: 1,
+    issueNumber: 1,
+    citableDate: "2024-05-16",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2024-002",
+  },
+  {
+    slug: "nba-real-team-value",
+    item: 3,
+    issueTerm: "Spring 2025",
+    category: "Industrial Organization (IO) & Strategy",
+    volume: 2,
+    issueNumber: 1,
+    citableDate: "2025-05-20",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2025-003",
+  },
+  {
+    slug: "hedonics-used-car-attributes",
+    item: 4,
+    issueTerm: "Fall 2025",
+    category: "Applied Microeconomics",
+    volume: 3,
+    issueNumber: 1,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-004",
+  },
+  {
+    slug: "key-determinants-diamond-value",
+    item: 5,
+    issueTerm: "Fall 2025",
+    category: "Applied Microeconomics",
+    volume: 3,
+    issueNumber: 1,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-005",
+  },
+  {
+    slug: "rural-metropolitan-gender-wage-gap",
+    item: 6,
+    issueTerm: "Fall 2025",
+    category: "Labor and Demography",
+    volume: 3,
+    issueNumber: 1,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-006",
+  },
+  {
+    slug: "social-determinants-educational-attainment",
+    item: 7,
+    issueTerm: "Fall 2025",
+    category: "Education",
+    volume: 3,
+    issueNumber: 1,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-007",
+  },
+  {
+    slug: "ai-wage-effects-us-occupations",
+    item: 8,
+    issueTerm: "Fall 2025",
+    category: "Labor and Demography",
+    volume: 3,
+    issueNumber: 1,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-008",
+  },
+  {
+    slug: "residential-sale-prices-neighborhood-interior",
+    item: 9,
+    issueTerm: "Spring 2026",
+    category: "Urban, Regional, & Real Estate Economics",
+    volume: 3,
+    issueNumber: 2,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-009",
+  },
+  {
+    slug: "mlb-speed-premium",
+    item: 10,
+    issueTerm: "Spring 2026",
+    category: "Labor and Demography",
+    volume: 3,
+    issueNumber: 2,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-010",
+  },
+  {
+    slug: "nevada-mining-output-growth",
+    item: 11,
+    issueTerm: "Spring 2026",
+    category: "Environmental and Resource",
+    volume: 3,
+    issueNumber: 2,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-011",
+  },
+  {
+    slug: "commercial-bank-failures",
+    item: 12,
+    issueTerm: "Spring 2026",
+    category: "Finance",
+    volume: 3,
+    issueNumber: 2,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-012",
+  },
+  {
+    slug: "gambling-losses-future-wagers",
+    item: 13,
+    issueTerm: "Spring 2026",
+    category: "Behavioral & Experimental Economics",
+    volume: 3,
+    issueNumber: 2,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-013",
+  },
+  {
+    slug: "las-vegas-casino-revenue",
+    item: 14,
+    issueTerm: "Spring 2026",
+    category: "Industrial Organization (IO) & Strategy",
+    volume: 3,
+    issueNumber: 2,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-014",
+  },
+  {
+    slug: "march-madness-tournament-advancement",
+    item: 15,
+    issueTerm: "Spring 2026",
+    category: "Applied Microeconomics",
+    volume: 3,
+    issueNumber: 2,
+    citableDate: "2026-05-21",
+    expectedSeriesNumber: "UNLV-Econ-WPS-2026-015",
+  },
 ];
 
 function issueSlug(issueTerm: string): string {
@@ -141,15 +269,13 @@ test("write converts legacy records in permanent global order and is idempotent"
   }
 
   assert.equal(
-    parseFrontmatter(
-      await readFile(join(fixture.paperDirectory, "nba-real-team-value.md"), "utf8"),
-    ).frontmatter.series_number,
+    parseFrontmatter(await readFile(join(fixture.paperDirectory, "nba-real-team-value.md"), "utf8"))
+      .frontmatter.series_number,
     "UNLV-Econ-WPS-2025-003",
   );
   assert.equal(
-    parseFrontmatter(
-      await readFile(join(fixture.paperDirectory, "hedonics-used-car-attributes.md"), "utf8"),
-    ).frontmatter.series_number,
+    parseFrontmatter(await readFile(join(fixture.paperDirectory, "hedonics-used-car-attributes.md"), "utf8"))
+      .frontmatter.series_number,
     "UNLV-Econ-WPS-2026-004",
   );
 
@@ -182,7 +308,7 @@ test("structured validation rejects a reused global Series suffix across years",
     .replace('title: "Migration fixture 1"', 'title: "Future collision fixture"')
     .replaceAll("UNLV-Econ-WPS-2024-001", "UNLV-Econ-WPS-2027-001")
     .replaceAll("2024-05-16", "2027-05-16")
-    .replaceAll("/econ_ug_papers/1\"", "/econ_ug_papers/16\"")
+    .replaceAll('/econ_ug_papers/1"', '/econ_ug_papers/16"')
     .replaceAll("article=1000", "article=1015")
     .replaceAll("10.34917/90000001", "10.34917/90000016");
   await writeFile(join(fixture.paperDirectory, "future-collision-fixture.md"), future, "utf8");

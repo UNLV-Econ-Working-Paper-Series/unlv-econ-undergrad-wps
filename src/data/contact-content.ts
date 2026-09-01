@@ -37,7 +37,11 @@ export const CONTACT_PAGE_CONTENT: ContactPageContent = {
       directionsUrl: "https://maps.google.com/?q=Frank+and+Estella+Beam+Hall+UNLV",
       actions: [
         { label: "Call Office", href: INSTITUTION.department.phoneHref, primary: true },
-        { label: "Get Directions", href: "https://maps.google.com/?q=Frank+and+Estella+Beam+Hall+UNLV", external: true },
+        {
+          label: "Get Directions",
+          href: "https://maps.google.com/?q=Frank+and+Estella+Beam+Hall+UNLV",
+          external: true,
+        },
       ],
     },
   },
@@ -53,13 +57,11 @@ export const CONTACT_PAGE_CONTENT: ContactPageContent = {
       { label: "Department office", href: `${INSTITUTION.department.url}/contact` },
       { label: "OAsis record or DOI questions", subject: "OAsis record or DOI question" },
     ],
-    note:
-      "Choose the closest category to prepare an email to the Series or reach the department office. For a paper-specific issue, include the paper title and URL. Do not send confidential, restricted, or personally identifiable research data by email.",
+    note: "Choose the closest category to prepare an email to the Series or reach the department office. For a paper-specific issue, include the paper title and URL. Do not send confidential, restricted, or personally identifiable research data by email.",
   },
   retention: {
     title: "Communications and public records",
-    body:
-      "Communications to the Series are retained and managed according to applicable UNLV and Nevada System of Higher Education records-retention requirements. Messages related to university operations may constitute public records under Nevada law.",
+    body: "Communications to the Series are retained and managed according to applicable UNLV and Nevada System of Higher Education records-retention requirements. Messages related to university operations may constitute public records under Nevada law.",
   },
   directions: {
     title: "Directions",

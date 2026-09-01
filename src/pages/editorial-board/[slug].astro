@@ -17,7 +17,8 @@ export function getStaticPaths() {
   };
 
   return PUBLIC_PROFILES.filter(
-    (profile) => profile.sections.includes("editorial_team") && profile.profileHref?.startsWith("/editorial-board/")
+    (profile) =>
+      profile.sections.includes("editorial_team") && profile.profileHref?.startsWith("/editorial-board/"),
   ).map((profile) => {
     const member = EDITORIAL_BOARD.find((candidate) => candidate.id === editorialIdsByProfileId[profile.id]);
     return {
@@ -43,16 +44,18 @@ const { profile, member } = Astro.props as { profile: PublicProfile; member: Edi
   </section>
 
   <section class="content-section profile-shell">
-    {profile.headshot ? (
-      <img
-        class="profile-thumb"
-        src={withBase(profile.headshot)}
-        alt={`Portrait of ${member.name}`}
-        width="128"
-        height="128"
-        loading="lazy"
-      />
-    ) : null}
+    {
+      profile.headshot ? (
+        <img
+          class="profile-thumb"
+          src={withBase(profile.headshot)}
+          alt={`Portrait of ${member.name}`}
+          width="128"
+          height="128"
+          loading="lazy"
+        />
+      ) : null
+    }
 
     <article class="profile-bio">
       <section aria-labelledby="series-role-title">

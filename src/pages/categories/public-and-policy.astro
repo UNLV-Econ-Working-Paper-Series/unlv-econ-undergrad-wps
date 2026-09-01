@@ -1,12 +1,19 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { legacyRedirectTarget } from "../../lib/legacy-redirects";
 import { withBase } from "../../lib/urls";
 
-const fieldPath = "/fields/public-economics/";
+const fieldPath = legacyRedirectTarget("/categories/public-and-policy/")!;
 const target = withBase(fieldPath);
 ---
 
-<BaseLayout title="Public Economics" canonicalPath={fieldPath} robots="noindex, follow" redirectTo={target} bodyClass="redirect-page">
+<BaseLayout
+  title="Public Economics"
+  canonicalPath={fieldPath}
+  robots="noindex, follow"
+  redirectTo={target}
+  bodyClass="redirect-page"
+>
   <section class="content-section">
     <h1>This category is now Public Economics</h1>
     <p><a href={target}>Continue to the research-field page</a></p>

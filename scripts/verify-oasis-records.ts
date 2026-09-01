@@ -17,17 +17,14 @@ const MAX_ITEM_BYTES = 1_500_000;
 export type TransportStatus = "verified" | "network_failure" | "http_error";
 export type ComparisonStatus = "match" | "mismatch" | "not_available";
 export type RecordOutcome =
-  | "verified"
-  | "mismatch"
-  | "network_failure"
-  | "remote_error"
-  | "invalid_local_data";
+  "verified" | "mismatch" | "network_failure" | "remote_error" | "invalid_local_data";
 
 export interface TransportResult {
   status: TransportStatus;
   requested_url: string;
   final_url?: string;
   http_status?: number;
+  content_type?: string;
   attempts: number;
   error?: string;
   reached_oasis?: boolean;
@@ -67,6 +64,7 @@ export interface RecordAudit {
   local_issue_term: string;
   doi: string | null;
   doi_syntax_valid: boolean;
+  doi_target_matches_item: boolean | null;
   item_url: string;
   pdf_url: string;
   frontend_citation: string;
@@ -104,6 +102,7 @@ interface RetryOptions {
 interface RetryResult {
   transport: TransportResult;
   body?: string;
+  sample?: Uint8Array;
 }
 
 interface CliOptions {
@@ -222,15 +221,15 @@ export function parseOasisMetadata(html: string): OasisMetadata {
   const first = (key: string) => metadata.get(key)?.[0];
   const firstPage = first("bepress_citation_firstpage");
   const lastPage = paragraphForElement(html, "lpage");
-  const citationText = textForElement(html, "recommended_citation")
-    ?.replace(/^Repository Citation\s*/u, "");
+  const citationText = textForElement(html, "recommended_citation")?.replace(/^Repository Citation\s*/u, "");
 
   return {
     title: first("bepress_citation_title"),
     authors: (metadata.get("bepress_citation_author") ?? []).map(oasisAuthorDisplay),
     abstract: first("description"),
     keywords: first("keywords")?.split(";").map(normalizeWhitespace).filter(Boolean) ?? [],
-    disciplines: paragraphForElement(html, "bp_categories")?.split("|").map(normalizeWhitespace).filter(Boolean) ?? [],
+    disciplines:
+      paragraphForElement(html, "bp_categories")?.split("|").map(normalizeWhitespace).filter(Boolean) ?? [],
     doi: first("bepress_citation_doi"),
     item_url: first("bepress_citation_abstract_html_url"),
     pdf_url: first("bepress_citation_pdf_url"),
@@ -277,13 +276,13 @@ export async function requestWithRetry(url: string, options: RetryOptions): Prom
         redirect: "follow",
         signal: controller.signal,
       });
-      clearTimeout(timeout);
 
       const transport: TransportResult = {
         status: response.ok ? "verified" : "http_error",
         requested_url: url,
         final_url: response.url || url,
         http_status: response.status,
+        content_type: response.headers.get("content-type") ?? undefined,
         attempts: attempt,
         reached_oasis: (() => {
           try {
@@ -296,7 +295,7 @@ export async function requestWithRetry(url: string, options: RetryOptions): Prom
 
       if (!response.ok && isRetryableStatus(response.status) && attempt < options.maxAttempts) {
         await response.body?.cancel();
-        await waitImpl(250 * (2 ** (attempt - 1)));
+        await waitImpl(250 * 2 ** (attempt - 1));
         continue;
       }
 
@@ -332,17 +331,17 @@ export async function requestWithRetry(url: string, options: RetryOptions): Prom
 
       if (options.readBody === "sample") {
         const reader = response.body?.getReader();
-        await reader?.read();
+        const sample = (await reader?.read())?.value;
         await reader?.cancel();
+        return { transport, sample };
       } else {
         await response.body?.cancel();
       }
       return { transport };
     } catch (error) {
-      clearTimeout(timeout);
       lastError = transportErrorMessage(error);
       if (attempt < options.maxAttempts) {
-        await waitImpl(250 * (2 ** (attempt - 1)));
+        await waitImpl(250 * 2 ** (attempt - 1));
         continue;
       }
       return {
@@ -353,6 +352,8 @@ export async function requestWithRetry(url: string, options: RetryOptions): Prom
           error: lastError,
         },
       };
+    } finally {
+      clearTimeout(timeout);
     }
   }
 
@@ -372,7 +373,8 @@ function compareScalar(
   remote: string | number | undefined,
   normalizer: (value: string) => string = normalizeWhitespace,
 ): FieldComparison {
-  if (remote === undefined) return { field, status: "not_available", local, note: "Field not exposed by OAsis" };
+  if (remote === undefined)
+    return { field, status: "not_available", local, note: "Field not exposed by OAsis" };
   const localValue = typeof local === "string" ? normalizer(local) : local;
   const remoteValue = typeof remote === "string" ? normalizer(remote) : remote;
   return {
@@ -384,7 +386,8 @@ function compareScalar(
 }
 
 function compareList(field: string, local: string[], remote: string[]): FieldComparison {
-  if (remote.length === 0) return { field, status: "not_available", local, note: "Field not exposed by OAsis" };
+  if (remote.length === 0)
+    return { field, status: "not_available", local, note: "Field not exposed by OAsis" };
   const localValues = local.map(normalizeWhitespace);
   const remoteValues = remote.map(normalizeWhitespace);
   return {
@@ -414,16 +417,25 @@ function missingRequiredRemoteFields(remote: OasisMetadata): string[] {
 }
 
 export function compareRecord(record: PublicationRecord, remote: OasisMetadata): FieldComparison[] {
-  const remoteRightsLabel = remote.rights_statement?.split(".")[0]
+  const remoteRightsLabel = remote.rights_statement
+    ?.split(".")[0]
     .toLocaleLowerCase("en-US")
     .replace(/\b\p{L}/gu, (letter) => letter.toLocaleUpperCase("en-US"));
 
   return [
     compareScalar("title", record.title, remote.title),
-    compareList("authors", record.authors.map((author) => author.name), remote.authors),
+    compareList(
+      "authors",
+      record.authors.map((author) => author.name),
+      remote.authors,
+    ),
     compareScalar("abstract", record.abstract, remote.abstract),
     compareList("keywords", record.keywords, remote.keywords),
-    compareScalar("doi", record.doi ? normalizeDoi(record.doi) : undefined, remote.doi ? normalizeDoi(remote.doi) : undefined),
+    compareScalar(
+      "doi",
+      record.doi ? normalizeDoi(record.doi) : undefined,
+      remote.doi ? normalizeDoi(remote.doi) : undefined,
+    ),
     compareScalar("oasis_url", record.oasis_url, remote.item_url, normalizeUrl),
     compareScalar("pdf_url", record.pdf_url, remote.pdf_url, normalizeUrl),
     compareScalar("repository_published_at", record.repository_published_at, remote.online_date),
@@ -468,17 +480,27 @@ export function classifyRecordOutcome(input: {
   return "verified";
 }
 
-async function readLocalRecords(paperDirectory: string): Promise<Array<{ slug: string; record: PublicationRecord }>> {
+async function readLocalRecords(
+  paperDirectory: string,
+): Promise<Array<{ slug: string; record: PublicationRecord }>> {
   const fileNames = (await readdir(paperDirectory)).filter((name) => name.endsWith(".md")).sort();
-  const records = await Promise.all(fileNames.map(async (fileName) => {
-    const source = await readFile(resolve(paperDirectory, fileName), "utf8");
-    const parsed = parseFrontmatter(source).frontmatter as PublicationRecord;
-    return { slug: fileName.replace(/\.md$/u, ""), record: parsed };
-  }));
+  const records = await Promise.all(
+    fileNames.map(async (fileName) => {
+      const source = await readFile(resolve(paperDirectory, fileName), "utf8");
+      const parsed = parseFrontmatter(source).frontmatter as PublicationRecord;
+      return { slug: fileName.replace(/\.md$/u, ""), record: parsed };
+    }),
+  );
 
   return records.sort((left, right) => {
-    const leftItem = Number.parseInt(new URL(left.record.oasis_url).pathname.split("/").filter(Boolean).at(-1) ?? "0", 10);
-    const rightItem = Number.parseInt(new URL(right.record.oasis_url).pathname.split("/").filter(Boolean).at(-1) ?? "0", 10);
+    const leftItem = Number.parseInt(
+      new URL(left.record.oasis_url).pathname.split("/").filter(Boolean).at(-1) ?? "0",
+      10,
+    );
+    const rightItem = Number.parseInt(
+      new URL(right.record.oasis_url).pathname.split("/").filter(Boolean).at(-1) ?? "0",
+      10,
+    );
     return leftItem - rightItem || left.slug.localeCompare(right.slug);
   });
 }
@@ -512,21 +534,34 @@ async function auditOneRecord(
 
   const remote = itemResult.body ? parseOasisMetadata(itemResult.body) : undefined;
   const missingRemoteFields = remote ? missingRequiredRemoteFields(remote) : [];
-  const itemTransport: TransportResult = missingRemoteFields.length > 0
-    ? {
-        ...itemResult.transport,
-        status: "http_error",
-        error: `OAsis response omitted required metadata: ${missingRemoteFields.join(", ")}`,
-      }
-    : itemResult.transport;
+  const itemTransport: TransportResult =
+    missingRemoteFields.length > 0
+      ? {
+          ...itemResult.transport,
+          status: "http_error",
+          error: `OAsis response omitted required metadata: ${missingRemoteFields.join(", ")}`,
+        }
+      : itemResult.transport;
   const comparisons = remote ? compareRecord(record, remote) : [];
   const doiReachedOasis = doiResult.transport.final_url
-    ? doiResult.transport.reached_oasis === true
+    ? urlsIdentifySameRecord(doiResult.transport.final_url, record.oasis_url)
     : undefined;
+  const pdfSignature = pdfResult.sample ? new TextDecoder().decode(pdfResult.sample.slice(0, 5)) : "";
+  const pdfContentType = pdfResult.transport.content_type?.toLowerCase() ?? "";
+  const pdfTransport: TransportResult =
+    pdfResult.transport.status === "verified" &&
+    !pdfContentType.startsWith("application/pdf") &&
+    pdfSignature !== "%PDF-"
+      ? {
+          ...pdfResult.transport,
+          status: "http_error",
+          error: `Successful PDF probe returned ${pdfResult.transport.content_type ?? "no content type"} without a PDF signature`,
+        }
+      : pdfResult.transport;
   const outcome = classifyRecordOutcome({
     doiSyntaxValid,
     comparisons,
-    transports: [doiResult.transport, itemTransport, pdfResult.transport],
+    transports: [doiResult.transport, itemTransport, pdfTransport],
     doiReachedOasis,
   });
 
@@ -538,6 +573,7 @@ async function auditOneRecord(
     local_issue_term: record.issue_term,
     doi,
     doi_syntax_valid: doiSyntaxValid,
+    doi_target_matches_item: doiReachedOasis ?? null,
     item_url: record.oasis_url,
     pdf_url: record.pdf_url,
     frontend_citation: buildRepositoryCitation(record),
@@ -545,10 +581,24 @@ async function auditOneRecord(
     remote_disciplines: remote?.disciplines ?? [],
     doi_resolution: doiResult.transport,
     item_availability: itemTransport,
-    pdf_availability: pdfResult.transport,
+    pdf_availability: pdfTransport,
     comparisons,
     outcome,
   };
+}
+
+function urlsIdentifySameRecord(actual: string, expected: string): boolean {
+  try {
+    const actualUrl = new URL(actual);
+    const expectedUrl = new URL(expected);
+    const normalizePath = (pathname: string) => pathname.replace(/\/+$/u, "") || "/";
+    return (
+      actualUrl.origin.toLowerCase() === expectedUrl.origin.toLowerCase() &&
+      normalizePath(actualUrl.pathname) === normalizePath(expectedUrl.pathname)
+    );
+  } catch {
+    return false;
+  }
 }
 
 async function mapWithConcurrency<T, U>(
@@ -604,9 +654,12 @@ export function renderMarkdown(output: AuditOutput): string {
     const compared = record.comparisons.filter((comparison) => comparison.status !== "not_available");
     const matches = compared.filter((comparison) => comparison.status === "match").length;
     const mismatches = compared.filter((comparison) => comparison.status === "mismatch").length;
-    const doiTarget = record.doi_resolution.reached_oasis === true
-      ? "OAsis reached"
-      : statusLabel(record.doi_resolution);
+    const doiTarget =
+      record.doi_target_matches_item === true
+        ? "exact item matched"
+        : record.doi_target_matches_item === false
+          ? "wrong item target"
+          : statusLabel(record.doi_resolution);
     lines.push(
       `| \`${record.slug}\` | ${record.doi_syntax_valid ? "valid" : "invalid"}; ${doiTarget} | ${statusLabel(record.item_availability)} | ${statusLabel(record.pdf_availability)} | ${matches} match / ${mismatches} mismatch | **${record.outcome}** |`,
     );
@@ -620,7 +673,14 @@ export function renderMarkdown(output: AuditOutput): string {
     for (const record of exceptions) {
       lines.push(`### ${record.slug}`, "");
       for (const comparison of record.comparisons.filter((entry) => entry.status === "mismatch")) {
-        lines.push(`- Metadata mismatch in \`${comparison.field}\`: local \`${JSON.stringify(comparison.local)}\`; OAsis \`${JSON.stringify(comparison.remote)}\`.`);
+        lines.push(
+          `- Metadata mismatch in \`${comparison.field}\`: local \`${JSON.stringify(comparison.local)}\`; OAsis \`${JSON.stringify(comparison.remote)}\`.`,
+        );
+      }
+      if (record.doi_target_matches_item === false) {
+        lines.push(
+          `- DOI target mismatch: expected \`${record.item_url}\`; received \`${record.doi_resolution.final_url ?? "no final URL"}\`.`,
+        );
       }
       for (const [label, transport] of [
         ["DOI", record.doi_resolution],
@@ -645,7 +705,12 @@ export function renderMarkdown(output: AuditOutput): string {
   return lines.join("\n");
 }
 
-function parseIntegerArgument(name: string, value: string | undefined, minimum: number, maximum: number): number {
+function parseIntegerArgument(
+  name: string,
+  value: string | undefined,
+  minimum: number,
+  maximum: number,
+): number {
   const parsed = Number.parseInt(value ?? "", 10);
   if (!Number.isInteger(parsed) || parsed < minimum || parsed > maximum) {
     throw new Error(`${name} must be an integer from ${minimum} through ${maximum}`);
@@ -669,7 +734,8 @@ function parseCliOptions(argv: string[]): CliOptions {
     if (argument === "--papers") options.paperDirectory = resolve(value ?? "");
     else if (argument === "--json") options.jsonPath = resolve(value ?? "");
     else if (argument === "--markdown") options.markdownPath = resolve(value ?? "");
-    else if (argument === "--timeout-ms") options.timeoutMs = parseIntegerArgument(argument, value, 1_000, 60_000);
+    else if (argument === "--timeout-ms")
+      options.timeoutMs = parseIntegerArgument(argument, value, 1_000, 60_000);
     else if (argument === "--attempts") options.maxAttempts = parseIntegerArgument(argument, value, 1, 5);
     else if (argument === "--concurrency") options.concurrency = parseIntegerArgument(argument, value, 1, 6);
     else throw new Error(`Unknown argument: ${argument}`);
@@ -680,10 +746,8 @@ function parseCliOptions(argv: string[]): CliOptions {
 
 export async function runExternalAudit(options: CliOptions): Promise<AuditOutput> {
   const localRecords = await readLocalRecords(options.paperDirectory);
-  const records = await mapWithConcurrency(
-    localRecords,
-    options.concurrency,
-    ({ slug, record }) => auditOneRecord(slug, record, options),
+  const records = await mapWithConcurrency(localRecords, options.concurrency, ({ slug, record }) =>
+    auditOneRecord(slug, record, options),
   );
   const summary: AuditOutput["summary"] = {
     total: records.length,
@@ -713,16 +777,39 @@ async function main(): Promise<void> {
   const options = parseCliOptions(process.argv.slice(2));
   const output = await runExternalAudit(options);
   await Promise.all([
-    mkdir(dirname(options.jsonPath), { recursive: true }).then(() => writeFile(options.jsonPath, `${JSON.stringify(output, null, 2)}\n`, "utf8")),
-    mkdir(dirname(options.markdownPath), { recursive: true }).then(() => writeFile(options.markdownPath, renderMarkdown(output), "utf8")),
+    mkdir(dirname(options.jsonPath), { recursive: true }).then(() =>
+      writeFile(options.jsonPath, `${JSON.stringify(output, null, 2)}\n`, "utf8"),
+    ),
+    mkdir(dirname(options.markdownPath), { recursive: true }).then(() =>
+      writeFile(options.markdownPath, renderMarkdown(output), "utf8"),
+    ),
   ]);
 
   console.log(`Wrote ${options.jsonPath}`);
   console.log(`Wrote ${options.markdownPath}`);
   console.log(JSON.stringify(output.summary));
 
-  if (output.summary.mismatch > 0 || output.summary.invalid_local_data > 0) process.exitCode = 1;
-  else if (output.summary.network_failure > 0 || output.summary.remote_error > 0) process.exitCode = 2;
+  if (output.summary.mismatch > 0 || output.summary.invalid_local_data > 0) {
+    process.exitCode = 1;
+    return;
+  }
+
+  const blockingTransportFailure = output.records.some(
+    (record) => record.doi_resolution.status !== "verified" || record.item_availability.status !== "verified",
+  );
+  if (blockingTransportFailure) {
+    process.exitCode = 2;
+    return;
+  }
+
+  const unavailablePdfs = output.records.filter(
+    (record) => record.pdf_availability.status !== "verified",
+  ).length;
+  if (unavailablePdfs > 0) {
+    console.warn(
+      `WARNING: ${unavailablePdfs} PDF probe(s) were unavailable; metadata and exact DOI item targets still verified.`,
+    );
+  }
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {

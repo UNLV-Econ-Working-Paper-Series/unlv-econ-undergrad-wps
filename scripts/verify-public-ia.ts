@@ -147,7 +147,8 @@ for (const contract of pageContracts) {
       if (!text.includes(required)) failures.push(`${contract.path} is missing ${JSON.stringify(required)}.`);
     }
     for (const absent of contract.absent ?? []) {
-      if (text.includes(absent)) failures.push(`${contract.path} contains obsolete copy ${JSON.stringify(absent)}.`);
+      if (text.includes(absent))
+        failures.push(`${contract.path} contains obsolete copy ${JSON.stringify(absent)}.`);
     }
   } catch (error) {
     failures.push(error instanceof Error ? error.message : String(error));
@@ -160,7 +161,9 @@ for (const contract of redirectContracts) {
     if (!html.includes(`http-equiv="refresh" content="0;url=${contract.target}"`)) {
       failures.push(`${contract.path} does not refresh to ${contract.target}.`);
     }
-    if (!html.includes(`rel="canonical" href="https://econ-undergrad-wps.sites.unlv.edu${contract.canonical}`)) {
+    if (
+      !html.includes(`rel="canonical" href="https://econ-undergrad-wps.sites.unlv.edu${contract.canonical}`)
+    ) {
       failures.push(`${contract.path} does not canonicalize to ${contract.canonical}.`);
     }
     if (!html.includes('name="robots" content="noindex, follow"')) {
@@ -189,14 +192,15 @@ try {
   ];
 
   if (primaryNavigations.length !== 2) {
-    failures.push(`Expected responsive desktop and mobile primary navigations; found ${primaryNavigations.length}.`);
+    failures.push(
+      `Expected responsive desktop and mobile primary navigations; found ${primaryNavigations.length}.`,
+    );
   }
 
   for (const [index, navigation] of primaryNavigations.entries()) {
-    const navPairs = [...navigation[1].matchAll(/<a\s+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)].map((match) => [
-      match[1],
-      visibleText(match[2]),
-    ]);
+    const navPairs = [...navigation[1].matchAll(/<a\s+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)].map(
+      (match) => [match[1], visibleText(match[2])],
+    );
     if (JSON.stringify(navPairs) !== JSON.stringify(expected)) {
       failures.push(`Primary navigation ${index + 1} mismatch: ${JSON.stringify(navPairs)}.`);
     }
@@ -207,7 +211,14 @@ try {
 
 try {
   const sitemap = read("dist/sitemap.xml");
-  for (const route of ["/fields/", "/for-authors/", "/editorial-board/", "/history/", "/policies/", "/contact/"]) {
+  for (const route of [
+    "/fields/",
+    "/for-authors/",
+    "/editorial-board/",
+    "/history/",
+    "/policies/",
+    "/contact/",
+  ]) {
     if (!sitemap.includes(`https://econ-undergrad-wps.sites.unlv.edu${route}`)) {
       failures.push(`Sitemap is missing canonical route ${route}.`);
     }
@@ -222,8 +233,12 @@ try {
 }
 
 if (failures.length > 0) {
-  console.error(`ERROR: public IA verification failed:\n${failures.map((failure) => `- ${failure}`).join("\n")}`);
+  console.error(
+    `ERROR: public IA verification failed:\n${failures.map((failure) => `- ${failure}`).join("\n")}`,
+  );
   process.exit(1);
 }
 
-console.log("OK: verified canonical public routes, navigation, content contracts, redirects, and sitemap membership.");
+console.log(
+  "OK: verified canonical public routes, navigation, content contracts, redirects, and sitemap membership.",
+);

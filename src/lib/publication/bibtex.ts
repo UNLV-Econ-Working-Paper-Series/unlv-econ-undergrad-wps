@@ -9,11 +9,11 @@ const BIBTEX_ESCAPES: Readonly<Record<string, string>> = {
   "\\": "\\textbackslash{}",
   "{": "\\{",
   "}": "\\}",
-  "$": "\\$",
+  $: "\\$",
   "&": "\\&",
   "#": "\\#",
   "%": "\\%",
-  "_": "\\_",
+  _: "\\_",
   "~": "\\textasciitilde{}",
   "^": "\\textasciicircum{}",
 };
@@ -46,7 +46,9 @@ export function generateBibTeX(record: PublicationRecord): string {
   if (version !== "Current version" || record.current_version.note) {
     fields.push([
       "note",
-      [version !== "Current version" ? version : null, record.current_version.note].filter(Boolean).join(": "),
+      [version !== "Current version" ? version : null, record.current_version.note]
+        .filter(Boolean)
+        .join(": "),
     ]);
   }
 

@@ -1,13 +1,15 @@
-import { defineCollection, z } from "astro:content";
-import { paperSchema } from "./paper-schema";
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
+import { paperSchema } from "./content/paper-schema";
 
 const papers = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/papers" }),
   schema: paperSchema,
 });
 
 const graduateAssistants = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/graduateAssistants" }),
   schema: z.object({
     name: z.string().min(1),
     term: z.string().min(1),

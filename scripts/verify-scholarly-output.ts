@@ -74,7 +74,8 @@ function read(relativePath: string, failures: string[]): string | null {
 
 function sourcePapers(): SourcePaper[] {
   const directory = path.resolve(process.cwd(), "src", "content", "papers");
-  return fs.readdirSync(directory)
+  return fs
+    .readdirSync(directory)
     .filter((name) => /\.mdx?$/iu.test(name))
     .sort((a, b) => a.localeCompare(b, "en-US"))
     .map((name) => {
@@ -84,12 +85,7 @@ function sourcePapers(): SourcePaper[] {
     });
 }
 
-function expectEqual(
-  actual: unknown,
-  expected: unknown,
-  message: string,
-  failures: string[],
-): void {
+function expectEqual(actual: unknown, expected: unknown, message: string, failures: string[]): void {
   if (JSON.stringify(actual) !== JSON.stringify(expected)) {
     failures.push(`${message} Expected ${JSON.stringify(expected)}, received ${JSON.stringify(actual)}.`);
   }
@@ -123,7 +119,10 @@ function routeForBuiltHtml(absolutePath: string): string | null {
 
 function verifyPaperOutputs(papers: readonly SourcePaper[], failures: string[]): void {
   const catalog = read("dist/papers/index.html", failures);
-  if (catalog?.includes("data:application/x-bibtex") || catalog?.includes("data:application/x-research-info-systems")) {
+  if (
+    catalog?.includes("data:application/x-bibtex") ||
+    catalog?.includes("data:application/x-research-info-systems")
+  ) {
     failures.push("Paper catalog still embeds citation data URIs instead of static export routes.");
   }
 
@@ -136,9 +135,24 @@ function verifyPaperOutputs(papers: readonly SourcePaper[], failures: string[]):
     const html = read(relativeHtmlPath, failures);
     if (!html) continue;
 
-    expectEqual(linkHrefs(html, "canonical"), [canonicalUrl], `${relativeHtmlPath} canonical mismatch.`, failures);
-    expectEqual(metaValues(html, "og:type", "property"), ["article"], `${relativeHtmlPath} Open Graph type mismatch.`, failures);
-    expectEqual(metaValues(html, "og:title", "property"), [paper.data.title], `${relativeHtmlPath} social title mismatch.`, failures);
+    expectEqual(
+      linkHrefs(html, "canonical"),
+      [canonicalUrl],
+      `${relativeHtmlPath} canonical mismatch.`,
+      failures,
+    );
+    expectEqual(
+      metaValues(html, "og:type", "property"),
+      ["article"],
+      `${relativeHtmlPath} Open Graph type mismatch.`,
+      failures,
+    );
+    expectEqual(
+      metaValues(html, "og:title", "property"),
+      [paper.data.title],
+      `${relativeHtmlPath} social title mismatch.`,
+      failures,
+    );
     expectEqual(
       metaValues(html, "article:published_time", "property"),
       [paper.data.citable_published_at],
@@ -166,7 +180,9 @@ function verifyPaperOutputs(papers: readonly SourcePaper[], failures: string[]):
       failures.push(`${relativeHtmlPath} emits the unapproved cross-domain citation_pdf_url tag.`);
     }
 
-    const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/giu)];
+    const scripts = [
+      ...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/giu),
+    ];
     if (scripts.length !== 1) {
       failures.push(`${relativeHtmlPath} must emit exactly one JSON-LD block; found ${scripts.length}.`);
     } else {
@@ -181,7 +197,9 @@ function verifyPaperOutputs(papers: readonly SourcePaper[], failures: string[]):
           failures.push(`${relativeHtmlPath} fabricates unresolved publisher metadata.`);
         }
       } catch (error) {
-        failures.push(`${relativeHtmlPath} contains invalid JSON-LD: ${error instanceof Error ? error.message : String(error)}.`);
+        failures.push(
+          `${relativeHtmlPath} contains invalid JSON-LD: ${error instanceof Error ? error.message : String(error)}.`,
+        );
       }
     }
 
@@ -205,7 +223,12 @@ function verifyPaperOutputs(papers: readonly SourcePaper[], failures: string[]):
 
     const bibtex = read(`dist/papers/${paper.slug}/citation.bib`, failures);
     if (bibtex !== null) {
-      expectEqual(bibtex, generateBibTeXCollection([paper.data]), `${paper.slug} BibTeX body mismatch.`, failures);
+      expectEqual(
+        bibtex,
+        generateBibTeXCollection([paper.data]),
+        `${paper.slug} BibTeX body mismatch.`,
+        failures,
+      );
     }
     const ris = read(`dist/papers/${paper.slug}/citation.ris`, failures);
     if (ris !== null) {
@@ -224,13 +247,19 @@ function verifyIssueExports(papers: readonly SourcePaper[], failures: string[]):
   const issueIndex = read("dist/issues/index.html", failures);
 
   for (const [issueSlug, issuePapers] of byIssue) {
-    issuePapers.sort((a, b) =>
-      parseSeriesIdentifier(a.data.series_number).sequence - parseSeriesIdentifier(b.data.series_number).sequence);
+    issuePapers.sort(
+      (a, b) =>
+        parseSeriesIdentifier(a.data.series_number).sequence -
+        parseSeriesIdentifier(b.data.series_number).sequence,
+    );
     const records = issuePapers.map((paper) => paper.data);
     const bibtexHref = citationExportHref("issue", issueSlug, "bibtex");
     const risHref = citationExportHref("issue", issueSlug, "ris");
     const issueHtml = read(`dist/issues/${issueSlug}/index.html`, failures);
-    for (const [label, html] of [["issue index", issueIndex], [`${issueSlug} issue page`, issueHtml]] as const) {
+    for (const [label, html] of [
+      ["issue index", issueIndex],
+      [`${issueSlug} issue page`, issueHtml],
+    ] as const) {
       if (html && (!html.includes(`href="${bibtexHref}"`) || !html.includes(`href="${risHref}"`))) {
         failures.push(`${label} does not link both issue citation exports.`);
       }
@@ -238,7 +267,12 @@ function verifyIssueExports(papers: readonly SourcePaper[], failures: string[]):
 
     const bibtex = read(`dist/issues/${issueSlug}/citations.bib`, failures);
     if (bibtex !== null) {
-      expectEqual(bibtex, generateBibTeXCollection(records), `${issueSlug} BibTeX collection mismatch.`, failures);
+      expectEqual(
+        bibtex,
+        generateBibTeXCollection(records),
+        `${issueSlug} BibTeX collection mismatch.`,
+        failures,
+      );
     }
     const ris = read(`dist/issues/${issueSlug}/citations.ris`, failures);
     if (ris !== null) {
@@ -249,7 +283,8 @@ function verifyIssueExports(papers: readonly SourcePaper[], failures: string[]):
 
 function expectedSitemapPaths(papers: readonly SourcePaper[]): string[] {
   const policyDirectory = path.resolve(process.cwd(), "src", "pages", "policies");
-  const policyPaths = fs.readdirSync(policyDirectory)
+  const policyPaths = fs
+    .readdirSync(policyDirectory)
     .filter((name) => /\.md$/u.test(name))
     .map((name) => `/policies/${name.replace(/\.md$/u, "")}/`);
   const issuePaths = [...new Set(papers.map((paper) => `/issues/${paper.data.issue_slug}/`))];
@@ -261,25 +296,27 @@ function expectedSitemapPaths(papers: readonly SourcePaper[]): string[] {
     .filter((href): href is string => Boolean(href))
     .map(normalizeRoutePath);
 
-  return [...new Set([
-    "/",
-    "/about/",
-    "/editorial-board/",
-    "/history/",
-    "/contact/",
-    "/for-authors/",
-    "/issues/",
-    "/issues/archive/",
-    "/papers/",
-    "/fields/",
-    "/policies/",
-    ...issuePaths,
-    ...archivePaths,
-    ...fieldPaths,
-    ...papers.map((paper) => `/papers/${paper.slug}/`),
-    ...profilePaths,
-    ...policyPaths,
-  ])].sort((a, b) => (a === "/" ? -1 : b === "/" ? 1 : a.localeCompare(b, "en-US")));
+  return [
+    ...new Set([
+      "/",
+      "/about/",
+      "/editorial-board/",
+      "/history/",
+      "/contact/",
+      "/for-authors/",
+      "/issues/",
+      "/issues/archive/",
+      "/papers/",
+      "/fields/",
+      "/policies/",
+      ...issuePaths,
+      ...archivePaths,
+      ...fieldPaths,
+      ...papers.map((paper) => `/papers/${paper.slug}/`),
+      ...profilePaths,
+      ...policyPaths,
+    ]),
+  ].sort((a, b) => (a === "/" ? -1 : b === "/" ? 1 : a.localeCompare(b, "en-US")));
 }
 
 function verifySitemapAndRobots(papers: readonly SourcePaper[], failures: string[]): void {
@@ -293,8 +330,10 @@ function verifySitemapAndRobots(papers: readonly SourcePaper[], failures: string
     for (const location of locations) {
       const url = new URL(location);
       if (url.origin !== SITE_ORIGIN) failures.push(`Sitemap includes a noncanonical origin: ${location}.`);
-      if (/localhost|127\.0\.0\.1|staging/iu.test(location)) failures.push(`Sitemap includes a development or staging URL: ${location}.`);
-      if (/\.(?:bib|ris)(?:\/)?$/iu.test(url.pathname)) failures.push(`Sitemap includes a download artifact: ${location}.`);
+      if (/localhost|127\.0\.0\.1|staging/iu.test(location))
+        failures.push(`Sitemap includes a development or staging URL: ${location}.`);
+      if (/\.(?:bib|ris)(?:\/)?$/iu.test(url.pathname))
+        failures.push(`Sitemap includes a download artifact: ${location}.`);
 
       const routePath = normalizeRoutePath(location);
       const htmlPath = builtHtmlPath(routePath);
@@ -303,7 +342,12 @@ function verifySitemapAndRobots(papers: readonly SourcePaper[], failures: string
         continue;
       }
       const html = fs.readFileSync(htmlPath, "utf8");
-      expectEqual(linkHrefs(html, "canonical"), [location], `${routePath} canonical does not match sitemap URL.`, failures);
+      expectEqual(
+        linkHrefs(html, "canonical"),
+        [location],
+        `${routePath} canonical does not match sitemap URL.`,
+        failures,
+      );
       if (metaValues(html, "robots").some((value) => /\bnoindex\b/iu.test(value))) {
         failures.push(`Sitemap includes a noindex route: ${location}.`);
       }
@@ -312,7 +356,13 @@ function verifySitemapAndRobots(papers: readonly SourcePaper[], failures: string
       }
     }
 
-    for (const legacy of ["/categories/", "/our/", "/graduate-assistants/", "/issues/page2/", "/issues/page3/"]) {
+    for (const legacy of [
+      "/categories/",
+      "/our/",
+      "/graduate-assistants/",
+      "/issues/page2/",
+      "/issues/page3/",
+    ]) {
       if (paths.includes(legacy)) failures.push(`Sitemap includes redirect-only legacy route ${legacy}.`);
     }
   }
@@ -324,7 +374,9 @@ function verifySitemapAndRobots(papers: readonly SourcePaper[], failures: string
       const html = fs.readFileSync(htmlPath, "utf8");
       const robotsValues = metaValues(html, "robots").map((value) => value.toLocaleLowerCase("en-US"));
       const isNoindex = robotsValues.some((value) => /\bnoindex\b/iu.test(value));
-      const isRedirect = tags(html, "meta").some((tag) => tag.get("http-equiv")?.toLocaleLowerCase("en-US") === "refresh");
+      const isRedirect = tags(html, "meta").some(
+        (tag) => tag.get("http-equiv")?.toLocaleLowerCase("en-US") === "refresh",
+      );
       if (isRedirect && !robotsValues.includes("noindex, follow")) {
         failures.push(`${routePath} is a redirect fallback without the exact noindex, follow directive.`);
       }
@@ -361,7 +413,9 @@ function verifySocialCard(failures: string[]): void {
       "University of Nevada, Las Vegas",
     ]) {
       if (!source.toLocaleLowerCase("en-US").includes(required.toLocaleLowerCase("en-US"))) {
-        failures.push(`Open Graph image source is missing current institutional text ${JSON.stringify(required)}.`);
+        failures.push(
+          `Open Graph image source is missing current institutional text ${JSON.stringify(required)}.`,
+        );
       }
     }
     if (/UNLV Department of Economics/iu.test(source)) {
@@ -402,7 +456,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
   const failures: string[] = [];
   verifyScholarlyOutput(failures);
   if (failures.length > 0) {
-    console.error(`ERROR: scholarly output verification failed:\n${failures.map((failure) => `- ${failure}`).join("\n")}`);
+    console.error(
+      `ERROR: scholarly output verification failed:\n${failures.map((failure) => `- ${failure}`).join("\n")}`,
+    );
     process.exit(1);
   }
   console.log("OK: verified scholarly metadata, citation exports, sitemap, robots, and social-card output.");

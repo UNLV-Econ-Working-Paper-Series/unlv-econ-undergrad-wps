@@ -42,7 +42,12 @@ Expected markdown format:
     - Bullet item
 `.trim();
 
-function parseArgs(argv: string[]): { inputPath: string; outputPath: string; useStdin: boolean; help: boolean } {
+function parseArgs(argv: string[]): {
+  inputPath: string;
+  outputPath: string;
+  useStdin: boolean;
+  help: boolean;
+} {
   let inputPath = DEFAULT_INPUT_PATH;
   let outputPath = DEFAULT_OUTPUT_PATH;
   let useStdin = false;
@@ -106,8 +111,8 @@ function splitFrontmatter(markdown: string): { frontmatterRaw: string; body: str
 function unquote(value: string): string {
   const trimmed = value.trim();
   if (trimmed.length >= 2) {
-    const startsWithQuote = trimmed.startsWith("\"") || trimmed.startsWith("'");
-    const endsWithQuote = trimmed.endsWith("\"") || trimmed.endsWith("'");
+    const startsWithQuote = trimmed.startsWith('"') || trimmed.startsWith("'");
+    const endsWithQuote = trimmed.endsWith('"') || trimmed.endsWith("'");
     if (startsWithQuote && endsWithQuote) {
       return trimmed.slice(1, -1).trim();
     }
@@ -139,11 +144,7 @@ function parseSimpleFrontmatter(raw: string): FrontmatterMap {
 }
 
 function normalizeHeading(raw: string): string {
-  return raw
-    .toLowerCase()
-    .replace(/[`*_]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
+  return raw.toLowerCase().replace(/[`*_]/g, "").replace(/\s+/g, " ").trim();
 }
 
 function parseLinkBullet(raw: string): HomeLink | null {
@@ -172,7 +173,11 @@ function parseBodySections(body: string): { featuredItems: HomeLink[]; newsItems
       const normalizedHeading = normalizeHeading(heading[1] ?? "");
       if (normalizedHeading.includes("featured items")) {
         currentSection = "featured";
-      } else if (normalizedHeading.includes("news and events") || normalizedHeading === "news" || normalizedHeading === "events") {
+      } else if (
+        normalizedHeading.includes("news and events") ||
+        normalizedHeading === "news" ||
+        normalizedHeading === "events"
+      ) {
         currentSection = "news";
       } else {
         currentSection = null;

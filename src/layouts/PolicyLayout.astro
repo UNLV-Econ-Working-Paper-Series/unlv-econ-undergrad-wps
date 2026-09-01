@@ -10,7 +10,8 @@ interface Props {
   bodyClass?: string;
 }
 
-const policy = (Astro.props.frontmatter ?? Astro.props) as Props;
+const props = Astro.props as Props & { frontmatter?: Props };
+const policy = props.frontmatter ?? props;
 const { title, lead, description = lead, bodyClass = "" } = policy;
 
 if (!title || !lead) {

@@ -11,11 +11,7 @@ export function normalizeIsoDate(value: string, fieldName = "date"): string {
   const month = Number.parseInt(match[2], 10);
   const day = Number.parseInt(match[3], 10);
   const date = new Date(Date.UTC(year, month - 1, day));
-  if (
-    date.getUTCFullYear() !== year
-    || date.getUTCMonth() !== month - 1
-    || date.getUTCDate() !== day
-  ) {
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) {
     throw new Error(`${fieldName} is not a valid calendar date.`);
   }
   return normalized;
@@ -37,15 +33,11 @@ export function issuePublicationDate(record: Pick<PublicationRecord, "issue_publ
   return record.issue_published_at ? normalizeIsoDate(record.issue_published_at, "issue_published_at") : null;
 }
 
-export function citationPublicationDate(
-  record: Pick<PublicationRecord, "citable_published_at">,
-): string {
+export function citationPublicationDate(record: Pick<PublicationRecord, "citable_published_at">): string {
   return normalizeIsoDate(record.citable_published_at, "citable_published_at");
 }
 
-export function citationYear(
-  record: Pick<PublicationRecord, "citable_published_at">,
-): string {
+export function citationYear(record: Pick<PublicationRecord, "citable_published_at">): string {
   return citationPublicationDate(record).slice(0, 4);
 }
 
@@ -65,7 +57,10 @@ export function publicationDateSet(record: PublicationRecord): PublicationDateSe
     repository: normalizeIsoDate(record.repository_published_at, "repository_published_at"),
     currentVersion: normalizeIsoDate(record.current_version.published_at, "current_version.published_at"),
     historicalOriginal: record.historical_provenance?.original_publication_date
-      ? normalizeIsoDate(record.historical_provenance.original_publication_date, "historical_provenance.original_publication_date")
+      ? normalizeIsoDate(
+          record.historical_provenance.original_publication_date,
+          "historical_provenance.original_publication_date",
+        )
       : null,
     migrated: record.historical_provenance?.migrated_at
       ? normalizeIsoDate(record.historical_provenance.migrated_at, "historical_provenance.migrated_at")

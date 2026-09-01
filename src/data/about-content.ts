@@ -48,15 +48,18 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
     steps: [
       {
         title: "Intake and eligibility",
-        description: "Confirm undergraduate eligibility, faculty sponsorship, scope, authorship, required materials, rights, and consent records.",
+        description:
+          "Confirm undergraduate eligibility, faculty sponsorship, scope, authorship, required materials, rights, and consent records.",
       },
       {
         title: "Editorial screening",
-        description: "Review the research question, contribution, evidence, methods, conclusions, citations, writing, and research readiness.",
+        description:
+          "Review the research question, contribution, evidence, methods, conclusions, citations, writing, and research readiness.",
       },
       {
         title: "Compliance screening",
-        description: "Review authorship, permissions, disclosures, research ethics, restricted data, accessibility, and data and code statements.",
+        description:
+          "Review authorship, permissions, disclosures, research ethics, restricted data, accessibility, and data and code statements.",
       },
       {
         title: "Editorial decision",
@@ -64,7 +67,8 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
       },
       {
         title: "Production",
-        description: "Verify metadata and document accessibility, prepare citations, coordinate the OAsis record, release the issue, and check public links.",
+        description:
+          "Verify metadata and document accessibility, prepare citations, coordinate the OAsis record, release the issue, and check public links.",
       },
     ],
   },

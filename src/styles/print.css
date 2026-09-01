@@ -41,6 +41,10 @@
     display: none !important;
   }
 
+  .has-js .js-only {
+    display: none !important;
+  }
+
   .site-shell,
   .content-section,
   .page-banner__inner,

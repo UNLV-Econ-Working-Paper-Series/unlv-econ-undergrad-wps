@@ -3,13 +3,7 @@ import path from "node:path";
 import process from "node:process";
 import { EDITORIAL_BOARD, JUNIOR_EDITORS, PUBLICATION_APPROVAL_RULE } from "../src/config/editorial";
 import { INSTITUTION, INSTITUTIONAL_HIERARCHY } from "../src/config/institution";
-import {
-  OASIS,
-  PRIMARY_NAVIGATION,
-  PUBLIC_ROUTES,
-  RESEARCH_FIELDS,
-  SERIES,
-} from "../src/config/publication";
+import { OASIS, PRIMARY_NAVIGATION, PUBLIC_ROUTES, RESEARCH_FIELDS, SERIES } from "../src/config/publication";
 
 type ProhibitedPattern = {
   pattern: RegExp;
@@ -24,7 +18,8 @@ const prohibitedVisibleCopy: ProhibitedPattern[] = [
   { pattern: /sponsors the site/i, reason: "unsupported site-sponsorship claim" },
   { pattern: /the department sponsors the Series/i, reason: "unsupported department-sponsorship claim" },
   {
-    pattern: /students?\s+from\s+any\s+(?:college|institution|university).{0,50}(?:submit|eligible|considered)/i,
+    pattern:
+      /students?\s+from\s+any\s+(?:college|institution|university).{0,50}(?:submit|eligible|considered)/i,
     reason: "unsupported external-student eligibility",
   },
   {
@@ -85,7 +80,10 @@ function verifyConfiguration(failures: string[]): void {
   if (INSTITUTIONAL_HIERARCHY.length !== 4 || INSTITUTIONAL_HIERARCHY[3] !== SERIES.name) {
     failures.push("Institutional hierarchy is incomplete or out of order.");
   }
-  if (PRIMARY_NAVIGATION.map((item) => item.label).join("|") !== "Home|Working Papers|Issues|Research Fields|For Student Authors|About") {
+  if (
+    PRIMARY_NAVIGATION.map((item) => item.label).join("|") !==
+    "Home|Working Papers|Issues|Research Fields|For Student Authors|About"
+  ) {
     failures.push("Primary navigation labels no longer match the publication contract.");
   }
   if (!PUBLIC_ROUTES.fields.startsWith("/fields/") || !PUBLIC_ROUTES.authors.startsWith("/for-authors/")) {
@@ -104,7 +102,10 @@ function verifyConfiguration(failures: string[]): void {
   if (JUNIOR_EDITORS.some((member) => member.voting)) {
     failures.push("Junior Editors must not have voting authority.");
   }
-  if (!PUBLICATION_APPROVAL_RULE.includes("two non-conflicted voting editors") || !PUBLICATION_APPROVAL_RULE.includes("Faculty Editor")) {
+  if (
+    !PUBLICATION_APPROVAL_RULE.includes("two non-conflicted voting editors") ||
+    !PUBLICATION_APPROVAL_RULE.includes("Faculty Editor")
+  ) {
     failures.push("Publication approval rule no longer contains the required voting threshold.");
   }
 }
@@ -145,7 +146,9 @@ verifyConfiguration(failures);
 verifyBuiltCopy(failures);
 
 if (failures.length > 0) {
-  console.error(`ERROR: governance-copy verification failed:\n${failures.map((failure) => `- ${failure}`).join("\n")}`);
+  console.error(
+    `ERROR: governance-copy verification failed:\n${failures.map((failure) => `- ${failure}`).join("\n")}`,
+  );
   process.exit(1);
 }
 

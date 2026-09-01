@@ -43,8 +43,9 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
       <p class="publication-label">Metadata-only inventory</p>
       <h2 id="historical-issue-title">Records from the {issue.label} Economics Hub issue</h2>
       <p>
-        The original issue term and the current migration year are reported separately. Full text is not linked while provenance,
-        rights, final-version status, file availability, and accessibility checks remain open.
+        The original issue term and the current migration year are reported separately. Full text is not
+        linked while provenance, rights, final-version status, file availability, and accessibility checks
+        remain open.
       </p>
       <dl class="archive-provenance-summary">
         <div>
@@ -63,28 +64,33 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
     </header>
 
     <ol class="historical-paper-list" aria-label={`Historical working-paper records from ${issue.label}`}>
-      {issue.papers.map((paper) => (
-        <li>
-          <article class="historical-paper-entry">
-            <p class="historical-paper-entry__status"><strong>Historical working paper</strong></p>
-            <h3>{paper.title}</h3>
-            <dl class="historical-paper-entry__metadata">
-              <div>
-                <dt>Author display</dt>
-                <dd>{paper.authors}</dd>
-              </div>
-              <div>
-                <dt>Original publication term</dt>
-                <dd>{issue.label}</dd>
-              </div>
-            </dl>
-            <p class="historical-paper-entry__provenance">
-              Originally published through the UNLV Economics Hub in {issue.label}. Metadata migrated to the current Series archive
-              in {ARCHIVE_MIGRATION_YEAR}; full-text migration remains under verification.
-            </p>
-          </article>
-        </li>
-      ))}
+      {
+        issue.papers.map((paper) => (
+          <li>
+            <article class="historical-paper-entry">
+              <p class="historical-paper-entry__status">
+                <strong>Historical working paper</strong>
+              </p>
+              <h3>{paper.title}</h3>
+              <dl class="historical-paper-entry__metadata">
+                <div>
+                  <dt>Author display</dt>
+                  <dd>{paper.authors}</dd>
+                </div>
+                <div>
+                  <dt>Original publication term</dt>
+                  <dd>{issue.label}</dd>
+                </div>
+              </dl>
+              <p class="historical-paper-entry__provenance">
+                Originally published through the UNLV Economics Hub in {issue.label}. Metadata migrated to the
+                current Series archive in {ARCHIVE_MIGRATION_YEAR}; full-text migration remains under
+                verification.
+              </p>
+            </article>
+          </li>
+        ))
+      }
     </ol>
 
     <p class="issue-back-link"><a href={withBase("/issues/archive/")}>← All historical issues</a></p>

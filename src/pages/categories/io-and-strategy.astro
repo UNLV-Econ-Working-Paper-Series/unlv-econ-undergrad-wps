@@ -1,12 +1,19 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { legacyRedirectTarget } from "../../lib/legacy-redirects";
 import { withBase } from "../../lib/urls";
 
-const fieldPath = "/fields/industrial-organization/";
+const fieldPath = legacyRedirectTarget("/categories/io-and-strategy/")!;
 const target = withBase(fieldPath);
 ---
 
-<BaseLayout title="Industrial Organization" canonicalPath={fieldPath} robots="noindex, follow" redirectTo={target} bodyClass="redirect-page">
+<BaseLayout
+  title="Industrial Organization"
+  canonicalPath={fieldPath}
+  robots="noindex, follow"
+  redirectTo={target}
+  bodyClass="redirect-page"
+>
   <section class="content-section">
     <h1>This category is now Industrial Organization</h1>
     <p><a href={target}>Continue to the research-field page</a></p>

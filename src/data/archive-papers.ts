@@ -22,7 +22,8 @@ export const ARCHIVE_PAPERS: ArchivePaper[] = [
     file: "/assets/archive/econ-495/child-care-analysis-_fortez.pdf",
   },
   {
-    title: "A Million and Above: Hedonic Modeling of how the Characteristics of High-End Houses in the Las Vegas Metropolitan Area are Valued",
+    title:
+      "A Million and Above: Hedonic Modeling of how the Characteristics of High-End Houses in the Las Vegas Metropolitan Area are Valued",
     authors: "Josephine Fenton and Robert Villemaire",
     year: 2018,
     semester: "Spring 2018",
@@ -78,7 +79,8 @@ export const ARCHIVE_PAPERS: ArchivePaper[] = [
     file: "/assets/archive/econ-495/leavitt_serrano_baseball.pdf",
   },
   {
-    title: "Reference Dependence - On Any Given Sunday: Are Taxi Driver's Shift End Decisions Impacted by the NFL?",
+    title:
+      "Reference Dependence - On Any Given Sunday: Are Taxi Driver's Shift End Decisions Impacted by the NFL?",
     authors: "Matt Parkins",
     year: 2018,
     semester: "Spring 2018",

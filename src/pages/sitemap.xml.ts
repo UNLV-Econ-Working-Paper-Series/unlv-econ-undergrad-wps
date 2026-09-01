@@ -74,7 +74,9 @@ export async function GET(): Promise<Response> {
     "/fields/",
     "/policies/",
     ...visibleIssues.map((issue) => `/issues/${issue.slug}/`),
-    ...archiveIssues.filter((issue) => issue.papers.length > 0).map((issue) => `/issues/archive/${issue.slug}/`),
+    ...archiveIssues
+      .filter((issue) => issue.papers.length > 0)
+      .map((issue) => `/issues/archive/${issue.slug}/`),
     ...fields.map((field) => `/fields/${field.slug}/`),
     ...papers.map((paper) => `/papers/${paperSlug(paper)}/`),
     ...PUBLIC_PROFILES.map((profile) => profile.profileHref).filter((href): href is string => Boolean(href)),

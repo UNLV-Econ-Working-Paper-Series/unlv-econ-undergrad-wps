@@ -6,16 +6,18 @@ const { currentHref } = Astro.props as { currentHref: string };
 ---
 
 <nav class="page-intro-actions" aria-label="About the Series">
-  {ABOUT_NAVIGATION.map((item) => {
-    const isCurrent = item.href === currentHref;
-    return (
-      <a
-        class:list={["btn", "btn-small", isCurrent ? "btn-primary" : "btn-outline"]}
-        href={withBase(item.href)}
-        aria-current={isCurrent ? "page" : undefined}
-      >
-        {item.label}
-      </a>
-    );
-  })}
+  {
+    ABOUT_NAVIGATION.map((item) => {
+      const isCurrent = item.href === currentHref;
+      return (
+        <a
+          class:list={["btn", "btn-small", isCurrent ? "btn-primary" : "btn-outline"]}
+          href={withBase(item.href)}
+          aria-current={isCurrent ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      );
+    })
+  }
 </nav>

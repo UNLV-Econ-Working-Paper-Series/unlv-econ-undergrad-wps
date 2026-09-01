@@ -54,105 +54,135 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
   />
 
   <section class="issue-detail content-section" aria-labelledby="issue-summary-title">
-    {papers.length > 0 ? (
-      <>
-        <header class="issue-detail__summary">
-          <div class="issue-detail__introduction">
-            <p class="publication-label">Issue overview</p>
-            <h2 id="issue-summary-title">{issue.label} issue</h2>
-            <p>
-              This issue contains {countLabel(papers.length, "working paper")} across {countLabel(fieldCount, "research field")}.
-              Each paper has its own citable record and full-text link.
-            </p>
-            <p class="issue-detail__date">
-              {repositoryDates.length === 1 ? (
-                <>Added to OAsis <time datetime={repositoryDates[0]}>{formatPaperDate(repositoryDates[0])}</time>.</>
-              ) : repositoryDates.length > 1 ? (
-                <>
-                  Papers added to OAsis between <time datetime={repositoryDates[0]}>{formatPaperDate(repositoryDates[0])}</time>
-                  {" and "}
-                  <time datetime={finalRepositoryDate}>{formatPaperDate(finalRepositoryDate)}</time>.
-                </>
+    {
+      papers.length > 0 ? (
+        <>
+          <header class="issue-detail__summary">
+            <div class="issue-detail__introduction">
+              <p class="publication-label">Issue overview</p>
+              <h2 id="issue-summary-title">{issue.label} issue</h2>
+              <p>
+                This issue contains {countLabel(papers.length, "working paper")} across{" "}
+                {countLabel(fieldCount, "research field")}. Each paper has its own citable record and
+                full-text link.
+              </p>
+              <p class="issue-detail__date">
+                {repositoryDates.length === 1 ? (
+                  <>
+                    Added to OAsis{" "}
+                    <time datetime={repositoryDates[0]}>{formatPaperDate(repositoryDates[0])}</time>.
+                  </>
+                ) : repositoryDates.length > 1 ? (
+                  <>
+                    Papers added to OAsis between{" "}
+                    <time datetime={repositoryDates[0]}>{formatPaperDate(repositoryDates[0])}</time>
+                    {" and "}
+                    <time datetime={finalRepositoryDate}>{formatPaperDate(finalRepositoryDate)}</time>.
+                  </>
+                ) : null}
+              </p>
+              <nav
+                class="issue-citation-downloads"
+                aria-label={`Citation downloads for the ${issue.label} issue`}
+              >
+                <span>Download issue citations:</span>
+                <a href={bibtexHref} download={`${issue.slug}-citations.bib`}>
+                  BibTeX
+                </a>
+                <a href={risHref} download={`${issue.slug}-citations.ris`}>
+                  RIS
+                </a>
+              </nav>
+            </div>
+
+            <dl class="issue-facts" aria-label={`${issue.label} issue facts`}>
+              {bibliographicLabel ? (
+                <div>
+                  <dt>Bibliographic issue</dt>
+                  <dd>{bibliographicLabel}</dd>
+                </div>
               ) : null}
-            </p>
-            <nav class="issue-citation-downloads" aria-label={`Citation downloads for the ${issue.label} issue`}>
-              <span>Download issue citations:</span>
-              <a href={bibtexHref} download={`${issue.slug}-citations.bib`}>BibTeX</a>
-              <a href={risHref} download={`${issue.slug}-citations.ris`}>RIS</a>
-            </nav>
-          </div>
-
-          <dl class="issue-facts" aria-label={`${issue.label} issue facts`}>
-            {bibliographicLabel ? (
               <div>
-                <dt>Bibliographic issue</dt>
-                <dd>{bibliographicLabel}</dd>
+                <dt>Working papers</dt>
+                <dd>{papers.length}</dd>
               </div>
-            ) : null}
-            <div>
-              <dt>Working papers</dt>
-              <dd>{papers.length}</dd>
-            </div>
-            <div>
-              <dt>Research fields</dt>
-              <dd>{fieldCount}</dd>
-            </div>
-          </dl>
-        </header>
-
-        <section class="issue-contents" aria-labelledby="issue-contents-title">
-          <header class="issue-contents__header">
-            <p class="publication-label">Table of contents</p>
-            <h2 id="issue-contents-title">Papers in This Issue</h2>
+              <div>
+                <dt>Research fields</dt>
+                <dd>{fieldCount}</dd>
+              </div>
+            </dl>
           </header>
 
-          <ol class="issue-paper-list">
-            {papers.map((paper) => {
-              const title = cleanPaperTitle(paper.data.title);
-              const fieldHref = withBase(`/fields/${researchFieldSlug(paper.data.field)}/`);
+          <section class="issue-contents" aria-labelledby="issue-contents-title">
+            <header class="issue-contents__header">
+              <p class="publication-label">Table of contents</p>
+              <h2 id="issue-contents-title">Papers in This Issue</h2>
+            </header>
 
-              return (
-                <li>
-                  <article class="issue-paper-entry">
-                    <div class="issue-paper-entry__main">
-                      <p class="paper-series-number">{paper.data.series_number}</p>
-                      <h3><a href={paperHref(paper)}>{title}</a></h3>
-                      <p class="paper-byline">{formatAuthorDisplay(paper.data.authors)}</p>
-                    </div>
+            <ol class="issue-paper-list">
+              {papers.map((paper) => {
+                const title = cleanPaperTitle(paper.data.title);
+                const fieldHref = withBase(`/fields/${researchFieldSlug(paper.data.field)}/`);
 
-                    <dl class="paper-compact-metadata">
-                      <div>
-                        <dt>Research field</dt>
-                        <dd><a href={fieldHref}>{paper.data.field}</a></dd>
+                return (
+                  <li>
+                    <article class="issue-paper-entry">
+                      <div class="issue-paper-entry__main">
+                        <p class="paper-series-number">{paper.data.series_number}</p>
+                        <h3>
+                          <a href={paperHref(paper)}>{title}</a>
+                        </h3>
+                        <p class="paper-byline">{formatAuthorDisplay(paper.data.authors)}</p>
                       </div>
-                      {paper.data.doi ? (
+
+                      <dl class="paper-compact-metadata">
                         <div>
-                          <dt>DOI</dt>
-                          <dd><a href={doiUrl(paper.data.doi)} rel="external">{paper.data.doi}</a></dd>
+                          <dt>Research field</dt>
+                          <dd>
+                            <a href={fieldHref}>{paper.data.field}</a>
+                          </dd>
                         </div>
-                      ) : null}
-                    </dl>
+                        {paper.data.doi ? (
+                          <div>
+                            <dt>DOI</dt>
+                            <dd>
+                              <a href={doiUrl(paper.data.doi)} rel="external">
+                                {paper.data.doi}
+                              </a>
+                            </dd>
+                          </div>
+                        ) : null}
+                      </dl>
 
-                    <p class="issue-paper-entry__action">
-                      <a class="text-action" href={paperHref(paper)}>View paper record<span aria-hidden="true"> →</span></a>
-                      <a href={paper.data.pdf_url} rel="external">Full text PDF</a>
-                    </p>
-                  </article>
-                </li>
-              );
-            })}
-          </ol>
+                      <p class="issue-paper-entry__action">
+                        <a class="text-action" href={paperHref(paper)}>
+                          View paper record<span aria-hidden="true"> →</span>
+                        </a>
+                        <a href={paper.data.pdf_url} rel="external">
+                          Full text PDF
+                        </a>
+                      </p>
+                    </article>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+
+          <p class="issue-back-link">
+            <a href={withBase("/issues/")}>← All published issues</a>
+          </p>
+        </>
+      ) : (
+        <section class="publication-empty" aria-labelledby="issue-summary-title">
+          <p class="publication-label">Publication status</p>
+          <h2 id="issue-summary-title">No published papers are listed for this issue</h2>
+          <p>The page will be updated after a verified paper record is available.</p>
+          <p>
+            <a href={withBase("/issues/")}>Return to published issues</a>
+          </p>
         </section>
-
-        <p class="issue-back-link"><a href={withBase("/issues/")}>← All published issues</a></p>
-      </>
-    ) : (
-      <section class="publication-empty" aria-labelledby="issue-summary-title">
-        <p class="publication-label">Publication status</p>
-        <h2 id="issue-summary-title">No published papers are listed for this issue</h2>
-        <p>The page will be updated after a verified paper record is available.</p>
-        <p><a href={withBase("/issues/")}>Return to published issues</a></p>
-      </section>
-    )}
+      )
+    }
   </section>
 </BaseLayout>

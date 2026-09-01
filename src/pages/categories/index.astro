@@ -1,14 +1,16 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { legacyRedirectTarget } from "../../lib/legacy-redirects";
 import { withBase } from "../../lib/urls";
 
-const target = withBase("/fields/");
+const fieldPath = legacyRedirectTarget("/categories/")!;
+const target = withBase(fieldPath);
 ---
 
 <BaseLayout
   title="Research Fields | UNLV Undergraduate Economics Working Paper Series"
   description="The former category directory has moved to Research Fields."
-  canonicalPath="/fields/"
+  canonicalPath={fieldPath}
   robots="noindex, follow"
   redirectTo={target}
   bodyClass="redirect-page"

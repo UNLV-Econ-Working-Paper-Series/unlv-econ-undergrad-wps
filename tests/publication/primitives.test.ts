@@ -73,10 +73,9 @@ test("validates stable Series numbers and rejects collisions", () => {
   assert.equal(formatSeriesIdentifier(2026, 4), "UNLV-Econ-WPS-2026-004");
   assert.equal(isSeriesIdentifier("UNLV-Econ-WPS-2026-004"), true);
   assert.equal(isSeriesIdentifier("UNLV-Econ-WPS-2026-000"), false);
-  assert.doesNotThrow(() => assertUniqueSeriesIdentifiers([
-    "UNLV-Econ-WPS-2026-004",
-    "UNLV-Econ-WPS-2026-005",
-  ]));
+  assert.doesNotThrow(() =>
+    assertUniqueSeriesIdentifiers(["UNLV-Econ-WPS-2026-004", "UNLV-Econ-WPS-2026-005"]),
+  );
   assert.throws(
     () => assertUniqueSeriesIdentifiers(["UNLV-Econ-WPS-2026-004", "UNLV-Econ-WPS-2026-004"]),
     /Duplicate Series identifier/u,

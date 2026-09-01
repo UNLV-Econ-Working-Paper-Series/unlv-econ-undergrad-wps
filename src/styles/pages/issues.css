@@ -6,7 +6,9 @@
   max-inline-size: var(--reading-max, 74ch);
 }
 
-.section-issues :where(.publication-intro, .historical-archive__intro, .historical-issue__summary) > p:not(.publication-label) {
+.section-issues
+  :where(.publication-intro, .historical-archive__intro, .historical-issue__summary)
+  > p:not(.publication-label) {
   color: var(--color-ink-soft, #424750);
 }
 

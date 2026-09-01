@@ -23,7 +23,10 @@ const TERM_ORDER: Record<string, number> = {
 };
 
 const CATEGORY_RULES: Array<{ label: string; pattern: RegExp }> = [
-  { label: "Applied Micro", pattern: /(consumer|behavior|crime|child|housing|taxi|animal|hummus|marijuana|fighter|film|market)/i },
+  {
+    label: "Applied Micro",
+    pattern: /(consumer|behavior|crime|child|housing|taxi|animal|hummus|marijuana|fighter|film|market)/i,
+  },
   { label: "Finance", pattern: /(revenue|salary|wealth|wage|risk|contract|earnings)/i },
   { label: "Methods", pattern: /(analysis|model|determinants|expectation|patterns|hedonic)/i },
   { label: "Labor", pattern: /(wage|labor|employment|gender)/i },

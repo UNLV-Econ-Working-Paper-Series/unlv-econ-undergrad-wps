@@ -1,18 +1,26 @@
 import { defineConfig } from "astro/config";
-import basicSsl from "@vitejs/plugin-basic-ssl";
 
 export default defineConfig({
   output: "static",
   site: "https://econ-undergrad-wps.sites.unlv.edu",
   base: "/",
-  server: {
-    host: true,
-    port: 4321,
+  compressHTML: true,
+  markdown: {
+    syntaxHighlight: false,
+  },
+  security: {
+    csp: true,
+  },
+  build: {
+    inlineStylesheets: "never",
   },
   vite: {
-    plugins: [basicSsl()],
-    server: {
-      https: true,
+    build: {
+      assetsInlineLimit: 0,
     },
+  },
+  server: {
+    host: "127.0.0.1",
+    port: 4321,
   },
 });

@@ -20,27 +20,31 @@ const fields = await getFieldGroups();
       <p class="field-label">Current collection</p>
       <h2 id="field-index-title">Fields represented in the Series</h2>
       <p>
-        Research fields are controlled editorial terms used to keep the collection consistent and discoverable. Only fields with
-        published papers appear here.
+        Research fields are controlled editorial terms used to keep the collection consistent and
+        discoverable. Only fields with published papers appear here.
       </p>
     </header>
 
-    {fields.length > 0 ? (
-      <ul class="field-directory" aria-label="Populated research fields">
-        {fields.map((field) => (
-          <li>
-            <a href={withBase(`/fields/${field.slug}/`)}>
-              <span>{field.name}</span>
-              <span>{field.count} {field.count === 1 ? "paper" : "papers"}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <section class="field-empty" aria-labelledby="field-empty-title">
-        <h3 id="field-empty-title">No research fields are listed</h3>
-        <p>Fields appear after a published paper has been assigned to them.</p>
-      </section>
-    )}
+    {
+      fields.length > 0 ? (
+        <ul class="field-directory" aria-label="Populated research fields">
+          {fields.map((field) => (
+            <li>
+              <a href={withBase(`/fields/${field.slug}/`)}>
+                <span>{field.name}</span>
+                <span>
+                  {field.count} {field.count === 1 ? "paper" : "papers"}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <section class="field-empty" aria-labelledby="field-empty-title">
+          <h3 id="field-empty-title">No research fields are listed</h3>
+          <p>Fields appear after a published paper has been assigned to them.</p>
+        </section>
+      )
+    }
   </section>
 </BaseLayout>

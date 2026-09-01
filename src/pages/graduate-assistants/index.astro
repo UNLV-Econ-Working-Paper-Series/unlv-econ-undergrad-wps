@@ -1,9 +1,10 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { legacyRedirectTarget } from "../../lib/legacy-redirects";
 import { withBase } from "../../lib/urls";
 
 const canonicalPath = "/editorial-board/";
-const target = withBase("/editorial-board/#junior-editors");
+const target = withBase(legacyRedirectTarget("/graduate-assistants/")!);
 ---
 
 <BaseLayout

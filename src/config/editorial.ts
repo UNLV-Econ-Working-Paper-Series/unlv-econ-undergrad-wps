@@ -1,4 +1,5 @@
-export type EditorialAppointmentStatus = "specification-approved-pending-role-acceptance" | "confirmation-required";
+export type EditorialAppointmentStatus =
+  "specification-approved-pending-role-acceptance" | "confirmation-required";
 
 export interface EditorialMember {
   id: string;

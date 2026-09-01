@@ -10,7 +10,10 @@ const buildMailto = (email: string, subject: string): string => {
 };
 ---
 
-<BaseLayout title="Contact | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-contact page-contact page-contact-modern">
+<BaseLayout
+  title="Contact | UNLV Undergraduate Economics Working Paper Series"
+  bodyClass="section-contact page-contact page-contact-modern"
+>
   <PageBanner title={CONTACT_PAGE_CONTENT.banner.title} lead={CONTACT_PAGE_CONTENT.banner.lead} />
 
   <section class="content-section contact-modern-shell">
@@ -24,13 +27,15 @@ const buildMailto = (email: string, subject: string): string => {
       >
         <p class="contact-line">
           <strong>Email:</strong>
-          <a href={`mailto:${CONTACT_PAGE_CONTENT.contact.series.email}`}>{CONTACT_PAGE_CONTENT.contact.series.email}</a>
+          <a href={`mailto:${CONTACT_PAGE_CONTENT.contact.series.email}`}
+            >{CONTACT_PAGE_CONTENT.contact.series.email}</a
+          >
         </p>
-        {CONTACT_PAGE_CONTENT.contact.series.hint ? (
-          <p class="contact-hint">
-            {CONTACT_PAGE_CONTENT.contact.series.hint}
-          </p>
-        ) : null}
+        {
+          CONTACT_PAGE_CONTENT.contact.series.hint ? (
+            <p class="contact-hint">{CONTACT_PAGE_CONTENT.contact.series.hint}</p>
+          ) : null
+        }
       </ContactCard>
 
       <ContactCard
@@ -42,11 +47,12 @@ const buildMailto = (email: string, subject: string): string => {
           <strong>Phone:</strong>
           <a href={CONTACT_PAGE_CONTENT.contact.dept.phoneHref}>{CONTACT_PAGE_CONTENT.contact.dept.phone}</a>
         </p>
-        <p class="contact-line"><strong>Location:</strong> {CONTACT_PAGE_CONTENT.contact.dept.locationLine}</p>
+        <p class="contact-line">
+          <strong>Location:</strong>
+          {CONTACT_PAGE_CONTENT.contact.dept.locationLine}
+        </p>
         <address class="contact-address">
-          {CONTACT_PAGE_CONTENT.contact.dept.addressLines.map((line) => (
-            <div>{line}</div>
-          ))}
+          {CONTACT_PAGE_CONTENT.contact.dept.addressLines.map((line) => <div>{line}</div>)}
         </address>
       </ContactCard>
     </section>
@@ -54,15 +60,20 @@ const buildMailto = (email: string, subject: string): string => {
     <section id="requests" class="contact-requests" aria-labelledby="requests-title">
       <h2 id="requests-title">{CONTACT_PAGE_CONTENT.requests.title}</h2>
       <div class="contact-chip-list" role="list" aria-label="Common series support requests">
-        {CONTACT_PAGE_CONTENT.requests.items.map((request) => (
-          <a
-            role="listitem"
-            class="contact-chip"
-            href={request.href ?? buildMailto(CONTACT_PAGE_CONTENT.contact.series.email, request.subject ?? request.label)}
-          >
-            {request.label}
-          </a>
-        ))}
+        {
+          CONTACT_PAGE_CONTENT.requests.items.map((request) => (
+            <a
+              role="listitem"
+              class="contact-chip"
+              href={
+                request.href ??
+                buildMailto(CONTACT_PAGE_CONTENT.contact.series.email, request.subject ?? request.label)
+              }
+            >
+              {request.label}
+            </a>
+          ))
+        }
       </div>
       <p class="contact-note">{CONTACT_PAGE_CONTENT.requests.note}</p>
     </section>
@@ -75,11 +86,7 @@ const buildMailto = (email: string, subject: string): string => {
     <section class="contact-map" aria-labelledby="directions-title">
       <h2 id="directions-title">{CONTACT_PAGE_CONTENT.directions.title}</h2>
       <p>
-        <a
-          href={CONTACT_PAGE_CONTENT.contact.dept.directionsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={CONTACT_PAGE_CONTENT.contact.dept.directionsUrl} target="_blank" rel="noopener noreferrer">
           {CONTACT_PAGE_CONTENT.directions.linkLabel}
         </a>
       </p>

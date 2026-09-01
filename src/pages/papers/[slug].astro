@@ -60,7 +60,9 @@ const jsonLd = buildScholarlyJsonLd(paper.data, { canonicalUrl, issueUrl });
 const disclosures = [
   paper.data.rights_statement ? { label: "Rights statement", value: paper.data.rights_statement } : null,
   paper.data.copyright_holder ? { label: "Copyright holder", value: paper.data.copyright_holder } : null,
-  paper.data.conflict_statement ? { label: "Conflict of interest", value: paper.data.conflict_statement } : null,
+  paper.data.conflict_statement
+    ? { label: "Conflict of interest", value: paper.data.conflict_statement }
+    : null,
   paper.data.ai_disclosure ? { label: "AI disclosure", value: paper.data.ai_disclosure } : null,
   paper.data.ethics_statement ? { label: "Ethics statement", value: paper.data.ethics_statement } : null,
   paper.data.data_availability ? { label: "Data availability", value: paper.data.data_availability } : null,
@@ -109,17 +111,32 @@ const disclosures = [
       <h1>{title}</h1>
       <p class="paper-record-byline">{formatAuthorDisplay(paper.data.authors)}</p>
       <p class="paper-record-notice">
-        <strong>Working paper notice:</strong> This paper is a preliminary research output. It has undergone editorial screening but has not undergone external peer review. It may be revised.
+        <strong>Working paper notice:</strong> This paper is a preliminary research output. It has undergone editorial
+        screening but has not undergone external peer review. It may be revised.
       </p>
     </header>
 
     <nav class="paper-record-actions" aria-label="Paper access and citation actions">
       <a class="paper-record-action paper-record-action--primary" href={pdfHref}>Read full paper (PDF)</a>
-      {showOasisLink ? <a class="paper-record-action paper-record-action--repository" href={oasisUrl} rel="external">Permanent OAsis record</a> : null}
-      {doiHref ? <a class="paper-record-action" href={doiHref} rel="external">DOI</a> : null}
+      {
+        showOasisLink ? (
+          <a class="paper-record-action paper-record-action--repository" href={oasisUrl} rel="external">
+            Permanent OAsis record
+          </a>
+        ) : null
+      }
+      {
+        doiHref ? (
+          <a class="paper-record-action" href={doiHref} rel="external">
+            DOI
+          </a>
+        ) : null
+      }
       <a class="paper-record-action" href={bibtexHref} download={`${slug}.bib`}>BibTeX</a>
       <a class="paper-record-action" href={risHref} download={`${slug}.ris`}>RIS</a>
-      <button class="paper-record-action js-only" type="button" data-copy-target="#paper-citation-output">Copy citation</button>
+      <button class="paper-record-action js-only" type="button" data-copy-target="#paper-citation-output"
+        >Copy citation</button
+      >
     </nav>
 
     <section class="paper-record-core" aria-labelledby="paper-core-heading">
@@ -137,24 +154,40 @@ const disclosures = [
           <dt>Series number</dt>
           <dd>{paper.data.series_number}</dd>
         </div>
-        {paper.data.issue_published_at ? (
-          <div>
-            <dt>Issue publication date</dt>
-            <dd><time datetime={paper.data.issue_published_at}>{formatPaperDate(paper.data.issue_published_at)}</time></dd>
-          </div>
-        ) : null}
+        {
+          paper.data.issue_published_at ? (
+            <div>
+              <dt>Issue publication date</dt>
+              <dd>
+                <time datetime={paper.data.issue_published_at}>
+                  {formatPaperDate(paper.data.issue_published_at)}
+                </time>
+              </dd>
+            </div>
+          ) : null
+        }
         <div>
           <dt>Citable publication date</dt>
-          <dd><time datetime={paper.data.citable_published_at}>{formatPaperDate(paper.data.citable_published_at)}</time></dd>
+          <dd>
+            <time datetime={paper.data.citable_published_at}
+              >{formatPaperDate(paper.data.citable_published_at)}</time
+            >
+          </dd>
         </div>
         <div>
           <dt>OAsis online date</dt>
-          <dd><time datetime={paper.data.repository_published_at}>{formatPaperDate(paper.data.repository_published_at)}</time></dd>
+          <dd>
+            <time datetime={paper.data.repository_published_at}
+              >{formatPaperDate(paper.data.repository_published_at)}</time
+            >
+          </dd>
         </div>
         <div>
           <dt>Current version</dt>
           <dd>
-            {versionLabel} · <time datetime={paper.data.current_version.published_at}>{formatPaperDate(paper.data.current_version.published_at)}</time>
+            {versionLabel} · <time datetime={paper.data.current_version.published_at}
+              >{formatPaperDate(paper.data.current_version.published_at)}</time
+            >
             {paper.data.current_version.note ? <span> · {paper.data.current_version.note}</span> : null}
           </dd>
         </div>
@@ -162,28 +195,42 @@ const disclosures = [
           <dt>Research field</dt>
           <dd><a href={withBase(`/fields/${fieldSlug}/`)}>{paper.data.field}</a></dd>
         </div>
-        {paper.data.pages ? (
-          <div>
-            <dt>Pages</dt>
-            <dd>{paper.data.pages}</dd>
-          </div>
-        ) : null}
-        {paper.data.faculty_sponsor ? (
-          <div>
-            <dt>Faculty sponsor</dt>
-            <dd>
-              {paper.data.faculty_sponsor.profile_url ? (
-                <a href={paper.data.faculty_sponsor.profile_url} rel="external">{paper.data.faculty_sponsor.name}</a>
-              ) : paper.data.faculty_sponsor.name}
-            </dd>
-          </div>
-        ) : null}
-        {doiHref ? (
-          <div>
-            <dt>DOI</dt>
-            <dd><a href={doiHref} rel="external">{paper.data.doi}</a></dd>
-          </div>
-        ) : null}
+        {
+          paper.data.pages ? (
+            <div>
+              <dt>Pages</dt>
+              <dd>{paper.data.pages}</dd>
+            </div>
+          ) : null
+        }
+        {
+          paper.data.faculty_sponsor ? (
+            <div>
+              <dt>Faculty sponsor</dt>
+              <dd>
+                {paper.data.faculty_sponsor.profile_url ? (
+                  <a href={paper.data.faculty_sponsor.profile_url} rel="external">
+                    {paper.data.faculty_sponsor.name}
+                  </a>
+                ) : (
+                  paper.data.faculty_sponsor.name
+                )}
+              </dd>
+            </div>
+          ) : null
+        }
+        {
+          doiHref ? (
+            <div>
+              <dt>DOI</dt>
+              <dd>
+                <a href={doiHref} rel="external">
+                  {paper.data.doi}
+                </a>
+              </dd>
+            </div>
+          ) : null
+        }
       </dl>
     </section>
 
@@ -192,18 +239,32 @@ const disclosures = [
         <section class="paper-record-authors" aria-labelledby="paper-authors-heading">
           <h2 id="paper-authors-heading">Authors</h2>
           <ol>
-            {paper.data.authors.map((author) => {
-              const profile = author.institutional_profile ?? author.public_profile;
-              return (
-                <li>
-                  <p class="paper-record-author-name">
-                    {profile ? <a href={profile} rel="external">{author.name}</a> : author.name}
-                  </p>
-                  {author.affiliation ? <p>{author.affiliation}</p> : null}
-                  {author.orcid ? <p><a href={author.orcid} rel="external">ORCID</a></p> : null}
-                </li>
-              );
-            })}
+            {
+              paper.data.authors.map((author) => {
+                const profile = author.institutional_profile ?? author.public_profile;
+                return (
+                  <li>
+                    <p class="paper-record-author-name">
+                      {profile ? (
+                        <a href={profile} rel="external">
+                          {author.name}
+                        </a>
+                      ) : (
+                        author.name
+                      )}
+                    </p>
+                    {author.affiliation ? <p>{author.affiliation}</p> : null}
+                    {author.orcid ? (
+                      <p>
+                        <a href={author.orcid} rel="external">
+                          ORCID
+                        </a>
+                      </p>
+                    ) : null}
+                  </li>
+                );
+              })
+            }
           </ol>
         </section>
 
@@ -220,22 +281,34 @@ const disclosures = [
         <section class="paper-record-versions" aria-labelledby="paper-versions-heading">
           <h2 id="paper-versions-heading">Version history</h2>
           <ol>
-            {versions.map((version) => (
-              <li>
-                <div>
-                  <strong>{version.label}</strong>
-                  <span>{version.status === "current" ? "Current" : previousVersionStatusLabel(version.status)}</span>
-                </div>
-                <p>
-                  <time datetime={version.publishedAt}>{formatPaperDate(version.publishedAt)}</time>
-                  {version.note ? <span> · {version.note}</span> : null}
-                </p>
-                <p class="paper-record-version-links">
-                  {version.oasisUrl ? <a href={version.oasisUrl} rel="external">OAsis record</a> : null}
-                  {version.publicUrl ? <a href={version.publicUrl} rel="external">Public version</a> : null}
-                </p>
-              </li>
-            ))}
+            {
+              versions.map((version) => (
+                <li>
+                  <div>
+                    <strong>{version.label}</strong>
+                    <span>
+                      {version.status === "current" ? "Current" : previousVersionStatusLabel(version.status)}
+                    </span>
+                  </div>
+                  <p>
+                    <time datetime={version.publishedAt}>{formatPaperDate(version.publishedAt)}</time>
+                    {version.note ? <span> · {version.note}</span> : null}
+                  </p>
+                  <p class="paper-record-version-links">
+                    {version.oasisUrl ? (
+                      <a href={version.oasisUrl} rel="external">
+                        OAsis record
+                      </a>
+                    ) : null}
+                    {version.publicUrl ? (
+                      <a href={version.publicUrl} rel="external">
+                        Public version
+                      </a>
+                    ) : null}
+                  </p>
+                </li>
+              ))
+            }
           </ol>
         </section>
       </div>
@@ -246,87 +319,119 @@ const disclosures = [
           <div class="paper-record-details__body">
             <label class="js-only" for="paper-citation-style">Citation style</label>
             <select class="js-only" id="paper-citation-style" data-citation-selector>
-              {citations.map((citation) => (
-                <option value={citation.id} data-citation={citation.citation}>{citation.label}</option>
-              ))}
+              {
+                citations.map((citation) => (
+                  <option value={citation.id} data-citation={citation.citation}>
+                    {citation.label}
+                  </option>
+                ))
+              }
             </select>
             <p id="paper-citation-output" class="paper-record-citation-output" aria-live="polite">
               {defaultCitation.citation}
             </p>
-            <button type="button" class="paper-record-action js-only" data-copy-target="#paper-citation-output">Copy citation</button>
+            <button
+              type="button"
+              class="paper-record-action js-only"
+              data-copy-target="#paper-citation-output">Copy citation</button
+            >
             <p class="paper-record-citation-note">
-              Confirm punctuation and capitalization against the current style guide required by your instructor or publisher.
+              Confirm punctuation and capitalization against the current style guide required by your
+              instructor or publisher.
             </p>
           </div>
         </details>
 
+        <section class="paper-record-print-citation" aria-labelledby="paper-record-print-citation-heading">
+          <h2 id="paper-record-print-citation-heading">Citation</h2>
+          <p id="paper-citation-print-output" class="paper-record-citation-output">
+            {defaultCitation.citation}
+          </p>
+        </section>
+
         <section class="paper-record-repository" aria-labelledby="repository-record-heading">
           <h2 id="repository-record-heading">Permanent repository record</h2>
           <p>{OASIS.safeDescription}</p>
-          {showOasisLink ? <a href={oasisUrl} rel="external">View this paper in OAsis</a> : null}
+          {
+            showOasisLink ? (
+              <a href={oasisUrl} rel="external">
+                View this paper in OAsis
+              </a>
+            ) : null
+          }
         </section>
 
-        {disclosures.length > 0 || paper.data.license_url ? (
-          <details class="paper-record-details">
-            <summary>Rights and disclosures</summary>
-            <div class="paper-record-details__body">
-              <dl>
-                {disclosures.map((entry) => (
-                  <div>
-                    <dt>{entry.label}</dt>
-                    <dd>{entry.value}</dd>
-                  </div>
-                ))}
-                {paper.data.license_url ? (
-                  <div>
-                    <dt>License</dt>
-                    <dd><a href={paper.data.license_url} rel="external">View license terms</a></dd>
-                  </div>
-                ) : null}
-              </dl>
-            </div>
-          </details>
-        ) : null}
+        {
+          disclosures.length > 0 || paper.data.license_url ? (
+            <details class="paper-record-details">
+              <summary>Rights and disclosures</summary>
+              <div class="paper-record-details__body">
+                <dl>
+                  {disclosures.map((entry) => (
+                    <div>
+                      <dt>{entry.label}</dt>
+                      <dd>{entry.value}</dd>
+                    </div>
+                  ))}
+                  {paper.data.license_url ? (
+                    <div>
+                      <dt>License</dt>
+                      <dd>
+                        <a href={paper.data.license_url} rel="external">
+                          View license terms
+                        </a>
+                      </dd>
+                    </div>
+                  ) : null}
+                </dl>
+              </div>
+            </details>
+          ) : null
+        }
 
-        {paper.data.historical_provenance ? (
-          <details class="paper-record-details">
-            <summary>Historical provenance</summary>
-            <div class="paper-record-details__body">
-              <dl>
-                <div>
-                  <dt>Source</dt>
-                  <dd>
-                    {paper.data.historical_provenance.original_url ? (
-                      <a href={paper.data.historical_provenance.original_url} rel="external">
-                        {paper.data.historical_provenance.source_name}
-                      </a>
-                    ) : paper.data.historical_provenance.source_name}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Original term</dt>
-                  <dd>{paper.data.historical_provenance.original_term}</dd>
-                </div>
-                {paper.data.historical_provenance.original_publication_date ? (
+        {
+          paper.data.historical_provenance ? (
+            <details class="paper-record-details">
+              <summary>Historical provenance</summary>
+              <div class="paper-record-details__body">
+                <dl>
                   <div>
-                    <dt>Original publication date</dt>
-                    <dd>{formatPaperDate(paper.data.historical_provenance.original_publication_date)}</dd>
+                    <dt>Source</dt>
+                    <dd>
+                      {paper.data.historical_provenance.original_url ? (
+                        <a href={paper.data.historical_provenance.original_url} rel="external">
+                          {paper.data.historical_provenance.source_name}
+                        </a>
+                      ) : (
+                        paper.data.historical_provenance.source_name
+                      )}
+                    </dd>
                   </div>
-                ) : null}
-                {paper.data.historical_provenance.migrated_at ? (
                   <div>
-                    <dt>Migration date</dt>
-                    <dd>{formatPaperDate(paper.data.historical_provenance.migrated_at)}</dd>
+                    <dt>Original term</dt>
+                    <dd>{paper.data.historical_provenance.original_term}</dd>
                   </div>
-                ) : null}
-                <div>
-                  <dt>Note</dt>
-                  <dd>{paper.data.historical_provenance.note}</dd>
-                </div>
-              </dl>
-            </div>
-          </details>
-        ) : null}
+                  {paper.data.historical_provenance.original_publication_date ? (
+                    <div>
+                      <dt>Original publication date</dt>
+                      <dd>{formatPaperDate(paper.data.historical_provenance.original_publication_date)}</dd>
+                    </div>
+                  ) : null}
+                  {paper.data.historical_provenance.migrated_at ? (
+                    <div>
+                      <dt>Migration date</dt>
+                      <dd>{formatPaperDate(paper.data.historical_provenance.migrated_at)}</dd>
+                    </div>
+                  ) : null}
+                  <div>
+                    <dt>Note</dt>
+                    <dd>{paper.data.historical_provenance.note}</dd>
+                  </div>
+                </dl>
+              </div>
+            </details>
+          ) : null
+        }
       </aside>
     </div>
   </article>
@@ -335,13 +440,16 @@ const disclosures = [
     const initializeCitationSelector = () => {
       const selector = document.querySelector("[data-citation-selector]");
       const output = document.querySelector("#paper-citation-output");
+      const printOutput = document.querySelector("#paper-citation-print-output");
       if (!(selector instanceof HTMLSelectElement) || !(output instanceof HTMLElement)) return;
       if (selector.dataset.citationInit === "true") return;
       selector.dataset.citationInit = "true";
 
       const updateCitation = () => {
         const citation = selector.selectedOptions[0]?.dataset.citation;
-        if (citation) output.textContent = citation;
+        if (!citation) return;
+        output.textContent = citation;
+        if (printOutput instanceof HTMLElement) printOutput.textContent = citation;
       };
       selector.addEventListener("change", updateCitation);
       updateCitation();

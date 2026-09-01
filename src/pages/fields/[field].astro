@@ -64,43 +64,59 @@ const excerpt = (abstract: string, length = 260): string => {
     </header>
 
     <ol class="field-paper-list" aria-label={`Working papers in ${field}, newest first`}>
-      {papers.map((paper) => {
-        const title = cleanPaperTitle(paper.data.title);
-        const issueLabel = getIssueLabelForPaper(paper);
-        const issueHref = withBase(`/issues/${getIssueSlugForPaper(paper)}/`);
+      {
+        papers.map((paper) => {
+          const title = cleanPaperTitle(paper.data.title);
+          const issueLabel = getIssueLabelForPaper(paper);
+          const issueHref = withBase(`/issues/${getIssueSlugForPaper(paper)}/`);
 
-        return (
-          <li>
-            <article class="field-paper-entry">
-              <p class="field-paper-entry__number">{paper.data.series_number}</p>
-              <h3><a href={paperHref(paper)}>{title}</a></h3>
-              <p class="field-paper-entry__authors">{formatAuthorDisplay(paper.data.authors)}</p>
-              <p class="field-paper-entry__abstract">{excerpt(paper.data.abstract)}</p>
+          return (
+            <li>
+              <article class="field-paper-entry">
+                <p class="field-paper-entry__number">{paper.data.series_number}</p>
+                <h3>
+                  <a href={paperHref(paper)}>{title}</a>
+                </h3>
+                <p class="field-paper-entry__authors">{formatAuthorDisplay(paper.data.authors)}</p>
+                <p class="field-paper-entry__abstract">{excerpt(paper.data.abstract)}</p>
 
-              <dl class="field-paper-entry__metadata">
-                <div>
-                  <dt>Issue</dt>
-                  <dd><a href={issueHref}>{issueLabel}</a></dd>
-                </div>
-                <div>
-                  <dt>OAsis online</dt>
-                  <dd><time datetime={paper.data.repository_published_at}>{formatPaperDate(paper.data.repository_published_at)}</time></dd>
-                </div>
-                {paper.data.doi ? (
+                <dl class="field-paper-entry__metadata">
                   <div>
-                    <dt>DOI</dt>
-                    <dd><a href={doiUrl(paper.data.doi)} rel="external">{paper.data.doi}</a></dd>
+                    <dt>Issue</dt>
+                    <dd>
+                      <a href={issueHref}>{issueLabel}</a>
+                    </dd>
                   </div>
-                ) : null}
-              </dl>
+                  <div>
+                    <dt>OAsis online</dt>
+                    <dd>
+                      <time datetime={paper.data.repository_published_at}>
+                        {formatPaperDate(paper.data.repository_published_at)}
+                      </time>
+                    </dd>
+                  </div>
+                  {paper.data.doi ? (
+                    <div>
+                      <dt>DOI</dt>
+                      <dd>
+                        <a href={doiUrl(paper.data.doi)} rel="external">
+                          {paper.data.doi}
+                        </a>
+                      </dd>
+                    </div>
+                  ) : null}
+                </dl>
 
-              <p class="field-paper-entry__action">
-                <a href={paperHref(paper)}>View paper record<span aria-hidden="true"> →</span></a>
-              </p>
-            </article>
-          </li>
-        );
-      })}
+                <p class="field-paper-entry__action">
+                  <a href={paperHref(paper)}>
+                    View paper record<span aria-hidden="true"> →</span>
+                  </a>
+                </p>
+              </article>
+            </li>
+          );
+        })
+      }
     </ol>
 
     <p class="field-back-link"><a href={withBase("/fields/")}>← All research fields</a></p>

@@ -19,6 +19,8 @@ import {
   buildSearchIndexText,
   citationExportHref,
   doiUrl,
+  formatCatalogResultCount,
+  MAX_CATALOG_QUERY_LENGTH,
   parseSeriesIdentifier,
 } from "../../lib/publication";
 import { withBase } from "../../lib/urls";
@@ -26,7 +28,6 @@ import { withBase } from "../../lib/urls";
 const papers = await getAllPapers();
 const fields = await getFieldGroups();
 const issues = (await getIssueGroups()).filter((issue) => issue.papers.length > 0);
-const paperCountLabel = `${papers.length} ${papers.length === 1 ? "paper" : "papers"}`;
 
 const abstractExcerpt = (abstract: string, maximum = 240) => {
   if (abstract.length <= maximum) return abstract;
@@ -51,168 +52,232 @@ const abstractExcerpt = (abstract: string, maximum = 240) => {
       </p>
     </header>
 
-    {papers.length === 0 ? (
-      <section class="wps-catalog-empty-state" aria-labelledby="empty-catalog-heading">
-        <h2 id="empty-catalog-heading">No working papers are available</h2>
-        <p>Please return when the first issue has been deposited.</p>
-      </section>
-    ) : (
-      <section class="wps-catalog" aria-labelledby="catalog-heading">
-        <div class="wps-catalog-heading">
-          <h2 id="catalog-heading">Published collection</h2>
-          <p id="paper-result-count" role="status" aria-live="polite" aria-atomic="true">
-            Showing {paperCountLabel}
-          </p>
-        </div>
-
-        <form class="wps-catalog-filters js-only" action={withBase("/papers/")} method="get" data-paper-filters>
-          <div class="wps-catalog-filter wps-catalog-filter--search">
-            <label for="paper-search">Search</label>
-            <input
-              id="paper-search"
-              name="q"
-              type="search"
-              autocomplete="off"
-              placeholder="Title, author, keyword, or topic"
-              data-paper-search
-            />
+    {
+      papers.length === 0 ? (
+        <section class="wps-catalog-empty-state" aria-labelledby="empty-catalog-heading">
+          <h2 id="empty-catalog-heading">No working papers are available</h2>
+          <p>Please return when the first issue has been deposited.</p>
+        </section>
+      ) : (
+        <section class="wps-catalog" aria-labelledby="catalog-heading">
+          <div class="wps-catalog-heading">
+            <h2 id="catalog-heading">Published collection</h2>
+            <p id="paper-result-count" role="status" aria-live="polite" aria-atomic="true">
+              {formatCatalogResultCount(papers.length)}
+            </p>
           </div>
 
-          <div class="wps-catalog-filter">
-            <label for="paper-field">Research Field</label>
-            <select id="paper-field" name="field" data-paper-field>
-              <option value="">All research fields</option>
-              {fields.map((field) => (
-                <option value={field.slug}>{field.name} ({field.count})</option>
-              ))}
-            </select>
-          </div>
+          <form
+            class="wps-catalog-filters js-only"
+            action={withBase("/papers/")}
+            method="get"
+            data-paper-filters
+          >
+            <div class="wps-catalog-filter wps-catalog-filter--search">
+              <label for="paper-search">Search</label>
+              <input
+                id="paper-search"
+                name="q"
+                type="search"
+                inputmode="search"
+                autocomplete="off"
+                maxlength={MAX_CATALOG_QUERY_LENGTH}
+                placeholder="Title, author, keyword, or topic"
+                data-paper-search
+              />
+            </div>
 
-          <div class="wps-catalog-filter">
-            <label for="paper-issue">Issue</label>
-            <select id="paper-issue" name="issue" data-paper-issue>
-              <option value="">All issues</option>
-              {issues.map((issue) => (
-                <option value={issue.slug}>{issue.label} ({issue.papers.length})</option>
-              ))}
-            </select>
-          </div>
+            <div class="wps-catalog-filter">
+              <label for="paper-field">Research Field</label>
+              <select id="paper-field" name="field" data-paper-field>
+                <option value="">All research fields</option>
+                {fields.map((field) => (
+                  <option value={field.slug}>
+                    {field.name} ({field.count})
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div class="wps-catalog-filter">
-            <label for="paper-sort">Sort</label>
-            <select id="paper-sort" name="sort" data-paper-sort>
-              <option value="newest">Newest first</option>
-              <option value="oldest">Oldest first</option>
-              <option value="title">Title A–Z</option>
-            </select>
-          </div>
+            <div class="wps-catalog-filter">
+              <label for="paper-issue">Issue</label>
+              <select id="paper-issue" name="issue" data-paper-issue>
+                <option value="">All issues</option>
+                {issues.map((issue) => (
+                  <option value={issue.slug}>
+                    {issue.label} ({issue.papers.length})
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div class="wps-catalog-filter-actions">
-            <button type="submit">Apply filters</button>
-            <button type="button" class="wps-catalog-clear" data-paper-clear>Clear</button>
-          </div>
-        </form>
-        <noscript>
-          <p class="wps-catalog-noscript">Interactive filters require JavaScript. The complete unfiltered paper list appears below.</p>
-        </noscript>
+            <div class="wps-catalog-filter">
+              <label for="paper-sort">Sort</label>
+              <select id="paper-sort" name="sort" data-paper-sort>
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+                <option value="title">Title A–Z</option>
+              </select>
+            </div>
 
-        <ol class="wps-paper-list" data-paper-list aria-label="Working paper results">
-          {papers.map((paper) => {
-            const title = cleanPaperTitle(paper.data.title);
-            const issueSlug = getIssueSlugForPaper(paper);
-            const issueLabel = getIssueLabelForPaper(paper);
-            const repositoryLabel = repositoryIssueLabel(paper);
-            const field = fields.find((candidate) => candidate.name === paper.data.field);
-            const sequence = parseSeriesIdentifier(paper.data.series_number).sequence;
-            const filename = paperSlug(paper);
-            const bibtexHref = withBase(citationExportHref("paper", filename, "bibtex"));
-            const risHref = withBase(citationExportHref("paper", filename, "ris"));
-            const doiHref = paper.data.doi ? doiUrl(paper.data.doi) : null;
+            <div class="wps-catalog-filter-actions">
+              <button type="submit">Apply filters</button>
+              <button type="button" class="wps-catalog-clear" data-paper-clear>
+                Clear
+              </button>
+            </div>
+          </form>
+          <noscript>
+            <p class="wps-catalog-noscript">
+              Interactive filters require JavaScript. The complete unfiltered paper list appears below.
+            </p>
+          </noscript>
 
-            return (
-              <li
-                data-paper-item
-                data-search={buildSearchIndexText(paper.data)}
-                data-field={field?.slug ?? ""}
-                data-issue={issueSlug}
-                data-citable={paper.data.citable_published_at}
-                data-repository={paper.data.repository_published_at}
-                data-sequence={sequence}
-                data-title={title.toLocaleLowerCase("en-US")}
-              >
-                <article class="wps-paper-entry" aria-labelledby={`paper-title-${filename}`}>
-                  <h3 id={`paper-title-${filename}`}><a href={paperHref(paper)}>{title}</a></h3>
+          <ol class="wps-paper-list" data-paper-list aria-label="Working paper results">
+            {papers.map((paper) => {
+              const title = cleanPaperTitle(paper.data.title);
+              const issueSlug = getIssueSlugForPaper(paper);
+              const issueLabel = getIssueLabelForPaper(paper);
+              const repositoryLabel = repositoryIssueLabel(paper);
+              const field = fields.find((candidate) => candidate.name === paper.data.field);
+              const sequence = parseSeriesIdentifier(paper.data.series_number).sequence;
+              const filename = paperSlug(paper);
+              const bibtexHref = withBase(citationExportHref("paper", filename, "bibtex"));
+              const risHref = withBase(citationExportHref("paper", filename, "ris"));
+              const doiHref = paper.data.doi ? doiUrl(paper.data.doi) : null;
 
-                  <ul class="wps-paper-authors" aria-label={`Authors of ${title}`}>
-                    {paper.data.authors.map((author) => {
-                      const profile = author.institutional_profile ?? author.public_profile;
-                      return (
-                        <li>
-                          {profile ? <a href={profile} rel="external">{author.name}</a> : <span>{author.name}</span>}
-                          {author.affiliation ? <span class="wps-paper-affiliation">, {author.affiliation}</span> : null}
-                        </li>
-                      );
-                    })}
-                  </ul>
+              return (
+                <li
+                  data-paper-item
+                  data-search={buildSearchIndexText(paper.data)}
+                  data-field={field?.slug ?? ""}
+                  data-issue={issueSlug}
+                  data-citable={paper.data.citable_published_at}
+                  data-repository={paper.data.repository_published_at}
+                  data-sequence={sequence}
+                  data-title={title.toLocaleLowerCase("en-US")}
+                >
+                  <article class="wps-paper-entry" aria-labelledby={`paper-title-${filename}`}>
+                    <h3 id={`paper-title-${filename}`}>
+                      <a href={paperHref(paper)}>{title}</a>
+                    </h3>
 
-                  <dl class="wps-paper-metadata">
-                    <div>
-                      <dt>Research field</dt>
-                      <dd>{field ? <a href={withBase(`/fields/${field.slug}/`)}>{paper.data.field}</a> : paper.data.field}</dd>
-                    </div>
-                    <div>
-                      <dt>Issue</dt>
-                      <dd><a href={withBase(`/issues/${issueSlug}/`)}>{issueLabel}</a>{repositoryLabel ? ` · ${repositoryLabel}` : ""}</dd>
-                    </div>
-                    <div>
-                      <dt>Citable publication date</dt>
-                      <dd><time datetime={paper.data.citable_published_at}>{formatPaperDate(paper.data.citable_published_at)}</time></dd>
-                    </div>
-                    <div>
-                      <dt>OAsis online date</dt>
-                      <dd><time datetime={paper.data.repository_published_at}>{formatPaperDate(paper.data.repository_published_at)}</time></dd>
-                    </div>
-                    <div>
-                      <dt>Series number</dt>
-                      <dd>{paper.data.series_number}</dd>
-                    </div>
-                    {doiHref ? (
+                    <ul class="wps-paper-authors" aria-label={`Authors of ${title}`}>
+                      {paper.data.authors.map((author) => {
+                        const profile = author.institutional_profile ?? author.public_profile;
+                        return (
+                          <li>
+                            {profile ? (
+                              <a href={profile} rel="external">
+                                {author.name}
+                              </a>
+                            ) : (
+                              <span>{author.name}</span>
+                            )}
+                            {author.affiliation ? (
+                              <span class="wps-paper-affiliation">, {author.affiliation}</span>
+                            ) : null}
+                          </li>
+                        );
+                      })}
+                    </ul>
+
+                    <dl class="wps-paper-metadata">
                       <div>
-                        <dt>DOI</dt>
-                        <dd><a href={doiHref} rel="external">{paper.data.doi}</a></dd>
+                        <dt>Research field</dt>
+                        <dd>
+                          {field ? (
+                            <a href={withBase(`/fields/${field.slug}/`)}>{paper.data.field}</a>
+                          ) : (
+                            paper.data.field
+                          )}
+                        </dd>
                       </div>
-                    ) : null}
-                  </dl>
+                      <div>
+                        <dt>Issue</dt>
+                        <dd>
+                          <a href={withBase(`/issues/${issueSlug}/`)}>{issueLabel}</a>
+                          {repositoryLabel ? ` · ${repositoryLabel}` : ""}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Citable publication date</dt>
+                        <dd>
+                          <time datetime={paper.data.citable_published_at}>
+                            {formatPaperDate(paper.data.citable_published_at)}
+                          </time>
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>OAsis online date</dt>
+                        <dd>
+                          <time datetime={paper.data.repository_published_at}>
+                            {formatPaperDate(paper.data.repository_published_at)}
+                          </time>
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Series number</dt>
+                        <dd>{paper.data.series_number}</dd>
+                      </div>
+                      {doiHref ? (
+                        <div>
+                          <dt>DOI</dt>
+                          <dd>
+                            <a href={doiHref} rel="external">
+                              {paper.data.doi}
+                            </a>
+                          </dd>
+                        </div>
+                      ) : null}
+                    </dl>
 
-                  <div class="wps-paper-abstract">
-                    <h4>Abstract</h4>
-                    <p>{abstractExcerpt(paper.data.abstract)}</p>
-                  </div>
+                    <div class="wps-paper-abstract">
+                      <h4>Abstract</h4>
+                      <p>{abstractExcerpt(paper.data.abstract)}</p>
+                    </div>
 
-                  <p class="wps-paper-keywords"><strong>Keywords:</strong> {paper.data.keywords.join(", ")}</p>
+                    <p class="wps-paper-keywords">
+                      <strong>Keywords:</strong> {paper.data.keywords.join(", ")}
+                    </p>
 
-                  <nav class="wps-paper-links" aria-label={`Access and citation links for ${title}`}>
-                    <a href={paperHref(paper)}>Abstract and details</a>
-                    <a href={paperPdfHref(paper)}>PDF</a>
-                    <a href={bibtexHref} download={`${filename}.bib`}>BibTeX</a>
-                    <a href={risHref} download={`${filename}.ris`}>RIS</a>
-                  </nav>
-                </article>
-              </li>
-            );
-          })}
-        </ol>
+                    <nav class="wps-paper-links" aria-label={`Access and citation links for ${title}`}>
+                      <a href={paperHref(paper)}>Abstract and details</a>
+                      <a href={paperPdfHref(paper)}>PDF</a>
+                      <a href={bibtexHref} download={`${filename}.bib`}>
+                        BibTeX
+                      </a>
+                      <a href={risHref} download={`${filename}.ris`}>
+                        RIS
+                      </a>
+                    </nav>
+                  </article>
+                </li>
+              );
+            })}
+          </ol>
 
-        <div class="wps-catalog-no-results js-only" data-paper-empty hidden>
-          <h3>No working papers match these filters</h3>
-          <p>Try a broader search, another issue, or another research field.</p>
-          <button type="button" data-paper-empty-clear>Clear filters</button>
-        </div>
-      </section>
-    )}
+          <div class="wps-catalog-no-results js-only" data-paper-empty hidden>
+            <h3>No working papers match these filters</h3>
+            <p>Try a broader search, another issue, or another research field.</p>
+            <button type="button" data-paper-empty-clear>
+              Clear filters
+            </button>
+          </div>
+        </section>
+      )
+    }
   </div>
 
-  <script is:inline>
+  <script>
+    import {
+      formatCatalogResultCount,
+      parseCatalogFilterState,
+      serializeCatalogFilterState,
+      type CatalogFilterState,
+    } from "../../lib/publication/catalog-state";
+    import { normalizeSearchText } from "../../lib/publication/search";
+
     (() => {
       const initializePaperCatalog = () => {
         const form = document.querySelector("[data-paper-filters]");
@@ -228,60 +293,64 @@ const abstractExcerpt = (abstract: string, maximum = 240) => {
         const empty = document.querySelector("[data-paper-empty]");
         const count = document.getElementById("paper-result-count");
         const clearButtons = document.querySelectorAll("[data-paper-clear], [data-paper-empty-clear]");
-        const items = Array.from(list.querySelectorAll("[data-paper-item]"));
+        const items = Array.from(list.querySelectorAll<HTMLElement>("[data-paper-item]"));
 
         if (
           !(search instanceof HTMLInputElement) ||
           !(field instanceof HTMLSelectElement) ||
           !(issue instanceof HTMLSelectElement) ||
           !(sort instanceof HTMLSelectElement)
-        ) return;
+        )
+          return;
 
-        const normalize = (value) =>
-          String(value || "")
-            .normalize("NFKD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase("en-US")
-            .replace(/[^\p{L}\p{N}]+/gu, " ")
-            .replace(/\s+/g, " ")
-            .trim();
-
-        const isAllowed = (select, value) =>
-          Array.from(select.options).some((option) => option.value === value);
-
-        const readUrl = () => {
-          const params = new URL(window.location.href).searchParams;
-          search.value = params.get("q") || "";
-          const requestedField = params.get("field") || "";
-          const requestedIssue = params.get("issue") || "";
-          const requestedSort = params.get("sort") || "newest";
-          field.value = isAllowed(field, requestedField) ? requestedField : "";
-          issue.value = isAllowed(issue, requestedIssue) ? requestedIssue : "";
-          sort.value = isAllowed(sort, requestedSort) ? requestedSort : "newest";
+        const filterOptions = {
+          fields: Array.from(field.options, (option) => option.value).filter(Boolean),
+          issues: Array.from(issue.options, (option) => option.value).filter(Boolean),
         };
 
-        const currentUrl = () => {
+        const updateControls = (state: CatalogFilterState) => {
+          search.value = state.q;
+          field.value = state.field;
+          issue.value = state.issue;
+          sort.value = state.sort;
+        };
+
+        const readUrl = () => {
+          const state = parseCatalogFilterState(new URL(window.location.href).searchParams, filterOptions);
+          updateControls(state);
+          return state;
+        };
+
+        const readControls = () =>
+          parseCatalogFilterState(
+            new URLSearchParams({
+              q: search.value,
+              field: field.value,
+              issue: issue.value,
+              sort: sort.value,
+            }),
+            filterOptions,
+          );
+
+        const currentUrl = (state: CatalogFilterState) => {
           const url = new URL(form.action, window.location.href);
-          const query = search.value.trim();
-          if (query) url.searchParams.set("q", query);
-          if (field.value) url.searchParams.set("field", field.value);
-          if (issue.value) url.searchParams.set("issue", issue.value);
-          if (sort.value && sort.value !== "newest") url.searchParams.set("sort", sort.value);
+          url.search = serializeCatalogFilterState(state, filterOptions);
+          url.hash = window.location.hash;
           return url;
         };
 
-        const updateUrl = (mode) => {
-          const next = currentUrl();
+        const updateUrl = (mode: "push" | "replace", state: CatalogFilterState) => {
+          const next = currentUrl(state);
           const href = `${next.pathname}${next.search}${next.hash}`;
           if (href === `${window.location.pathname}${window.location.search}${window.location.hash}`) return;
           window.history[mode === "push" ? "pushState" : "replaceState"]({}, "", href);
         };
 
-        const apply = () => {
-          const query = normalize(search.value);
-          const selectedField = field.value;
-          const selectedIssue = issue.value;
-          const sortMode = sort.value || "newest";
+        const apply = (state: CatalogFilterState) => {
+          const query = normalizeSearchText(state.q);
+          const selectedField = state.field;
+          const selectedIssue = state.issue;
+          const sortMode = state.sort;
 
           items.forEach((item) => {
             const matchesSearch = !query || (item.dataset.search || "").includes(query);
@@ -301,13 +370,14 @@ const abstractExcerpt = (abstract: string, maximum = 240) => {
           ordered.forEach((item) => list.appendChild(item));
 
           const visibleCount = items.filter((item) => !item.hidden).length;
-          if (count) count.textContent = `Showing ${visibleCount} ${visibleCount === 1 ? "paper" : "papers"}`;
+          if (count) count.textContent = formatCatalogResultCount(visibleCount);
           if (empty instanceof HTMLElement) empty.hidden = visibleCount !== 0;
         };
 
-        const applyAndUpdate = (mode) => {
-          apply();
-          updateUrl(mode);
+        const applyAndUpdate = (mode: "push" | "replace") => {
+          const state = readControls();
+          apply(state);
+          updateUrl(mode, state);
         };
 
         form.addEventListener("submit", (event) => {
@@ -319,25 +389,28 @@ const abstractExcerpt = (abstract: string, maximum = 240) => {
           control.addEventListener("change", () => applyAndUpdate("push"));
         });
         clearButtons.forEach((button) => {
-          button.addEventListener("click", () => {
+          button.addEventListener("click", (event) => {
             search.value = "";
             field.value = "";
             issue.value = "";
             sort.value = "newest";
             applyAndUpdate("push");
-            search.focus({ preventScroll: true });
+            const keyboardOrAssistiveActivation = event instanceof MouseEvent && event.detail === 0;
+            const precisePointer = window.matchMedia("(pointer: fine)").matches;
+            if (!search.disabled && search.isConnected && (keyboardOrAssistiveActivation || precisePointer)) {
+              search.focus({ preventScroll: true });
+            }
           });
         });
 
         window.addEventListener("popstate", () => {
           if (!form.isConnected) return;
-          readUrl();
-          apply();
+          apply(readUrl());
         });
 
-        readUrl();
-        apply();
-        updateUrl("replace");
+        const initialState = readUrl();
+        apply(initialState);
+        updateUrl("replace", initialState);
       };
 
       document.addEventListener("astro:page-load", initializePaperCatalog);

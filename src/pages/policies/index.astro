@@ -102,27 +102,25 @@ const policies = [
     <article class="policy-article">
       <h2>Policy directory</h2>
       <p>
-        These policies define the public rules for eligibility, editorial screening, authorship,
-        research ethics, rights, accessibility, corrections, privacy, and preservation. Related
-        subjects are consolidated where one complete policy is easier to use than several thin pages.
+        These policies define the public rules for eligibility, editorial screening, authorship, research
+        ethics, rights, accessibility, corrections, privacy, and preservation. Related subjects are
+        consolidated where one complete policy is easier to use than several thin pages.
       </p>
       <p>
-        Working papers are editorially screened, are not peer reviewed, and may be revised. A public
-        policy does not replace the paper-specific author, faculty, rights, ethics, consent, or
-        repository records retained through authorized private processes.
+        Working papers are editorially screened, are not peer reviewed, and may be revised. A public policy
+        does not replace the paper-specific author, faculty, rights, ethics, consent, or repository records
+        retained through authorized private processes.
       </p>
 
       <div class="policy-directory" role="list" aria-label="Series policy pages">
-        {policies.map((policy) => (
-          <a
-            role="listitem"
-            class="policy-directory-item"
-            href={withBase(`/policies/${policy.slug}/`)}
-          >
-            <h3>{policy.title}</h3>
-            <p>{policy.summary}</p>
-          </a>
-        ))}
+        {
+          policies.map((policy) => (
+            <a role="listitem" class="policy-directory-item" href={withBase(`/policies/${policy.slug}/`)}>
+              <h3>{policy.title}</h3>
+              <p>{policy.summary}</p>
+            </a>
+          ))
+        }
       </div>
     </article>
   </section>
