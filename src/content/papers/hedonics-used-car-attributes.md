@@ -26,4 +26,5 @@ doi: "10.34917/40601193"
 oasis_url: "https://oasis.library.unlv.edu/econ_ug_papers/4"
 pdf_url: "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1003&context=econ_ug_papers"
 pages: "1-18"
+rights_statement: "In Copyright"
 ---

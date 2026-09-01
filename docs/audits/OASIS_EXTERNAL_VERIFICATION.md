@@ -1,0 +1,89 @@
+# OAsis External Verification
+
+Generated: 2026-09-01T02:50:24.403Z
+
+This is a bounded external check, not a PDF accessibility certification. A metadata mismatch means the retrieved OAsis record differs from local structured data. A network failure means the comparison could not be completed. HTTP errors, including access-control responses, are reported separately and are not treated as metadata mismatches.
+
+## Summary
+
+- Total records: 15
+- Fully verified: 3
+- Metadata or DOI-target mismatches: 0
+- Network failures: 0
+- Remote HTTP errors: 12
+- Invalid local records: 0
+
+## Record results
+
+| Slug | DOI syntax / target | OAsis item | PDF probe | Compared fields | Outcome |
+| --- | --- | --- | --- | ---: | --- |
+| `the-race-for-increasing-college-costs` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `used-electric-vehicle-tax-credit` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `nba-real-team-value` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `hedonics-used-car-attributes` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `key-determinants-diamond-value` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `rural-metropolitan-gender-wage-gap` | valid; OAsis reached | verified (200) | verified (206) | 13 match / 0 mismatch | **verified** |
+| `social-determinants-educational-attainment` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `ai-wage-effects-us-occupations` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `residential-sale-prices-neighborhood-interior` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `mlb-speed-premium` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `nevada-mining-output-growth` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `commercial-bank-failures` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `gambling-losses-future-wagers` | valid; OAsis reached | verified (200) | verified (206) | 13 match / 0 mismatch | **verified** |
+| `las-vegas-casino-revenue` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
+| `march-madness-tournament-advancement` | valid; OAsis reached | verified (200) | verified (206) | 13 match / 0 mismatch | **verified** |
+
+## Exceptions and limits
+
+### the-race-for-increasing-college-costs
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### used-electric-vehicle-tax-credit
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### nba-real-team-value
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### hedonics-used-car-attributes
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### key-determinants-diamond-value
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### social-determinants-educational-attainment
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### ai-wage-effects-us-occupations
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### residential-sale-prices-neighborhood-interior
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### mlb-speed-premium
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### nevada-mining-output-growth
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### commercial-bank-failures
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### las-vegas-casino-revenue
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+- OAsis disciplines are recorded for context but are not treated as the controlled local research field.
+- The local semester label is not inferred from repository volume and issue metadata.
+- A successful range probe or readable PDF does not establish WCAG or PDF/UA conformance.
+- This script is intended for manual, scheduled, and release-time use; it is deliberately not part of the normal build.

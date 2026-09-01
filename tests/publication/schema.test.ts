@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
+import { readdir, readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import test from "node:test";
+import { parseFrontmatter } from "@astrojs/markdown-remark";
 import { paperSchema } from "../../src/content/paper-schema";
 import { historicalPublicationFixture, publicationFixture } from "./fixtures";
 
@@ -50,6 +53,22 @@ test("rejects private consent evidence from the public paper record", () => {
   };
 
   assert.equal(paperSchema.safeParse(record).success, false);
+});
+
+test("all current public records carry only the verified OAsis rights label", async () => {
+  const paperDirectory = resolve(process.cwd(), "src/content/papers");
+  const fileNames = (await readdir(paperDirectory)).filter((name) => name.endsWith(".md")).sort();
+  assert.equal(fileNames.length, 15);
+
+  for (const fileName of fileNames) {
+    const source = await readFile(resolve(paperDirectory, fileName), "utf8");
+    const frontmatter = parseFrontmatter(source).frontmatter;
+    const parsed = paperSchema.safeParse(frontmatter);
+    assert.equal(parsed.success, true, `${fileName} must satisfy the public paper schema`);
+    assert.equal(frontmatter.rights_statement, "In Copyright", `${fileName} must use the verified OAsis label`);
+    assert.equal(Object.hasOwn(frontmatter, "consent_evidence"), false);
+    assert.equal(Object.hasOwn(frontmatter, "rights_evidence"), false);
+  }
 });
 
 test("rejects uncontrolled fields, invalid dates, and mismatched Series years", () => {
