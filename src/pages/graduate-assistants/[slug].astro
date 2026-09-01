@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import AboutNavigation from "../../components/AboutNavigation.astro";
+import PageBanner from "../../components/PageBanner.astro";
+import { JUNIOR_EDITORS, type EditorialMember } from "../../config/editorial";
+import { SERIES } from "../../config/publication";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+export async function getStaticPaths() {
+  const assistants = await getCollection("graduateAssistants");
+  return assistants.map((assistant) => ({
+    params: { slug: assistant.id },
+    props: {
+      assistant,
+      member: JUNIOR_EDITORS.find((candidate) => candidate.name === assistant.data.name),
+    },
+  }));
+}
+
+const { member } = Astro.props as { member: EditorialMember };
+---
+
+<BaseLayout
+  title={`${member.name} | Junior Editors | UNLV Undergraduate Economics Working Paper Series`}
+  bodyClass="section-about page-profile"
+>
+  <PageBanner title={member.name} lead={member.publicTitle} />
+
+  <section class="content-section">
+    <AboutNavigation currentHref="/editorial-board/" />
+  </section>
+
+  <section class="content-section profile-shell">
+    <article class="profile-bio" aria-label={`Series profile for ${member.name}`}>
+      <p class="profile-series-role">{member.description}</p>
+      <p><a href={`mailto:${SERIES.contactEmail}`}>Contact the Series about editorial matters</a>.</p>
+    </article>
+
+    <p class="profile-back-link">
+      <a href={withBase("/editorial-board/#junior-editors")}>← Back to Junior Editors</a>
+    </p>
+  </section>
+</BaseLayout>

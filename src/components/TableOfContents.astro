@@ -1,0 +1,156 @@
+---
+interface TocItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  title?: string;
+  items: TocItem[];
+}
+
+const { title = "On this page", items = [] } = Astro.props;
+---
+
+<nav class="toc" data-toc aria-labelledby="on-this-page-heading">
+  <h2 class="toc__title" id="on-this-page-heading">{title}</h2>
+
+  <ol class="toc__list">
+    {
+      items.map((item, index) => (
+        <li class="toc__item">
+          <a
+            class:list={["toc__link", index === 0 && "is-active"]}
+            href={`#${item.id}`}
+            data-toc-link={item.id}
+            aria-current={index === 0 ? "location" : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+
+  <script>
+    (() => {
+      const init = () => {
+        document.querySelectorAll<HTMLElement>("[data-toc]").forEach((toc) => {
+          if (toc.dataset.tocInit === "true") {
+            return;
+          }
+          toc.dataset.tocInit = "true";
+
+          const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"));
+          const sections = links
+            .map((link) => document.getElementById(link.dataset.tocLink || ""))
+            .filter((section): section is HTMLElement => section !== null);
+
+          if (sections.length === 0) {
+            return;
+          }
+
+          const setActive = (id: string) => {
+            links.forEach((link) => {
+              const isActive = (link.dataset.tocLink || "") === id;
+              link.classList.toggle("is-active", isActive);
+              if (isActive) link.setAttribute("aria-current", "location");
+              else link.removeAttribute("aria-current");
+            });
+          };
+
+          const syncActiveFromLocation = () => {
+            const hash = decodeURIComponent(location.hash || "").replace("#", "");
+            const matchingSection = sections.find((section) => section.id === hash);
+            const target = matchingSection ?? sections[0];
+            setActive(target.id);
+            return target;
+          };
+
+          let alignmentFrame = 0;
+          let settleFrame = 0;
+
+          const alignSection = (target: HTMLElement) => {
+            cancelAnimationFrame(alignmentFrame);
+            cancelAnimationFrame(settleFrame);
+
+            // Chromium and WebKit do not consistently restore the manual
+            // fragment scroll created with pushState. Re-align the hash target
+            // after history traversal so the URL, visible section, and
+            // aria-current marker cannot drift apart.
+            alignmentFrame = requestAnimationFrame(() => {
+              settleFrame = requestAnimationFrame(() => {
+                const headerOffset = Number.parseFloat(
+                  getComputedStyle(document.documentElement).getPropertyValue("--header-offset"),
+                );
+                const targetTop = target.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({
+                  top: Math.max(0, targetTop - (Number.isFinite(headerOffset) ? headerOffset : 0)),
+                  behavior: "auto",
+                });
+                setActive(target.id);
+              });
+            });
+          };
+
+          const syncAndAlignFromLocation = () => {
+            alignSection(syncActiveFromLocation());
+          };
+
+          syncActiveFromLocation();
+          window.addEventListener("hashchange", syncAndAlignFromLocation);
+          window.addEventListener("popstate", syncAndAlignFromLocation);
+
+          links.forEach((link) => {
+            link.addEventListener("click", (event) => {
+              const id = link.dataset.tocLink || "";
+              const target = document.getElementById(id);
+              if (!id || !target) return;
+
+              setActive(id);
+
+              if (
+                event.defaultPrevented ||
+                event.button !== 0 ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey
+              ) {
+                return;
+              }
+
+              event.preventDefault();
+              if (location.hash !== link.hash) history.pushState(null, "", link.hash);
+              alignSection(target);
+            });
+          });
+
+          if (!("IntersectionObserver" in window)) {
+            return;
+          }
+
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.target?.id) {
+                  setActive(entry.target.id);
+                }
+              });
+            },
+            { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
+          );
+
+          sections.forEach((section) => observer.observe(section));
+        });
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init, { once: true });
+      } else {
+        init();
+      }
+      document.addEventListener("astro:page-load", init);
+    })();
+  </script>
+</nav>

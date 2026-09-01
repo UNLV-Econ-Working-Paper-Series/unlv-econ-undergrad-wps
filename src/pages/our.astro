@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { legacyRedirectTarget } from "../lib/legacy-redirects";
+import { withBase } from "../lib/urls";
+
+const canonicalPath = legacyRedirectTarget("/our/")!;
+const target = withBase(canonicalPath);
+---
+
+<BaseLayout
+  title="For Student Authors | UNLV Undergraduate Economics Working Paper Series"
+  description="Research Pathway has moved to the Series guidance for student authors."
+  canonicalPath={canonicalPath}
+  robots="noindex, follow"
+  redirectTo={target}
+  bodyClass="redirect-page"
+>
+  <section class="content-section">
+    <h1>Research Pathway is now For Student Authors</h1>
+    <p><a href={target}>Continue to For Student Authors</a></p>
+  </section>
+</BaseLayout>

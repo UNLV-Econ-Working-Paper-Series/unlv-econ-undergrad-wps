@@ -1,0 +1,921 @@
+.wps-catalog-page,
+.paper-record-page {
+  --wps-red: #9f1515;
+  --wps-red-dark: #761010;
+  --wps-ink: #1b1e23;
+  --wps-muted: #535a64;
+  --wps-rule: #cfd3d8;
+  --wps-rule-dark: #7e858d;
+  --wps-wash: #f5f4f1;
+  --wps-paper: #ffffff;
+  color: var(--wps-ink);
+  font-family:
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+.wps-catalog-page .page-body,
+.paper-record-page .page-body {
+  padding-top: 0;
+  background: var(--wps-paper);
+}
+
+.wps-catalog-page .page-content,
+.paper-record-page .page-content {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wps-catalog-page .page-content > .wps-catalog-shell,
+.paper-record-page .page-content > .paper-record-shell {
+  width: min(calc(100% - (2 * var(--gutter))), var(--shell-max));
+  max-width: none;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.wps-catalog-page :where(h1, h2, h3, h4),
+.paper-record-page :where(h1, h2, h3) {
+  color: var(--wps-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.015em;
+}
+
+.wps-catalog-page :where(a, button, input, select):focus-visible,
+.paper-record-page :where(a, button, select, summary):focus-visible {
+  outline: 3px solid #1469a8 !important;
+  outline-offset: 3px !important;
+  box-shadow: none !important;
+}
+
+.wps-paper-entry a,
+.paper-record-page .page-body a {
+  color: var(--wps-red);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.wps-paper-entry a:hover,
+.paper-record-page .page-body a:hover {
+  color: var(--wps-red-dark);
+}
+
+.wps-catalog {
+  padding-top: clamp(2rem, 5vw, 3.75rem);
+  padding-bottom: clamp(3rem, 7vw, 6rem);
+}
+
+.wps-catalog-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.wps-catalog-heading h2 {
+  margin: 0;
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+}
+
+.wps-catalog-heading p {
+  margin: 0;
+  color: var(--wps-muted);
+  font-weight: 700;
+}
+
+.wps-catalog-filters {
+  display: grid;
+  /*
+   * Eight flexible tracks keep search (2), research field (2), issue (1),
+   * sort (1), and actions (2) on one row when space permits. Because the
+   * minimum is in rem, increased text sizing naturally reduces the track count
+   * and reflows the controls instead of forcing them outside the form.
+   */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+  gap: 0.9rem;
+  align-items: end;
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+  border: 1px solid var(--wps-rule);
+  border-top: 3px solid var(--wps-red);
+  border-radius: 0.25rem;
+  background: var(--wps-wash);
+}
+
+/* `.has-js .js-only` uses `display: revert !important` in the base layer. */
+.has-js .wps-catalog-filters {
+  display: grid !important;
+}
+
+.wps-catalog-filter {
+  min-width: 0;
+}
+
+.wps-catalog-filter--search {
+  grid-column: span 2;
+}
+
+.wps-catalog-filter--field {
+  grid-column: span 2;
+}
+
+.wps-catalog-filter label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--wps-ink);
+  font-size: 0.86rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.wps-catalog-filter input,
+.wps-catalog-filter select {
+  width: 100%;
+  min-width: 0;
+  height: 3rem;
+  min-height: 3rem;
+  border: 1px solid var(--wps-rule-dark);
+  border-radius: 2px !important;
+  background: #ffffff;
+  color: var(--wps-ink);
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+  box-shadow: none !important;
+}
+
+.wps-catalog-filter-actions {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.wps-catalog-filter-actions button,
+.wps-catalog-no-results button {
+  min-width: 0;
+  min-height: 3rem;
+  border: 2px solid var(--wps-red);
+  border-radius: 2px;
+  background: var(--wps-red);
+  color: #ffffff;
+  padding: 0.55rem 0.9rem;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.wps-catalog-filter-actions .wps-catalog-clear {
+  background: transparent;
+  color: var(--wps-red);
+}
+
+.wps-catalog-filter-actions button:hover,
+.wps-catalog-filter-actions button:focus-visible,
+.wps-catalog-no-results button:hover,
+.wps-catalog-no-results button:focus-visible {
+  border-color: var(--wps-red-dark);
+  background: var(--wps-red-dark);
+  color: #ffffff;
+}
+
+.wps-paper-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wps-paper-list > li {
+  min-width: 0;
+  padding: clamp(2.1rem, 5vw, 3.4rem) 0;
+  border-bottom: 1px solid var(--wps-rule);
+}
+
+.wps-paper-list > li[hidden] {
+  display: none !important;
+}
+
+.wps-paper-entry {
+  min-width: 0;
+}
+
+.wps-paper-entry h3 {
+  max-width: 58rem;
+  margin: 0;
+  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+  line-height: 1.18;
+}
+
+.wps-paper-entry h3 a {
+  color: var(--wps-ink);
+  text-decoration-color: var(--wps-red);
+}
+
+.wps-paper-entry h3 a:hover,
+.wps-paper-entry h3 a:focus-visible {
+  color: var(--wps-red);
+}
+
+.wps-paper-authors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  color: var(--wps-ink);
+  font-weight: 700;
+  list-style: none;
+}
+
+.wps-paper-authors li {
+  min-width: 0;
+}
+
+.wps-paper-authors li:not(:last-child)::after {
+  content: ";\00a0";
+}
+
+.wps-paper-affiliation {
+  color: var(--wps-muted);
+  font-weight: 400;
+}
+
+.wps-paper-metadata {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem 1.5rem;
+  max-width: 64rem;
+  margin: 1.25rem 0 0;
+}
+
+.wps-paper-metadata div,
+.wps-paper-metadata dd {
+  min-width: 0;
+}
+
+.wps-paper-metadata dt,
+.paper-record-core dt,
+.paper-record-details dt {
+  color: var(--wps-muted);
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.wps-paper-metadata dd,
+.paper-record-core dd,
+.paper-record-details dd {
+  margin: 0.15rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.wps-paper-abstract {
+  max-width: 57rem;
+  margin-top: 1.45rem;
+}
+
+.wps-paper-abstract h4 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.wps-paper-abstract p,
+.wps-paper-keywords {
+  margin: 0;
+  color: var(--wps-muted);
+  line-height: 1.7;
+}
+
+.wps-paper-keywords {
+  max-width: 57rem;
+  margin-top: 0.9rem;
+}
+
+.wps-paper-keywords strong {
+  color: var(--wps-ink);
+}
+
+.wps-paper-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0;
+  margin-top: 1.25rem;
+}
+
+.wps-paper-links a {
+  display: inline-block;
+  font-weight: 700;
+}
+
+.wps-paper-links a:not(:last-child)::after {
+  display: inline-block;
+  margin: 0 0.65rem;
+  color: var(--wps-rule-dark);
+  content: "/";
+  text-decoration: none;
+}
+
+.wps-catalog-no-results,
+.wps-catalog-empty-state {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--wps-rule);
+}
+
+.wps-catalog-noscript {
+  margin: 0;
+  padding: 1rem 0;
+  border-block-end: 1px solid var(--wps-rule);
+  color: var(--wps-muted);
+}
+
+.wps-catalog-no-results[hidden] {
+  display: none !important;
+}
+
+.wps-catalog-no-results h3,
+.wps-catalog-empty-state h2 {
+  margin: 0;
+}
+
+.wps-catalog-no-results p,
+.wps-catalog-empty-state p {
+  margin: 0.5rem 0 1rem;
+  color: var(--wps-muted);
+}
+
+/* Paper record */
+
+.paper-record-shell {
+  min-width: 0;
+  padding-top: 1rem;
+  padding-bottom: clamp(3rem, 7vw, 6rem);
+}
+
+.paper-record-breadcrumb {
+  padding: 0.35rem 0 1rem;
+  border-bottom: 1px solid var(--wps-rule);
+}
+
+.paper-record-breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0;
+  margin: 0;
+  padding: 0;
+  color: var(--wps-muted);
+  font-size: 0.85rem;
+  list-style: none;
+}
+
+.paper-record-breadcrumb li {
+  display: inline-flex;
+  min-width: 0;
+  align-items: baseline;
+  overflow-wrap: anywhere;
+}
+
+.paper-record-breadcrumb li:not(:last-child)::after {
+  margin: 0 0.55rem;
+  color: var(--wps-rule-dark);
+  content: "/";
+}
+
+.paper-record-header {
+  max-width: 65rem;
+  padding-top: clamp(2.4rem, 6vw, 5rem);
+  padding-bottom: 2rem;
+}
+
+.paper-record-series {
+  margin: 0 0 0.8rem;
+  color: var(--wps-red);
+  font-size: 0.82rem;
+  font-weight: 750;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.paper-record-header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.03;
+  overflow-wrap: anywhere;
+}
+
+.paper-record-byline {
+  margin: 1.15rem 0 0;
+  color: var(--wps-ink);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-weight: 700;
+}
+
+.paper-record-notice {
+  max-width: 58rem;
+  margin: 1.5rem 0 0;
+  border-left: 4px solid var(--wps-red);
+  padding: 0.4rem 0 0.4rem 1rem;
+  color: var(--wps-muted);
+  line-height: 1.6;
+}
+
+.paper-record-notice strong {
+  color: var(--wps-ink);
+}
+
+.paper-record-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  padding: 1.15rem 0;
+  border-top: 1px solid var(--wps-rule-dark);
+  border-bottom: 1px solid var(--wps-rule);
+}
+
+.paper-record-page .page-body .paper-record-action {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--wps-red);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--wps-red);
+  padding: 0.55rem 0.8rem;
+  font: inherit;
+  font-weight: 750;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease;
+}
+
+.paper-record-page .page-body .paper-record-action--primary,
+.paper-record-page .page-body .paper-record-action:hover,
+.paper-record-page .page-body .paper-record-action:focus-visible {
+  border-color: var(--wps-red-dark);
+  background: var(--wps-red-dark);
+  color: #ffffff;
+}
+
+.paper-record-page .page-body .paper-record-action--primary:hover,
+.paper-record-page .page-body .paper-record-action--primary:focus-visible {
+  border-color: #4f0808;
+  background: #4f0808;
+  color: #ffffff;
+}
+
+.paper-record-core {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--wps-rule-dark);
+}
+
+.paper-record-core h2,
+.paper-record-main h2,
+.paper-record-repository h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+}
+
+.paper-record-core > dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.15rem 1.75rem;
+  margin: 1.2rem 0 0;
+}
+
+.paper-record-core > dl > div,
+.paper-record-core dd {
+  min-width: 0;
+}
+
+.paper-record-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(17rem, 0.85fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  padding-top: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.paper-record-main,
+.paper-record-secondary {
+  min-width: 0;
+}
+
+.paper-record-main > section {
+  padding-top: 2.25rem;
+  border-top: 1px solid var(--wps-rule);
+}
+
+.paper-record-main > section:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.paper-record-main > section + section {
+  margin-top: 2.25rem;
+}
+
+.paper-record-authors ol,
+.paper-record-versions ol {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.paper-record-authors li,
+.paper-record-versions li {
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--wps-rule);
+}
+
+.paper-record-authors li:first-child,
+.paper-record-versions li:first-child {
+  border-top-color: var(--wps-rule-dark);
+}
+
+.paper-record-authors p,
+.paper-record-versions p {
+  margin: 0.2rem 0 0;
+  color: var(--wps-muted);
+}
+
+.paper-record-author-name {
+  color: var(--wps-ink) !important;
+  font-weight: 750;
+}
+
+.paper-record-abstract p,
+.paper-record-keywords p {
+  margin: 0.8rem 0 0;
+  color: var(--wps-ink);
+  line-height: 1.78;
+}
+
+.paper-record-versions li > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.paper-record-versions li > div span {
+  color: var(--wps-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.paper-record-version-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.paper-record-secondary > * + * {
+  margin-top: 1.5rem;
+}
+
+.paper-record-details,
+.paper-record-repository {
+  border-top: 1px solid var(--wps-rule-dark);
+  border-bottom: 1px solid var(--wps-rule);
+}
+
+.paper-record-details summary {
+  min-height: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  color: var(--wps-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.paper-record-details__icon {
+  inline-size: 1rem;
+  block-size: 1rem;
+  color: var(--wps-red);
+  transform: rotate(0deg);
+  transform-origin: center;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.paper-record-details[open] .paper-record-details__icon {
+  transform: rotate(180deg);
+}
+
+.paper-record-details__body {
+  padding: 0.75rem 0 1.25rem;
+}
+
+.paper-record-details__body > label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.paper-record-details__body select {
+  width: 100%;
+  min-height: 2.8rem;
+  border: 1px solid var(--wps-rule-dark);
+  border-radius: 2px;
+  background: #ffffff;
+  color: var(--wps-ink);
+  padding: 0.5rem;
+  font: inherit;
+}
+
+.select-control {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--wps-ink);
+}
+
+.select-control--js-only {
+  display: none;
+}
+
+.has-js .select-control--js-only {
+  display: block;
+}
+
+.select-control > select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-inline-end: 2rem;
+}
+
+.select-control__icon {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 0.7rem;
+  inline-size: 0.95rem;
+  block-size: 0.95rem;
+  color: var(--wps-ink);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.paper-record-citation-output {
+  margin: 1rem 0;
+  border-left: 3px solid var(--wps-rule-dark);
+  padding-left: 0.8rem;
+  color: var(--wps-ink);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.paper-record-citation-note {
+  margin: 0.9rem 0 0;
+  color: var(--wps-muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.paper-record-print-citation {
+  display: none;
+}
+
+.paper-record-details dl {
+  margin: 0;
+}
+
+.paper-record-details dl > div + div {
+  margin-top: 0.9rem;
+}
+
+.paper-record-repository {
+  padding: 1rem 0 1.25rem;
+}
+
+.paper-record-repository p {
+  margin: 0.7rem 0;
+  color: var(--wps-muted);
+  line-height: 1.65;
+}
+
+@media (max-width: 980px) {
+  .wps-catalog-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wps-catalog-filter--search {
+    grid-column: 1 / -1;
+  }
+
+  .wps-catalog-filter--field {
+    grid-column: auto;
+  }
+
+  .wps-catalog-filter-actions {
+    grid-column: 1 / -1;
+    max-width: 24rem;
+  }
+
+  .paper-record-core > dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .paper-record-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .paper-record-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .paper-record-action--primary,
+  .paper-record-action--repository {
+    grid-column: span 2;
+  }
+
+  .paper-record-secondary {
+    max-width: 44rem;
+  }
+}
+
+@media (max-width: 680px) {
+  .wps-catalog-filters,
+  .paper-record-core > dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .wps-paper-metadata {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wps-catalog-filter--search {
+    grid-column: auto;
+  }
+
+  .wps-catalog-filter-actions {
+    grid-column: auto;
+    width: 100%;
+    max-width: none;
+  }
+
+  .wps-paper-authors {
+    display: block;
+  }
+
+  .wps-paper-authors li:not(:last-child)::after {
+    content: "";
+  }
+
+  .wps-paper-links a {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .paper-record-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .paper-record-action--primary,
+  .paper-record-action--repository {
+    grid-column: 1 / -1;
+  }
+
+  .paper-record-page .page-body .paper-record-action {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .wps-catalog-filter-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .wps-paper-metadata {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .wps-catalog-filter-actions button {
+    width: 100%;
+  }
+
+  .wps-paper-links a:not(:last-child)::after {
+    margin-right: 0.45rem;
+    margin-left: 0.45rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-record-page .page-body .paper-record-action,
+  .paper-record-details__icon {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .wps-catalog-filters {
+    background: Canvas;
+    box-shadow: none;
+  }
+
+  .wps-catalog-filter input,
+  .wps-catalog-filter select,
+  .paper-record-details__body select,
+  .paper-record-page .page-body .paper-record-action,
+  .wps-catalog-filter-actions button {
+    border-color: ButtonText;
+  }
+
+  .paper-record-notice {
+    border-left-color: Highlight;
+  }
+
+  .select-control > select {
+    appearance: auto;
+    -webkit-appearance: auto;
+    padding-inline-end: 0.65rem;
+  }
+
+  .select-control__icon {
+    display: none;
+  }
+}
+
+@media print {
+  .wps-catalog-page .page-body,
+  .wps-catalog-page .page-content,
+  .wps-catalog-page .page-content > .wps-catalog-shell,
+  .paper-record-page .page-body,
+  .paper-record-page .page-content,
+  .paper-record-page .page-content > .paper-record-shell {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .wps-catalog-filters,
+  .paper-record-actions,
+  .paper-record-breadcrumb,
+  .wps-paper-links,
+  .paper-record-citation {
+    display: none !important;
+  }
+
+  .paper-record-print-citation {
+    display: block !important;
+  }
+
+  .paper-record-citation label,
+  .paper-record-citation select,
+  .paper-record-citation button {
+    display: none !important;
+  }
+
+  .wps-paper-list > li,
+  .paper-record-core,
+  .paper-record-main > section,
+  .paper-record-secondary > * {
+    break-inside: avoid;
+  }
+
+  .paper-record-body {
+    display: block;
+  }
+
+  .paper-record-secondary {
+    max-width: none;
+    margin-top: 2rem;
+  }
+
+  .paper-record-details:not([open]) > :not(summary) {
+    display: block !important;
+  }
+
+  .paper-record-details__icon {
+    display: none;
+  }
+
+  .wps-catalog-page :where(a, p, h1, h2, h3, h4, dt, dd),
+  .paper-record-page :where(a, p, h1, h2, h3, dt, dd, strong, span) {
+    color: #000000 !important;
+  }
+}

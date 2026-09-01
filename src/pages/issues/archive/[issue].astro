@@ -1,0 +1,98 @@
+---
+import PageBanner from "../../../components/PageBanner.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getArchiveIssueGroups, type ArchiveIssueGroup } from "../../../lib/archive";
+import { withBase } from "../../../lib/urls";
+import "../../../styles/pages/issues.css";
+
+export async function getStaticPaths() {
+  const issues = getArchiveIssueGroups();
+  return issues.map((issue) => ({ params: { issue: issue.slug }, props: { issue } }));
+}
+
+const { issue } = Astro.props as { issue: ArchiveIssueGroup };
+// This records the bounded metadata migration, never the paper's original year.
+const ARCHIVE_MIGRATION_YEAR = 2026;
+
+const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
+  `${count} ${count === 1 ? singular : plural}`;
+---
+
+<BaseLayout
+  title={`${issue.label} | Historical Archive | UNLV Undergraduate Economics Working Paper Series`}
+  description={`Historical metadata records from the ${issue.label} UNLV Economics Hub working-paper issue.`}
+  bodyClass="section-issues page-archive-issue"
+>
+  <nav class="publication-breadcrumb content-section" aria-label="Breadcrumb">
+    <ol>
+      <li><a href={withBase("/issues/")}>Issues</a></li>
+      <li><a href={withBase("/issues/archive/")}>Historical Archive</a></li>
+      <li><span aria-current="page">{issue.label}</span></li>
+    </ol>
+  </nav>
+
+  <PageBanner
+    kicker="Historical issue"
+    title={issue.label}
+    subtitle={countLabel(issue.papers.length, "historical working-paper record")}
+    compact
+  />
+
+  <section class="historical-issue content-section" aria-labelledby="historical-issue-title">
+    <header class="historical-issue__summary">
+      <p class="publication-label">Metadata-only inventory</p>
+      <h2 id="historical-issue-title">Records from the {issue.label} Economics Hub issue</h2>
+      <p>
+        The original issue term and the current migration year are reported separately. Full text is not
+        linked while provenance, rights, final-version status, file availability, and accessibility checks
+        remain open.
+      </p>
+      <dl class="archive-provenance-summary">
+        <div>
+          <dt>Original issue term</dt>
+          <dd>{issue.label}</dd>
+        </div>
+        <div>
+          <dt>Metadata migration</dt>
+          <dd>{ARCHIVE_MIGRATION_YEAR}</dd>
+        </div>
+        <div>
+          <dt>Public access status</dt>
+          <dd>Metadata only</dd>
+        </div>
+      </dl>
+    </header>
+
+    <ol class="historical-paper-list" aria-label={`Historical working-paper records from ${issue.label}`}>
+      {
+        issue.papers.map((paper) => (
+          <li>
+            <article class="historical-paper-entry">
+              <p class="historical-paper-entry__status">
+                <strong>Historical working paper</strong>
+              </p>
+              <h3>{paper.title}</h3>
+              <dl class="historical-paper-entry__metadata">
+                <div>
+                  <dt>Author display</dt>
+                  <dd>{paper.authors}</dd>
+                </div>
+                <div>
+                  <dt>Original publication term</dt>
+                  <dd>{issue.label}</dd>
+                </div>
+              </dl>
+              <p class="historical-paper-entry__provenance">
+                Originally published through the UNLV Economics Hub in {issue.label}. Metadata migrated to the
+                current Series archive in {ARCHIVE_MIGRATION_YEAR}; full-text migration remains under
+                verification.
+              </p>
+            </article>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="issue-back-link"><a href={withBase("/issues/archive/")}>← All historical issues</a></p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,266 @@
+---
+import "../styles/pages/home.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { INSTITUTION } from "../config/institution";
+import { OASIS, SERIES } from "../config/publication";
+import {
+  cleanPaperTitle,
+  formatPaperDate,
+  getAllPapers,
+  getFieldGroups,
+  getIssueGroups,
+  getIssueLabelForPaper,
+  paperHref,
+  repositoryIssueLabel,
+} from "../lib/papers";
+import { formatAuthorDisplay, parseSeriesIdentifier } from "../lib/publication";
+import { withBase } from "../lib/urls";
+
+const papers = await getAllPapers();
+const fields = await getFieldGroups();
+const issues = (await getIssueGroups()).filter((issue) => issue.papers.length > 0);
+const latestIssue = issues[0] ?? null;
+const compareRepositoryNewest = (a: (typeof papers)[number], b: (typeof papers)[number]) =>
+  b.data.repository_published_at.localeCompare(a.data.repository_published_at) ||
+  b.data.current_version.published_at.localeCompare(a.data.current_version.published_at) ||
+  parseSeriesIdentifier(b.data.series_number).sequence - parseSeriesIdentifier(a.data.series_number).sequence;
+const newPapers = [...papers].sort(compareRepositoryNewest).slice(0, 5);
+const latestIssuePapers = latestIssue
+  ? [...latestIssue.papers].sort(
+      (a, b) =>
+        b.data.repository_published_at.localeCompare(a.data.repository_published_at) ||
+        b.data.current_version.published_at.localeCompare(a.data.current_version.published_at) ||
+        parseSeriesIdentifier(a.data.series_number).sequence -
+          parseSeriesIdentifier(b.data.series_number).sequence,
+    )
+  : [];
+
+const latestIssueRecord = latestIssue?.papers[0] ?? null;
+const latestIssueRepositoryDates = latestIssue
+  ? [...new Set(latestIssue.papers.map((paper) => paper.data.repository_published_at))].sort()
+  : [];
+const latestIssueOnlineLabel =
+  latestIssueRepositoryDates.length === 1
+    ? `Added to OAsis ${formatPaperDate(latestIssueRepositoryDates[0])}`
+    : latestIssueRepositoryDates.length > 1
+      ? `Papers added to OAsis between ${formatPaperDate(latestIssueRepositoryDates[0])} and ${formatPaperDate(latestIssueRepositoryDates.at(-1)!)}`
+      : "";
+---
+
+<BaseLayout
+  title="UNLV Undergraduate Economics Working Paper Series"
+  description="Original economics-related research by UNLV undergraduates, released in semester issues."
+  bodyClass="page-home scholar-home"
+>
+  <header class="scholar-home-hero">
+    <div class="scholar-home-hero__image" aria-hidden="true">
+      <picture>
+        <source
+          type="image/webp"
+          srcset={`${withBase("/assets/images/lee-business-school-960.webp")} 960w, ${withBase("/assets/images/lee-business-school-1600.webp")} 1600w`}
+          sizes="100vw"
+        />
+        <img
+          src={withBase("/assets/images/lee-business-school.jpg")}
+          alt=""
+          width="1920"
+          height="1280"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
+    </div>
+    <div class="scholar-home-shell scholar-home-hero__content">
+      <p class="scholar-home-department">{INSTITUTION.department.name}</p>
+      <h1><span>UNLV Undergraduate Economics</span> Working Paper Series</h1>
+      <p class="scholar-home-hero__lead">
+        Original economics-related research by UNLV undergraduates, released in semester issues.
+      </p>
+      <p class="scholar-home-hero__notice">
+        Preliminary working papers. Editorially screened, not peer reviewed, and subject to revision.
+      </p>
+      <nav class="scholar-home-hero__actions" aria-label="Series actions">
+        <a class="scholar-home-button scholar-home-button--primary" href={withBase("/papers/")}
+          >Browse Working Papers</a
+        >
+        <a class="scholar-home-button scholar-home-button--quiet" href={withBase("/for-authors/")}
+          >For Student Authors</a
+        >
+      </nav>
+      <p class="scholar-home-photo-credit">
+        Campus photograph: <a
+          href="https://www.unlv.edu/news/release/lee-business-school-maintains-accreditation-business-and-accounting-programs"
+          rel="external">UNLV News (Lee Business School)</a
+        >
+      </p>
+    </div>
+  </header>
+
+  <section class="scholar-home-search" aria-labelledby="home-search-heading">
+    <div class="scholar-home-shell">
+      <h2 id="home-search-heading">Find a working paper</h2>
+      <form action={withBase("/papers/")} method="get" role="search">
+        <label for="home-paper-search">Search by title, author, keyword, or topic</label>
+        <div class="scholar-home-search__controls">
+          <input
+            id="home-paper-search"
+            name="q"
+            type="search"
+            autocomplete="off"
+            placeholder="Title, author, keyword, or topic"
+          />
+          <button type="submit">Search Working Papers</button>
+        </div>
+      </form>
+      <noscript>
+        <p class="scholar-home-search__noscript">
+          Search filtering requires JavaScript. You can still <a href={withBase("/papers/")}
+            >browse the complete working-paper list</a
+          >.
+        </p>
+      </noscript>
+    </div>
+  </section>
+
+  <div class="scholar-home-shell scholar-home-sections">
+    {
+      latestIssue && latestIssueRecord ? (
+        <section class="scholar-home-section scholar-home-latest" aria-labelledby="latest-issue-heading">
+          <header class="scholar-home-section__header">
+            <div>
+              <h2 id="latest-issue-heading">Latest Issue</h2>
+              <p class="scholar-home-issue-name">{latestIssue.label}</p>
+            </div>
+            <dl class="scholar-home-issue-facts" aria-label={`${latestIssue.label} issue details`}>
+              <div>
+                <dt>Issue</dt>
+                <dd>{repositoryIssueLabel(latestIssueRecord)}</dd>
+              </div>
+              <div>
+                <dt>Papers</dt>
+                <dd>{latestIssue.papers.length}</dd>
+              </div>
+              {latestIssueOnlineLabel ? (
+                <div>
+                  <dt>Repository date</dt>
+                  <dd>{latestIssueOnlineLabel}</dd>
+                </div>
+              ) : null}
+            </dl>
+          </header>
+
+          <ol class="scholar-home-paper-list scholar-home-paper-list--issue">
+            {latestIssuePapers.map((paper) => (
+              <li>
+                <h3>
+                  <a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a>
+                </h3>
+                <p>{formatAuthorDisplay(paper.data.authors)}</p>
+              </li>
+            ))}
+          </ol>
+          <p class="scholar-home-section__link">
+            <a href={withBase(`/issues/${latestIssue.slug}/`)}>View the complete {latestIssue.label} issue</a>
+          </p>
+        </section>
+      ) : null
+    }
+
+    {
+      newPapers.length > 0 ? (
+        <section class="scholar-home-section" aria-labelledby="new-papers-heading">
+          <header class="scholar-home-section__header scholar-home-section__header--simple">
+            <div>
+              <h2 id="new-papers-heading">New Working Papers</h2>
+              <p>Recently added records from the Series.</p>
+            </div>
+            <a href={withBase("/papers/")}>View all working papers</a>
+          </header>
+          <ol class="scholar-home-paper-list">
+            {newPapers.map((paper) => (
+              <li>
+                <h3>
+                  <a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a>
+                </h3>
+                <p class="scholar-home-paper-list__authors">{formatAuthorDisplay(paper.data.authors)}</p>
+                <dl class="scholar-home-paper-list__meta">
+                  <div>
+                    <dt>Research field</dt>
+                    <dd>{paper.data.field}</dd>
+                  </div>
+                  <div>
+                    <dt>Issue</dt>
+                    <dd>{getIssueLabelForPaper(paper)}</dd>
+                  </div>
+                  <div>
+                    <dt>OAsis online</dt>
+                    <dd>
+                      <time datetime={paper.data.repository_published_at}>
+                        {formatPaperDate(paper.data.repository_published_at)}
+                      </time>
+                    </dd>
+                  </div>
+                  {paper.data.doi ? (
+                    <div>
+                      <dt>DOI</dt>
+                      <dd>
+                        <a href={`https://doi.org/${paper.data.doi}`} rel="external">
+                          {paper.data.doi}
+                        </a>
+                      </dd>
+                    </div>
+                  ) : null}
+                </dl>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null
+    }
+
+    {
+      fields.length > 0 ? (
+        <section class="scholar-home-section" aria-labelledby="research-fields-heading">
+          <header class="scholar-home-section__header scholar-home-section__header--simple">
+            <div>
+              <h2 id="research-fields-heading">Research Fields</h2>
+              <p>Browse the fields represented in the published collection.</p>
+            </div>
+            <a href={withBase("/fields/")}>Browse research fields</a>
+          </header>
+          <ul class="scholar-home-field-list">
+            {fields.map((field) => (
+              <li>
+                <a href={withBase(`/fields/${field.slug}/`)}>
+                  <span>{field.name}</span>
+                  <span>
+                    {field.count} {field.count === 1 ? "paper" : "papers"}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null
+    }
+
+    <section class="scholar-home-section scholar-home-repository" aria-labelledby="oasis-heading">
+      <div>
+        <h2 id="oasis-heading">Permanent Records in OAsis</h2>
+        <p>{OASIS.safeDescription}</p>
+        <p>{OASIS.relationship}</p>
+      </div>
+      <a class="scholar-home-button scholar-home-button--outline" href={OASIS.collectionUrl} rel="external">
+        Browse the OAsis collection
+      </a>
+    </section>
+
+    <section class="scholar-home-section scholar-home-about" aria-labelledby="about-series-heading">
+      <div>
+        <h2 id="about-series-heading">About the Series</h2>
+        <p>{SERIES.scope}</p>
+      </div>
+      <a href={withBase("/about/")}>Learn about the Series</a>
+    </section>
+  </div>
+</BaseLayout>

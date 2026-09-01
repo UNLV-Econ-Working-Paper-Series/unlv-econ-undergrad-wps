@@ -1,0 +1,173 @@
+---
+import AboutNavigation from "../../components/AboutNavigation.astro";
+import PageBanner from "../../components/PageBanner.astro";
+import ProfileLinks from "../../components/ProfileLinks.astro";
+import TableOfContents from "../../components/TableOfContents.astro";
+import {
+  EDITORIAL_BOARD,
+  EDITORIAL_BOARD_DESCRIPTION,
+  JUNIOR_EDITORS,
+  JUNIOR_EDITOR_DESCRIPTION,
+  PUBLICATION_APPROVAL_RULE,
+} from "../../config/editorial";
+import { PUBLIC_PROFILES } from "../../data/public-profiles";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+const profileIdsByEditorialId: Record<string, string> = {
+  "mark-jayson-martinez-farol": "mark-jayson-farol",
+  "djeto-assane": "professor-djeto-assane",
+  "eric-chiang": "professor-eric-chiang",
+  "brandon-penticoff": "brandon-penticoff",
+};
+
+const profileFor = (editorialId: string) =>
+  PUBLIC_PROFILES.find((profile) => profile.id === profileIdsByEditorialId[editorialId]);
+
+const tocItems = [
+  { id: "board-authority", label: "Authority and approval" },
+  { id: "voting-board", label: "Voting Editorial Board" },
+  { id: "junior-editors", label: "Junior Editors" },
+  { id: "governance-and-contact", label: "Governance and contact" },
+];
+---
+
+<BaseLayout
+  title="Editorial Board | UNLV Undergraduate Economics Working Paper Series"
+  bodyClass="section-about page-about-modern page-editorial-board"
+>
+  <PageBanner
+    title="Editorial Board"
+    lead="Publication authority, editorial responsibilities, and the people who carry out the Series' work"
+    note="Series roles are distinct from university employment titles"
+    brand
+  />
+
+  <section class="content-section">
+    <AboutNavigation currentHref="/editorial-board/" />
+
+    <div class="page-with-toc">
+      <div class="page-with-toc__toc">
+        <TableOfContents items={tocItems} />
+      </div>
+
+      <div class="page-with-toc__main">
+        <div class="about-modern-shell">
+          <section
+            class="about-block about-card"
+            id="board-authority"
+            aria-labelledby="editorial-authority-title"
+          >
+            <h2 id="editorial-authority-title">Authority and approval</h2>
+            <p>{EDITORIAL_BOARD_DESCRIPTION} {JUNIOR_EDITOR_DESCRIPTION}</p>
+            <p>
+              <strong>Publication approval:</strong>
+              {PUBLICATION_APPROVAL_RULE} A faculty sponsor may mentor and recommend a paper but cannot be its sole
+              approving editor. Editors with a conflict recuse themselves; an eligible UNLV faculty member may serve
+              as an ad hoc reviewer when needed.
+            </p>
+          </section>
+
+          <section class="about-block about-card" id="voting-board" aria-labelledby="voting-board-title">
+            <h2 id="voting-board-title">Voting Editorial Board</h2>
+            <p>
+              Board members participate in screening, policy, and publication decisions, subject to conflict
+              and recusal rules.
+            </p>
+
+            <div class="about-team-grid about-team-grid--editorial">
+              {
+                EDITORIAL_BOARD.map((member) => {
+                  const profile = profileFor(member.id);
+                  return (
+                    <article class="about-person-card">
+                      {profile?.headshot ? (
+                        <img
+                          class="about-person-thumb"
+                          src={withBase(profile.headshot)}
+                          alt=""
+                          width="72"
+                          height="72"
+                          loading="lazy"
+                        />
+                      ) : null}
+
+                      <div class="about-person-copy">
+                        <p class="about-role">{member.publicTitle}</p>
+                        <h3>{member.name}</h3>
+
+                        <p class="about-person-summary">
+                          {member.description} {profile ? `${profile.summary}.` : ""}
+                        </p>
+
+                        {profile ? (
+                          <div class="about-person-actions">
+                            <ProfileLinks
+                              links={profile.links}
+                              ariaLabel={`External profiles for ${member.name}`}
+                              ownerName={member.name}
+                            />
+
+                            {profile.profileHref ? (
+                              <a class="about-person-profile-link" href={withBase(profile.profileHref)}>
+                                Full profile <span aria-hidden="true">→</span>
+                              </a>
+                            ) : null}
+                          </div>
+                        ) : null}
+                      </div>
+                    </article>
+                  );
+                })
+              }
+            </div>
+          </section>
+
+          <section class="about-block about-card" id="junior-editors" aria-labelledby="junior-editors-title">
+            <h2 id="junior-editors-title">Junior Editors</h2>
+            <p>{JUNIOR_EDITOR_DESCRIPTION}</p>
+
+            <div class="about-team-grid about-team-grid--ga">
+              {
+                JUNIOR_EDITORS.map((member) => {
+                  const profile = profileFor(member.id);
+                  return (
+                    <article class="about-person-card">
+                      <div class="about-person-copy">
+                        <p class="about-role">{member.publicTitle}</p>
+                        <h3>{member.name}</h3>
+                        <p class="about-person-summary">{member.description}</p>
+                        {profile?.profileHref ? (
+                          <p>
+                            <a href={withBase(profile.profileHref)}>View Junior Editor profile</a>
+                          </p>
+                        ) : null}
+                      </div>
+                    </article>
+                  );
+                })
+              }
+            </div>
+          </section>
+
+          <section
+            class="about-block about-card about-cta"
+            id="governance-and-contact"
+            aria-labelledby="editorial-policies-title"
+          >
+            <h2 id="editorial-policies-title">Governance and contact</h2>
+            <p>
+              The public policies explain screening, conflicts and recusal, corrections, revisions,
+              withdrawals, and appeals. Questions about a paper or the Series should go to the shared Series
+              contact rather than a personal profile.
+            </p>
+            <div class="page-intro-actions">
+              <a class="btn btn-small btn-primary" href={withBase("/policies/")}>Read publication policies</a>
+              <a class="btn btn-small btn-outline" href={withBase("/contact/")}>Contact the Series</a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

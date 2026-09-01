@@ -1,0 +1,143 @@
+---
+import PageBanner from "../../components/PageBanner.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  cleanPaperTitle,
+  formatPaperDate,
+  getIssueGroups,
+  paperHref,
+  repositoryIssueLabel,
+} from "../../lib/papers";
+import { citationExportHref, formatAuthorDisplay } from "../../lib/publication";
+import { withBase } from "../../lib/urls";
+import "../../styles/pages/issues.css";
+
+const issues = (await getIssueGroups()).filter((issue) => issue.papers.length > 0);
+
+const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
+  `${count} ${count === 1 ? singular : plural}`;
+
+const uniqueSortedDates = (values: string[]): string[] => [...new Set(values)].sort();
+---
+
+<BaseLayout
+  title="Issues | UNLV Undergraduate Economics Working Paper Series"
+  description="Browse semester issues of the UNLV Undergraduate Economics Working Paper Series in chronological order."
+  bodyClass="section-issues page-issues"
+>
+  <PageBanner
+    title="Issues"
+    subtitle="Semester issues of undergraduate economics research, listed from newest to oldest"
+    brand
+  />
+
+  <section class="publication-index content-section" aria-labelledby="current-issues-title">
+    <header class="publication-intro">
+      <p class="publication-label">Current Series</p>
+      <h2 id="current-issues-title">Published issues</h2>
+      <p>
+        Each issue below links to its complete table of contents. Paper-level records provide abstracts,
+        citation tools, DOI links, and permanent OAsis records.
+      </p>
+    </header>
+
+    {
+      issues.length > 0 ? (
+        <ol class="issue-publication-list" aria-label="Published issues, newest first">
+          {issues.map((issue, index) => {
+            const repositoryDates = uniqueSortedDates(
+              issue.papers.map((paper) => paper.data.repository_published_at),
+            );
+            const finalRepositoryDate = repositoryDates[repositoryDates.length - 1];
+            const issueLabels = [...new Set(issue.papers.map(repositoryIssueLabel).filter(Boolean))];
+            const bibliographicLabel = issueLabels.length === 1 ? issueLabels[0] : null;
+            const bibtexHref = withBase(citationExportHref("issue", issue.slug, "bibtex"));
+            const risHref = withBase(citationExportHref("issue", issue.slug, "ris"));
+
+            return (
+              <li>
+                <article class="issue-publication">
+                  <header class="issue-publication__header">
+                    <div>
+                      {index === 0 ? <p class="publication-label">Latest Issue</p> : null}
+                      <h3>
+                        <a href={withBase(`/issues/${issue.slug}/`)}>{issue.label}</a>
+                      </h3>
+                      <p class="issue-publication__summary">
+                        {bibliographicLabel ? <span>{bibliographicLabel}</span> : null}
+                        {bibliographicLabel ? <span aria-hidden="true"> · </span> : null}
+                        <span>{countLabel(issue.papers.length, "working paper")}</span>
+                      </p>
+                    </div>
+
+                    <p class="issue-publication__date">
+                      {repositoryDates.length === 1 ? (
+                        <>
+                          Added to OAsis{" "}
+                          <time datetime={repositoryDates[0]}>{formatPaperDate(repositoryDates[0])}</time>
+                        </>
+                      ) : repositoryDates.length > 1 ? (
+                        <>
+                          Papers added to OAsis between{" "}
+                          <time datetime={repositoryDates[0]}>{formatPaperDate(repositoryDates[0])}</time>
+                          {" and "}
+                          <time datetime={finalRepositoryDate}>{formatPaperDate(finalRepositoryDate)}</time>
+                        </>
+                      ) : null}
+                    </p>
+                  </header>
+
+                  <ol class="issue-paper-toc" aria-label={`Papers in ${issue.label}`}>
+                    {issue.papers.map((paper) => (
+                      <li>
+                        <a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a>
+                        <span>{formatAuthorDisplay(paper.data.authors)}</span>
+                      </li>
+                    ))}
+                  </ol>
+
+                  <p class="issue-publication__actions">
+                    <a class="text-action" href={withBase(`/issues/${issue.slug}/`)}>
+                      View complete {issue.label} issue<span aria-hidden="true"> →</span>
+                    </a>
+                    <span
+                      class="issue-citation-downloads"
+                      aria-label={`Citation downloads for the ${issue.label} issue`}
+                    >
+                      <span>Download issue citations:</span>
+                      <a href={bibtexHref} download={`${issue.slug}-citations.bib`}>
+                        BibTeX
+                      </a>
+                      <a href={risHref} download={`${issue.slug}-citations.ris`}>
+                        RIS
+                      </a>
+                    </span>
+                  </p>
+                </article>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        <section class="publication-empty" aria-labelledby="no-issues-title">
+          <h3 id="no-issues-title">No published issues are listed</h3>
+          <p>The issue list will be updated after a verified publication record is available.</p>
+        </section>
+      )
+    }
+
+    <aside class="archive-invitation" aria-labelledby="archive-invitation-title">
+      <div>
+        <p class="publication-label">Earlier Series records</p>
+        <h2 id="archive-invitation-title">Historical archive</h2>
+        <p>
+          Browse the bounded metadata inventory for earlier Economics Hub working papers. Full-text links
+          appear only after record-level rights, file, and accessibility review.
+        </p>
+      </div>
+      <a class="text-action" href={withBase("/issues/archive/")}
+        >Browse the historical archive<span aria-hidden="true"> →</span></a
+      >
+    </aside>
+  </section>
+</BaseLayout>

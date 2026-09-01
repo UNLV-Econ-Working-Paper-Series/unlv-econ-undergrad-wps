@@ -1,0 +1,2562 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-01T03:55:31.201Z",
+  "source": "https://oasis.library.unlv.edu/econ_ug_papers/",
+  "configuration": {
+    "timeout_ms": 12000,
+    "max_attempts": 3,
+    "concurrency": 3
+  },
+  "summary": {
+    "total": 15,
+    "verified": 0,
+    "mismatch": 0,
+    "network_failure": 0,
+    "remote_error": 15,
+    "invalid_local_data": 0
+  },
+  "records": [
+    {
+      "slug": "the-race-for-increasing-college-costs",
+      "title": "The Race for Increasing College Costs",
+      "authors": [
+        "Mark Jayson Farol"
+      ],
+      "local_field": "Economics of Education",
+      "local_issue_term": "Spring 2024",
+      "doi": "10.34917/40601190",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/1",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1000&context=econ_ug_papers",
+      "frontend_citation": "Farol, M. J. (2024). The Race for Increasing College Costs. UNLV Undergraduate Economics Working Paper Series, 1(1), 1–24 (UNLV-Econ-WPS-2024-001). https://doi.org/10.34917/40601190",
+      "repository_citation": "Farol, M. (2024). The Race for Increasing College Costs. UNLV Undergraduate Economics Working Paper Series, 1 (1), 1-24. Available at: http://dx.doi.org/10.34917/40601190",
+      "remote_disciplines": [
+        "Education Economics",
+        "Higher Education",
+        "Higher Education Administration"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601190",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/1/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 2,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/1",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/1/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1000&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1000&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "The Race for Increasing College Costs",
+          "remote": "The Race for Increasing College Costs"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Mark Jayson Farol"
+          ],
+          "remote": [
+            "Mark Jayson Farol"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "As higher education continues to shift to be more progressive, providing access to more students of different backgrounds, it currently is facing an obstacle. The escalating cost of tuition is growing to be a significant concern for access to higher education. The government has prioritized increasing federal financial aid to improve accessibility. However, this intervention may paradoxically worsen the rise of the cost of college, as suggested by William Bennett's famous hypothesis. As the higher education landscape evolves, a nuanced examination of tuition rise drivers is essential. This study utilizes cross-sectional data from the National Center for Education Statistics to evaluate Bennett's hypothesis, focusing on the impact of government financial aid and institutional aid on costs at public and private nonprofit colleges in the US. The study is structured around an institution’s charging variance and determinants of financial aid. The analysis reveals evidence supporting Bennett’s Hypothesis, indicating a correlation between financial aid and tuition costs across various institutions.",
+          "remote": "As higher education continues to shift to be more progressive, providing access to more students of different backgrounds, it currently is facing an obstacle. The escalating cost of tuition is growing to be a significant concern for access to higher education. The government has prioritized increasing federal financial aid to improve accessibility. However, this intervention may paradoxically worsen the rise of the cost of college, as suggested by William Bennett's famous hypothesis. As the higher education landscape evolves, a nuanced examination of tuition rise drivers is essential. This study utilizes cross-sectional data from the National Center for Education Statistics to evaluate Bennett's hypothesis, focusing on the impact of government financial aid and institutional aid on costs at public and private nonprofit colleges in the US. The study is structured around an institution’s charging variance and determinants of financial aid. The analysis reveals evidence supporting Bennett’s Hypothesis, indicating a correlation between financial aid and tuition costs across various institutions."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Bennett’s Hypothesis",
+            "Tuition",
+            "Financial Aid"
+          ],
+          "remote": [
+            "Bennett’s Hypothesis",
+            "Tuition",
+            "Financial Aid"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601190",
+          "remote": "10.34917/40601190"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/1",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/1"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1000&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1000&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2024-05-16",
+          "remote": "2024-05-16"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 1,
+          "remote": 1
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 1,
+          "remote": 1
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-24",
+          "remote": "1-24"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Economics of Education",
+          "remote": [
+            "Education Economics",
+            "Higher Education",
+            "Higher Education Administration"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Spring 2024",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "used-electric-vehicle-tax-credit",
+      "title": "The Effects of the Tax Credit on the Used Electric Vehicle Market",
+      "authors": [
+        "My Tu T. Tran"
+      ],
+      "local_field": "Public Economics",
+      "local_issue_term": "Spring 2024",
+      "doi": "10.34917/40601191",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/2",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1001&context=econ_ug_papers",
+      "frontend_citation": "Tran, M. T. T. (2024). The Effects of the Tax Credit on the Used Electric Vehicle Market. UNLV Undergraduate Economics Working Paper Series, 1(1), 1–12 (UNLV-Econ-WPS-2024-002). https://doi.org/10.34917/40601191",
+      "repository_citation": "Tran, M. T. (2024). The Effects of the Tax Credit on the Used Electric Vehicle Market. UNLV Undergraduate Economics Working Paper Series, 1 (1), 1-12. Available at: http://dx.doi.org/10.34917/40601191",
+      "remote_disciplines": [
+        "Economics",
+        "Taxation",
+        "Transportation",
+        "Transportation and Mobility Management"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601191",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/2/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/2",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/2/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1001&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1001&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "The Effects of the Tax Credit on the Used Electric Vehicle Market",
+          "remote": "The Effects of the Tax Credit on the Used Electric Vehicle Market"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "My Tu T. Tran"
+          ],
+          "remote": [
+            "My Tu T. Tran"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "In the past few years, tax credits have become the fundamental policy instrument to incentivize the adoption of electric vehicles (EVs) in the United States. However, contemporary research primarily focuses on new EVs, while the impact of tax credits on the used EV market remains obscure. This research aims to enhance the knowledge of EV adoption by examining the potential effects of the Used Clean Vehicle Credit, a federal program providing up to $4,000 credit to eligible consumers. We have collected sales data of used cars from 245 CarMax locations in the U.S. between 2021 and 2023 to assess the change in prices of EVs before and after implementing the tax credit. The results suggest eligible EV prices increased by $1,521, about 4.74%, once the policy was implemented. Relative to pre-owned non-EVs, EV prices have increased by $2,214, indicating that car dealers have captured a more significant portion of the subsidy amount. We also observe a continually growing trend in EV sale quantities.",
+          "remote": "In the past few years, tax credits have become the fundamental policy instrument to incentivize the adoption of electric vehicles (EVs) in the United States. However, contemporary research primarily focuses on new EVs, while the impact of tax credits on the used EV market remains obscure. This research aims to enhance the knowledge of EV adoption by examining the potential effects of the Used Clean Vehicle Credit, a federal program providing up to $4,000 credit to eligible consumers. We have collected sales data of used cars from 245 CarMax locations in the U.S. between 2021 and 2023 to assess the change in prices of EVs before and after implementing the tax credit. The results suggest eligible EV prices increased by $1,521, about 4.74%, once the policy was implemented. Relative to pre-owned non-EVs, EV prices have increased by $2,214, indicating that car dealers have captured a more significant portion of the subsidy amount. We also observe a continually growing trend in EV sale quantities."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Tax Credits",
+            "Electric Vehicle Market",
+            "Used Cars Market"
+          ],
+          "remote": [
+            "Tax Credits",
+            "Electric Vehicle Market",
+            "Used Cars Market"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601191",
+          "remote": "10.34917/40601191"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/2",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/2"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1001&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1001&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2024-05-16",
+          "remote": "2024-05-16"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 1,
+          "remote": 1
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 1,
+          "remote": 1
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-12",
+          "remote": "1-12"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Public Economics",
+          "remote": [
+            "Economics",
+            "Taxation",
+            "Transportation",
+            "Transportation and Mobility Management"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Spring 2024",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "nba-real-team-value",
+      "title": "Does a Star Player’s Jewelry Matter? An Analysis of NBA Real Team Value",
+      "authors": [
+        "Brandon C. Penticoff"
+      ],
+      "local_field": "Industrial Organization",
+      "local_issue_term": "Spring 2025",
+      "doi": "10.34917/40601192",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/3",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1002&context=econ_ug_papers",
+      "frontend_citation": "Penticoff, B. C. (2025). Does a Star Player’s Jewelry Matter? An Analysis of NBA Real Team Value. UNLV Undergraduate Economics Working Paper Series, 2(1), 1–17 (UNLV-Econ-WPS-2025-003). https://doi.org/10.34917/40601192",
+      "repository_citation": "Penticoff, B. C. (2025). Does a Star Player’s Jewelry Matter? An Analysis of NBA Real Team Value. UNLV Undergraduate Economics Working Paper Series, 2 (1), 1-17. Available at: http://dx.doi.org/10.34917/40601192",
+      "remote_disciplines": [
+        "Economics",
+        "Sports Management",
+        "Sports Studies"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601192",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/3/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/3",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/3/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1002&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1002&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "Does a Star Player’s Jewelry Matter? An Analysis of NBA Real Team Value",
+          "remote": "Does a Star Player’s Jewelry Matter? An Analysis of NBA Real Team Value"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Brandon C. Penticoff"
+          ],
+          "remote": [
+            "Brandon C. Penticoff"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This study dives into the financial and sport factors that impact team market value and revenue. This study's results confirm that star players significantly enhance team value, with NBA Superstars adding nearly $500 million annually. This study discovered the prominence of a Principal-Agent Problem between star players and NBA front offices over the issue of championship pursuit. The analysis also identifies an optimal style of play for revenue generation, but that could oppose longer-term team value. These findings have critical implications for NBA front offices, owners, and coaching staffs.",
+          "remote": "This study dives into the financial and sport factors that impact team market value and revenue. This study's results confirm that star players significantly enhance team value, with NBA Superstars adding nearly $500 million annually. This study discovered the prominence of a Principal-Agent Problem between star players and NBA front offices over the issue of championship pursuit. The analysis also identifies an optimal style of play for revenue generation, but that could oppose longer-term team value. These findings have critical implications for NBA front offices, owners, and coaching staffs."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "NBA",
+            "Team Value",
+            "Star Players",
+            "Sports Economics",
+            "Principal-Agent Problem"
+          ],
+          "remote": [
+            "NBA",
+            "Team Value",
+            "Star Players",
+            "Sports Economics",
+            "Principal-Agent Problem"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601192",
+          "remote": "10.34917/40601192"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/3",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/3"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1002&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1002&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2025-05-20",
+          "remote": "2025-05-20"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 2,
+          "remote": 2
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 1,
+          "remote": 1
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-17",
+          "remote": "1-17"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Industrial Organization",
+          "remote": [
+            "Economics",
+            "Sports Management",
+            "Sports Studies"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Spring 2025",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "hedonics-used-car-attributes",
+      "title": "Hedonics of Used Car Attributes on Market Price",
+      "authors": [
+        "Alexander Bent",
+        "Jason Gutierrez"
+      ],
+      "local_field": "Applied Microeconomics",
+      "local_issue_term": "Fall 2025",
+      "doi": "10.34917/40601193",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/4",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1003&context=econ_ug_papers",
+      "frontend_citation": "Bent, A., Gutierrez, J. (2026). Hedonics of Used Car Attributes on Market Price. UNLV Undergraduate Economics Working Paper Series, 3(1), 1–18 (UNLV-Econ-WPS-2026-004). https://doi.org/10.34917/40601193",
+      "repository_citation": "Bent, A., Gutierrez, J. (2026). Hedonics of Used Car Attributes on Market Price. UNLV Undergraduate Economics Working Paper Series, 3 (1), 1-18. Available at: http://dx.doi.org/10.34917/40601193",
+      "remote_disciplines": [
+        "Economics",
+        "Transportation",
+        "Transportation and Mobility Management"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601193",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/4/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/4",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/4/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1003&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1003&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "Hedonics of Used Car Attributes on Market Price",
+          "remote": "Hedonics of Used Car Attributes on Market Price"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Alexander Bent",
+            "Jason Gutierrez"
+          ],
+          "remote": [
+            "Alexander Bent",
+            "Jason Gutierrez"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This paper uses Rosen's paper on hedonic pricing as a framework to analyze the determinants of used car prices found in Craigslist. Using cleaned data, we observe over 43,000 listings from 2005 to 2020 and investigate factors that affect used car prices and how they interact in this market. Results show that odometer readings and condition are the strongest factors that determine price, while manufacturers, paint color, drive type, fuel type, size, and year have more ambiguous effects that depend on certain perceived attributes or conditions.",
+          "remote": "This paper uses Rosen's paper on hedonic pricing as a framework to analyze the determinants of used car prices found in Craigslist. Using cleaned data, we observe over 43,000 listings from 2005 to 2020 and investigate factors that affect used car prices and how they interact in this market. Results show that odometer readings and condition are the strongest factors that determine price, while manufacturers, paint color, drive type, fuel type, size, and year have more ambiguous effects that depend on certain perceived attributes or conditions."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Hedonic Pricing",
+            "Ordinary Least Squares",
+            "Consumer Preferences",
+            "Product"
+          ],
+          "remote": [
+            "Hedonic Pricing",
+            "Ordinary Least Squares",
+            "Consumer Preferences",
+            "Product"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601193",
+          "remote": "10.34917/40601193"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/4",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/4"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1003&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1003&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 1,
+          "remote": 1
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-18",
+          "remote": "1-18"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Applied Microeconomics",
+          "remote": [
+            "Economics",
+            "Transportation",
+            "Transportation and Mobility Management"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Fall 2025",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "key-determinants-diamond-value",
+      "title": "Key Determinants of Diamond Value",
+      "authors": [
+        "Tobey Brill",
+        "Alexander Dobrovolskyi",
+        "Rayland Labayog"
+      ],
+      "local_field": "Applied Microeconomics",
+      "local_issue_term": "Fall 2025",
+      "doi": "10.34917/40601194",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/5",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1004&context=econ_ug_papers",
+      "frontend_citation": "Brill, T., Dobrovolskyi, A., Labayog, R. (2026). Key Determinants of Diamond Value. UNLV Undergraduate Economics Working Paper Series, 3(1), 1–8 (UNLV-Econ-WPS-2026-005). https://doi.org/10.34917/40601194",
+      "repository_citation": "Brill, T., Dobrovolskyi, A., Labayog, R. (2026). Key Determinants of Diamond Value. UNLV Undergraduate Economics Working Paper Series, 3 (1), 1-8. Available at: http://dx.doi.org/10.34917/40601194",
+      "remote_disciplines": [
+        "Economics",
+        "Finance and Financial Management",
+        "Management Sciences and Quantitative Methods"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601194",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/5/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/5",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/5/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1004&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1004&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "Key Determinants of Diamond Value",
+          "remote": "Key Determinants of Diamond Value"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Tobey Brill",
+            "Alexander Dobrovolskyi",
+            "Rayland Labayog"
+          ],
+          "remote": [
+            "Tobey Brill",
+            "Alexander Dobrovolskyi",
+            "Rayland Labayog"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This paper intends to examine the determinants of diamond pricing using a hedonic regression framework. Using the diamonds dataset from Wickham (2016), we analyze the four C’s, also known as carat weight, cut, color, and clarity. We also wanted to go deeper into this topic and look into the depth and table to see how it impacts diamond pricing. Results have displayed that carat weight greatly influences a diamond’s price, while characteristics such as clarity, color, and cut exert positive effects. Estimates were found to be statistically significant. Our findings confirm and reassure the idea that hedonic pricing accurately captures consumer valuation of diamond attributes and support research on how diamonds are priced in the market.",
+          "remote": "This paper intends to examine the determinants of diamond pricing using a hedonic regression framework. Using the diamonds dataset from Wickham (2016), we analyze the four C’s, also known as carat weight, cut, color, and clarity. We also wanted to go deeper into this topic and look into the depth and table to see how it impacts diamond pricing. Results have displayed that carat weight greatly influences a diamond’s price, while characteristics such as clarity, color, and cut exert positive effects. Estimates were found to be statistically significant. Our findings confirm and reassure the idea that hedonic pricing accurately captures consumer valuation of diamond attributes and support research on how diamonds are priced in the market."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Diamond pricing",
+            "Four Cs",
+            "Hedonic regression"
+          ],
+          "remote": [
+            "Diamond pricing",
+            "Four Cs",
+            "Hedonic regression"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601194",
+          "remote": "10.34917/40601194"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/5",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/5"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1004&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1004&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 1,
+          "remote": 1
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-8",
+          "remote": "1-8"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Applied Microeconomics",
+          "remote": [
+            "Economics",
+            "Finance and Financial Management",
+            "Management Sciences and Quantitative Methods"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Fall 2025",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "rural-metropolitan-gender-wage-gap",
+      "title": "Do Rural Areas Gender-Discriminate Wages More than Metropolitan Areas?",
+      "authors": [
+        "Ali Gonzalez",
+        "Michael Montano",
+        "Brandon Sacks",
+        "Joseph Williams"
+      ],
+      "local_field": "Labor Economics and Demography",
+      "local_issue_term": "Fall 2025",
+      "doi": "10.34917/40601195",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/6",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1005&context=econ_ug_papers",
+      "frontend_citation": "Gonzalez, A., Montano, M., Sacks, B., Williams, J. (2026). Do Rural Areas Gender-Discriminate Wages More than Metropolitan Areas? UNLV Undergraduate Economics Working Paper Series, 3(1), 1–14 (UNLV-Econ-WPS-2026-006). https://doi.org/10.34917/40601195",
+      "repository_citation": "Gonzalez, A., Montano, M., Sacks, B., Williams, J. (2026). Do Rural Areas Gender-Discriminate Wages More than Metropolitan Areas?. UNLV Undergraduate Economics Working Paper Series, 3 (1), 1-14. Available at: http://dx.doi.org/10.34917/40601195",
+      "remote_disciplines": [
+        "Benefits and Compensation",
+        "Economics",
+        "Labor Relations",
+        "Management Sciences and Quantitative Methods"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601195",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/6/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/6",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/6/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1005&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1005&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "Do Rural Areas Gender-Discriminate Wages More than Metropolitan Areas?",
+          "remote": "Do Rural Areas Gender-Discriminate Wages More than Metropolitan Areas?"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Ali Gonzalez",
+            "Michael Montano",
+            "Brandon Sacks",
+            "Joseph Williams"
+          ],
+          "remote": [
+            "Ali Gonzalez",
+            "Michael Montano",
+            "Brandon Sacks",
+            "Joseph Williams"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This study analyzes the gender wage gap in metropolitan versus rural areas using U.S. hourly wage data from the Bureau of Labor Statistics (BLS), for the period 2010-2025. The analysis uses regressions on a semi-log wage model and Blinder-Oaxaca decompositions to compare the gaps and separate the effects attributable to explained (endowment) differences from those attributable to unexplained (coefficient) differences. The semi-log wage model reveals a percentage wage decrease for females of approximately 17.4% in rural areas and 9.9% in metropolitan areas. The Blinder-Oaxaca decompositions further indicate that the unexplained (coefficient) component of the gap is substantially larger in rural areas than in metropolitan areas, while the explained (endowment) component is similar across the two areas. In conclusion, the gender wage gap persists in both rural and metropolitan areas and is more pronounced in rural areas—a pattern consistent with, though not direct proof of, greater wage discrimination in rural labor markets.",
+          "remote": "This study analyzes the gender wage gap in metropolitan versus rural areas using U.S. hourly wage data from the Bureau of Labor Statistics (BLS), for the period 2010-2025. The analysis uses regressions on a semi-log wage model and Blinder-Oaxaca decompositions to compare the gaps and separate the effects attributable to explained (endowment) differences from those attributable to unexplained (coefficient) differences. The semi-log wage model reveals a percentage wage decrease for females of approximately 17.4% in rural areas and 9.9% in metropolitan areas. The Blinder-Oaxaca decompositions further indicate that the unexplained (coefficient) component of the gap is substantially larger in rural areas than in metropolitan areas, while the explained (endowment) component is similar across the two areas. In conclusion, the gender wage gap persists in both rural and metropolitan areas and is more pronounced in rural areas—a pattern consistent with, though not direct proof of, greater wage discrimination in rural labor markets."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Gender wage gap",
+            "rural areas",
+            "metropolitan areas",
+            "hourly wage",
+            "labor market discrimination"
+          ],
+          "remote": [
+            "Gender wage gap",
+            "rural areas",
+            "metropolitan areas",
+            "hourly wage",
+            "labor market discrimination"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601195",
+          "remote": "10.34917/40601195"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/6",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/6"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1005&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1005&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 1,
+          "remote": 1
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-14",
+          "remote": "1-14"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Labor Economics and Demography",
+          "remote": [
+            "Benefits and Compensation",
+            "Economics",
+            "Labor Relations",
+            "Management Sciences and Quantitative Methods"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Fall 2025",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "social-determinants-educational-attainment",
+      "title": "Social Determinants of Low Educational Attainment",
+      "authors": [
+        "Isabelle Graham",
+        "Kevin Lieng",
+        "Aubriana Weisbach"
+      ],
+      "local_field": "Economics of Education",
+      "local_issue_term": "Fall 2025",
+      "doi": "10.34917/40601196",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/7",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1006&context=econ_ug_papers",
+      "frontend_citation": "Graham, I., Lieng, K., Weisbach, A. (2026). Social Determinants of Low Educational Attainment. UNLV Undergraduate Economics Working Paper Series, 3(1), 1–13 (UNLV-Econ-WPS-2026-007). https://doi.org/10.34917/40601196",
+      "repository_citation": "Graham, I., Lieng, K., Weisbach, A. (2026). Social Determinants of Low Educational Attainment. UNLV Undergraduate Economics Working Paper Series, 3 (1), 1-13. Available at: http://dx.doi.org/10.34917/40601196",
+      "remote_disciplines": [
+        "Educational Assessment, Evaluation, and Research",
+        "Education Economics",
+        "Income Distribution",
+        "Management Sciences and Quantitative Methods"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601196",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/7/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/7",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/7/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1006&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1006&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "Social Determinants of Low Educational Attainment",
+          "remote": "Social Determinants of Low Educational Attainment"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Isabelle Graham",
+            "Kevin Lieng",
+            "Aubriana Weisbach"
+          ],
+          "remote": [
+            "Isabelle Graham",
+            "Kevin Lieng",
+            "Aubriana Weisbach"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This paper examines how socioeconomic and demographic factors influence low educational attainment across U.S. cities. The analysis estimates both a linear regression model and a semi-log model to evaluate how poverty, unemployment, family structure, age composition, overcrowding, racial and ethnic minority share, broadband access, and housing cost burden affect the percentage of adults without a high school diploma. The results show that poverty, overcrowding, and minority share are the strongest predictors of low educational attainment, each exhibiting positive and highly significant effects. Overall, the findings highlight the role of social factors in shaping educational outcomes in high school.",
+          "remote": "This paper examines how socioeconomic and demographic factors influence low educational attainment across U.S. cities. The analysis estimates both a linear regression model and a semi-log model to evaluate how poverty, unemployment, family structure, age composition, overcrowding, racial and ethnic minority share, broadband access, and housing cost burden affect the percentage of adults without a high school diploma. The results show that poverty, overcrowding, and minority share are the strongest predictors of low educational attainment, each exhibiting positive and highly significant effects. Overall, the findings highlight the role of social factors in shaping educational outcomes in high school."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Educational attainment",
+            "Poverty",
+            "Socioeconomic factors",
+            "Demographic",
+            "Social determinants",
+            "Inequality",
+            "Structural inequalities"
+          ],
+          "remote": [
+            "Educational attainment",
+            "Poverty",
+            "Socioeconomic factors",
+            "Demographic",
+            "Social determinants",
+            "Inequality",
+            "Structural inequalities"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601196",
+          "remote": "10.34917/40601196"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/7",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/7"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1006&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1006&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 1,
+          "remote": 1
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-13",
+          "remote": "1-13"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Economics of Education",
+          "remote": [
+            "Educational Assessment, Evaluation, and Research",
+            "Education Economics",
+            "Income Distribution",
+            "Management Sciences and Quantitative Methods"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Fall 2025",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "ai-wage-effects-us-occupations",
+      "title": "Labor Market Responses to AI: Measuring Wage Effects Across U.S. Occupations",
+      "authors": [
+        "Kaitlin Pham",
+        "Karla Rodriguez"
+      ],
+      "local_field": "Labor Economics and Demography",
+      "local_issue_term": "Fall 2025",
+      "doi": "10.34917/40601197",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/8",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1007&context=econ_ug_papers",
+      "frontend_citation": "Pham, K., Rodriguez, K. (2026). Labor Market Responses to AI: Measuring Wage Effects Across U.S. Occupations. UNLV Undergraduate Economics Working Paper Series, 3(1), 1–14 (UNLV-Econ-WPS-2026-008). https://doi.org/10.34917/40601197",
+      "repository_citation": "Pham, K., Rodriguez, K. (2026). Labor Market Responses to AI: Measuring Wage Effects Across U.S. Occupations. UNLV Undergraduate Economics Working Paper Series, 3 (1), 1-14. Available at: http://dx.doi.org/10.34917/40601197",
+      "remote_disciplines": [
+        "Artificial Intelligence and Robotics",
+        "Benefits and Compensation",
+        "Labor Economics",
+        "Management Sciences and Quantitative Methods"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601197",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/8/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/8",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/8/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1007&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1007&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "Labor Market Responses to AI: Measuring Wage Effects Across U.S. Occupations",
+          "remote": "Labor Market Responses to AI: Measuring Wage Effects Across U.S. Occupations"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Kaitlin Pham",
+            "Karla Rodriguez"
+          ],
+          "remote": [
+            "Kaitlin Pham",
+            "Karla Rodriguez"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "Artificial intelligence (AI) is rapidly changing economies around the world, with some experts predicting an impact greater than the Industrial Revolution. As AI becomes more common in daily life and business, questions have grown about how it might affect jobs, wages, and inequality. The rise of automation and highly capable AI models has made people wonder which occupations will benefit and which might be at risk. This study looks at how exposure to AI technologies affects wage trajectories in the United States. Using occupational-level data from O*NET and the U.S. Bureau of Labor Statistics, we build an AI exposure index based on how easily tasks can be automated. We then use a fixed-effects regression model to see how AI exposure relates to changes in median wages and differences in earnings across occupations over time. Our goal is to better understand how AI influences income distribution and provide insight that could help guide policies for fairer labor market transitions as technology continues to evolve.",
+          "remote": "Artificial intelligence (AI) is rapidly changing economies around the world, with some experts predicting an impact greater than the Industrial Revolution. As AI becomes more common in daily life and business, questions have grown about how it might affect jobs, wages, and inequality. The rise of automation and highly capable AI models has made people wonder which occupations will benefit and which might be at risk. This study looks at how exposure to AI technologies affects wage trajectories in the United States. Using occupational-level data from O*NET and the U.S. Bureau of Labor Statistics, we build an AI exposure index based on how easily tasks can be automated. We then use a fixed-effects regression model to see how AI exposure relates to changes in median wages and differences in earnings across occupations over time. Our goal is to better understand how AI influences income distribution and provide insight that could help guide policies for fairer labor market transitions as technology continues to evolve."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "AI exposure",
+            "occupational wages",
+            "automation risk"
+          ],
+          "remote": [
+            "AI exposure",
+            "occupational wages",
+            "automation risk"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601197",
+          "remote": "10.34917/40601197"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/8",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/8"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1007&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1007&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 1,
+          "remote": 1
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-14",
+          "remote": "1-14"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Labor Economics and Demography",
+          "remote": [
+            "Artificial Intelligence and Robotics",
+            "Benefits and Compensation",
+            "Labor Economics",
+            "Management Sciences and Quantitative Methods"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Fall 2025",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "residential-sale-prices-neighborhood-interior",
+      "title": "The Effects of Neighborhood and Interior Characteristics on Residential Sale Prices",
+      "authors": [
+        "Ella Sophie Hagman"
+      ],
+      "local_field": "Urban, Regional, and Real Estate Economics",
+      "local_issue_term": "Spring 2026",
+      "doi": "10.34917/40601198",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/9",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1008&context=econ_ug_papers",
+      "frontend_citation": "Hagman, E. S. (2026). The Effects of Neighborhood and Interior Characteristics on Residential Sale Prices. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–18 (UNLV-Econ-WPS-2026-009). https://doi.org/10.34917/40601198",
+      "repository_citation": "Hagman, E. (2026). The Effects of Neighborhood and Interior Characteristics on Residential Sale Prices. UNLV Undergraduate Economics Working Paper Series, 3 (2), 1-18. Available at: http://dx.doi.org/10.34917/40601198",
+      "remote_disciplines": [
+        "Decision Science",
+        "Economics",
+        "Management Sciences and Quantitative Methods",
+        "Real Estate"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601198",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/9/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/9",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/9/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1008&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1008&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "The Effects of Neighborhood and Interior Characteristics on Residential Sale Prices",
+          "remote": "The Effects of Neighborhood and Interior Characteristics on Residential Sale Prices"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Ella Sophie Hagman"
+          ],
+          "remote": [
+            "Ella Sophie Hagman"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This study analyses to what extent certain neighborhood and interior characteristics affect residential sale prices, after accounting for standard property variables. This is important to examine in order to understand the function of the housing market, the sources of price differences, and whether residential values can be controlled by prioritizing specific desirable property features. The study is based on a dataset of approximately 330,000 observations from the Multiple Listing Service (MLS), as well as walkability data obtained from Walk Score. The data is analyzed in Stata, using three regression models with different combinations of explanatory variables. The results show that the model containing neighborhood variables has a higher explanatory power than the model with the interior variables, though the magnitude of the interior attributes’ coefficients is stronger than those of the neighborhood features. The full model, containing all variables of interest, has the highest explanatory power, suggesting that this model explains more of the price variation than the other two models, and it provides the most comprehensive specification of the variation in residential sale prices, since it does not omit any potentially important variables included in the study. Overall, this suggests that, after controlling for standard property variables, both neighborhood and interior attributes are valuable determinants of the variation in sale prices in the housing market. Moreover, further research is intended, to gain more knowledge and skills in the area, and to expand the scope of the project to hopefully get more comprehensive and accurate results.",
+          "remote": "This study analyses to what extent certain neighborhood and interior characteristics affect residential sale prices, after accounting for standard property variables. This is important to examine in order to understand the function of the housing market, the sources of price differences, and whether residential values can be controlled by prioritizing specific desirable property features. The study is based on a dataset of approximately 330,000 observations from the Multiple Listing Service (MLS), as well as walkability data obtained from Walk Score. The data is analyzed in Stata, using three regression models with different combinations of explanatory variables. The results show that the model containing neighborhood variables has a higher explanatory power than the model with the interior variables, though the magnitude of the interior attributes’ coefficients is stronger than those of the neighborhood features. The full model, containing all variables of interest, has the highest explanatory power, suggesting that this model explains more of the price variation than the other two models, and it provides the most comprehensive specification of the variation in residential sale prices, since it does not omit any potentially important variables included in the study. Overall, this suggests that, after controlling for standard property variables, both neighborhood and interior attributes are valuable determinants of the variation in sale prices in the housing market. Moreover, further research is intended, to gain more knowledge and skills in the area, and to expand the scope of the project to hopefully get more comprehensive and accurate results."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Housing Prices",
+            "Hedonic Pricing Model",
+            "Interior Attributes",
+            "Neighborhood Characteristics",
+            "Regression Analysis"
+          ],
+          "remote": [
+            "Housing Prices",
+            "Hedonic Pricing Model",
+            "Interior Attributes",
+            "Neighborhood Characteristics",
+            "Regression Analysis"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601198",
+          "remote": "10.34917/40601198"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/9",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/9"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1008&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1008&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 2,
+          "remote": 2
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-18",
+          "remote": "1-18"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Urban, Regional, and Real Estate Economics",
+          "remote": [
+            "Decision Science",
+            "Economics",
+            "Management Sciences and Quantitative Methods",
+            "Real Estate"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Spring 2026",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "mlb-speed-premium",
+      "title": "MLB Speed Premium",
+      "authors": [
+        "Jacob A. Keithley",
+        "Chris Hampton"
+      ],
+      "local_field": "Labor Economics and Demography",
+      "local_issue_term": "Spring 2026",
+      "doi": "10.34917/40601199",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/10",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1009&context=econ_ug_papers",
+      "frontend_citation": "Keithley, J. A., Hampton, C. (2026). MLB Speed Premium. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–10 (UNLV-Econ-WPS-2026-010). https://doi.org/10.34917/40601199",
+      "repository_citation": "Keithley, J. A., Hampton, C. (2026). MLB Speed Premium. UNLV Undergraduate Economics Working Paper Series, 3 (2), 1-10. Available at: http://dx.doi.org/10.34917/40601199",
+      "remote_disciplines": [
+        "Labor Relations",
+        "Management Sciences and Quantitative Methods",
+        "Sports Management"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601199",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/10/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/10",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/10/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1009&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1009&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "MLB Speed Premium",
+          "remote": "MLB Speed Premium"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Jacob A. Keithley",
+            "Chris Hampton"
+          ],
+          "remote": [
+            "Jacob A. Keithley",
+            "Chris Hampton"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This study analyzes if the 2023 rule changes affected the valuation for speed in the MLB labor market. By using a log-linear wage model and including an interaction term for stolen bases and the post-2023 indicator, we test to see if there is a speed premium in salaries. After accounting for yearly effects, the results present a statistically significant increase in the marginal value of stolen bases after the rule change shock. A placebo test was used with home runs to confirm the effects were specific to speed related metrics. The results suggest that the MLB market has and is adjusting to the new speed incentives created by the rule changes.",
+          "remote": "This study analyzes if the 2023 rule changes affected the valuation for speed in the MLB labor market. By using a log-linear wage model and including an interaction term for stolen bases and the post-2023 indicator, we test to see if there is a speed premium in salaries. After accounting for yearly effects, the results present a statistically significant increase in the marginal value of stolen bases after the rule change shock. A placebo test was used with home runs to confirm the effects were specific to speed related metrics. The results suggest that the MLB market has and is adjusting to the new speed incentives created by the rule changes."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "MLB",
+            "Stolen Base",
+            "Labor Market Shock"
+          ],
+          "remote": [
+            "MLB",
+            "Stolen Base",
+            "Labor Market Shock"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601199",
+          "remote": "10.34917/40601199"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/10",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/10"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1009&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1009&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 2,
+          "remote": 2
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-10",
+          "remote": "1-10"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Labor Economics and Demography",
+          "remote": [
+            "Labor Relations",
+            "Management Sciences and Quantitative Methods",
+            "Sports Management"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Spring 2026",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "nevada-mining-output-growth",
+      "title": "The Structural Limitations of Mining Output Growth in Nevada",
+      "authors": [
+        "Mckinley Brown",
+        "Emma Kitchen"
+      ],
+      "local_field": "Environmental and Resource Economics",
+      "local_issue_term": "Spring 2026",
+      "doi": "10.34917/40601200",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/11",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1010&context=econ_ug_papers",
+      "frontend_citation": "Brown, M., Kitchen, E. (2026). The Structural Limitations of Mining Output Growth in Nevada. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–21 (UNLV-Econ-WPS-2026-011). https://doi.org/10.34917/40601200",
+      "repository_citation": "Brown, M., Kitchen, E. (2026). The Structural Limitations of Mining Output Growth in Nevada. UNLV Undergraduate Economics Working Paper Series, 3 (2), 1-21. Available at: http://dx.doi.org/10.34917/40601200",
+      "remote_disciplines": [
+        "Economics",
+        "Management Sciences and Quantitative Methods",
+        "Mining Engineering",
+        "Operations and Supply Chain Management"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601200",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/11/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/11",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/11/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1010&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1010&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "The Structural Limitations of Mining Output Growth in Nevada",
+          "remote": "The Structural Limitations of Mining Output Growth in Nevada"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Mckinley Brown",
+            "Emma Kitchen"
+          ],
+          "remote": [
+            "Mckinley Brown",
+            "Emma Kitchen"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This study compares short and long trends in Nevada to the production output within the mining industry. Nevada produces around 70% of the United States gold and about 15% of the world's critical minerals. From its position as one of the most resource rich mining regions globally to its emergence as a growing economic hub, mining played a central role in Nevada's economy. However, despite the industry’s importance, Nevada still faces inefficiencies in production output due to insufficient attention to key inputs such as labor, infrastructure, technology, and energy resources.",
+          "remote": "This study compares short and long trends in Nevada to the production output within the mining industry. Nevada produces around 70% of the United States gold and about 15% of the world's critical minerals. From its position as one of the most resource rich mining regions globally to its emergence as a growing economic hub, mining played a central role in Nevada's economy. However, despite the industry’s importance, Nevada still faces inefficiencies in production output due to insufficient attention to key inputs such as labor, infrastructure, technology, and energy resources."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Production Efficiency",
+            "Labor and Output",
+            "Capital Development"
+          ],
+          "remote": [
+            "Production Efficiency",
+            "Labor and Output",
+            "Capital Development"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601200",
+          "remote": "10.34917/40601200"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/11",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/11"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1010&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1010&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 2,
+          "remote": 2
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-21",
+          "remote": "1-21"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Environmental and Resource Economics",
+          "remote": [
+            "Economics",
+            "Management Sciences and Quantitative Methods",
+            "Mining Engineering",
+            "Operations and Supply Chain Management"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Spring 2026",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "commercial-bank-failures",
+      "title": "Simple Determinants of Commercial Bank Failures",
+      "authors": [
+        "Matthrew Qi"
+      ],
+      "local_field": "Financial Economics",
+      "local_issue_term": "Spring 2026",
+      "doi": "10.34917/40601201",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/12",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1011&context=econ_ug_papers",
+      "frontend_citation": "Qi, M. (2026). Simple Determinants of Commercial Bank Failures. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–11 (UNLV-Econ-WPS-2026-012). https://doi.org/10.34917/40601201",
+      "repository_citation": "Qi, M. (2026). Simple Determinants of Commercial Bank Failures. UNLV Undergraduate Economics Working Paper Series, 3 (2), 1-11. Available at: http://dx.doi.org/10.34917/40601201",
+      "remote_disciplines": [
+        "Finance and Financial Management",
+        "Management Sciences and Quantitative Methods",
+        "Portfolio and Security Analysis"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601201",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/12/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/12",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/12/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1011&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1011&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "Simple Determinants of Commercial Bank Failures",
+          "remote": "Simple Determinants of Commercial Bank Failures"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Matthrew Qi"
+          ],
+          "remote": [
+            "Matthrew Qi"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This study investigates the internal and macroeconomic determinants of commercial banking failures in the United States spanning 1959 to 2025. Using a logit model and a four-quarter lag, two models are estimated: a comprehensive model (1985–2025) and an extended panel model (1960–2025). Empirical results reveal internal CAMELS metrics are primary determinants of survival; profitability and capital adequacy defends against failures, while asset quality deterioration and management inefficiencies accelerates failure. The “too big to fail” paradigm is empirically validated. Contractionary monetary policy and labor market stress increase failure probabilities. Real GDP growth exhibits a role shift predicting commercial bank failures.",
+          "remote": "This study investigates the internal and macroeconomic determinants of commercial banking failures in the United States spanning 1959 to 2025. Using a logit model and a four-quarter lag, two models are estimated: a comprehensive model (1985–2025) and an extended panel model (1960–2025). Empirical results reveal internal CAMELS metrics are primary determinants of survival; profitability and capital adequacy defends against failures, while asset quality deterioration and management inefficiencies accelerates failure. The “too big to fail” paradigm is empirically validated. Contractionary monetary policy and labor market stress increase failure probabilities. Real GDP growth exhibits a role shift predicting commercial bank failures."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Bank failure",
+            "commercial bank",
+            "logistic regression model",
+            "logit model",
+            "CAMELS",
+            "macroeconomic conditions"
+          ],
+          "remote": [
+            "Bank failure",
+            "commercial bank",
+            "logistic regression model",
+            "logit model",
+            "CAMELS",
+            "macroeconomic conditions"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601201",
+          "remote": "10.34917/40601201"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/12",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/12"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1011&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1011&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 2,
+          "remote": 2
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-11",
+          "remote": "1-11"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Financial Economics",
+          "remote": [
+            "Finance and Financial Management",
+            "Management Sciences and Quantitative Methods",
+            "Portfolio and Security Analysis"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Spring 2026",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "gambling-losses-future-wagers",
+      "title": "Gambling Behaviors: How Do Gambling Losses Affect Future Wagers?",
+      "authors": [
+        "Ashley Talavera",
+        "Hannah Lopez Ibarra",
+        "Roman Rozbitskyy"
+      ],
+      "local_field": "Behavioral and Experimental Economics",
+      "local_issue_term": "Spring 2026",
+      "doi": "10.34917/40601202",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/13",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1012&context=econ_ug_papers",
+      "frontend_citation": "Talavera, A., Ibarra, H. L., Rozbitskyy, R. (2026). Gambling Behaviors: How Do Gambling Losses Affect Future Wagers? UNLV Undergraduate Economics Working Paper Series, 3(2), 1–8 (UNLV-Econ-WPS-2026-013). https://doi.org/10.34917/40601202",
+      "repository_citation": "Talavera, A., Lopez Ibarra, H., Rozbitskyy, R. (2026). Gambling Behaviors: How Do Gambling Losses Affect Future Wagers?. UNLV Undergraduate Economics Working Paper Series, 3 (2), 1-8. Available at: http://dx.doi.org/10.34917/40601202",
+      "remote_disciplines": [
+        "Decision Science",
+        "Finance and Financial Management",
+        "Gaming and Casino Operations Management",
+        "Management Sciences and Quantitative Methods"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601202",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/13/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/13",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/13/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1012&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1012&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "Gambling Behaviors: How Do Gambling Losses Affect Future Wagers?",
+          "remote": "Gambling Behaviors: How Do Gambling Losses Affect Future Wagers?"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Ashley Talavera",
+            "Hannah Lopez Ibarra",
+            "Roman Rozbitskyy"
+          ],
+          "remote": [
+            "Ashley Talavera",
+            "Hannah Lopez Ibarra",
+            "Roman Rozbitskyy"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This study looks at how previous gambling losses affect future betting behavior in online cryptocurrency gambling markets. Using roughly 50,000 real betting observations from Bustabit, the paper tests whether gamblers become more aggressive after losses or instead pull back and bet more cautiously. Using both OLS and Fixed Effects regression models, the results show that players generally reduce their wager sizes following losses rather than engage in strong loss-chasing behavior. After controlling for individual player tendencies, the Fixed Effects models show statistically significant decreases in future bet sizes after losses, suggesting that caution and loss aversion may play a larger role in online gambling behavior than traditionally assumed.",
+          "remote": "This study looks at how previous gambling losses affect future betting behavior in online cryptocurrency gambling markets. Using roughly 50,000 real betting observations from Bustabit, the paper tests whether gamblers become more aggressive after losses or instead pull back and bet more cautiously. Using both OLS and Fixed Effects regression models, the results show that players generally reduce their wager sizes following losses rather than engage in strong loss-chasing behavior. After controlling for individual player tendencies, the Fixed Effects models show statistically significant decreases in future bet sizes after losses, suggesting that caution and loss aversion may play a larger role in online gambling behavior than traditionally assumed."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Gambling Behavior",
+            "Prospect Theory",
+            "Cryptocurrency Gambling",
+            "Fixed Effects",
+            "Online Betting"
+          ],
+          "remote": [
+            "Gambling Behavior",
+            "Prospect Theory",
+            "Cryptocurrency Gambling",
+            "Fixed Effects",
+            "Online Betting"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601202",
+          "remote": "10.34917/40601202"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/13",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/13"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1012&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1012&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 2,
+          "remote": 2
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-8",
+          "remote": "1-8"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Behavioral and Experimental Economics",
+          "remote": [
+            "Decision Science",
+            "Finance and Financial Management",
+            "Gaming and Casino Operations Management",
+            "Management Sciences and Quantitative Methods"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Spring 2026",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "las-vegas-casino-revenue",
+      "title": "Las Vegas Casino Revenue in an Expanding Gambling Market",
+      "authors": [
+        "Kaden A. Villa-Real"
+      ],
+      "local_field": "Industrial Organization",
+      "local_issue_term": "Spring 2026",
+      "doi": "10.34917/40601203",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/14",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1013&context=econ_ug_papers",
+      "frontend_citation": "Villa-Real, K. A. (2026). Las Vegas Casino Revenue in an Expanding Gambling Market. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–11 (UNLV-Econ-WPS-2026-014). https://doi.org/10.34917/40601203",
+      "repository_citation": "Villa-Real, K. A. (2026). Las Vegas Casino Revenue in an Expanding Gambling Market. UNLV Undergraduate Economics Working Paper Series, 3 (2), 1-11. Available at: http://dx.doi.org/10.34917/40601203",
+      "remote_disciplines": [
+        "Decision Science",
+        "Finance and Financial Management",
+        "Gaming and Casino Operations Management",
+        "Management Sciences and Quantitative Methods"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601203",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/14/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/14",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/14/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1013&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1013&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "Las Vegas Casino Revenue in an Expanding Gambling Market",
+          "remote": "Las Vegas Casino Revenue in an Expanding Gambling Market"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Kaden A. Villa-Real"
+          ],
+          "remote": [
+            "Kaden A. Villa-Real"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This study examines whether expanding gambling substitutes disrupt the Las Vegas gambling industry using quarterly data from 2014 through 2025. Las Vegas casino revenue is used as the benchmark to gauge the health of Las Vegas, adjusted to Quarter 1 2014 dollars and using an OLS regression model. The results imply that online sports betting is a poor substitute for Las Vegas revenue, while online gambling shows a positive and statistically significant relationship with revenue. The findings indicate that Las Vegas is resilient despite the introduction of more competition and gambling alternatives within an industry it has traditionally known to dominate.",
+          "remote": "This study examines whether expanding gambling substitutes disrupt the Las Vegas gambling industry using quarterly data from 2014 through 2025. Las Vegas casino revenue is used as the benchmark to gauge the health of Las Vegas, adjusted to Quarter 1 2014 dollars and using an OLS regression model. The results imply that online sports betting is a poor substitute for Las Vegas revenue, while online gambling shows a positive and statistically significant relationship with revenue. The findings indicate that Las Vegas is resilient despite the introduction of more competition and gambling alternatives within an industry it has traditionally known to dominate."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "Las Vegas",
+            "gambling substitutes",
+            "online gambling",
+            "online sports betting",
+            "casino revenue"
+          ],
+          "remote": [
+            "Las Vegas",
+            "gambling substitutes",
+            "online gambling",
+            "online sports betting",
+            "casino revenue"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601203",
+          "remote": "10.34917/40601203"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/14",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/14"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1013&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1013&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 2,
+          "remote": 2
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-11",
+          "remote": "1-11"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Industrial Organization",
+          "remote": [
+            "Decision Science",
+            "Finance and Financial Management",
+            "Gaming and Casino Operations Management",
+            "Management Sciences and Quantitative Methods"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Spring 2026",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    },
+    {
+      "slug": "march-madness-tournament-advancement",
+      "title": "Determinants of March Madness Tournament Advancement",
+      "authors": [
+        "Jace Waldahl"
+      ],
+      "local_field": "Applied Microeconomics",
+      "local_issue_term": "Spring 2026",
+      "doi": "10.34917/40601204",
+      "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
+      "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/15",
+      "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1014&context=econ_ug_papers",
+      "frontend_citation": "Waldahl, J. (2026). Determinants of March Madness Tournament Advancement. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–10 (UNLV-Econ-WPS-2026-015). https://doi.org/10.34917/40601204",
+      "repository_citation": "Waldahl, J. (2026). Determinants of March Madness Tournament Advancement. UNLV Undergraduate Economics Working Paper Series, 3 (2), 1-10. Available at: http://dx.doi.org/10.34917/40601204",
+      "remote_disciplines": [
+        "Economics",
+        "Sports Management",
+        "Sports Studies"
+      ],
+      "doi_resolution": {
+        "status": "verified",
+        "requested_url": "https://doi.org/10.34917/40601204",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/15/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "item_availability": {
+        "status": "verified",
+        "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/15",
+        "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/15/",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "pdf_availability": {
+        "status": "http_error",
+        "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1014&context=econ_ug_papers",
+        "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1014&context=econ_ug_papers",
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 1,
+        "reached_oasis": true
+      },
+      "comparisons": [
+        {
+          "field": "title",
+          "status": "match",
+          "local": "Determinants of March Madness Tournament Advancement",
+          "remote": "Determinants of March Madness Tournament Advancement"
+        },
+        {
+          "field": "authors",
+          "status": "match",
+          "local": [
+            "Jace Waldahl"
+          ],
+          "remote": [
+            "Jace Waldahl"
+          ]
+        },
+        {
+          "field": "abstract",
+          "status": "match",
+          "local": "This paper examines whether tournament seed and team efficiency ratings help explain how far teams advance in the NCAA men's basketball tournament. Using Bart Torvik NCAA basketball ratings data from 2008 to 2025, I construct a team-year dataset with tournament advancement measured from 1 to 7, where higher values represent deeper runs. The main independent variables are seed, net efficiency, offensive efficiency, and defensive efficiency. Descriptive statistics, correlations, scatterplots, and OLS regressions are used to test whether better-seeded and more efficient teams advance further. The results show that seed is the strongest and most consistent predictor of advancement, but efficiency ratings still matter after controlling for seed. Net efficiency is positive and statistically significant, while offensive efficiency is positive and defensive efficiency is negative when the two sides of the ball are separated. Overall, the findings suggest that March Madness contains a large amount of randomness, but tournament success is still strongly related to team quality.",
+          "remote": "This paper examines whether tournament seed and team efficiency ratings help explain how far teams advance in the NCAA men's basketball tournament. Using Bart Torvik NCAA basketball ratings data from 2008 to 2025, I construct a team-year dataset with tournament advancement measured from 1 to 7, where higher values represent deeper runs. The main independent variables are seed, net efficiency, offensive efficiency, and defensive efficiency. Descriptive statistics, correlations, scatterplots, and OLS regressions are used to test whether better-seeded and more efficient teams advance further. The results show that seed is the strongest and most consistent predictor of advancement, but efficiency ratings still matter after controlling for seed. Net efficiency is positive and statistically significant, while offensive efficiency is positive and defensive efficiency is negative when the two sides of the ball are separated. Overall, the findings suggest that March Madness contains a large amount of randomness, but tournament success is still strongly related to team quality."
+        },
+        {
+          "field": "keywords",
+          "status": "match",
+          "local": [
+            "March Madness",
+            "NCAA tournament",
+            "tournament advancement",
+            "seed",
+            "basketball efficiency",
+            "OLS"
+          ],
+          "remote": [
+            "March Madness",
+            "NCAA tournament",
+            "tournament advancement",
+            "seed",
+            "basketball efficiency",
+            "OLS"
+          ]
+        },
+        {
+          "field": "doi",
+          "status": "match",
+          "local": "10.34917/40601204",
+          "remote": "10.34917/40601204"
+        },
+        {
+          "field": "oasis_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/econ_ug_papers/15",
+          "remote": "https://oasis.library.unlv.edu/econ_ug_papers/15"
+        },
+        {
+          "field": "pdf_url",
+          "status": "match",
+          "local": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1014&context=econ_ug_papers",
+          "remote": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1014&context=econ_ug_papers"
+        },
+        {
+          "field": "repository_published_at",
+          "status": "match",
+          "local": "2026-08-05",
+          "remote": "2026-08-05"
+        },
+        {
+          "field": "citable_published_at",
+          "status": "match",
+          "local": "2026-05-21",
+          "remote": "2026-05-21"
+        },
+        {
+          "field": "volume",
+          "status": "match",
+          "local": 3,
+          "remote": 3
+        },
+        {
+          "field": "issue_number",
+          "status": "match",
+          "local": 2,
+          "remote": 2
+        },
+        {
+          "field": "pages",
+          "status": "match",
+          "local": "1-10",
+          "remote": "1-10"
+        },
+        {
+          "field": "rights_statement",
+          "status": "match",
+          "local": "In Copyright",
+          "remote": "In Copyright"
+        },
+        {
+          "field": "field",
+          "status": "not_available",
+          "local": "Applied Microeconomics",
+          "remote": [
+            "Economics",
+            "Sports Management",
+            "Sports Studies"
+          ],
+          "note": "OAsis exposes disciplines, not the controlled local research field"
+        },
+        {
+          "field": "issue_term",
+          "status": "not_available",
+          "local": "Spring 2026",
+          "note": "OAsis exposes volume and issue, not the local semester label"
+        },
+        {
+          "field": "faculty_sponsor",
+          "status": "not_available",
+          "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
+        }
+      ],
+      "outcome": "remote_error"
+    }
+  ]
+}

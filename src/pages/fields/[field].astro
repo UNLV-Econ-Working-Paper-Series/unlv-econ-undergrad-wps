@@ -1,0 +1,124 @@
+---
+import PageBanner from "../../components/PageBanner.astro";
+import { RESEARCH_FIELDS, type ResearchField } from "../../config/publication";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  cleanPaperTitle,
+  formatPaperDate,
+  getAllPapers,
+  getIssueLabelForPaper,
+  getIssueSlugForPaper,
+  paperHref,
+} from "../../lib/papers";
+import { doiUrl, formatAuthorDisplay } from "../../lib/publication";
+import { researchFieldFromSlug, researchFieldSlug } from "../../lib/research-fields";
+import { withBase } from "../../lib/urls";
+import "../../styles/pages/fields.css";
+
+export async function getStaticPaths() {
+  const papers = await getAllPapers();
+  const populated = new Set<ResearchField>(papers.map((paper) => paper.data.field));
+  return RESEARCH_FIELDS.filter((field) => populated.has(field)).map((field) => ({
+    params: { field: researchFieldSlug(field) },
+  }));
+}
+
+const fieldSlug = Astro.params.field ?? "";
+const field = researchFieldFromSlug(fieldSlug);
+if (!field) throw new Error(`Research field route not found: ${fieldSlug}`);
+
+const papers = (await getAllPapers()).filter((paper) => paper.data.field === field);
+
+const excerpt = (abstract: string, length = 260): string => {
+  const normalized = abstract.trim();
+  if (normalized.length <= length) return normalized;
+  const clipped = normalized.slice(0, length);
+  const boundary = clipped.lastIndexOf(" ");
+  return `${clipped.slice(0, boundary > length * 0.7 ? boundary : length).trim()}…`;
+};
+---
+
+<BaseLayout
+  title={`${field} | Research Fields | UNLV Undergraduate Economics Working Paper Series`}
+  description={`Published working papers in ${field} from the UNLV Undergraduate Economics Working Paper Series.`}
+  bodyClass="section-fields page-field-detail"
+>
+  <nav class="field-breadcrumb content-section" aria-label="Breadcrumb">
+    <ol>
+      <li><a href={withBase("/fields/")}>Research Fields</a></li>
+      <li><span aria-current="page">{field}</span></li>
+    </ol>
+  </nav>
+
+  <PageBanner
+    kicker="Research field"
+    title={field}
+    subtitle={`${papers.length} ${papers.length === 1 ? "published working paper" : "published working papers"}`}
+    compact
+  />
+
+  <section class="field-detail content-section" aria-labelledby="field-papers-title">
+    <header class="field-detail__header">
+      <p class="field-label">Published papers</p>
+      <h2 id="field-papers-title">Working papers in {field}</h2>
+    </header>
+
+    <ol class="field-paper-list" aria-label={`Working papers in ${field}, newest first`}>
+      {
+        papers.map((paper) => {
+          const title = cleanPaperTitle(paper.data.title);
+          const issueLabel = getIssueLabelForPaper(paper);
+          const issueHref = withBase(`/issues/${getIssueSlugForPaper(paper)}/`);
+
+          return (
+            <li>
+              <article class="field-paper-entry">
+                <p class="field-paper-entry__number">{paper.data.series_number}</p>
+                <h3>
+                  <a href={paperHref(paper)}>{title}</a>
+                </h3>
+                <p class="field-paper-entry__authors">{formatAuthorDisplay(paper.data.authors)}</p>
+                <p class="field-paper-entry__abstract">{excerpt(paper.data.abstract)}</p>
+
+                <dl class="field-paper-entry__metadata">
+                  <div>
+                    <dt>Issue</dt>
+                    <dd>
+                      <a href={issueHref}>{issueLabel}</a>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>OAsis online</dt>
+                    <dd>
+                      <time datetime={paper.data.repository_published_at}>
+                        {formatPaperDate(paper.data.repository_published_at)}
+                      </time>
+                    </dd>
+                  </div>
+                  {paper.data.doi ? (
+                    <div>
+                      <dt>DOI</dt>
+                      <dd>
+                        <a href={doiUrl(paper.data.doi)} rel="external">
+                          {paper.data.doi}
+                        </a>
+                      </dd>
+                    </div>
+                  ) : null}
+                </dl>
+
+                <p class="field-paper-entry__action">
+                  <a href={paperHref(paper)}>
+                    View paper record<span aria-hidden="true"> →</span>
+                  </a>
+                </p>
+              </article>
+            </li>
+          );
+        })
+      }
+    </ol>
+
+    <p class="field-back-link"><a href={withBase("/fields/")}>← All research fields</a></p>
+  </section>
+</BaseLayout>

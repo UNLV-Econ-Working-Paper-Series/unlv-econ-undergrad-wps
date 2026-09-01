@@ -1,0 +1,80 @@
+---
+import AboutNavigation from "../../components/AboutNavigation.astro";
+import PageBanner from "../../components/PageBanner.astro";
+import ProfileLinks from "../../components/ProfileLinks.astro";
+import { EDITORIAL_BOARD, type EditorialMember } from "../../config/editorial";
+import { SERIES } from "../../config/publication";
+import { PUBLIC_PROFILES } from "../../data/public-profiles";
+import type { PublicProfile } from "../../data/public-profiles.types";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+export function getStaticPaths() {
+  const editorialIdsByProfileId: Record<string, string> = {
+    "mark-jayson-farol": "mark-jayson-martinez-farol",
+    "professor-djeto-assane": "djeto-assane",
+    "professor-eric-chiang": "eric-chiang",
+  };
+
+  return PUBLIC_PROFILES.filter(
+    (profile) =>
+      profile.sections.includes("editorial_team") && profile.profileHref?.startsWith("/editorial-board/"),
+  ).map((profile) => {
+    const member = EDITORIAL_BOARD.find((candidate) => candidate.id === editorialIdsByProfileId[profile.id]);
+    return {
+      params: {
+        slug: profile.profileHref?.replace(/^\/editorial-board\//, "").replace(/\/$/, ""),
+      },
+      props: { profile, member },
+    };
+  });
+}
+
+const { profile, member } = Astro.props as { profile: PublicProfile; member: EditorialMember };
+---
+
+<BaseLayout
+  title={`${member.name} | Editorial Board | UNLV Undergraduate Economics Working Paper Series`}
+  bodyClass="section-about page-profile"
+>
+  <PageBanner title={member.name} lead={member.publicTitle} note="Voting Editorial Board" />
+
+  <section class="content-section">
+    <AboutNavigation currentHref="/editorial-board/" />
+  </section>
+
+  <section class="content-section profile-shell">
+    {
+      profile.headshot ? (
+        <img
+          class="profile-thumb"
+          src={withBase(profile.headshot)}
+          alt=""
+          width="128"
+          height="128"
+          loading="lazy"
+        />
+      ) : null
+    }
+
+    <article class="profile-bio" aria-label={`Profile for ${member.name}`}>
+      <div class="profile-overview">
+        <p class="profile-series-role">{member.description}</p>
+        {(profile.profileBio ?? [profile.summary]).map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+
+      <div class="profile-actions">
+        <ProfileLinks
+          links={profile.links}
+          ariaLabel={`External profiles for ${member.name}`}
+          ownerName={member.name}
+        />
+        <a class="profile-contact-link" href={`mailto:${SERIES.contactEmail}`}>Contact the Series</a>
+      </div>
+    </article>
+
+    <p class="profile-back-link">
+      <a href={withBase("/editorial-board/#voting-board")}>← Back to the Voting Editorial Board</a>
+    </p>
+  </section>
+</BaseLayout>

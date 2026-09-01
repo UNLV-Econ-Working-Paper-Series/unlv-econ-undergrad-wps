@@ -1,0 +1,112 @@
+---
+import PageBanner from "../../components/PageBanner.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getArchiveIssueGroups } from "../../lib/archive";
+import { withBase } from "../../lib/urls";
+import "../../styles/pages/issues.css";
+
+const archiveIssues = getArchiveIssueGroups();
+const paperCount = archiveIssues.reduce((sum, issue) => sum + issue.papers.length, 0);
+// This records the bounded metadata migration, never the paper's original year.
+const ARCHIVE_MIGRATION_YEAR = 2026;
+
+const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
+  `${count} ${count === 1 ? singular : plural}`;
+---
+
+<BaseLayout
+  title="Historical Archive | UNLV Undergraduate Economics Working Paper Series"
+  description="A bounded metadata inventory of earlier UNLV Economics Hub undergraduate economics working papers."
+  bodyClass="section-issues page-archive"
+>
+  <nav class="publication-breadcrumb content-section" aria-label="Breadcrumb">
+    <ol>
+      <li><a href={withBase("/issues/")}>Issues</a></li>
+      <li><span aria-current="page">Historical Archive</span></li>
+    </ol>
+  </nav>
+
+  <PageBanner
+    kicker="Earlier Series records"
+    title="Historical Archive"
+    subtitle="A bounded metadata inventory of working papers from the earlier UNLV Economics Hub"
+    compact
+  />
+
+  <section class="historical-archive content-section" aria-labelledby="historical-inventory-title">
+    <header class="historical-archive__intro">
+      <p class="publication-label">Migration status</p>
+      <h2 id="historical-inventory-title">Historical metadata under record-level review</h2>
+      <p>
+        This inventory is not a claim of complete migration. It presents retained titles, author display
+        lines, and original issue terms while provenance, rights, final-version status, file availability, and
+        accessibility are verified record by record.
+      </p>
+      <p>
+        Full text is not linked from this archive while those checks remain open, and no OAsis deposit is
+        implied for these historical records.
+      </p>
+      <dl class="historical-archive__counts" aria-label="Historical inventory size">
+        <div>
+          <dt>Historical issues</dt>
+          <dd>{archiveIssues.length}</dd>
+        </div>
+        <div>
+          <dt>Metadata records</dt>
+          <dd>{paperCount}</dd>
+        </div>
+      </dl>
+    </header>
+
+    {
+      archiveIssues.length > 0 ? (
+        <ol class="archive-issue-list" aria-label="Historical issues, newest first">
+          {archiveIssues.map((issue) => (
+            <li>
+              <article class="archive-issue-entry">
+                <header>
+                  <p class="publication-label">Historical issue</p>
+                  <h3>
+                    <a href={withBase(`/issues/archive/${issue.slug}/`)}>{issue.label}</a>
+                  </h3>
+                  <p>{countLabel(issue.papers.length, "historical working paper")}</p>
+                </header>
+
+                <dl class="archive-provenance-summary">
+                  <div>
+                    <dt>Original issue term</dt>
+                    <dd>{issue.label}</dd>
+                  </div>
+                  <div>
+                    <dt>Current archive review</dt>
+                    <dd>{ARCHIVE_MIGRATION_YEAR} metadata migration</dd>
+                  </div>
+                </dl>
+
+                <ol class="archive-paper-toc" aria-label={`Historical paper records for ${issue.label}`}>
+                  {issue.papers.map((paper) => (
+                    <li>
+                      <span>{paper.title}</span>
+                      <span>{paper.authors}</span>
+                    </li>
+                  ))}
+                </ol>
+
+                <p class="archive-issue-entry__action">
+                  <a class="text-action" href={withBase(`/issues/archive/${issue.slug}/`)}>
+                    View {issue.label} metadata records<span aria-hidden="true"> →</span>
+                  </a>
+                </p>
+              </article>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <section class="publication-empty" aria-labelledby="archive-empty-title">
+          <h3 id="archive-empty-title">No verified historical metadata is listed</h3>
+          <p>Records will appear only after the available historical evidence has been reviewed.</p>
+        </section>
+      )
+    }
+  </section>
+</BaseLayout>

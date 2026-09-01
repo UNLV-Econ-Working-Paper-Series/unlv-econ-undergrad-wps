@@ -1,0 +1,202 @@
+---
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { SERIES } from "../config/publication";
+import { serializeJsonLd, type MetaTagData } from "../lib/publication";
+import { withBase } from "../lib/urls";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import "../styles/layout.css";
+import "../styles/components.css";
+import "../styles/pages/home.css";
+import "../styles/pages/papers.css";
+import "../styles/pages/issues.css";
+import "../styles/pages/fields.css";
+import "../styles/pages/policies.css";
+import "../styles/print.css";
+
+type OpenGraphType = "website" | "article";
+
+interface Props {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+  canonicalPath?: string;
+  ogType?: OpenGraphType;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImagePath?: string;
+  articlePublishedAt?: string;
+  articleModifiedAt?: string;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  scholarlyMeta?: readonly MetaTagData[];
+  robots?: string;
+  redirectTo?: string;
+}
+
+const {
+  title,
+  description = SERIES.scope,
+  bodyClass = "",
+  canonicalPath = Astro.url.pathname,
+  ogType = "website",
+  ogTitle = title,
+  ogDescription = description,
+  ogImagePath = "/assets/brand/og-image.png",
+  articlePublishedAt,
+  articleModifiedAt,
+  jsonLd,
+  scholarlyMeta,
+  robots = "",
+  redirectTo = "",
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL("https://econ-undergrad-wps.sites.unlv.edu");
+const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
+const openGraphImage = new URL(withBase(ogImagePath), siteUrl).toString();
+const serializedJsonLd = jsonLd ? serializeJsonLd(jsonLd) : "";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {robots ? <meta name="robots" content={robots} /> : null}
+    <link rel="canonical" href={canonicalUrl} />
+    {redirectTo ? <meta http-equiv="refresh" content={`0;url=${redirectTo}`} /> : null}
+    <link rel="icon" href={withBase("/favicon.svg")} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={withBase("/apple-touch-icon.png")} />
+    <link rel="manifest" href={withBase("/site.webmanifest")} />
+    <meta name="theme-color" content="#a30b15" />
+
+    <meta property="og:site_name" content={SERIES.name} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={openGraphImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content={`${SERIES.name} social preview`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    {
+      ogType === "article" && articlePublishedAt ? (
+        <meta property="article:published_time" content={articlePublishedAt} />
+      ) : null
+    }
+    {
+      ogType === "article" && articleModifiedAt ? (
+        <meta property="article:modified_time" content={articleModifiedAt} />
+      ) : null
+    }
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={openGraphImage} />
+    <meta name="twitter:image:alt" content={`${SERIES.name} social preview`} />
+
+    {scholarlyMeta?.map((tag) => <meta name={tag.name} content={tag.content} />)}
+
+    {serializedJsonLd ? <script type="application/ld+json" is:inline set:html={serializedJsonLd} /> : null}
+    <slot name="head" />
+  </head>
+  <body class={bodyClass || undefined}>
+    <a class="skip-link" href="#content">Skip to main content</a>
+    <SiteHeader />
+
+    <main id="content" class="page-body" tabindex="-1">
+      <div class="page-content">
+        <slot />
+      </div>
+    </main>
+
+    <SiteFooter />
+
+    <p class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-copy-status></p>
+
+    <script>
+      import { bootSiteMotion } from "../scripts/site-motion";
+
+      bootSiteMotion();
+      document.documentElement.classList.add("has-js");
+
+      const copyStatus = document.querySelector<HTMLElement>("[data-copy-status]");
+      const announceCopyStatus = (message: string) => {
+        if (!copyStatus) return;
+        copyStatus.textContent = "";
+        window.requestAnimationFrame(() => {
+          copyStatus.textContent = message;
+        });
+      };
+
+      document.querySelectorAll<HTMLButtonElement>("[data-copy-target]").forEach((button) => {
+        if (button.dataset.copyBound === "true") return;
+        button.dataset.copyBound = "true";
+        const initialText = button.textContent?.trim() || "Copy";
+        const initialLabel = button.getAttribute("aria-label");
+
+        button.addEventListener("click", async () => {
+          const selector = button.dataset.copyTarget;
+          if (!selector) {
+            announceCopyStatus("Nothing was available to copy.");
+            return;
+          }
+
+          let target: Element | null = null;
+          try {
+            target = document.querySelector(selector);
+          } catch {
+            announceCopyStatus(
+              "The citation could not be copied. Select the citation text and copy it manually.",
+            );
+            return;
+          }
+          const text = target?.textContent?.trim();
+          if (!text) {
+            announceCopyStatus("Nothing was available to copy.");
+            return;
+          }
+
+          const showSuccess = () => {
+            button.textContent = "Copied";
+            button.setAttribute("aria-label", "Citation copied to clipboard");
+            button.classList.add("is-copied");
+            announceCopyStatus("Citation copied to the clipboard.");
+            window.setTimeout(() => {
+              button.textContent = initialText;
+              button.classList.remove("is-copied");
+              if (initialLabel) button.setAttribute("aria-label", initialLabel);
+              else button.removeAttribute("aria-label");
+            }, 1800);
+          };
+
+          try {
+            await navigator.clipboard.writeText(text);
+            showSuccess();
+          } catch {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.readOnly = true;
+            textarea.className = "copy-fallback";
+            document.body.append(textarea);
+            textarea.select();
+            const legacyDocument = document as unknown as {
+              execCommand?: (commandId: string) => boolean;
+            };
+            const copied = legacyDocument.execCommand?.call(document, "copy") ?? false;
+            textarea.remove();
+            if (copied) showSuccess();
+            else
+              announceCopyStatus(
+                "The citation could not be copied. Select the citation text and copy it manually.",
+              );
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

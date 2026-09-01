@@ -1,0 +1,57 @@
+name: External records and production smoke
+
+on:
+  schedule:
+    - cron: "23 16 * * 2"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: external-records-production
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Use Node.js 24.16.0
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24.16.0
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Build the external-link inventory
+        run: npm run build
+
+      - name: Check DOI and OAsis records with retries
+        run: npm run verify:external-records
+
+      - name: Check external links with retries
+        if: always()
+        run: npm run verify:external-links
+
+      - name: Check the Faculty Sites production surface
+        if: always()
+        run: npm run verify:production -- --origin https://econ-undergrad-wps.sites.unlv.edu --expected-commit ${{ github.sha }}
+
+      - name: Upload external audit evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: external-record-audit-${{ github.run_id }}
+          path: |
+            artifacts/external-records/
+            artifacts/external-links/
+            artifacts/production/
+          if-no-files-found: warn
+          retention-days: 90

@@ -1,0 +1,102 @@
+---
+import { INSTITUTION } from "../config/institution";
+import { OASIS, SERIES } from "../config/publication";
+import { withBase } from "../lib/urls";
+
+const currentYear = new Date().getFullYear();
+
+const footerGroups = [
+  {
+    heading: "Explore",
+    label: "Explore the Series",
+    links: [
+      { href: "/papers/", label: "Working Papers" },
+      { href: "/issues/", label: "Issues" },
+      { href: "/fields/", label: "Research Fields" },
+      { href: "/for-authors/", label: "For Student Authors" },
+    ],
+  },
+  {
+    heading: "About",
+    label: "About and governance",
+    links: [
+      { href: "/about/", label: "About the Series" },
+      { href: "/editorial-board/", label: "Editorial Board" },
+      { href: "/history/", label: "History" },
+      { href: "/policies/", label: "Policies" },
+    ],
+  },
+  {
+    heading: "Help",
+    label: "Help and access",
+    links: [
+      { href: "/contact/", label: "Contact" },
+      { href: "/policies/accessibility/", label: "Accessibility" },
+      { href: "/policies/privacy/", label: "Privacy" },
+      { href: "/policies/permissions/", label: "Rights & permissions" },
+    ],
+  },
+] as const;
+
+const institutionalLinks = [
+  {
+    href: INSTITUTION.department.url,
+    label: "Economics and Real Estate",
+    accessibleLabel: INSTITUTION.department.name,
+  },
+  { href: INSTITUTION.school.url, label: INSTITUTION.school.name, accessibleLabel: INSTITUTION.school.name },
+  {
+    href: INSTITUTION.university.url,
+    label: "UNLV",
+    accessibleLabel: `UNLV — ${INSTITUTION.university.name}`,
+  },
+] as const;
+---
+
+<footer class="site-footer">
+  <div class="site-shell site-footer__main">
+    <section class="site-footer__identity" aria-labelledby="footer-series-name">
+      <h2 id="footer-series-name">{SERIES.name}</h2>
+      <p class="site-footer__notice">{SERIES.workingPaperNotice}</p>
+      <a class="site-footer__repository" href={OASIS.collectionUrl}>Permanent records in OAsis</a>
+    </section>
+
+    <div class="site-footer__directory">
+      {
+        footerGroups.map((group) => (
+          <nav class="site-footer__nav" aria-label={group.label}>
+            <h3>{group.heading}</h3>
+            <ul>
+              {group.links.map((item) => (
+                <li>
+                  <a href={withBase(item.href)}>{item.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="site-shell site-footer__utility">
+    <nav class="site-footer__institutional" aria-label="Institutional links">
+      <ul>
+        {
+          institutionalLinks.map((item) => (
+            <li>
+              <a href={item.href} aria-label={item.accessibleLabel}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-footer__legal">
+      <p>&copy; {currentYear} {SERIES.name}</p>
+      <p>OAsis is a service of UNLV University Libraries.</p>
+    </div>
+  </div>
+</footer>

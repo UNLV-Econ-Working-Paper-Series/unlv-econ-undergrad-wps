@@ -1,0 +1,156 @@
+.policy-shell {
+  max-inline-size: var(--shell-max);
+}
+
+.policy-breadcrumb {
+  max-inline-size: var(--reading-max);
+  margin-block: 0 var(--space-6);
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+.policy-article {
+  max-inline-size: var(--reading-max);
+}
+
+.policy-article > :first-child {
+  margin-block-start: 0;
+}
+
+.policy-article h2 {
+  margin-block-start: clamp(2rem, 6vw, 3.5rem);
+  padding-block-start: var(--space-4);
+  border-block-start: var(--border-thin) solid var(--color-border);
+}
+
+.policy-article h3 {
+  margin-block-start: var(--space-6);
+}
+
+.policy-article h4 {
+  margin-block-start: var(--space-5);
+}
+
+.policy-article p,
+.policy-article li,
+.policy-article dd {
+  max-inline-size: var(--reading-max);
+}
+
+.policy-article li + li {
+  margin-block-start: var(--space-2);
+}
+
+.policy-article a {
+  overflow-wrap: anywhere;
+}
+
+.policy-article dl {
+  margin-block: 0 var(--space-5);
+}
+
+.policy-article dt {
+  margin-block-start: var(--space-4);
+  font-weight: 750;
+}
+
+.policy-article dd {
+  margin-inline-start: 0;
+}
+
+.policy-article table {
+  margin-block: var(--space-5);
+}
+
+.page-for-authors .policy-article section + section {
+  margin-block-start: clamp(2rem, 6vw, 3.5rem);
+  padding-block-start: var(--space-4);
+  border-block-start: var(--border-thin) solid var(--color-border);
+}
+
+.page-for-authors .policy-article section h2 {
+  margin-block-start: 0;
+  padding-block-start: 0;
+  border-block-start: 0;
+}
+
+.page-policy-index .policy-article {
+  max-inline-size: none;
+}
+
+.page-policy-index .policy-article > h2 {
+  margin-block-start: 0;
+  padding-block-start: 0;
+  border-block-start: 0;
+}
+
+.policy-directory {
+  display: grid;
+  margin-block-start: var(--space-6);
+  border-block-start: var(--border-accent) solid var(--color-brand);
+}
+
+.policy-directory-item {
+  position: relative;
+  display: block;
+  min-inline-size: 0;
+  padding: var(--space-5) calc(var(--space-6) + var(--space-2)) var(--space-5) 0;
+  border-block-end: var(--border-thin) solid var(--color-border);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.policy-directory-item::after {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--space-2);
+  color: var(--color-brand-strong);
+  content: "→";
+  font-size: 1.25rem;
+  transform: translateY(-50%);
+}
+
+.policy-directory-item:hover {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.policy-directory-item h3 {
+  margin: 0 0 var(--space-2);
+  color: var(--color-link);
+  font-size: var(--text-lg);
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.policy-directory-item:hover h3 {
+  color: var(--color-link-hover);
+  text-decoration-thickness: 0.13em;
+}
+
+.policy-directory-item p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+@media (min-width: 48rem) {
+  .policy-directory {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .policy-directory-item:nth-child(odd) {
+    padding-inline-end: calc(var(--space-6) + var(--space-5));
+    border-inline-end: var(--border-thin) solid var(--color-border);
+  }
+
+  .policy-directory-item:nth-child(even) {
+    padding-inline-start: var(--space-5);
+  }
+}
+
+@media (forced-colors: active) {
+  .policy-directory-item::after {
+    color: LinkText;
+  }
+}

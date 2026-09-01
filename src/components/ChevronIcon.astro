@@ -1,0 +1,17 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg class:list={["ui-chevron", className]} viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+  <path
+    d="m3.25 5.75 4.75 4.5 4.75-4.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    vector-effect="non-scaling-stroke"></path>
+</svg>

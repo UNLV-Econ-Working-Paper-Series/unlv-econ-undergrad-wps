@@ -1,0 +1,73 @@
+:root {
+  color-scheme: light;
+
+  --color-brand: #a30b15;
+  --color-brand-strong: #74070e;
+  --color-brand-soft: #f7e9e9;
+  --color-ink: #17191d;
+  --color-ink-soft: #424750;
+  --color-muted: #626873;
+  --color-canvas: #ffffff;
+  --color-surface: #f6f5f3;
+  --color-surface-strong: #eeece8;
+  --color-border: #d7d4cf;
+  --color-border-strong: #a9a49d;
+  --color-link: #850912;
+  --color-link-hover: #5f050b;
+  --color-focus: #075fa9;
+  --color-footer: #202226;
+  --color-footer-muted: #c8cbd0;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  --text-xs: 0.78rem;
+  --text-sm: 0.9rem;
+  --text-base: 1rem;
+  --text-lg: clamp(1.08rem, 1.5vw, 1.2rem);
+  --text-xl: clamp(1.35rem, 2.4vw, 1.7rem);
+  --text-2xl: clamp(1.75rem, 4vw, 2.55rem);
+  --text-3xl: clamp(2.15rem, 5.8vw, 3.6rem);
+
+  --leading-tight: 1.16;
+  --leading-heading: 1.25;
+  --leading-body: 1.65;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+
+  --radius-sm: 0.2rem;
+  --radius-md: 0.35rem;
+  --border-thin: 1px;
+  --border-accent: 0.25rem;
+
+  --shell-max: 76rem;
+  --reading-max: 74ch;
+  --gutter: clamp(1rem, 3vw, 2rem);
+  --header-offset: 5.5rem;
+
+  /* Restrained motion for a reading-first publication interface. */
+  --duration-instant: 90ms;
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-reveal: 300ms;
+  --duration-stagger: 45ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-reveal-distance: 0.5rem;
+
+  /* Compatibility aliases for existing components during the page migration. */
+  --accent: var(--color-brand);
+  --accent-dark: var(--color-brand-strong);
+  --text: var(--color-ink);
+  --muted: var(--color-muted);
+  --border: var(--color-border);
+  --card: var(--color-canvas);
+}

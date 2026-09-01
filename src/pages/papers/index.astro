@@ -1,0 +1,429 @@
+---
+import "../../styles/pages/papers.css";
+import ChevronIcon from "../../components/ChevronIcon.astro";
+import PageBanner from "../../components/PageBanner.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { OASIS, SERIES } from "../../config/publication";
+import {
+  cleanPaperTitle,
+  formatPaperDate,
+  getAllPapers,
+  getFieldGroups,
+  getIssueGroups,
+  getIssueLabelForPaper,
+  getIssueSlugForPaper,
+  paperHref,
+  paperPdfHref,
+  paperSlug,
+  repositoryIssueLabel,
+} from "../../lib/papers";
+import {
+  buildSearchIndexText,
+  citationExportHref,
+  doiUrl,
+  formatCatalogResultCount,
+  MAX_CATALOG_QUERY_LENGTH,
+  parseSeriesIdentifier,
+} from "../../lib/publication";
+import { withBase } from "../../lib/urls";
+
+const papers = await getAllPapers();
+const fields = await getFieldGroups();
+const issues = (await getIssueGroups()).filter((issue) => issue.papers.length > 0);
+
+const abstractExcerpt = (abstract: string, maximum = 240) => {
+  if (abstract.length <= maximum) return abstract;
+  const clipped = abstract.slice(0, maximum);
+  const boundary = clipped.lastIndexOf(" ");
+  return `${clipped.slice(0, boundary > maximum * 0.72 ? boundary : maximum).trim()}…`;
+};
+---
+
+<BaseLayout
+  title="Working Papers | UNLV Undergraduate Economics Working Paper Series"
+  description="Search the UNLV Undergraduate Economics Working Paper Series by author, research field, issue, keyword, or topic."
+  bodyClass="section-papers page-papers wps-catalog-page"
+>
+  <PageBanner title="Working Papers" lead={SERIES.scope} brand>
+    <p slot="supplement">
+      The permanent repository records and deposited full texts are available through
+      <a href={OASIS.collectionUrl} rel="external">OAsis</a>.
+    </p>
+  </PageBanner>
+
+  <div class="wps-catalog-shell">
+    {
+      papers.length === 0 ? (
+        <section class="wps-catalog-empty-state" aria-labelledby="empty-catalog-heading">
+          <h2 id="empty-catalog-heading">No working papers are available</h2>
+          <p>Please return when the first issue has been deposited.</p>
+        </section>
+      ) : (
+        <section class="wps-catalog" aria-labelledby="catalog-heading">
+          <div class="wps-catalog-heading">
+            <h2 id="catalog-heading">Published collection</h2>
+            <p id="paper-result-count" role="status" aria-live="polite" aria-atomic="true">
+              {formatCatalogResultCount(papers.length)}
+            </p>
+          </div>
+
+          <form
+            class="wps-catalog-filters js-only"
+            action={withBase("/papers/")}
+            method="get"
+            data-paper-filters
+          >
+            <div class="wps-catalog-filter wps-catalog-filter--search">
+              <label for="paper-search">Search</label>
+              <input
+                id="paper-search"
+                name="q"
+                type="search"
+                inputmode="search"
+                autocomplete="off"
+                maxlength={MAX_CATALOG_QUERY_LENGTH}
+                placeholder="Title, author, keyword, or topic"
+                data-paper-search
+              />
+            </div>
+
+            <div class="wps-catalog-filter wps-catalog-filter--field">
+              <label for="paper-field">Research Field</label>
+              <span class="select-control">
+                <select id="paper-field" name="field" data-paper-field>
+                  <option value="">All research fields</option>
+                  {fields.map((field) => (
+                    <option value={field.slug}>
+                      {field.name} ({field.count})
+                    </option>
+                  ))}
+                </select>
+                <ChevronIcon class="select-control__icon" />
+              </span>
+            </div>
+
+            <div class="wps-catalog-filter">
+              <label for="paper-issue">Issue</label>
+              <span class="select-control">
+                <select id="paper-issue" name="issue" data-paper-issue>
+                  <option value="">All issues</option>
+                  {issues.map((issue) => (
+                    <option value={issue.slug}>
+                      {issue.label} ({issue.papers.length})
+                    </option>
+                  ))}
+                </select>
+                <ChevronIcon class="select-control__icon" />
+              </span>
+            </div>
+
+            <div class="wps-catalog-filter">
+              <label for="paper-sort">Sort</label>
+              <span class="select-control">
+                <select id="paper-sort" name="sort" data-paper-sort>
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="title">Title A–Z</option>
+                </select>
+                <ChevronIcon class="select-control__icon" />
+              </span>
+            </div>
+
+            <div class="wps-catalog-filter-actions">
+              <button type="submit">Apply filters</button>
+              <button type="button" class="wps-catalog-clear" data-paper-clear>
+                Clear
+              </button>
+            </div>
+          </form>
+          <noscript>
+            <p class="wps-catalog-noscript">
+              Interactive filters require JavaScript. The complete unfiltered paper list appears below.
+            </p>
+          </noscript>
+
+          <ol class="wps-paper-list" data-paper-list aria-label="Working paper results">
+            {papers.map((paper) => {
+              const title = cleanPaperTitle(paper.data.title);
+              const issueSlug = getIssueSlugForPaper(paper);
+              const issueLabel = getIssueLabelForPaper(paper);
+              const repositoryLabel = repositoryIssueLabel(paper);
+              const field = fields.find((candidate) => candidate.name === paper.data.field);
+              const sequence = parseSeriesIdentifier(paper.data.series_number).sequence;
+              const filename = paperSlug(paper);
+              const bibtexHref = withBase(citationExportHref("paper", filename, "bibtex"));
+              const risHref = withBase(citationExportHref("paper", filename, "ris"));
+              const doiHref = paper.data.doi ? doiUrl(paper.data.doi) : null;
+
+              return (
+                <li
+                  data-paper-item
+                  data-search={buildSearchIndexText(paper.data)}
+                  data-field={field?.slug ?? ""}
+                  data-issue={issueSlug}
+                  data-citable={paper.data.citable_published_at}
+                  data-repository={paper.data.repository_published_at}
+                  data-sequence={sequence}
+                  data-title={title.toLocaleLowerCase("en-US")}
+                >
+                  <article class="wps-paper-entry" aria-labelledby={`paper-title-${filename}`}>
+                    <h3 id={`paper-title-${filename}`}>
+                      <a href={paperHref(paper)}>{title}</a>
+                    </h3>
+
+                    <ul class="wps-paper-authors" aria-label={`Authors of ${title}`}>
+                      {paper.data.authors.map((author) => {
+                        const profile = author.institutional_profile ?? author.public_profile;
+                        return (
+                          <li>
+                            {profile ? (
+                              <a href={profile} rel="external">
+                                {author.name}
+                              </a>
+                            ) : (
+                              <span>{author.name}</span>
+                            )}
+                            {author.affiliation ? (
+                              <span class="wps-paper-affiliation">, {author.affiliation}</span>
+                            ) : null}
+                          </li>
+                        );
+                      })}
+                    </ul>
+
+                    <dl class="wps-paper-metadata">
+                      <div>
+                        <dt>Research field</dt>
+                        <dd>
+                          {field ? (
+                            <a href={withBase(`/fields/${field.slug}/`)}>{paper.data.field}</a>
+                          ) : (
+                            paper.data.field
+                          )}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Issue</dt>
+                        <dd>
+                          <a href={withBase(`/issues/${issueSlug}/`)}>{issueLabel}</a>
+                          {repositoryLabel ? ` · ${repositoryLabel}` : ""}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Citable publication date</dt>
+                        <dd>
+                          <time datetime={paper.data.citable_published_at}>
+                            {formatPaperDate(paper.data.citable_published_at)}
+                          </time>
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>OAsis online date</dt>
+                        <dd>
+                          <time datetime={paper.data.repository_published_at}>
+                            {formatPaperDate(paper.data.repository_published_at)}
+                          </time>
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Series number</dt>
+                        <dd>{paper.data.series_number}</dd>
+                      </div>
+                      {doiHref ? (
+                        <div>
+                          <dt>DOI</dt>
+                          <dd>
+                            <a href={doiHref} rel="external">
+                              {paper.data.doi}
+                            </a>
+                          </dd>
+                        </div>
+                      ) : null}
+                    </dl>
+
+                    <div class="wps-paper-abstract">
+                      <h4>Abstract</h4>
+                      <p>{abstractExcerpt(paper.data.abstract)}</p>
+                    </div>
+
+                    <p class="wps-paper-keywords">
+                      <strong>Keywords:</strong> {paper.data.keywords.join(", ")}
+                    </p>
+
+                    <nav class="wps-paper-links" aria-label={`Access and citation links for ${title}`}>
+                      <a href={paperHref(paper)}>Abstract and details</a>
+                      <a href={paperPdfHref(paper)}>PDF</a>
+                      <a href={bibtexHref} download={`${filename}.bib`}>
+                        BibTeX
+                      </a>
+                      <a href={risHref} download={`${filename}.ris`}>
+                        RIS
+                      </a>
+                    </nav>
+                  </article>
+                </li>
+              );
+            })}
+          </ol>
+
+          <div class="wps-catalog-no-results js-only" data-paper-empty hidden>
+            <h3>No working papers match these filters</h3>
+            <p>Try a broader search, another issue, or another research field.</p>
+            <button type="button" data-paper-empty-clear>
+              Clear filters
+            </button>
+          </div>
+        </section>
+      )
+    }
+  </div>
+
+  <script>
+    import {
+      formatCatalogResultCount,
+      parseCatalogFilterState,
+      serializeCatalogFilterState,
+      type CatalogFilterState,
+    } from "../../lib/publication/catalog-state";
+    import { normalizeSearchText } from "../../lib/publication/search";
+
+    (() => {
+      const initializePaperCatalog = () => {
+        const form = document.querySelector("[data-paper-filters]");
+        const list = document.querySelector("[data-paper-list]");
+        if (!(form instanceof HTMLFormElement) || !(list instanceof HTMLOListElement)) return;
+        if (form.dataset.paperFiltersInit === "true") return;
+        form.dataset.paperFiltersInit = "true";
+
+        const search = form.querySelector("[data-paper-search]");
+        const field = form.querySelector("[data-paper-field]");
+        const issue = form.querySelector("[data-paper-issue]");
+        const sort = form.querySelector("[data-paper-sort]");
+        const empty = document.querySelector("[data-paper-empty]");
+        const count = document.getElementById("paper-result-count");
+        const clearButtons = document.querySelectorAll("[data-paper-clear], [data-paper-empty-clear]");
+        const items = Array.from(list.querySelectorAll<HTMLElement>("[data-paper-item]"));
+
+        if (
+          !(search instanceof HTMLInputElement) ||
+          !(field instanceof HTMLSelectElement) ||
+          !(issue instanceof HTMLSelectElement) ||
+          !(sort instanceof HTMLSelectElement)
+        )
+          return;
+
+        const filterOptions = {
+          fields: Array.from(field.options, (option) => option.value).filter(Boolean),
+          issues: Array.from(issue.options, (option) => option.value).filter(Boolean),
+        };
+
+        const updateControls = (state: CatalogFilterState) => {
+          search.value = state.q;
+          field.value = state.field;
+          issue.value = state.issue;
+          sort.value = state.sort;
+        };
+
+        const readUrl = () => {
+          const state = parseCatalogFilterState(new URL(window.location.href).searchParams, filterOptions);
+          updateControls(state);
+          return state;
+        };
+
+        const readControls = () =>
+          parseCatalogFilterState(
+            new URLSearchParams({
+              q: search.value,
+              field: field.value,
+              issue: issue.value,
+              sort: sort.value,
+            }),
+            filterOptions,
+          );
+
+        const currentUrl = (state: CatalogFilterState) => {
+          const url = new URL(form.action, window.location.href);
+          url.search = serializeCatalogFilterState(state, filterOptions);
+          url.hash = window.location.hash;
+          return url;
+        };
+
+        const updateUrl = (mode: "push" | "replace", state: CatalogFilterState) => {
+          const next = currentUrl(state);
+          const href = `${next.pathname}${next.search}${next.hash}`;
+          if (href === `${window.location.pathname}${window.location.search}${window.location.hash}`) return;
+          window.history[mode === "push" ? "pushState" : "replaceState"]({}, "", href);
+        };
+
+        const apply = (state: CatalogFilterState) => {
+          const query = normalizeSearchText(state.q);
+          const selectedField = state.field;
+          const selectedIssue = state.issue;
+          const sortMode = state.sort;
+
+          items.forEach((item) => {
+            const matchesSearch = !query || (item.dataset.search || "").includes(query);
+            const matchesField = !selectedField || item.dataset.field === selectedField;
+            const matchesIssue = !selectedIssue || item.dataset.issue === selectedIssue;
+            item.hidden = !(matchesSearch && matchesField && matchesIssue);
+          });
+
+          const ordered = [...items].sort((a, b) => {
+            if (sortMode === "title") return (a.dataset.title || "").localeCompare(b.dataset.title || "");
+            const direction = sortMode === "oldest" ? 1 : -1;
+            return (
+              (a.dataset.citable || "").localeCompare(b.dataset.citable || "") * direction ||
+              (Number(a.dataset.sequence || 0) - Number(b.dataset.sequence || 0)) * direction
+            );
+          });
+          ordered.forEach((item) => list.appendChild(item));
+
+          const visibleCount = items.filter((item) => !item.hidden).length;
+          if (count) count.textContent = formatCatalogResultCount(visibleCount);
+          if (empty instanceof HTMLElement) empty.hidden = visibleCount !== 0;
+        };
+
+        const applyAndUpdate = (mode: "push" | "replace") => {
+          const state = readControls();
+          apply(state);
+          updateUrl(mode, state);
+        };
+
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          applyAndUpdate("push");
+        });
+        search.addEventListener("input", () => applyAndUpdate("replace"));
+        [field, issue, sort].forEach((control) => {
+          control.addEventListener("change", () => applyAndUpdate("push"));
+        });
+        clearButtons.forEach((button) => {
+          button.addEventListener("click", (event) => {
+            search.value = "";
+            field.value = "";
+            issue.value = "";
+            sort.value = "newest";
+            applyAndUpdate("push");
+            const keyboardOrAssistiveActivation = event instanceof MouseEvent && event.detail === 0;
+            const precisePointer = window.matchMedia("(pointer: fine)").matches;
+            if (!search.disabled && search.isConnected && (keyboardOrAssistiveActivation || precisePointer)) {
+              search.focus({ preventScroll: true });
+            }
+          });
+        });
+
+        window.addEventListener("popstate", () => {
+          if (!form.isConnected) return;
+          apply(readUrl());
+        });
+
+        const initialState = readUrl();
+        apply(initialState);
+        updateUrl("replace", initialState);
+      };
+
+      document.addEventListener("astro:page-load", initializePaperCatalog);
+      initializePaperCatalog();
+    })();
+  </script>
+</BaseLayout>

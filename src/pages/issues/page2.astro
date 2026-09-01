@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+const target = withBase("/issues/");
+---
+
+<BaseLayout title="Issues Page Moved" canonicalPath={target} robots="noindex, follow" redirectTo={target}>
+  <article class="card content-section redirect-page">
+    <h1>This legacy pagination URL has moved</h1>
+    <p><a href={target}>Continue to Issues</a></p>
+  </article>
+</BaseLayout>

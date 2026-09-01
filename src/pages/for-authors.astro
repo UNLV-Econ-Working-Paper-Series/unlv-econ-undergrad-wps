@@ -1,0 +1,389 @@
+---
+import PageBanner from "../components/PageBanner.astro";
+import TableOfContents from "../components/TableOfContents.astro";
+import { ELIGIBILITY, OASIS, SERIES } from "../config/publication";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/urls";
+
+const tocItems = [
+  { id: "who-may-submit", label: "Who may submit" },
+  { id: "econ-495", label: "ECON 495 and other courses" },
+  { id: "faculty-sponsorship", label: "Faculty sponsorship" },
+  { id: "how-to-begin", label: "How to begin" },
+  { id: "submission-packet", label: "Submission packet" },
+  { id: "editorial-screening", label: "Editorial screening" },
+  { id: "decision-outcomes", label: "Decision outcomes" },
+  { id: "rights-permissions", label: "Rights and permissions" },
+  { id: "research-ethics", label: "Research ethics and restricted data" },
+  { id: "ai-disclosure", label: "AI-use disclosure" },
+  { id: "data-code", label: "Data and code availability" },
+  { id: "accessibility", label: "Accessibility requirements" },
+  { id: "publication-timeline", label: "Publication timeline" },
+  { id: "corrections-versions", label: "Corrections and versions" },
+  { id: "beyond-series", label: "Beyond the Working Paper Series" },
+  { id: "contact", label: "Contact" },
+];
+
+const screeningStages = [
+  {
+    title: "Intake and eligibility",
+    description:
+      "The Series confirms undergraduate eligibility, faculty sponsorship, economics-related scope, complete materials, author approval, rights documentation, and any required consent records.",
+  },
+  {
+    title: "Editorial screening",
+    description:
+      "Editors review the research question, contribution, evidence, methodology, support for the conclusions, citations, disclosures, writing, presentation, and overall research readiness.",
+  },
+  {
+    title: "Compliance screening",
+    description:
+      "The Series checks the required authorship, originality, rights, conflicts, AI-use, research-ethics, restricted-data, accessibility, data-availability, and code-availability statements.",
+  },
+  {
+    title: "Editorial decision",
+    description:
+      "Non-conflicted voting editors apply the Series' governance rules and issue one of the decision outcomes listed below.",
+  },
+  {
+    title: "Production",
+    description:
+      "Accepted work proceeds through final metadata and document review, citation preparation, OAsis coordination, DOI confirmation, paper-page and issue publication, sitemap updates, link checks, and a version log.",
+  },
+];
+
+const submissionSubject = new URLSearchParams({ subject: "Faculty-sponsored submission inquiry" });
+const submissionMailto = `mailto:${SERIES.contactEmail}?${submissionSubject.toString()}`;
+---
+
+<BaseLayout
+  title={`For Student Authors | ${SERIES.name}`}
+  description="Eligibility, faculty sponsorship, submission materials, editorial screening, and publication guidance for UNLV undergraduate authors."
+  bodyClass="page-policy page-for-authors"
+>
+  <PageBanner
+    title="For Student Authors"
+    lead="How faculty-sponsored UNLV undergraduate research moves from a manuscript to an editorially screened working paper"
+    note={SERIES.workingPaperNotice}
+    compact
+    brand
+  />
+
+  <section class="content-section policy-shell">
+    <div class="page-with-toc">
+      <div class="page-with-toc__toc">
+        <TableOfContents items={tocItems} />
+      </div>
+
+      <div class="page-with-toc__main">
+        <article class="policy-article">
+          <section id="who-may-submit" aria-labelledby="who-may-submit-title">
+            <h2 id="who-may-submit-title">Who may submit</h2>
+            <p>{ELIGIBILITY.summary}</p>
+            <p>{ELIGIBILITY.inclusiveSummary}</p>
+            <p>
+              A paper completed while an author was an undergraduate remains eligible if the student graduates
+              before publication or OAsis deposit processing is complete. The Series does not currently accept
+              submissions from students at other universities.
+            </p>
+          </section>
+
+          <section id="econ-495" aria-labelledby="econ-495-title">
+            <h2 id="econ-495-title">ECON 495 and other courses</h2>
+            <p>{ELIGIBILITY.capstonePriority}</p>
+            <p>
+              Work from another course, degree program, independent study, or mentored project may be
+              considered when it addresses a substantive economics-related question, was completed primarily
+              by the undergraduate author or authors, has a UNLV faculty sponsor, and satisfies the Series'
+              editorial, ethical, rights, and accessibility requirements.
+            </p>
+          </section>
+
+          <section id="faculty-sponsorship" aria-labelledby="faculty-sponsorship-title">
+            <h2 id="faculty-sponsorship-title">Faculty sponsorship</h2>
+            <p>
+              Every submission requires a UNLV faculty sponsor. The sponsor helps the student assess whether
+              the manuscript is ready for consideration, confirms that the work fits the Series' scope,
+              initiates contact with the Series, and remains available during screening and revision.
+            </p>
+            <p>
+              Faculty sponsorship supports the submission process; it does not guarantee acceptance and does
+              not replace the Editorial Board's independent screening and decision.
+            </p>
+          </section>
+
+          <section id="how-to-begin" aria-labelledby="how-to-begin-title">
+            <h2 id="how-to-begin-title">How to begin</h2>
+            <p>
+              Students should first discuss the paper with the instructor or faculty mentor. If the faculty
+              member agrees that the paper is appropriate for consideration, the faculty sponsor should
+              contact the Series.
+            </p>
+            <p>
+              The Series does not currently accept unsupported direct submissions from students without a
+              faculty sponsor.
+            </p>
+            <ol>
+              <li>
+                The student asks an instructor or faculty mentor to review the paper's readiness and fit.
+              </li>
+              <li>The faculty member agrees to serve as sponsor and contacts the Series.</li>
+              <li>The Series provides the current submission materials and confirms what is still needed.</li>
+              <li>
+                The student and sponsor submit a complete packet and respond to screening or revision
+                requests.
+              </li>
+            </ol>
+          </section>
+
+          <section id="submission-packet" aria-labelledby="submission-packet-title">
+            <h2 id="submission-packet-title">Submission packet</h2>
+            <p>A complete submission packet includes:</p>
+            <ol>
+              <li>An editable manuscript in Microsoft Word format</li>
+              <li>The final title</li>
+              <li>Author names and affiliations</li>
+              <li>An abstract</li>
+              <li>Four to six keywords</li>
+              <li>Faculty sponsor endorsement</li>
+              <li>Author posting and rights agreement</li>
+              <li>Conflict-of-interest statement</li>
+              <li>AI-use disclosure</li>
+              <li>Research ethics or IRB statement when applicable</li>
+              <li>Data availability statement</li>
+              <li>Code availability statement</li>
+              <li>Third-party material permissions when applicable</li>
+              <li>Separate author-profile and photograph consent when applicable</li>
+              <li>ORCID when available</li>
+            </ol>
+            <p>
+              Manuscripts should use the Series template and a consistent author-date reference system. APA 7
+              is the default style for new submissions unless the Editorial Board approves another established
+              scholarly style.
+            </p>
+            <p>
+              A biography, photograph, personal profile link, or personal contact information is optional,
+              requires separate consent, and is not a condition of manuscript publication.
+            </p>
+          </section>
+
+          <section id="editorial-screening" aria-labelledby="editorial-screening-title">
+            <h2 id="editorial-screening-title">Editorial screening</h2>
+            <p>
+              Editorial screening is not peer review, replication, or certification that the paper's methods
+              and conclusions are correct.
+            </p>
+            <ol>
+              {
+                screeningStages.map((stage) => (
+                  <li>
+                    <strong>{stage.title}.</strong> {stage.description}
+                  </li>
+                ))
+              }
+            </ol>
+          </section>
+
+          <section id="decision-outcomes" aria-labelledby="decision-outcomes-title">
+            <h2 id="decision-outcomes-title">Decision outcomes</h2>
+            <p>After screening, the Editorial Board may issue one of five outcomes:</p>
+            <ul>
+              <li>Accepted</li>
+              <li>Accepted subject to revisions</li>
+              <li>Revise and resubmit</li>
+              <li>Deferred</li>
+              <li>Declined</li>
+            </ul>
+            <p>An invitation to revise or a deferral is not a guarantee of later acceptance.</p>
+          </section>
+
+          <section id="rights-permissions" aria-labelledby="rights-permissions-title">
+            <h2 id="rights-permissions-title">Rights and permissions</h2>
+            <p>
+              Authors must confirm that the manuscript is original, all coauthors approve public posting, and
+              they have authority to grant the permissions described in the author posting agreement. Authors
+              must identify and secure permission for copyrighted or third-party text, images, tables,
+              instruments, data, or other material when permission is required.
+            </p>
+            <p>
+              Item-level rights and licenses may differ. Authors should not assume that public access permits
+              unrestricted reuse. Questions should be raised before the final manuscript is authorized for
+              posting.
+            </p>
+          </section>
+
+          <section id="research-ethics" aria-labelledby="research-ethics-title">
+            <h2 id="research-ethics-title">Research ethics and restricted data</h2>
+            <p>
+              Authors and faculty sponsors are responsible for determining, in consultation with the UNLV
+              Office of Research Integrity when appropriate, whether a project requires IRB review. Any
+              required approval or determination must be obtained before research activities begin. The
+              Editorial Board cannot provide retroactive approval or substitute its judgment for the IRB.
+            </p>
+            <p>
+              An applicable public research-ethics statement may use one of these models, but authors must not
+              invent a determination:
+            </p>
+            <ul>
+              <li>
+                Not applicable: This study did not involve human participants or identifiable private
+                information.
+              </li>
+              <li>Approved by the UNLV IRB, protocol [number].</li>
+              <li>Determined exempt or not human-subjects research by [office], dated [date].</li>
+              <li>
+                Uses public, deidentified secondary data and did not require IRB review, as confirmed by
+                [appropriate determination if obtained].
+              </li>
+            </ul>
+            <p>
+              Authors must have authority to use and publish their data. Do not submit confidential or
+              personally identifiable data, FERPA-protected records, contract-restricted or
+              non-redistributable licensed data, unlawfully obtained material, credentials, or secrets.
+            </p>
+            <p>
+              See the <a
+                href="https://www.unlv.edu/research/ORI-HSR"
+                target="_blank"
+                rel="noopener noreferrer">UNLV Human Subjects Research and IRB guidance</a
+              >.
+            </p>
+          </section>
+
+          <section id="ai-disclosure" aria-labelledby="ai-disclosure-title">
+            <h2 id="ai-disclosure-title">AI-use disclosure</h2>
+            <p>
+              AI cannot be an author. Authors remain responsible for every claim, citation, calculation,
+              image, translation, code output, and conclusion in the manuscript. Material AI use must be
+              disclosed. Ordinary spelling or grammar correction does not always require disclosure, but
+              material rewriting, coding, data analysis, translation, literature synthesis, figure generation,
+              or interpretation should be disclosed.
+            </p>
+            <p>
+              Restricted, confidential, or personally identifiable data must not be uploaded to public AI
+              systems. A disclosure may use this model:
+            </p>
+            <blockquote>
+              <p>
+                Generative AI disclosure: The authors used [tool and version, if known] for [specific
+                purpose]. All outputs were reviewed and verified by the authors, who take full responsibility
+                for the manuscript, analysis, citations, and conclusions.
+              </p>
+            </blockquote>
+          </section>
+
+          <section id="data-code" aria-labelledby="data-code-title">
+            <h2 id="data-code-title">Data and code availability</h2>
+            <p>
+              Every paper must include a data availability statement and a code availability statement.
+              Appropriate models include:
+            </p>
+            <ul>
+              <li>Data and code are publicly available at a named repository.</li>
+              <li>Code is public, but underlying data are restricted.</li>
+              <li>Materials are available from the author subject to legal or contractual restrictions.</li>
+              <li>Data cannot be shared because of confidentiality or licensing restrictions.</li>
+              <li>No original data or code were created.</li>
+              <li>Not applicable.</li>
+            </ul>
+            <p>
+              Name the repository and provide a stable link when materials are public. The Series does not
+              promise that OAsis accepts datasets or replication packages; supplemental deposits require
+              separate repository confirmation.
+            </p>
+          </section>
+
+          <section id="accessibility" aria-labelledby="accessibility-title">
+            <h2 id="accessibility-title">Accessibility requirements</h2>
+            <p>
+              Authors must provide an editable source file and prepare the manuscript for accessible
+              publication. Requirements include:
+            </p>
+            <ul>
+              <li>Real Microsoft Word heading styles</li>
+              <li>Descriptive link text</li>
+              <li>Alternative text for substantive figures</li>
+              <li>Table header rows</li>
+              <li>No screenshots of tables or equations when usable editable alternatives are available</li>
+              <li>Sufficient color contrast and selectable text</li>
+              <li>Figure and table captions</li>
+              <li>Defined abbreviations</li>
+              <li>A logical reading order</li>
+              <li>An accessible PDF export, with the editable source retained for remediation</li>
+            </ul>
+            <p>
+              Accessibility review may identify revisions needed before publication. To report a barrier in a
+              published paper, use the
+              <a href={withBase("/contact/")}>accessibility contact category</a>.
+            </p>
+          </section>
+
+          <section id="publication-timeline" aria-labelledby="publication-timeline-title">
+            <h2 id="publication-timeline-title">Publication timeline</h2>
+            <p>
+              Complete, faculty-endorsed submissions typically require approximately four to six weeks for
+              editorial screening, revisions, document preparation, metadata review, and OAsis processing.
+              Rights questions, accessibility remediation, incomplete materials, or substantial revisions may
+              extend the process. This timeline is not a publication guarantee.
+            </p>
+          </section>
+
+          <section id="corrections-versions" aria-labelledby="corrections-versions-title">
+            <h2 id="corrections-versions-title">Corrections and versions</h2>
+            <p>
+              Minor metadata and presentation errors may be corrected administratively. Substantive revisions,
+              correction notices, restrictions, and withdrawals require editorial approval. A substantive
+              revision must identify its version, date, current status, and what changed; a prior-version link
+              or correction notice is included when warranted and available.
+            </p>
+            <p>
+              Authors should contact the Series as soon as they discover an error, rights concern, privacy
+              issue, or need for an accessible replacement. See the <a href={withBase("/policies/")}
+                >Series policies</a
+              > for the governing procedures.
+            </p>
+          </section>
+
+          <section id="beyond-series" aria-labelledby="beyond-series-title">
+            <h2 id="beyond-series-title">Beyond the Working Paper Series</h2>
+            <p>
+              Publication in the Series can help authors share their research, receive a stable public record,
+              and continue developing the manuscript with a faculty mentor. Authors may later consider
+              submitting a substantially revised version to a peer-reviewed journal.
+            </p>
+            <p>
+              Journal policies differ. Before authorizing public posting, authors should discuss future
+              publication plans with their faculty sponsor and review the prior-publication and working-paper
+              policies of any intended journal.
+            </p>
+            <p>
+              Students considering submission to Spectra should consult the Spectra editors and their faculty
+              mentor before authorizing public posting in this Series.
+            </p>
+            <p>
+              <a href="https://oasis.library.unlv.edu/spectra/" target="_blank" rel="noopener noreferrer">
+                Review Spectra's separate journal information
+              </a>
+            </p>
+          </section>
+
+          <section id="contact" aria-labelledby="contact-title">
+            <h2 id="contact-title">Contact</h2>
+            <p>
+              Students should begin with their instructor or faculty mentor. Faculty sponsors may
+              <a href={submissionMailto}>email the Series about a submission</a>. Include the student's name,
+              working title, course or project context, and a brief explanation of the paper's
+              economics-related contribution; do not email confidential or restricted data.
+            </p>
+            <p>
+              For corrections, rights, accessibility, privacy, technical, department-office, or OAsis record
+              questions, use the
+              <a href={withBase("/contact/")}>contact directory</a>.
+            </p>
+            <p>{OASIS.safeDescription}</p>
+          </section>
+        </article>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

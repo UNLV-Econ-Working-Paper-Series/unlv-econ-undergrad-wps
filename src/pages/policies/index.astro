@@ -1,0 +1,128 @@
+---
+import PageBanner from "../../components/PageBanner.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+const policies = [
+  {
+    slug: "focus-scope",
+    title: "Focus, Scope & Eligibility",
+    summary: "Who may submit, what the Series publishes, and what working-paper status means",
+  },
+  {
+    slug: "open-access",
+    title: "Open Access",
+    summary: "Free reader access, record-specific reuse rights, and the OAsis relationship",
+  },
+  {
+    slug: "editorial-governance",
+    title: "Editorial Governance",
+    summary: "Board authority, voting rules, Junior Editor duties, and decision records",
+  },
+  {
+    slug: "editorial-process",
+    title: "Editorial Screening Process",
+    summary: "The five-stage process and the distinction between screening and peer review",
+  },
+  {
+    slug: "conflicts-recusal",
+    title: "Conflicts of Interest and Recusal",
+    summary: "Required disclosures, recusal, independent approval, and ad hoc review",
+  },
+  {
+    slug: "authorship-ai",
+    title: "Authorship, Contributions, and AI-Assisted Work",
+    summary: "Human accountability, material AI-use disclosure, and optional public profiles",
+  },
+  {
+    slug: "ethics",
+    title: "Research Integrity, Human Subjects, and Research Ethics",
+    summary: "Academic integrity, human subjects, IRB, private data, and prior dissemination",
+  },
+  {
+    slug: "data-code",
+    title: "Data and Code Availability",
+    summary: "Required public availability statements and appropriate models for restrictions",
+  },
+  {
+    slug: "permissions",
+    title: "Copyright, Licensing & Permissions",
+    summary: "Author rights, posting permission, third-party material, and record-specific reuse",
+  },
+  {
+    slug: "accessibility",
+    title: "Accessibility",
+    summary: "Manuscript requirements, editorial checks, barrier reporting, and remediation",
+  },
+  {
+    slug: "corrections-versioning",
+    title: "Corrections, Revisions & Versioning",
+    summary: "Change classifications, approval authority, version history, and repository coordination",
+  },
+  {
+    slug: "takedown",
+    title: "Expressions of Concern and Withdrawals",
+    summary: "Proportionate responses to serious integrity, rights, privacy, legal, or safety concerns",
+  },
+  {
+    slug: "appeals",
+    title: "Appeals",
+    summary: "Who may appeal, acceptable grounds, independent review, outcomes, and finality",
+  },
+  {
+    slug: "privacy",
+    title: "Privacy & Records",
+    summary: "Public/private boundaries, contact information, retention, and public-record obligations",
+  },
+  {
+    slug: "archiving",
+    title: "Archiving & Preservation",
+    summary: "OAsis records, custom-site continuity, historical material, and preservation boundaries",
+  },
+  {
+    slug: "author-agreement",
+    title: "Author Posting Agreement",
+    summary: "Plain-language summary of author approvals, permissions, assurances, and records",
+  },
+] as const;
+---
+
+<BaseLayout
+  title="Policies | UNLV Undergraduate Economics Working Paper Series"
+  description="Editorial, authorship, research-integrity, rights, accessibility, correction, privacy, and preservation policies for the UNLV Undergraduate Economics Working Paper Series."
+  bodyClass="page-policy-index"
+>
+  <PageBanner
+    title="Policies"
+    lead="Standards for authors, editors, working-paper records, reader access, and post-publication action"
+    compact
+    brand
+  />
+
+  <section class="content-section policy-shell">
+    <article class="policy-article">
+      <h2>Policy directory</h2>
+      <p>
+        These policies define the public rules for eligibility, editorial screening, authorship, research
+        ethics, rights, accessibility, corrections, privacy, and preservation. Related subjects are
+        consolidated where one complete policy is easier to use than several thin pages.
+      </p>
+      <p>
+        Working papers are editorially screened, are not peer reviewed, and may be revised. A public policy
+        does not replace the paper-specific author, faculty, rights, ethics, consent, or repository records
+        retained through authorized private processes.
+      </p>
+
+      <div class="policy-directory" role="list" aria-label="Series policy pages">
+        {
+          policies.map((policy) => (
+            <a role="listitem" class="policy-directory-item" href={withBase(`/policies/${policy.slug}/`)}>
+              <h3>{policy.title}</h3>
+              <p>{policy.summary}</p>
+            </a>
+          ))
+        }
+      </div>
+    </article>
+  </section>
+</BaseLayout>
