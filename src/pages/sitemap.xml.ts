@@ -1,11 +1,10 @@
 import { getCollection } from "astro:content";
-import { RESEARCH_FIELDS } from "../config/publication";
+import { SERIES } from "../config/publication";
 import { PUBLIC_PROFILES } from "../data/public-profiles";
 import { getArchiveIssueGroups } from "../lib/archive";
-import { getIssueGroups, paperSlug } from "../lib/papers";
-import { researchFieldSlug } from "../lib/research-fields";
+import { getFieldGroups, getIssueGroups, paperSlug } from "../lib/papers";
 
-const SITE_URL = "https://econ-undergrad-wps.sites.unlv.edu";
+const SITE_URL = SERIES.siteUrl;
 
 const POLICY_SLUGS = [
   "focus-scope",
@@ -47,16 +46,20 @@ function escapeXml(value: string): string {
 }
 
 function uniquePaths(paths: string[]): string[] {
-  return [...new Set(paths.map(normalizePath))];
+  return [...new Set(paths.map(normalizePath))].sort((a, b) => {
+    if (a === "/") return -1;
+    if (b === "/") return 1;
+    return a.localeCompare(b, "en-US");
+  });
 }
 
 export async function GET(): Promise<Response> {
   const issues = await getIssueGroups();
+  const fields = await getFieldGroups();
   const papers = await getCollection("papers");
   const archiveIssues = getArchiveIssueGroups();
 
-  const visibleIssues = issues.filter((issue, index) => issue.papers.length > 0 || index === 0);
-  const populatedFields = new Set(papers.map((paper) => paper.data.field));
+  const visibleIssues = issues.filter((issue) => issue.papers.length > 0);
 
   const paths = uniquePaths([
     "/",
@@ -71,8 +74,8 @@ export async function GET(): Promise<Response> {
     "/fields/",
     "/policies/",
     ...visibleIssues.map((issue) => `/issues/${issue.slug}/`),
-    ...archiveIssues.map((issue) => `/issues/archive/${issue.slug}/`),
-    ...RESEARCH_FIELDS.filter((field) => populatedFields.has(field)).map((field) => `/fields/${researchFieldSlug(field)}/`),
+    ...archiveIssues.filter((issue) => issue.papers.length > 0).map((issue) => `/issues/archive/${issue.slug}/`),
+    ...fields.map((field) => `/fields/${field.slug}/`),
     ...papers.map((paper) => `/papers/${paperSlug(paper)}/`),
     ...PUBLIC_PROFILES.map((profile) => profile.profileHref).filter((href): href is string => Boolean(href)),
     ...POLICY_SLUGS.map((slug) => `/policies/${slug}/`),

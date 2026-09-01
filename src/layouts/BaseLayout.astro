@@ -2,6 +2,7 @@
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import { SERIES } from "../config/publication";
+import { serializeJsonLd, type MetaTagData } from "../lib/publication";
 import { withBase } from "../lib/urls";
 import "../styles/tokens.css";
 import "../styles/base.css";
@@ -16,29 +17,19 @@ import "../styles/print.css";
 
 type OpenGraphType = "website" | "article";
 
-interface ScholarlyMeta {
-  title: string;
-  authors: string[];
-  publicationDate: string;
-  onlineDate?: string;
-  technicalReportInstitution: string;
-  technicalReportNumber: string;
-  doi?: string;
-  abstractUrl: string;
-  pdfUrl?: string;
-}
-
 interface Props {
   title: string;
   description?: string;
   bodyClass?: string;
   canonicalPath?: string;
   ogType?: OpenGraphType;
+  ogTitle?: string;
+  ogDescription?: string;
   ogImagePath?: string;
   articlePublishedAt?: string;
   articleModifiedAt?: string;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
-  scholarlyMeta?: ScholarlyMeta;
+  scholarlyMeta?: readonly MetaTagData[];
   robots?: string;
   redirectTo?: string;
 }
@@ -49,6 +40,8 @@ const {
   bodyClass = "",
   canonicalPath = Astro.url.pathname,
   ogType = "website",
+  ogTitle = title,
+  ogDescription = description,
   ogImagePath = "/assets/brand/og-image.png",
   articlePublishedAt,
   articleModifiedAt,
@@ -61,13 +54,7 @@ const {
 const siteUrl = Astro.site ?? new URL("https://econ-undergrad-wps.sites.unlv.edu");
 const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
 const openGraphImage = new URL(withBase(ogImagePath), siteUrl).toString();
-const serializedJsonLd = jsonLd
-  ? JSON.stringify(jsonLd)
-      .replace(/</gu, "\\u003c")
-      .replace(/\u2028/gu, "\\u2028")
-      .replace(/\u2029/gu, "\\u2029")
-  : "";
-const citationDate = (value: string): string => value.replace(/-/gu, "/");
+const serializedJsonLd = jsonLd ? serializeJsonLd(jsonLd) : "";
 ---
 
 <!doctype html>
@@ -86,12 +73,15 @@ const citationDate = (value: string): string => value.replace(/-/gu, "/");
     <meta name="theme-color" content="#a30b15" />
 
     <meta property="og:site_name" content={SERIES.name} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={openGraphImage} />
-    <meta property="og:image:alt" content={`${SERIES.name} cover image`} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content={`${SERIES.name} social preview`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     {ogType === "article" && articlePublishedAt ? (
       <meta property="article:published_time" content={articlePublishedAt} />
     ) : null}
@@ -100,26 +90,12 @@ const citationDate = (value: string): string => value.replace(/-/gu, "/");
     ) : null}
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={openGraphImage} />
-    <meta name="twitter:image:alt" content={`${SERIES.name} cover image`} />
+    <meta name="twitter:image:alt" content={`${SERIES.name} social preview`} />
 
-    {scholarlyMeta ? (
-      <>
-        <meta name="citation_title" content={scholarlyMeta.title} />
-        {scholarlyMeta.authors.map((author) => <meta name="citation_author" content={author} />)}
-        <meta name="citation_publication_date" content={citationDate(scholarlyMeta.publicationDate)} />
-        {scholarlyMeta.onlineDate ? (
-          <meta name="citation_online_date" content={citationDate(scholarlyMeta.onlineDate)} />
-        ) : null}
-        <meta name="citation_technical_report_institution" content={scholarlyMeta.technicalReportInstitution} />
-        <meta name="citation_technical_report_number" content={scholarlyMeta.technicalReportNumber} />
-        {scholarlyMeta.doi ? <meta name="citation_doi" content={scholarlyMeta.doi} /> : null}
-        <meta name="citation_abstract_html_url" content={scholarlyMeta.abstractUrl} />
-        {scholarlyMeta.pdfUrl ? <meta name="citation_pdf_url" content={scholarlyMeta.pdfUrl} /> : null}
-      </>
-    ) : null}
+    {scholarlyMeta?.map((tag) => <meta name={tag.name} content={tag.content} />)}
 
     {serializedJsonLd ? (
       <script type="application/ld+json" is:inline set:html={serializedJsonLd}></script>

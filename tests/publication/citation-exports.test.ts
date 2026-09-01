@@ -2,10 +2,14 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   buildCitationOptions,
+  buildCitationExportResponse,
+  citationExportHref,
   escapeBibTeX,
   escapeRis,
   generateBibTeX,
+  generateBibTeXCollection,
   generateRis,
+  generateRisCollection,
 } from "../../src/lib/publication/index";
 import { minimalPublicationFixture, publicationFixture } from "./fixtures";
 
@@ -57,4 +61,36 @@ test("citation exports omit missing optional DOI, pages, and version notes", () 
   assert.doesNotMatch(ris, /^SP  -/gmu);
   assert.doesNotMatch(ris, /^N1  -/gmu);
   assert.match(ris, /UR  - https:\/\/oasis\.library\.unlv\.edu\/econ_ug_papers\/4\//u);
+});
+
+test("collection exports retain deterministic record order and valid boundaries", () => {
+  const first = publicationFixture();
+  const second = minimalPublicationFixture();
+  const bibtex = generateBibTeXCollection([first, second]);
+  const ris = generateRisCollection([first, second]);
+
+  assert.ok(bibtex.indexOf("UNLVEconWPS2025004") < bibtex.indexOf("UNLVEconWPS2025005"));
+  assert.equal(bibtex.match(/^@techreport\{/gmu)?.length, 2);
+  assert.match(bibtex, /\}\n\n@techreport\{/u);
+  assert.match(bibtex, /\n$/u);
+  assert.equal(ris.match(/^TY  - RPRT$/gmu)?.length, 2);
+  assert.equal(ris.match(/^ER  -$/gmu)?.length, 2);
+  assert.match(ris, /ER  -\n\nTY  - RPRT/u);
+});
+
+test("static export responses expose download-safe filenames and format-specific MIME types", async () => {
+  const bibtex = buildCitationExportResponse([publicationFixture()], "bibtex", "wage-study");
+  assert.equal(bibtex.headers.get("content-type"), "application/x-bibtex; charset=utf-8");
+  assert.equal(bibtex.headers.get("content-disposition"), 'attachment; filename="wage-study.bib"');
+  assert.equal(bibtex.headers.get("x-content-type-options"), "nosniff");
+  assert.match(await bibtex.text(), /^@techreport\{/u);
+
+  const ris = buildCitationExportResponse([publicationFixture()], "ris", "2025-fall-citations");
+  assert.equal(ris.headers.get("content-type"), "application/x-research-info-systems; charset=utf-8");
+  assert.equal(ris.headers.get("content-disposition"), 'attachment; filename="2025-fall-citations.ris"');
+  assert.match(await ris.text(), /^TY  - RPRT$/mu);
+
+  assert.equal(citationExportHref("paper", "wage-study", "bibtex"), "/papers/wage-study/citation.bib");
+  assert.equal(citationExportHref("issue", "2025-fall", "ris"), "/issues/2025-fall/citations.ris");
+  assert.throws(() => citationExportHref("paper", "../unsafe", "bibtex"), /Unsafe citation download filename/u);
 });

@@ -9,7 +9,7 @@ import {
   paperHref,
   repositoryIssueLabel,
 } from "../../lib/papers";
-import { doiUrl, formatAuthorDisplay } from "../../lib/publication";
+import { citationExportHref, doiUrl, formatAuthorDisplay } from "../../lib/publication";
 import { researchFieldSlug } from "../../lib/research-fields";
 import { withBase } from "../../lib/urls";
 import "../../styles/pages/issues.css";
@@ -26,6 +26,8 @@ const repositoryDates = [...new Set(papers.map((paper) => paper.data.repository_
 const finalRepositoryDate = repositoryDates[repositoryDates.length - 1];
 const bibliographicLabels = [...new Set(papers.map(repositoryIssueLabel).filter(Boolean))];
 const bibliographicLabel = bibliographicLabels.length === 1 ? bibliographicLabels[0] : null;
+const bibtexHref = withBase(citationExportHref("issue", issue.slug, "bibtex"));
+const risHref = withBase(citationExportHref("issue", issue.slug, "ris"));
 
 const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
   `${count} ${count === 1 ? singular : plural}`;
@@ -34,6 +36,7 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
 <BaseLayout
   title={`${issue.label} | Issues | UNLV Undergraduate Economics Working Paper Series`}
   description={`Paper records and publication metadata for the ${issue.label} issue of the UNLV Undergraduate Economics Working Paper Series.`}
+  robots={papers.length === 0 ? "noindex, follow" : undefined}
   bodyClass="section-issues page-issue-detail"
 >
   <nav class="publication-breadcrumb content-section" aria-label="Breadcrumb">
@@ -72,6 +75,11 @@ const countLabel = (count: number, singular: string, plural = `${singular}s`): s
                 </>
               ) : null}
             </p>
+            <nav class="issue-citation-downloads" aria-label={`Citation downloads for the ${issue.label} issue`}>
+              <span>Download issue citations:</span>
+              <a href={bibtexHref} download={`${issue.slug}-citations.bib`}>BibTeX</a>
+              <a href={risHref} download={`${issue.slug}-citations.ris`}>RIS</a>
+            </nav>
           </div>
 
           <dl class="issue-facts" aria-label={`${issue.label} issue facts`}>

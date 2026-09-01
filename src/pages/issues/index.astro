@@ -8,7 +8,7 @@ import {
   paperHref,
   repositoryIssueLabel,
 } from "../../lib/papers";
-import { formatAuthorDisplay } from "../../lib/publication";
+import { citationExportHref, formatAuthorDisplay } from "../../lib/publication";
 import { withBase } from "../../lib/urls";
 import "../../styles/pages/issues.css";
 
@@ -47,6 +47,8 @@ const uniqueSortedDates = (values: string[]): string[] => [...new Set(values)].s
           const finalRepositoryDate = repositoryDates[repositoryDates.length - 1];
           const issueLabels = [...new Set(issue.papers.map(repositoryIssueLabel).filter(Boolean))];
           const bibliographicLabel = issueLabels.length === 1 ? issueLabels[0] : null;
+          const bibtexHref = withBase(citationExportHref("issue", issue.slug, "bibtex"));
+          const risHref = withBase(citationExportHref("issue", issue.slug, "ris"));
 
           return (
             <li>
@@ -88,6 +90,11 @@ const uniqueSortedDates = (values: string[]): string[] => [...new Set(values)].s
                   <a class="text-action" href={withBase(`/issues/${issue.slug}/`)}>
                     View complete {issue.label} issue<span aria-hidden="true"> →</span>
                   </a>
+                  <span class="issue-citation-downloads" aria-label={`Citation downloads for the ${issue.label} issue`}>
+                    <span>Download issue citations:</span>
+                    <a href={bibtexHref} download={`${issue.slug}-citations.bib`}>BibTeX</a>
+                    <a href={risHref} download={`${issue.slug}-citations.ris`}>RIS</a>
+                  </span>
                 </p>
               </article>
             </li>

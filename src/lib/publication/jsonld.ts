@@ -19,6 +19,16 @@ function absoluteHttpUrl(value: string, label: string): string {
 
 export interface JsonLdOptions {
   canonicalUrl: string;
+  issueUrl: string;
+}
+
+export function serializeJsonLd(
+  value: Record<string, unknown> | Array<Record<string, unknown>>,
+): string {
+  return JSON.stringify(value)
+    .replace(/</gu, "\\u003c")
+    .replace(/\u2028/gu, "\\u2028")
+    .replace(/\u2029/gu, "\\u2029");
 }
 
 export function buildScholarlyJsonLd(
@@ -26,6 +36,7 @@ export function buildScholarlyJsonLd(
   options: JsonLdOptions,
 ): Record<string, unknown> {
   const canonicalUrl = absoluteHttpUrl(options.canonicalUrl, "canonicalUrl");
+  const issueUrl = absoluteHttpUrl(options.issueUrl, "issueUrl");
   const authors = authorMachineMetadata(record.authors).map((author) => ({
     "@type": "Person",
     name: author.name,
@@ -56,6 +67,7 @@ export function buildScholarlyJsonLd(
     url: canonicalUrl,
     name: normalizePaperTitle(record.title),
     headline: normalizePaperTitle(record.title),
+    abstract: normalizeWhitespace(record.abstract),
     description: normalizeWhitespace(record.abstract),
     author: authors,
     identifier: identifiers,
@@ -65,8 +77,11 @@ export function buildScholarlyJsonLd(
     version: currentVersionLabel(record.current_version),
     keywords: record.keywords.map(normalizeWhitespace),
     about: { "@type": "Thing", name: record.field },
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
     isPartOf: {
       "@type": "PublicationIssue",
+      "@id": issueUrl,
+      url: issueUrl,
       issueNumber: String(record.issue_number),
       name: normalizeWhitespace(record.issue_term),
       isPartOf: {
@@ -75,8 +90,14 @@ export function buildScholarlyJsonLd(
         name: SERIES_TITLE,
       },
     },
+    encoding: {
+      "@type": "MediaObject",
+      contentUrl: absoluteHttpUrl(record.pdf_url, "pdf_url"),
+      encodingFormat: "application/pdf",
+    },
     ...(record.license_url ? { license: absoluteHttpUrl(record.license_url, "license_url") } : {}),
     ...(record.rights_statement ? { copyrightNotice: normalizeWhitespace(record.rights_statement) } : {}),
+    ...(record.copyright_holder ? { copyrightHolder: normalizeWhitespace(record.copyright_holder) } : {}),
     ...(priorPublicUrls.length > 0 ? { citation: priorPublicUrls } : {}),
     ...(historical?.original_url
       ? { isBasedOn: absoluteHttpUrl(historical.original_url, "historical_provenance.original_url") }

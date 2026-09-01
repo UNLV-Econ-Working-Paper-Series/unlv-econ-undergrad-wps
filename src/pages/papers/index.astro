@@ -17,9 +17,8 @@ import {
 } from "../../lib/papers";
 import {
   buildSearchIndexText,
+  citationExportHref,
   doiUrl,
-  generateBibTeX,
-  generateRis,
   parseSeriesIdentifier,
 } from "../../lib/publication";
 import { withBase } from "../../lib/urls";
@@ -29,8 +28,6 @@ const fields = await getFieldGroups();
 const issues = (await getIssueGroups()).filter((issue) => issue.papers.length > 0);
 const paperCountLabel = `${papers.length} ${papers.length === 1 ? "paper" : "papers"}`;
 
-const downloadUrl = (content: string, mediaType: string) =>
-  `data:${mediaType};charset=utf-8,${encodeURIComponent(content)}`;
 const abstractExcerpt = (abstract: string, maximum = 240) => {
   if (abstract.length <= maximum) return abstract;
   const clipped = abstract.slice(0, maximum);
@@ -127,10 +124,10 @@ const abstractExcerpt = (abstract: string, maximum = 240) => {
             const repositoryLabel = repositoryIssueLabel(paper);
             const field = fields.find((candidate) => candidate.name === paper.data.field);
             const sequence = parseSeriesIdentifier(paper.data.series_number).sequence;
-            const bibtexHref = downloadUrl(generateBibTeX(paper.data), "application/x-bibtex");
-            const risHref = downloadUrl(generateRis(paper.data), "application/x-research-info-systems");
-            const doiHref = paper.data.doi ? doiUrl(paper.data.doi) : null;
             const filename = paperSlug(paper);
+            const bibtexHref = withBase(citationExportHref("paper", filename, "bibtex"));
+            const risHref = withBase(citationExportHref("paper", filename, "ris"));
+            const doiHref = paper.data.doi ? doiUrl(paper.data.doi) : null;
 
             return (
               <li

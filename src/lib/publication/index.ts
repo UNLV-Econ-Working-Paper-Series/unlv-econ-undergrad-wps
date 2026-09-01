@@ -2,6 +2,7 @@ export * from "./authors";
 export * from "./bibtex";
 export * from "./citations";
 export * from "./dates";
+export * from "./export-response";
 export * from "./fields";
 export * from "./identifiers";
 export * from "./issues";

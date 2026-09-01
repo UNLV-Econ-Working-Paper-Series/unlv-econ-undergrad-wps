@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import { verifyScholarlyOutput } from "./verify-scholarly-output";
 
 type PageContract = {
   file: string;
@@ -315,6 +316,7 @@ function verifyContracts(): void {
   }
 
   verifyBuiltHtmlInvariants(failures);
+  verifyScholarlyOutput(failures);
 
   if (failures.length > 0) {
     throw new Error(failures.join("\n"));

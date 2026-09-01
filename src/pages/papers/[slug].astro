@@ -15,11 +15,12 @@ import {
   repositoryIssueLabel,
 } from "../../lib/papers";
 import {
+  buildScholarlyJsonLd,
+  buildScholarlyMetaTags,
+  citationExportHref,
   currentVersionLabel,
   doiUrl,
   formatAuthorDisplay,
-  generateBibTeX,
-  generateRis,
   previousVersionStatusLabel,
   versionTimeline,
 } from "../../lib/publication";
@@ -46,8 +47,15 @@ const showOasisLink = OASIS_MIRROR_ACTIVE && Boolean(oasisUrl);
 const doiHref = paper.data.doi ? doiUrl(paper.data.doi) : null;
 const versions = versionTimeline(paper.data);
 const versionLabel = currentVersionLabel(paper.data.current_version);
-const bibtexHref = `data:application/x-bibtex;charset=utf-8,${encodeURIComponent(generateBibTeX(paper.data))}`;
-const risHref = `data:application/x-research-info-systems;charset=utf-8,${encodeURIComponent(generateRis(paper.data))}`;
+const paperPath = `/papers/${slug}/`;
+const issuePath = `/issues/${issueSlug}/`;
+const siteUrl = Astro.site ?? new URL("https://econ-undergrad-wps.sites.unlv.edu");
+const canonicalUrl = new URL(withBase(paperPath), siteUrl).toString();
+const issueUrl = new URL(withBase(issuePath), siteUrl).toString();
+const bibtexHref = withBase(citationExportHref("paper", slug, "bibtex"));
+const risHref = withBase(citationExportHref("paper", slug, "ris"));
+const scholarlyMeta = buildScholarlyMetaTags(paper.data, { canonicalUrl });
+const jsonLd = buildScholarlyJsonLd(paper.data, { canonicalUrl, issueUrl });
 
 const disclosures = [
   paper.data.rights_statement ? { label: "Rights statement", value: paper.data.rights_statement } : null,
@@ -63,8 +71,30 @@ const disclosures = [
 <BaseLayout
   title={`${title} | UNLV Undergraduate Economics Working Paper Series`}
   description={paper.data.abstract}
+  canonicalPath={paperPath}
+  ogType="article"
+  ogTitle={title}
+  ogDescription={paper.data.abstract}
+  articlePublishedAt={paper.data.citable_published_at}
+  articleModifiedAt={paper.data.current_version.published_at}
+  scholarlyMeta={scholarlyMeta}
+  jsonLd={jsonLd}
   bodyClass="section-papers page-paper-detail paper-record-page"
 >
+  <link
+    slot="head"
+    rel="alternate"
+    type="application/x-bibtex"
+    href={bibtexHref}
+    title={`BibTeX citation for ${title}`}
+  />
+  <link
+    slot="head"
+    rel="alternate"
+    type="application/x-research-info-systems"
+    href={risHref}
+    title={`RIS citation for ${title}`}
+  />
   <article class="paper-record-shell">
     <nav class="paper-record-breadcrumb" aria-label="Breadcrumb">
       <ol>

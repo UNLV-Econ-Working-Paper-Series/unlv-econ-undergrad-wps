@@ -24,6 +24,10 @@ function pageParts(value: string | undefined): { first?: string; last?: string }
   return match ? { first: match[1], last: match[2] } : { first: normalizeWhitespace(value) };
 }
 
+function scholarlyDate(value: string, fieldName: string): string {
+  return normalizeIsoDate(value, fieldName).replace(/-/gu, "/");
+}
+
 export interface ScholarlyMetaOptions {
   canonicalUrl: string;
   citationPdfUrl?: string;
@@ -37,8 +41,14 @@ export function buildScholarlyMetaTags(
   const canonical = absoluteUrl(options.canonicalUrl, "canonicalUrl");
   const tags: MetaTagData[] = [
     { name: "citation_title", content: normalizePaperTitle(record.title) },
-    { name: "citation_publication_date", content: citationPublicationDate(record) },
-    { name: "citation_online_date", content: normalizeIsoDate(record.repository_published_at, "repository_published_at") },
+    {
+      name: "citation_publication_date",
+      content: scholarlyDate(citationPublicationDate(record), "citable_published_at"),
+    },
+    {
+      name: "citation_online_date",
+      content: scholarlyDate(record.repository_published_at, "repository_published_at"),
+    },
     { name: "citation_journal_title", content: SERIES_TITLE },
     { name: "citation_volume", content: String(record.volume) },
     { name: "citation_issue", content: String(record.issue_number) },

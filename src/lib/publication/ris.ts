@@ -45,3 +45,7 @@ export function generateRis(record: PublicationRecord): string {
   lines.push("ER  -");
   return `${lines.join("\n")}\n`;
 }
+
+export function generateRisCollection(records: readonly PublicationRecord[]): string {
+  return records.map(generateRis).join("\n");
+}

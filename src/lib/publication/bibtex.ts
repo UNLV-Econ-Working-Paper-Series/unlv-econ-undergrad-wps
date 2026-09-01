@@ -29,7 +29,7 @@ export function bibTeXKey(seriesNumber: string): string {
 export function generateBibTeX(record: PublicationRecord): string {
   const fields: Array<[string, string, protectCapitalization?: boolean]> = [
     ["title", normalizePaperTitle(record.title), true],
-    ["author", record.authors.map((author) => escapeBibTeX(author.name)).join(" and ")],
+    ["author", record.authors.map((author) => normalizeWhitespace(author.name)).join(" and ")],
     ["year", citationYear(record)],
     ["date", record.citable_published_at],
     ["type", "Working paper"],
@@ -58,4 +58,9 @@ export function generateBibTeX(record: PublicationRecord): string {
     .join("\n")
     .replace(/,(\n?)$/u, "$1");
   return `@techreport{${bibTeXKey(record.series_number)},\n${body}\n}`;
+}
+
+export function generateBibTeXCollection(records: readonly PublicationRecord[]): string {
+  if (records.length === 0) return "";
+  return `${records.map(generateBibTeX).join("\n\n")}\n`;
 }
