@@ -19,8 +19,7 @@
     "verify:publication-utilities": "node scripts/verify-publication-utilities.mjs"
   },
   "dependencies": {
-    "astro": "^5.0.0",
-    "gsap": "^3.14.2"
+    "astro": "^5.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-basic-ssl": "^2.1.4",

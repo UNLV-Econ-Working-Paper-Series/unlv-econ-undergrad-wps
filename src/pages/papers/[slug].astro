@@ -1,6 +1,7 @@
 ---
-import PageBanner from "../../components/PageBanner.astro";
+import "../../styles/pages/papers.css";
 import { OASIS_MIRROR_ACTIVE } from "../../config/repositoryStatus";
+import { OASIS } from "../../config/publication";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   cleanPaperTitle,
@@ -13,7 +14,15 @@ import {
   paperSlug,
   repositoryIssueLabel,
 } from "../../lib/papers";
-import { doiUrl, formatAuthorDisplay, currentVersionLabel, versionTimeline } from "../../lib/publication";
+import {
+  currentVersionLabel,
+  doiUrl,
+  formatAuthorDisplay,
+  generateBibTeX,
+  generateRis,
+  previousVersionStatusLabel,
+  versionTimeline,
+} from "../../lib/publication";
 import { researchFieldSlug } from "../../lib/research-fields";
 import { withBase } from "../../lib/urls";
 
@@ -24,229 +33,291 @@ export async function getStaticPaths() {
 
 const { paper } = Astro.props;
 const title = cleanPaperTitle(paper.data.title);
+const slug = paperSlug(paper);
 const issueLabel = getIssueLabelForPaper(paper);
 const issueSlug = getIssueSlugForPaper(paper);
 const fieldSlug = researchFieldSlug(paper.data.field);
+const repositoryLabel = repositoryIssueLabel(paper);
 const citations = formatCitations(paper);
 const defaultCitation = citations[0];
 const pdfHref = paperPdfHref(paper);
 const oasisUrl = paper.data.oasis_url;
 const showOasisLink = OASIS_MIRROR_ACTIVE && Boolean(oasisUrl);
-const authorsDisplay = formatAuthorDisplay(paper.data.authors);
-const citablePublicationLabel = formatPaperDate(paper.data.citable_published_at);
-const repositoryOnlineLabel = formatPaperDate(paper.data.repository_published_at);
-const currentVersionPublicationLabel = formatPaperDate(paper.data.current_version.published_at);
-const versionLabel = currentVersionLabel(paper.data.current_version);
-const versions = versionTimeline(paper.data);
-const repositoryLabel = repositoryIssueLabel(paper);
 const doiHref = paper.data.doi ? doiUrl(paper.data.doi) : null;
+const versions = versionTimeline(paper.data);
+const versionLabel = currentVersionLabel(paper.data.current_version);
+const bibtexHref = `data:application/x-bibtex;charset=utf-8,${encodeURIComponent(generateBibTeX(paper.data))}`;
+const risHref = `data:application/x-research-info-systems;charset=utf-8,${encodeURIComponent(generateRis(paper.data))}`;
+
+const disclosures = [
+  paper.data.rights_statement ? { label: "Rights statement", value: paper.data.rights_statement } : null,
+  paper.data.copyright_holder ? { label: "Copyright holder", value: paper.data.copyright_holder } : null,
+  paper.data.conflict_statement ? { label: "Conflict of interest", value: paper.data.conflict_statement } : null,
+  paper.data.ai_disclosure ? { label: "AI disclosure", value: paper.data.ai_disclosure } : null,
+  paper.data.ethics_statement ? { label: "Ethics statement", value: paper.data.ethics_statement } : null,
+  paper.data.data_availability ? { label: "Data availability", value: paper.data.data_availability } : null,
+  paper.data.code_availability ? { label: "Code availability", value: paper.data.code_availability } : null,
+].filter((entry): entry is { label: string; value: string } => Boolean(entry));
 ---
 
 <BaseLayout
   title={`${title} | UNLV Undergraduate Economics Working Paper Series`}
   description={paper.data.abstract}
-  bodyClass="section-papers page-paper-detail"
+  bodyClass="section-papers page-paper-detail paper-record-page"
 >
-  <div class="paper-page">
-    <nav class="paper-breadcrumb content-section" aria-label="Breadcrumb" data-motion="gsap">
+  <article class="paper-record-shell">
+    <nav class="paper-record-breadcrumb" aria-label="Breadcrumb">
       <ol>
-        <li><a href={withBase("/papers/")}>Papers</a></li>
+        <li><a href={withBase("/papers/")}>Working Papers</a></li>
         <li><a href={withBase(`/issues/${issueSlug}/`)}>{issueLabel}</a></li>
         <li><span aria-current="page">{title}</span></li>
       </ol>
     </nav>
 
-    <PageBanner
-      class="paper-record-masthead"
-      kicker="Undergraduate economics working paper"
-      title={title}
-      subtitle={`${authorsDisplay} • ${issueLabel}`}
-    />
+    <header class="paper-record-header">
+      <p class="paper-record-series">{paper.data.series_number}</p>
+      <h1>{title}</h1>
+      <p class="paper-record-byline">{formatAuthorDisplay(paper.data.authors)}</p>
+      <p class="paper-record-notice">
+        <strong>Working paper notice:</strong> This paper is a preliminary research output. It has undergone editorial screening but has not undergone external peer review. It may be revised.
+      </p>
+    </header>
 
-    <div class="paper-detail-toolbar content-section" data-motion="gsap">
-      <nav class="paper-detail-quick-actions" aria-label="Paper actions">
-        <a class="btn btn-primary" href={pdfHref}>Read full paper (PDF)</a>
-        {showOasisLink ? (
-          <a class="btn btn-small btn-outline" href={oasisUrl} rel="external">View OAsis record</a>
-        ) : null}
-      </nav>
-      {doiHref ? (
-        <p class="paper-detail-toolbar__doi">
-          Permanent link: <a href={doiHref} rel="external">doi.org/{paper.data.doi}</a>
-        </p>
-      ) : null}
-    </div>
+    <nav class="paper-record-actions" aria-label="Paper access and citation actions">
+      <a class="paper-record-action paper-record-action--primary" href={pdfHref}>Read full paper (PDF)</a>
+      {showOasisLink ? <a class="paper-record-action paper-record-action--repository" href={oasisUrl} rel="external">Permanent OAsis record</a> : null}
+      {doiHref ? <a class="paper-record-action" href={doiHref} rel="external">DOI</a> : null}
+      <a class="paper-record-action" href={bibtexHref} download={`${slug}.bib`}>BibTeX</a>
+      <a class="paper-record-action" href={risHref} download={`${slug}.ris`}>RIS</a>
+      <button class="paper-record-action js-only" type="button" data-copy-target="#paper-citation-output">Copy citation</button>
+    </nav>
 
-    <article class="paper-detail-layout content-section" data-motion="gsap">
-      <div class="paper-detail-main">
-        <section class="paper-detail-section paper-abstract-card" aria-labelledby="paper-abstract-title">
-          <p class="paper-library-eyebrow">Research summary</p>
-          <h2 id="paper-abstract-title">Abstract</h2>
-          <p class="paper-detail-abstract">{paper.data.abstract}</p>
-        </section>
-
-        <section class="paper-detail-section paper-citation-card" aria-labelledby="paper-citation-heading">
-          <details class="paper-citation-disclosure">
-            <summary>
-              <span class="paper-citation-summary-copy">
-                <span class="paper-library-eyebrow">Citation tools</span>
-                <span id="paper-citation-heading" class="paper-citation-summary-title" role="heading" aria-level="2">
-                  Cite this paper
-                </span>
-              </span>
-              <span class="paper-citation-summary-action">
-                <span class="paper-citation-summary-closed">Show citation options</span>
-                <span class="paper-citation-summary-open">Hide citation options</span>
-                <span class="paper-citation-summary-icon" aria-hidden="true"></span>
-              </span>
-            </summary>
-
-            <div class="paper-citation-panel">
-              <div class="paper-citation-controls">
-                <div class="paper-citation-style">
-                  <label for="paper-citation-style">Citation style</label>
-                  <select id="paper-citation-style" data-citation-selector>
-                    {citations.map((citation) => (
-                      <option value={citation.id} data-citation={citation.citation}>{citation.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  type="button"
-                  class="btn btn-small btn-outline copy-btn"
-                  data-copy-target="#paper-citation"
-                  aria-live="polite"
-                >Copy citation</button>
-              </div>
-
-              <p id="paper-citation" class="citation-copy" aria-live="polite">{defaultCitation.citation}</p>
-              <p class="paper-citation-note">
-                Citation formats are generated from the paper metadata reconciled with the OAsis record. Confirm punctuation and capitalization against your instructor or publisher’s current style guide.
-              </p>
-            </div>
-          </details>
-        </section>
-      </div>
-
-      <aside class="paper-detail-sidebar" aria-label="Paper metadata and repository record">
-        <section class="paper-detail-section paper-record-card" aria-labelledby="paper-details-title">
-          <p class="paper-library-eyebrow">Paper record</p>
-          <h2 id="paper-details-title">Publication details</h2>
-          <dl class="paper-detail-list">
-            <div class="paper-detail-row">
-              <dt>Authors</dt>
-              <dd>{authorsDisplay}</dd>
-            </div>
-            <div class="paper-detail-row">
-              <dt>Semester</dt>
-              <dd><a href={withBase(`/issues/${issueSlug}/`)}>{issueLabel}</a></dd>
-            </div>
-            {repositoryLabel ? (
-              <div class="paper-detail-row">
-                <dt>Repository issue</dt>
-                <dd>{repositoryLabel}</dd>
-              </div>
-            ) : null}
-            <div class="paper-detail-row">
-              <dt>Series number</dt>
-              <dd>{paper.data.series_number}</dd>
-            </div>
-            <div class="paper-detail-row">
-              <dt>Citable publication date</dt>
-              <dd>{citablePublicationLabel}</dd>
-            </div>
-            <div class="paper-detail-row">
-              <dt>OAsis online date</dt>
-              <dd>{repositoryOnlineLabel}</dd>
-            </div>
-            <div class="paper-detail-row">
-              <dt>Current version</dt>
-              <dd>{versionLabel} · {currentVersionPublicationLabel}</dd>
-            </div>
-            <div class="paper-detail-row">
-              <dt>Research field</dt>
-              <dd><a href={withBase(`/fields/${fieldSlug}/`)}>{paper.data.field}</a></dd>
-            </div>
-            {paper.data.pages ? (
-              <div class="paper-detail-row">
-                <dt>Pages</dt>
-                <dd>{paper.data.pages}</dd>
-              </div>
-            ) : null}
-            {paper.data.faculty_sponsor ? (
-              <div class="paper-detail-row">
-                <dt>Faculty sponsor</dt>
-                <dd>{paper.data.faculty_sponsor.name}</dd>
-              </div>
-            ) : null}
-            {doiHref ? (
-              <div class="paper-detail-row">
-                <dt>DOI</dt>
-                <dd><a href={doiHref} rel="external">{paper.data.doi}</a></dd>
-              </div>
-            ) : null}
-          </dl>
-
-          <div class="paper-record-topics">
-            <h3 id="paper-keywords-title">Keywords</h3>
-            <ul class="paper-detail-keywords">
-              {paper.data.keywords.map((keyword) => <li>{keyword}</li>)}
-            </ul>
+    <section class="paper-record-core" aria-labelledby="paper-core-heading">
+      <h2 id="paper-core-heading">Paper record</h2>
+      <dl>
+        <div>
+          <dt>Issue</dt>
+          <dd><a href={withBase(`/issues/${issueSlug}/`)}>{issueLabel}</a></dd>
+        </div>
+        <div>
+          <dt>Repository issue</dt>
+          <dd>{repositoryLabel}</dd>
+        </div>
+        <div>
+          <dt>Series number</dt>
+          <dd>{paper.data.series_number}</dd>
+        </div>
+        {paper.data.issue_published_at ? (
+          <div>
+            <dt>Issue publication date</dt>
+            <dd><time datetime={paper.data.issue_published_at}>{formatPaperDate(paper.data.issue_published_at)}</time></dd>
           </div>
+        ) : null}
+        <div>
+          <dt>Citable publication date</dt>
+          <dd><time datetime={paper.data.citable_published_at}>{formatPaperDate(paper.data.citable_published_at)}</time></dd>
+        </div>
+        <div>
+          <dt>OAsis online date</dt>
+          <dd><time datetime={paper.data.repository_published_at}>{formatPaperDate(paper.data.repository_published_at)}</time></dd>
+        </div>
+        <div>
+          <dt>Current version</dt>
+          <dd>
+            {versionLabel} · <time datetime={paper.data.current_version.published_at}>{formatPaperDate(paper.data.current_version.published_at)}</time>
+            {paper.data.current_version.note ? <span> · {paper.data.current_version.note}</span> : null}
+          </dd>
+        </div>
+        <div>
+          <dt>Research field</dt>
+          <dd><a href={withBase(`/fields/${fieldSlug}/`)}>{paper.data.field}</a></dd>
+        </div>
+        {paper.data.pages ? (
+          <div>
+            <dt>Pages</dt>
+            <dd>{paper.data.pages}</dd>
+          </div>
+        ) : null}
+        {paper.data.faculty_sponsor ? (
+          <div>
+            <dt>Faculty sponsor</dt>
+            <dd>
+              {paper.data.faculty_sponsor.profile_url ? (
+                <a href={paper.data.faculty_sponsor.profile_url} rel="external">{paper.data.faculty_sponsor.name}</a>
+              ) : paper.data.faculty_sponsor.name}
+            </dd>
+          </div>
+        ) : null}
+        {doiHref ? (
+          <div>
+            <dt>DOI</dt>
+            <dd><a href={doiHref} rel="external">{paper.data.doi}</a></dd>
+          </div>
+        ) : null}
+      </dl>
+    </section>
+
+    <div class="paper-record-body">
+      <div class="paper-record-main">
+        <section class="paper-record-authors" aria-labelledby="paper-authors-heading">
+          <h2 id="paper-authors-heading">Authors</h2>
+          <ol>
+            {paper.data.authors.map((author) => {
+              const profile = author.institutional_profile ?? author.public_profile;
+              return (
+                <li>
+                  <p class="paper-record-author-name">
+                    {profile ? <a href={profile} rel="external">{author.name}</a> : author.name}
+                  </p>
+                  {author.affiliation ? <p>{author.affiliation}</p> : null}
+                  {author.orcid ? <p><a href={author.orcid} rel="external">ORCID</a></p> : null}
+                </li>
+              );
+            })}
+          </ol>
         </section>
 
-        <section class="paper-detail-section paper-record-card" aria-labelledby="paper-version-history-title">
-          <h2 id="paper-version-history-title">Version history</h2>
+        <section class="paper-record-abstract" aria-labelledby="paper-abstract-heading">
+          <h2 id="paper-abstract-heading">Abstract</h2>
+          <p>{paper.data.abstract}</p>
+        </section>
+
+        <section class="paper-record-keywords" aria-labelledby="paper-keywords-heading">
+          <h2 id="paper-keywords-heading">Keywords</h2>
+          <p>{paper.data.keywords.join(", ")}</p>
+        </section>
+
+        <section class="paper-record-versions" aria-labelledby="paper-versions-heading">
+          <h2 id="paper-versions-heading">Version history</h2>
           <ol>
             {versions.map((version) => (
               <li>
-                <strong>{version.label}</strong> — {formatPaperDate(version.publishedAt)}
-                {version.note ? <span> · {version.note}</span> : null}
+                <div>
+                  <strong>{version.label}</strong>
+                  <span>{version.status === "current" ? "Current" : previousVersionStatusLabel(version.status)}</span>
+                </div>
+                <p>
+                  <time datetime={version.publishedAt}>{formatPaperDate(version.publishedAt)}</time>
+                  {version.note ? <span> · {version.note}</span> : null}
+                </p>
+                <p class="paper-record-version-links">
+                  {version.oasisUrl ? <a href={version.oasisUrl} rel="external">OAsis record</a> : null}
+                  {version.publicUrl ? <a href={version.publicUrl} rel="external">Public version</a> : null}
+                </p>
               </li>
             ))}
           </ol>
         </section>
+      </div>
 
-        {showOasisLink ? (
-          <section class="paper-repository-card" aria-labelledby="paper-repository-title">
-            <p class="paper-repository-card__status">Preserved by UNLV Libraries</p>
-            <h2 id="paper-repository-title">Permanent OAsis record</h2>
-            <p>The institutional repository provides the permanent record, DOI, and full-text PDF.</p>
-            <div class="paper-repository-card__actions">
-              <a class="btn btn-small btn-primary" href={pdfHref}>Read PDF</a>
-              <a class="paper-library-details-link" href={oasisUrl} rel="external">Repository record</a>
+      <aside class="paper-record-secondary" aria-label="Citation and repository information">
+        <details class="paper-record-details paper-record-citation">
+          <summary>Cite this paper</summary>
+          <div class="paper-record-details__body">
+            <label class="js-only" for="paper-citation-style">Citation style</label>
+            <select class="js-only" id="paper-citation-style" data-citation-selector>
+              {citations.map((citation) => (
+                <option value={citation.id} data-citation={citation.citation}>{citation.label}</option>
+              ))}
+            </select>
+            <p id="paper-citation-output" class="paper-record-citation-output" aria-live="polite">
+              {defaultCitation.citation}
+            </p>
+            <button type="button" class="paper-record-action js-only" data-copy-target="#paper-citation-output">Copy citation</button>
+            <p class="paper-record-citation-note">
+              Confirm punctuation and capitalization against the current style guide required by your instructor or publisher.
+            </p>
+          </div>
+        </details>
+
+        <section class="paper-record-repository" aria-labelledby="repository-record-heading">
+          <h2 id="repository-record-heading">Permanent repository record</h2>
+          <p>{OASIS.safeDescription}</p>
+          {showOasisLink ? <a href={oasisUrl} rel="external">View this paper in OAsis</a> : null}
+        </section>
+
+        {disclosures.length > 0 || paper.data.license_url ? (
+          <details class="paper-record-details">
+            <summary>Rights and disclosures</summary>
+            <div class="paper-record-details__body">
+              <dl>
+                {disclosures.map((entry) => (
+                  <div>
+                    <dt>{entry.label}</dt>
+                    <dd>{entry.value}</dd>
+                  </div>
+                ))}
+                {paper.data.license_url ? (
+                  <div>
+                    <dt>License</dt>
+                    <dd><a href={paper.data.license_url} rel="external">View license terms</a></dd>
+                  </div>
+                ) : null}
+              </dl>
             </div>
-          </section>
+          </details>
+        ) : null}
+
+        {paper.data.historical_provenance ? (
+          <details class="paper-record-details">
+            <summary>Historical provenance</summary>
+            <div class="paper-record-details__body">
+              <dl>
+                <div>
+                  <dt>Source</dt>
+                  <dd>
+                    {paper.data.historical_provenance.original_url ? (
+                      <a href={paper.data.historical_provenance.original_url} rel="external">
+                        {paper.data.historical_provenance.source_name}
+                      </a>
+                    ) : paper.data.historical_provenance.source_name}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Original term</dt>
+                  <dd>{paper.data.historical_provenance.original_term}</dd>
+                </div>
+                {paper.data.historical_provenance.original_publication_date ? (
+                  <div>
+                    <dt>Original publication date</dt>
+                    <dd>{formatPaperDate(paper.data.historical_provenance.original_publication_date)}</dd>
+                  </div>
+                ) : null}
+                {paper.data.historical_provenance.migrated_at ? (
+                  <div>
+                    <dt>Migration date</dt>
+                    <dd>{formatPaperDate(paper.data.historical_provenance.migrated_at)}</dd>
+                  </div>
+                ) : null}
+                <div>
+                  <dt>Note</dt>
+                  <dd>{paper.data.historical_provenance.note}</dd>
+                </div>
+              </dl>
+            </div>
+          </details>
         ) : null}
       </aside>
-    </article>
-  </div>
-</BaseLayout>
+    </div>
+  </article>
 
-<script>
-  const initializeCitationSelector = () => {
-    const selector = document.querySelector("[data-citation-selector]");
-    const output = document.querySelector("#paper-citation");
-    if (!(selector instanceof HTMLSelectElement) || !(output instanceof HTMLElement)) {
-      return;
-    }
-    if (selector.dataset.citationInit === "true") {
-      return;
-    }
-    selector.dataset.citationInit = "true";
+  <script>
+    const initializeCitationSelector = () => {
+      const selector = document.querySelector("[data-citation-selector]");
+      const output = document.querySelector("#paper-citation-output");
+      if (!(selector instanceof HTMLSelectElement) || !(output instanceof HTMLElement)) return;
+      if (selector.dataset.citationInit === "true") return;
+      selector.dataset.citationInit = "true";
 
-    const updateCitation = () => {
-      const selected = selector.selectedOptions[0];
-      const citation = selected?.dataset.citation;
-      if (citation) {
-        output.textContent = citation;
-      }
+      const updateCitation = () => {
+        const citation = selector.selectedOptions[0]?.dataset.citation;
+        if (citation) output.textContent = citation;
+      };
+      selector.addEventListener("change", updateCitation);
+      updateCitation();
     };
 
-    selector.addEventListener("change", updateCitation);
-    updateCitation();
-  };
-
-  document.addEventListener("astro:page-load", initializeCitationSelector);
-  initializeCitationSelector();
-</script>
+    document.addEventListener("astro:page-load", initializeCitationSelector);
+    initializeCitationSelector();
+  </script>
+</BaseLayout>

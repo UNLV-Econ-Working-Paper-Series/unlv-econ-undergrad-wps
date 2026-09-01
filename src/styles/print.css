@@ -1,0 +1,156 @@
+@media print {
+  @page {
+    margin: 0.65in;
+  }
+
+  :root {
+    --color-ink: #000000;
+    --color-ink-soft: #000000;
+    --color-muted: #333333;
+    --color-canvas: #ffffff;
+    --color-surface: #ffffff;
+    --color-border: #777777;
+    --color-link: #000000;
+    --color-link-hover: #000000;
+  }
+
+  html,
+  body {
+    min-inline-size: 0;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt;
+  }
+
+  body {
+    line-height: 1.45;
+  }
+
+  .skip-link,
+  .site-header,
+  .site-footer,
+  .page-with-toc__toc,
+  .page-intro-actions,
+  .card-actions,
+  .paper-detail-toolbar,
+  .paper-detail-quick-actions,
+  .paper-citation-controls,
+  form,
+  button,
+  [role="search"] {
+    display: none !important;
+  }
+
+  .site-shell,
+  .content-section,
+  .page-banner__inner,
+  .policy-shell {
+    inline-size: 100%;
+    max-inline-size: none;
+    margin: 0;
+    padding-inline: 0;
+  }
+
+  .content-section,
+  .page-banner__inner {
+    padding-block: 0.2in;
+  }
+
+  .page-banner {
+    border-block-end: 1pt solid #777777;
+    background: #ffffff !important;
+  }
+
+  .page-banner h1 {
+    max-inline-size: none;
+  }
+
+  .page-with-toc,
+  .paper-detail-layout,
+  .profile-shell {
+    display: block !important;
+  }
+
+  .card,
+  .accent-card,
+  .about-card,
+  .about-person-card,
+  .contact-card,
+  .paper-detail-section,
+  .policy-directory-item {
+    border-color: #777777 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+  }
+
+  details,
+  details > * {
+    display: block !important;
+  }
+
+  details > summary {
+    display: none !important;
+  }
+
+  a {
+    color: #000000 !important;
+    text-decoration: underline;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-family: var(--font-sans);
+    font-size: 0.82em;
+    font-weight: 400;
+    overflow-wrap: anywhere;
+  }
+
+  a[href^="mailto:"]::after,
+  a[href^="tel:"]::after,
+  a[href*="oasis.library.unlv.edu/econ_ug_papers/"]::after {
+    content: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  figure,
+  table {
+    break-after: avoid;
+    break-inside: avoid;
+  }
+
+  p,
+  li,
+  blockquote {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .about-step-card,
+  .about-person-card,
+  .policy-directory-item,
+  .paper-library-card,
+  .issue-paper-entry,
+  .field-paper-entry {
+    break-inside: avoid-page;
+  }
+
+  .policy-directory {
+    display: block;
+  }
+
+  .policy-directory-item {
+    padding: 0.14in 0;
+    border-inline: 0 !important;
+  }
+
+  .policy-directory-item::after {
+    content: none;
+  }
+
+  img {
+    max-block-size: 7in;
+  }
+}

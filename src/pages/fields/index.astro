@@ -1,60 +1,46 @@
 ---
 import PageBanner from "../../components/PageBanner.astro";
-import { RESEARCH_FIELDS } from "../../config/publication";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getAllPapers, getIssueLabelForPaper } from "../../lib/papers";
-import { researchFieldSlug } from "../../lib/research-fields";
+import { getFieldGroups } from "../../lib/papers";
 import { withBase } from "../../lib/urls";
+import "../../styles/pages/fields.css";
 
-const papers = await getAllPapers();
-const fieldGroups = RESEARCH_FIELDS.map((field) => {
-  const fieldPapers = papers.filter((paper) => paper.data.field === field);
-  return {
-    field,
-    slug: researchFieldSlug(field),
-    papers: fieldPapers,
-    latestIssue: fieldPapers[0] ? getIssueLabelForPaper(fieldPapers[0]) : "",
-  };
-}).filter((group) => group.papers.length > 0);
+const fields = await getFieldGroups();
 ---
 
 <BaseLayout
   title="Research Fields | UNLV Undergraduate Economics Working Paper Series"
-  description="Browse UNLV undergraduate economics working papers by controlled research field."
+  description="Browse published UNLV undergraduate economics working papers by controlled research field."
   bodyClass="section-fields page-fields"
 >
-  <PageBanner title="Research Fields" subtitle="Browse working papers by economics research field" />
+  <PageBanner title="Research Fields" subtitle="Browse published working papers by area of economics" />
 
-  <section class="content-section" aria-labelledby="populated-fields-title">
-    <header class="section-head">
-      <div>
-        <p class="eyebrow">Current collection</p>
-        <h2 id="populated-fields-title">Fields represented in the Series</h2>
-      </div>
+  <section class="field-index content-section" aria-labelledby="field-index-title">
+    <header class="field-intro">
+      <p class="field-label">Current collection</p>
+      <h2 id="field-index-title">Fields represented in the Series</h2>
+      <p>
+        Research fields are controlled editorial terms used to keep the collection consistent and discoverable. Only fields with
+        published papers appear here.
+      </p>
     </header>
 
-    <p>
-      The Series uses a controlled field list so papers remain consistently discoverable. Only fields represented by a current paper
-      appear below.
-    </p>
-
-    <ol class="field-directory" aria-label="Populated research fields">
-      {fieldGroups.map((group) => (
-        <li>
-          <a href={withBase(`/fields/${group.slug}/`)}>
-            <span>{group.field}</span>
-            <span class="muted small">
-              {group.papers.length} {group.papers.length === 1 ? "paper" : "papers"}
-              {group.latestIssue ? ` · Latest issue: ${group.latestIssue}` : ""}
-            </span>
-          </a>
-        </li>
-      ))}
-    </ol>
-
-    <p class="muted small">
-      The controlled taxonomy contains {RESEARCH_FIELDS.length} fields. Unpopulated fields are retained in the publication metadata
-      standard but are not shown as empty public sections.
-    </p>
+    {fields.length > 0 ? (
+      <ul class="field-directory" aria-label="Populated research fields">
+        {fields.map((field) => (
+          <li>
+            <a href={withBase(`/fields/${field.slug}/`)}>
+              <span>{field.name}</span>
+              <span>{field.count} {field.count === 1 ? "paper" : "papers"}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <section class="field-empty" aria-labelledby="field-empty-title">
+        <h3 id="field-empty-title">No research fields are listed</h3>
+        <p>Fields appear after a published paper has been assigned to them.</p>
+      </section>
+    )}
   </section>
 </BaseLayout>

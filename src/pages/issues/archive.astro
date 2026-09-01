@@ -3,160 +3,105 @@ import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getArchiveIssueGroups } from "../../lib/archive";
 import { withBase } from "../../lib/urls";
+import "../../styles/pages/issues.css";
 
 const archiveIssues = getArchiveIssueGroups();
-const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b) => b - a);
+const paperCount = archiveIssues.reduce((sum, issue) => sum + issue.papers.length, 0);
+// This records the bounded metadata migration, never the paper's original year.
+const ARCHIVE_MIGRATION_YEAR = 2026;
+
 const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
   `${count} ${count === 1 ? singular : plural}`;
 ---
 
-<BaseLayout title="Archive | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-issues page-archive">
+<BaseLayout
+  title="Historical Archive | UNLV Undergraduate Economics Working Paper Series"
+  description="A bounded metadata inventory of earlier UNLV Economics Hub undergraduate economics working papers."
+  bodyClass="section-issues page-archive"
+>
+  <nav class="publication-breadcrumb content-section" aria-label="Breadcrumb">
+    <ol>
+      <li><a href={withBase("/issues/")}>Issues</a></li>
+      <li><span aria-current="page">Historical Archive</span></li>
+    </ol>
+  </nav>
+
   <PageBanner
-    title="Archive"
-    subtitle="Archived working papers from the pre-2024 UNLV undergraduate economics series, organized by semester issue"
+    kicker="Earlier Series records"
+    title="Historical Archive"
+    subtitle="A bounded metadata inventory of working papers from the earlier UNLV Economics Hub"
+    compact
   />
 
-  <section class="issues-explorer content-section">
-    <section class="issues-controls issues-controls--modern" aria-label="Archive filters">
-      <div class="issues-search">
-        <label for="archive-search">Search papers</label>
-        <input id="archive-search" type="search" placeholder="Search papers..." />
-      </div>
+  <section class="historical-archive content-section" aria-labelledby="historical-inventory-title">
+    <header class="historical-archive__intro">
+      <p class="publication-label">Migration status</p>
+      <h2 id="historical-inventory-title">Historical metadata under record-level review</h2>
+      <p>
+        This inventory is not a claim of complete migration. It presents retained titles, author display lines, and original issue
+        terms while provenance, rights, final-version status, file availability, and accessibility are verified record by record.
+      </p>
+      <p>
+        Full text is not linked from this archive while those checks remain open, and no OAsis deposit is implied for these
+        historical records.
+      </p>
+      <dl class="historical-archive__counts" aria-label="Historical inventory size">
+        <div>
+          <dt>Historical issues</dt>
+          <dd>{archiveIssues.length}</dd>
+        </div>
+        <div>
+          <dt>Metadata records</dt>
+          <dd>{paperCount}</dd>
+        </div>
+      </dl>
+    </header>
 
-      <div class="issues-year-filter issues-year-filter--select">
-        <label for="archive-year" class="issues-filter-label">Year</label>
-        <select id="archive-year">
-          <option value="">All years</option>
-          {years.map((year) => (
-            <option value={String(year)}>{year}</option>
-          ))}
-        </select>
-      </div>
-    </section>
-
-    <p class="filter-result-count" id="archive-result-count" role="status" aria-live="polite" aria-atomic="true">
-      Showing {archiveIssues.length} {archiveIssues.length === 1 ? "issue" : "issues"}
-    </p>
-
-    <section class="issues-cards issues-cards--archive" aria-label="Archive issue cards">
-      {archiveIssues.length === 0 ? (
-        <article class="card empty-state-card">
-          <p class="muted">No archive papers are listed yet</p>
-        </article>
-      ) : (
-        archiveIssues.map((issue) => {
-          const availablePapers = issue.papers.filter((paper) => paper.fileAvailable);
-
-          return (
-            <article
-              class="issue-archive-card card"
-              data-motion="gsap"
-              data-archive-issue-card
-              data-year={String(issue.year)}
-              data-search={[
-                issue.label,
-                ...issue.categories,
-                ...issue.papers.map((paper) => `${paper.title} ${paper.authors}`),
-              ]
-                .join(" ")
-                .toLowerCase()}
-            >
-              <header class="issue-archive-head">
-                <h2>{issue.label}</h2>
-                <p class="issue-card-meta">
-                  {countLabel(issue.papers.length, "paper")} • {countLabel(issue.categories.length, "category", "categories")}
-                </p>
+    {archiveIssues.length > 0 ? (
+      <ol class="archive-issue-list" aria-label="Historical issues, newest first">
+        {archiveIssues.map((issue) => (
+          <li>
+            <article class="archive-issue-entry">
+              <header>
+                <p class="publication-label">Historical issue</p>
+                <h3><a href={withBase(`/issues/archive/${issue.slug}/`)}>{issue.label}</a></h3>
+                <p>{countLabel(issue.papers.length, "historical working paper")}</p>
               </header>
 
-              <div class="issue-topic-chips" aria-label={`Categories in ${issue.label}`}>
-                {issue.categories.map((category) => (
-                  <span class="issue-topic-chip">{category}</span>
+              <dl class="archive-provenance-summary">
+                <div>
+                  <dt>Original issue term</dt>
+                  <dd>{issue.label}</dd>
+                </div>
+                <div>
+                  <dt>Current archive review</dt>
+                  <dd>{ARCHIVE_MIGRATION_YEAR} metadata migration</dd>
+                </div>
+              </dl>
+
+              <ol class="archive-paper-toc" aria-label={`Historical paper records for ${issue.label}`}>
+                {issue.papers.map((paper) => (
+                  <li>
+                    <span>{paper.title}</span>
+                    <span>{paper.authors}</span>
+                  </li>
                 ))}
-              </div>
+              </ol>
 
-              <div class="issue-card-actions">
-                <a class="btn btn-small btn-primary" href={withBase(`/issues/archive/${issue.slug}/`)}>Browse issue</a>
-                {availablePapers.length > 0 ? (
-                  <button
-                    type="button"
-                    class="btn btn-small btn-outline"
-                    data-download-all
-                    data-urls={availablePapers.map((paper) => withBase(paper.file)).join("|")}
-                  >
-                    Download PDFs
-                  </button>
-                ) : null}
-              </div>
-
-              {availablePapers.length === 0 ? (
-                <p class="muted small">PDF files for this archive issue are not online yet</p>
-              ) : null}
+              <p class="archive-issue-entry__action">
+                <a class="text-action" href={withBase(`/issues/archive/${issue.slug}/`)}>
+                  View {issue.label} metadata records<span aria-hidden="true"> →</span>
+                </a>
+              </p>
             </article>
-          );
-        })
-      )}
-    </section>
-    <p id="archive-empty" class="muted small" hidden>No archive issues match those filters</p>
+          </li>
+        ))}
+      </ol>
+    ) : (
+      <section class="publication-empty" aria-labelledby="archive-empty-title">
+        <h3 id="archive-empty-title">No verified historical metadata is listed</h3>
+        <p>Records will appear only after the available historical evidence has been reviewed.</p>
+      </section>
+    )}
   </section>
-
-  <script is:inline>
-    (() => {
-      const initArchiveFilters = () => {
-        const explorer = document.querySelector(".page-archive .issues-explorer");
-        if (!(explorer instanceof HTMLElement) || explorer.dataset.filtersInit === "true") return;
-        explorer.dataset.filtersInit = "true";
-
-        const searchInput = explorer.querySelector("#archive-search");
-        const yearSelect = explorer.querySelector("#archive-year");
-        const issueCards = Array.from(explorer.querySelectorAll("[data-archive-issue-card]"));
-        const emptyState = explorer.querySelector("#archive-empty");
-        const resultCount = explorer.querySelector("#archive-result-count");
-
-        const applyFilters = () => {
-          const query = (searchInput?.value || "").trim().toLowerCase();
-          const selectedYear = yearSelect?.value || "";
-          issueCards.forEach((card) => {
-            const visible = (!selectedYear || card.dataset.year === selectedYear) &&
-              (!query || (card.dataset.search || "").includes(query));
-            card.hidden = !visible;
-          });
-
-          const visibleCount = issueCards.filter((card) => !card.hidden).length;
-          if (emptyState instanceof HTMLElement) emptyState.hidden = visibleCount !== 0;
-          if (resultCount instanceof HTMLElement) {
-            resultCount.textContent = `Showing ${visibleCount} of ${issueCards.length} ${issueCards.length === 1 ? "issue" : "issues"}`;
-          }
-        };
-
-        searchInput?.addEventListener("input", applyFilters);
-        yearSelect?.addEventListener("change", applyFilters);
-
-        explorer.querySelectorAll("[data-download-all]").forEach((button) => {
-          button.addEventListener("click", () => {
-            const urls = (button.dataset.urls || "").split("|").filter(Boolean);
-            urls.forEach((url, index) => {
-              window.setTimeout(() => {
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = "";
-                link.rel = "noopener noreferrer";
-                document.body.append(link);
-                link.click();
-                link.remove();
-              }, index * 180);
-            });
-          });
-        });
-
-        applyFilters();
-      };
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initArchiveFilters, { once: true });
-      } else {
-        initArchiveFilters();
-      }
-      document.addEventListener("astro:page-load", initArchiveFilters);
-    })();
-  </script>
 </BaseLayout>

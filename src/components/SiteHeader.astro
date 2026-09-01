@@ -1,0 +1,98 @@
+---
+import { INSTITUTION } from "../config/institution";
+import { PRIMARY_NAVIGATION, SERIES } from "../config/publication";
+import { withBase } from "../lib/urls";
+
+const pathname = Astro.url.pathname;
+const navItems = PRIMARY_NAVIGATION.map((item) => ({ ...item, href: withBase(item.href) }));
+
+function normalizePath(path: string): string {
+  if (path === "") return "/";
+  return path.endsWith("/") ? path : `${path}/`;
+}
+
+function isActive(href: string): boolean {
+  const current = normalizePath(pathname);
+  const target = normalizePath(href);
+  return target === normalizePath(withBase("/")) ? current === target : current.startsWith(target);
+}
+---
+
+<header class="site-header">
+  <div class="site-shell site-header__inner">
+    <a class="site-masthead" href={withBase("/")} aria-label={`${SERIES.name} home`}>
+      <span class="site-masthead__series">{SERIES.name}</span>
+      <span class="site-masthead__home">
+        {INSTITUTION.department.name} · {INSTITUTION.school.name}
+      </span>
+    </a>
+
+    <nav class="site-nav site-nav--desktop" aria-label="Primary navigation">
+      <ul>
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class={isActive(item.href) ? "is-active" : undefined}
+              aria-current={isActive(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <details class="site-nav-disclosure" data-site-nav>
+      <summary>
+        <span>Menu</span>
+        <span class="site-nav-disclosure__icon" aria-hidden="true"></span>
+      </summary>
+
+      <nav class="site-nav site-nav--mobile" aria-label="Primary navigation">
+        <ul>
+          {navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class={isActive(item.href) ? "is-active" : undefined}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<script>
+  const desktopNavigation = window.matchMedia("(min-width: 68rem)");
+
+  document.querySelectorAll<HTMLDetailsElement>("[data-site-nav]").forEach((disclosure) => {
+    if (disclosure.dataset.siteNavBound === "true") return;
+    disclosure.dataset.siteNavBound = "true";
+
+    const summary = disclosure.querySelector<HTMLElement>("summary");
+
+    disclosure.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && disclosure.open) {
+        disclosure.open = false;
+        summary?.focus();
+      }
+    });
+
+    disclosure.querySelectorAll<HTMLAnchorElement>("nav a").forEach((link) => {
+      link.addEventListener("click", () => {
+        if (!desktopNavigation.matches) disclosure.open = false;
+      });
+    });
+
+    const closeAtDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) disclosure.open = false;
+    };
+    desktopNavigation.addEventListener("change", closeAtDesktop);
+  });
+</script>

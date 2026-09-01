@@ -7,13 +7,12 @@ import {
   getIssueGroups,
   type IssueGroup,
   paperHref,
-  paperPdfHref,
   repositoryIssueLabel,
 } from "../../lib/papers";
-import { formatAuthorDisplay } from "../../lib/publication";
+import { doiUrl, formatAuthorDisplay } from "../../lib/publication";
 import { researchFieldSlug } from "../../lib/research-fields";
-import { publicAssetExists } from "../../lib/publicAssets";
 import { withBase } from "../../lib/urls";
+import "../../styles/pages/issues.css";
 
 export async function getStaticPaths() {
   const issues = await getIssueGroups();
@@ -21,147 +20,131 @@ export async function getStaticPaths() {
 }
 
 const { issue } = Astro.props as { issue: IssueGroup };
-const issueSlug = issue.slug;
 const papers = issue.papers;
-const issueLabel = issue.label;
-const issueZipPath = `/assets/issues/${issueSlug}/${issueSlug}-pdfs.zip`;
-const issueZipHref = withBase(issueZipPath);
-const issueZipAvailable = publicAssetExists(issueZipPath);
 const fieldCount = new Set(papers.map((paper) => paper.data.field)).size;
-const repositoryLabels = [...new Set(papers.map(repositoryIssueLabel).filter(Boolean))];
-const repositoryLabel = repositoryLabels.length === 1 ? repositoryLabels[0] : null;
+const repositoryDates = [...new Set(papers.map((paper) => paper.data.repository_published_at))].sort();
+const finalRepositoryDate = repositoryDates[repositoryDates.length - 1];
+const bibliographicLabels = [...new Set(papers.map(repositoryIssueLabel).filter(Boolean))];
+const bibliographicLabel = bibliographicLabels.length === 1 ? bibliographicLabels[0] : null;
 
-const abstractLead = (abstract: string): string => {
-  const firstSentence = abstract.trim().match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim();
-  if (firstSentence && firstSentence.length <= 360) {
-    return firstSentence;
-  }
-
-  const shortened = abstract.trim().slice(0, 330);
-  const lastSpace = shortened.lastIndexOf(" ");
-  return `${shortened.slice(0, lastSpace > 250 ? lastSpace : shortened.length).trim()}…`;
-};
+const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
+  `${count} ${count === 1 ? singular : plural}`;
 ---
 
-<BaseLayout title={`${issueLabel} | Issues`} bodyClass="section-issues page-issue-detail">
-  <div class="issue-layout">
-    <nav class="issue-breadcrumb content-section" aria-label="Breadcrumb" data-motion="gsap">
-      <ol>
-        <li><a href={withBase("/issues/")}>Issues</a></li>
-        <li><span aria-current="page">{issueLabel}</span></li>
-      </ol>
-    </nav>
+<BaseLayout
+  title={`${issue.label} | Issues | UNLV Undergraduate Economics Working Paper Series`}
+  description={`Paper records and publication metadata for the ${issue.label} issue of the UNLV Undergraduate Economics Working Paper Series.`}
+  bodyClass="section-issues page-issue-detail"
+>
+  <nav class="publication-breadcrumb content-section" aria-label="Breadcrumb">
+    <ol>
+      <li><a href={withBase("/issues/")}>Issues</a></li>
+      <li><span aria-current="page">{issue.label}</span></li>
+    </ol>
+  </nav>
 
-    <PageBanner
-      class="issue-record-masthead"
-      kicker="Semester issue"
-      title={issueLabel}
-      subtitle={papers.length > 0 ? `${papers.length} undergraduate economics working papers` : "Papers for this issue will be posted soon."}
-    />
+  <PageBanner
+    kicker="Semester issue"
+    title={issue.label}
+    subtitle={bibliographicLabel ?? "Issue metadata"}
+    compact
+  />
 
-    <section class="content-section issue-content" data-motion="gsap">
-      {papers.length === 0 ? (
-        <article class="issue-empty" aria-labelledby="issue-empty-title">
-          <p class="issue-library-eyebrow">Publication status</p>
-          <h2 id="issue-empty-title">Coming soon</h2>
-          <p>Papers for this issue will be posted soon.</p>
-          <div class="issue-overview-actions">
-            <a class="btn btn-small" href={withBase("/issues/")}>Back to all issues</a>
-            <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse the archive</a>
-          </div>
-        </article>
-      ) : (
-        <>
-          <header class="issue-overview">
-            <div class="issue-overview-copy">
-              <p class="issue-library-eyebrow">Issue overview</p>
-              <h2 id="issue-overview-title">Research published in {issueLabel}</h2>
-              <p>
-                Explore {papers.length} working {papers.length === 1 ? "paper" : "papers"} across {fieldCount} research {fieldCount === 1 ? "field" : "fields"}. Deposited full text and permanent records are preserved by UNLV University Libraries in OAsis.
-              </p>
-              <p class="issue-taxonomy-note">Research fields are controlled editorial groupings used for discovery on this site.</p>
-              <div class="issue-overview-actions">
-                <a class="issue-text-link" href={withBase("/issues/")}>← All issues</a>
-                {issueZipAvailable ? (
-                  <a class="btn btn-small btn-primary" href={issueZipHref}>Download issue PDFs</a>
-                ) : null}
-              </div>
-            </div>
-
-            <dl class="issue-facts" aria-label={`${issueLabel} publication facts`}>
-              <div>
-                <dt>Papers</dt>
-                <dd>{papers.length}</dd>
-              </div>
-              <div>
-                <dt>Research fields</dt>
-                <dd>{fieldCount}</dd>
-              </div>
-              {repositoryLabel ? (
-                <div>
-                  <dt>Repository issue</dt>
-                  <dd>{repositoryLabel}</dd>
-                </div>
+  <section class="issue-detail content-section" aria-labelledby="issue-summary-title">
+    {papers.length > 0 ? (
+      <>
+        <header class="issue-detail__summary">
+          <div class="issue-detail__introduction">
+            <p class="publication-label">Issue overview</p>
+            <h2 id="issue-summary-title">{issue.label} issue</h2>
+            <p>
+              This issue contains {countLabel(papers.length, "working paper")} across {countLabel(fieldCount, "research field")}.
+              Each paper has its own citable record and full-text link.
+            </p>
+            <p class="issue-detail__date">
+              {repositoryDates.length === 1 ? (
+                <>Added to OAsis <time datetime={repositoryDates[0]}>{formatPaperDate(repositoryDates[0])}</time>.</>
+              ) : repositoryDates.length > 1 ? (
+                <>
+                  Papers added to OAsis between <time datetime={repositoryDates[0]}>{formatPaperDate(repositoryDates[0])}</time>
+                  {" and "}
+                  <time datetime={finalRepositoryDate}>{formatPaperDate(finalRepositoryDate)}</time>.
+                </>
               ) : null}
-            </dl>
+            </p>
+          </div>
+
+          <dl class="issue-facts" aria-label={`${issue.label} issue facts`}>
+            {bibliographicLabel ? (
+              <div>
+                <dt>Bibliographic issue</dt>
+                <dd>{bibliographicLabel}</dd>
+              </div>
+            ) : null}
+            <div>
+              <dt>Working papers</dt>
+              <dd>{papers.length}</dd>
+            </div>
+            <div>
+              <dt>Research fields</dt>
+              <dd>{fieldCount}</dd>
+            </div>
+          </dl>
+        </header>
+
+        <section class="issue-contents" aria-labelledby="issue-contents-title">
+          <header class="issue-contents__header">
+            <p class="publication-label">Table of contents</p>
+            <h2 id="issue-contents-title">Papers in This Issue</h2>
           </header>
 
-          <section class="issue-contents" aria-labelledby="issue-contents-title">
-            <header class="issue-contents-head">
-              <p class="issue-library-eyebrow">Table of contents</p>
-              <h2 id="issue-contents-title">Papers in This Issue</h2>
-            </header>
+          <ol class="issue-paper-list">
+            {papers.map((paper) => {
+              const title = cleanPaperTitle(paper.data.title);
+              const fieldHref = withBase(`/fields/${researchFieldSlug(paper.data.field)}/`);
 
-            <ol class="issue-paper-list">
-              {papers.map((paper, index) => {
-                const paperTitle = cleanPaperTitle(paper.data.title);
-                const paperRepositoryLabel = repositoryIssueLabel(paper);
-                return (
-                  <li>
-                    <article class="issue-paper-entry">
-                      <p class="issue-paper-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p>
-                      <div class="issue-paper-copy">
-                        <p class="issue-paper-kicker">
-                          <a href={withBase(`/fields/${researchFieldSlug(paper.data.field)}/`)}>{paper.data.field}</a>
-                        </p>
-                        <h3><a href={paperHref(paper)}>{paperTitle}</a></h3>
-                        <p class="issue-paper-authors">By {formatAuthorDisplay(paper.data.authors)}</p>
-                        <p class="issue-paper-abstract">{abstractLead(paper.data.abstract)}</p>
-                        <nav class="issue-paper-actions" aria-label={`Actions for ${paperTitle}`}>
-                          <a class="issue-entry-primary" href={paperHref(paper)}>Read paper details →</a>
-                          <a href={paperPdfHref(paper)}>Full text PDF</a>
-                        </nav>
+              return (
+                <li>
+                  <article class="issue-paper-entry">
+                    <div class="issue-paper-entry__main">
+                      <p class="paper-series-number">{paper.data.series_number}</p>
+                      <h3><a href={paperHref(paper)}>{title}</a></h3>
+                      <p class="paper-byline">{formatAuthorDisplay(paper.data.authors)}</p>
+                    </div>
+
+                    <dl class="paper-compact-metadata">
+                      <div>
+                        <dt>Research field</dt>
+                        <dd><a href={fieldHref}>{paper.data.field}</a></dd>
                       </div>
-                      <dl class="issue-paper-record">
+                      {paper.data.doi ? (
                         <div>
-                          <dt>Citable date</dt>
-                          <dd>{formatPaperDate(paper.data.citable_published_at)}</dd>
+                          <dt>DOI</dt>
+                          <dd><a href={doiUrl(paper.data.doi)} rel="external">{paper.data.doi}</a></dd>
                         </div>
-                        <div>
-                          <dt>OAsis online</dt>
-                          <dd>{formatPaperDate(paper.data.repository_published_at)}</dd>
-                        </div>
-                        {paperRepositoryLabel ? (
-                          <div>
-                            <dt>Record</dt>
-                            <dd>{paperRepositoryLabel}</dd>
-                          </div>
-                        ) : null}
-                        {paper.data.pages ? (
-                          <div>
-                            <dt>Pages</dt>
-                            <dd>{paper.data.pages}</dd>
-                          </div>
-                        ) : null}
-                      </dl>
-                    </article>
-                  </li>
-                );
-              })}
-            </ol>
-          </section>
-        </>
-      )}
-    </section>
-  </div>
+                      ) : null}
+                    </dl>
+
+                    <p class="issue-paper-entry__action">
+                      <a class="text-action" href={paperHref(paper)}>View paper record<span aria-hidden="true"> →</span></a>
+                      <a href={paper.data.pdf_url} rel="external">Full text PDF</a>
+                    </p>
+                  </article>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+
+        <p class="issue-back-link"><a href={withBase("/issues/")}>← All published issues</a></p>
+      </>
+    ) : (
+      <section class="publication-empty" aria-labelledby="issue-summary-title">
+        <p class="publication-label">Publication status</p>
+        <h2 id="issue-summary-title">No published papers are listed for this issue</h2>
+        <p>The page will be updated after a verified paper record is available.</p>
+        <p><a href={withBase("/issues/")}>Return to published issues</a></p>
+      </section>
+    )}
+  </section>
 </BaseLayout>

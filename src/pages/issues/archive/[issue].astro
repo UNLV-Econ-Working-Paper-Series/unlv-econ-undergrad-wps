@@ -3,6 +3,7 @@ import PageBanner from "../../../components/PageBanner.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getArchiveIssueGroups, type ArchiveIssueGroup } from "../../../lib/archive";
 import { withBase } from "../../../lib/urls";
+import "../../../styles/pages/issues.css";
 
 export async function getStaticPaths() {
   const issues = getArchiveIssueGroups();
@@ -10,98 +11,82 @@ export async function getStaticPaths() {
 }
 
 const { issue } = Astro.props as { issue: ArchiveIssueGroup };
-const availablePapers = issue.papers.filter((paper) => paper.fileAvailable);
+// This records the bounded metadata migration, never the paper's original year.
+const ARCHIVE_MIGRATION_YEAR = 2026;
+
 const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
   `${count} ${count === 1 ? singular : plural}`;
 ---
 
-<BaseLayout title={`${issue.label} | Archive`} bodyClass="section-issues page-archive-issue">
+<BaseLayout
+  title={`${issue.label} | Historical Archive | UNLV Undergraduate Economics Working Paper Series`}
+  description={`Historical metadata records from the ${issue.label} UNLV Economics Hub working-paper issue.`}
+  bodyClass="section-issues page-archive-issue"
+>
+  <nav class="publication-breadcrumb content-section" aria-label="Breadcrumb">
+    <ol>
+      <li><a href={withBase("/issues/")}>Issues</a></li>
+      <li><a href={withBase("/issues/archive/")}>Historical Archive</a></li>
+      <li><span aria-current="page">{issue.label}</span></li>
+    </ol>
+  </nav>
+
   <PageBanner
-    kicker="Archive Issue"
+    kicker="Historical issue"
     title={issue.label}
-    subtitle={`Archive issue with ${countLabel(issue.papers.length, "working paper")} and ${countLabel(issue.categories.length, "research field")}`}
+    subtitle={countLabel(issue.papers.length, "historical working-paper record")}
+    compact
   />
 
-  <section class="content-section">
-    <article class="issue-archive-card card">
-      <header class="issue-archive-head">
-        <h2>Issue Summary</h2>
-        <p class="issue-card-meta">
-          {countLabel(issue.papers.length, "paper")} • {countLabel(issue.categories.length, "category", "categories")}
-        </p>
-      </header>
+  <section class="historical-issue content-section" aria-labelledby="historical-issue-title">
+    <header class="historical-issue__summary">
+      <p class="publication-label">Metadata-only inventory</p>
+      <h2 id="historical-issue-title">Records from the {issue.label} Economics Hub issue</h2>
+      <p>
+        The original issue term and the current migration year are reported separately. Full text is not linked while provenance,
+        rights, final-version status, file availability, and accessibility checks remain open.
+      </p>
+      <dl class="archive-provenance-summary">
+        <div>
+          <dt>Original issue term</dt>
+          <dd>{issue.label}</dd>
+        </div>
+        <div>
+          <dt>Metadata migration</dt>
+          <dd>{ARCHIVE_MIGRATION_YEAR}</dd>
+        </div>
+        <div>
+          <dt>Public access status</dt>
+          <dd>Metadata only</dd>
+        </div>
+      </dl>
+    </header>
 
-      <div class="issue-topic-chips" aria-label={`Categories in ${issue.label}`}>
-        {issue.categories.map((category) => (
-          <span class="issue-topic-chip">{category}</span>
-        ))}
-      </div>
-
-      <div class="issue-card-actions">
-        <a class="btn btn-small" href={withBase("/issues/archive/")}>Back to archive</a>
-        {availablePapers.length > 0 ? (
-          <button
-            type="button"
-            class="btn btn-small btn-outline"
-            data-download-all
-            data-urls={availablePapers.map((paper) => withBase(paper.file)).join("|")}
-          >
-            Download PDFs
-          </button>
-        ) : null}
-      </div>
-
-      {availablePapers.length === 0 ? (
-        <p class="muted small">PDF files for this archive issue are not online yet</p>
-      ) : null}
-    </article>
-
-    <div class="archive-paper-list archive-paper-list--issue" aria-label="Papers in this archive issue">
+    <ol class="historical-paper-list" aria-label={`Historical working-paper records from ${issue.label}`}>
       {issue.papers.map((paper) => (
-        <article class="archive-paper-item card">
-          <h3>{paper.title}</h3>
-          <p class="muted small">Authors: {paper.authors || "Not listed"}</p>
-          <div class="issue-card-actions">
-            {paper.fileAvailable ? (
-              <a class="btn btn-small btn-primary" href={withBase(paper.file)}>Download PDF</a>
-            ) : (
-              <p class="muted small">PDF not currently available online</p>
-            )}
-          </div>
-        </article>
+        <li>
+          <article class="historical-paper-entry">
+            <p class="historical-paper-entry__status"><strong>Historical working paper</strong></p>
+            <h3>{paper.title}</h3>
+            <dl class="historical-paper-entry__metadata">
+              <div>
+                <dt>Author display</dt>
+                <dd>{paper.authors}</dd>
+              </div>
+              <div>
+                <dt>Original publication term</dt>
+                <dd>{issue.label}</dd>
+              </div>
+            </dl>
+            <p class="historical-paper-entry__provenance">
+              Originally published through the UNLV Economics Hub in {issue.label}. Metadata migrated to the current Series archive
+              in {ARCHIVE_MIGRATION_YEAR}; full-text migration remains under verification.
+            </p>
+          </article>
+        </li>
       ))}
-    </div>
+    </ol>
+
+    <p class="issue-back-link"><a href={withBase("/issues/archive/")}>← All historical issues</a></p>
   </section>
-
-  <script is:inline>
-    (() => {
-      const initArchiveDownload = () => {
-        const button = document.querySelector(".page-archive-issue [data-download-all]");
-        if (!(button instanceof HTMLButtonElement) || button.dataset.downloadInit === "true") return;
-        button.dataset.downloadInit = "true";
-
-        button.addEventListener("click", () => {
-          const urls = (button.dataset.urls || "").split("|").filter(Boolean);
-          urls.forEach((url, index) => {
-            window.setTimeout(() => {
-              const link = document.createElement("a");
-              link.href = url;
-              link.download = "";
-              link.rel = "noopener noreferrer";
-              document.body.append(link);
-              link.click();
-              link.remove();
-            }, index * 180);
-          });
-        });
-      };
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initArchiveDownload, { once: true });
-      } else {
-        initArchiveDownload();
-      }
-      document.addEventListener("astro:page-load", initArchiveDownload);
-    })();
-  </script>
 </BaseLayout>

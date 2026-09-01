@@ -1,291 +1,225 @@
 ---
+import "../styles/pages/home.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { HOMEPAGE_EDITABLE_CONTENT } from "../data/homepage-content";
-import { NEWS_EVENTS } from "../data/news";
 import { INSTITUTION } from "../config/institution";
-import { SERIES } from "../config/publication";
-import { cleanPaperTitle, getFieldGroups, getIssueGroups, paperHref } from "../lib/papers";
+import { OASIS, SERIES } from "../config/publication";
+import {
+  cleanPaperTitle,
+  formatPaperDate,
+  getAllPapers,
+  getFieldGroups,
+  getIssueGroups,
+  getIssueLabelForPaper,
+  paperHref,
+  repositoryIssueLabel,
+} from "../lib/papers";
+import { formatAuthorDisplay, parseSeriesIdentifier } from "../lib/publication";
 import { withBase } from "../lib/urls";
 
-const issues = await getIssueGroups();
+const papers = await getAllPapers();
 const fields = await getFieldGroups();
-const publishedIssues = issues.filter((issue) => issue.papers.length > 0);
-
+const issues = (await getIssueGroups()).filter((issue) => issue.papers.length > 0);
 const latestIssue = issues[0] ?? null;
-const latestIssueTitles = (latestIssue?.papers ?? []).slice(0, 3);
-const fieldCounts = new Map<string, number>();
-for (const group of fields) {
-  if (group.count === 0) continue;
-  fieldCounts.set(group.name, (fieldCounts.get(group.name) ?? 0) + group.count);
-}
-const fieldLinks = [...fieldCounts.entries()]
-  .map(([name, count]) => ({ name, count, slug: fields.find((field) => field.name === name)?.slug ?? "" }))
-  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
-  .slice(0, 10);
-const hasPublishedPapers = publishedIssues.length > 0;
+const compareRepositoryNewest = (a: (typeof papers)[number], b: (typeof papers)[number]) =>
+  b.data.repository_published_at.localeCompare(a.data.repository_published_at) ||
+  b.data.current_version.published_at.localeCompare(a.data.current_version.published_at) ||
+  parseSeriesIdentifier(b.data.series_number).sequence - parseSeriesIdentifier(a.data.series_number).sequence;
+const newPapers = [...papers].sort(compareRepositoryNewest).slice(0, 5);
+const latestIssuePapers = latestIssue
+  ? [...latestIssue.papers].sort(
+      (a, b) =>
+        b.data.repository_published_at.localeCompare(a.data.repository_published_at) ||
+        b.data.current_version.published_at.localeCompare(a.data.current_version.published_at) ||
+        parseSeriesIdentifier(a.data.series_number).sequence - parseSeriesIdentifier(b.data.series_number).sequence,
+    )
+  : [];
 
-const heroImage = withBase("/assets/images/lee-business-school.jpg");
-
-const toDisplayHref = (href: string | undefined, fallback: string): string => {
-  const candidate = (href ?? "").trim();
-  const target = candidate.length > 0 ? candidate : fallback;
-  if (!target) {
-    return "";
-  }
-  if (/^(https?:)?\/\//.test(target) || target.startsWith("mailto:") || target.startsWith("#")) {
-    return target;
-  }
-
-  const basePath = import.meta.env.BASE_URL || "/";
-  if (basePath !== "/" && target.startsWith(basePath)) {
-    return target;
-  }
-  return withBase(target);
-};
-
-const latestIssueEditable = HOMEPAGE_EDITABLE_CONTENT.latestIssue ?? {};
-const newsAndEventsEditable = HOMEPAGE_EDITABLE_CONTENT.newsAndEvents ?? {};
-
-const editableFeaturedItems = (latestIssueEditable.featuredItems ?? [])
-  .map((item) => {
-    const label = item.label?.trim() ?? "";
-    const href = item.href?.trim() ?? "";
-    return {
-      label,
-      href: href.length > 0 ? toDisplayHref(href, href) : "",
-    };
-  })
-  .filter((item) => item.label.length > 0);
-
-const featuredItems =
-  editableFeaturedItems.length > 0
-    ? editableFeaturedItems
-    : latestIssueTitles.map((paper) => ({
-        label: cleanPaperTitle(paper.data.title),
-        href: paperHref(paper),
-      }));
-
-const defaultLatestIssueHref = latestIssue ? `/issues/${latestIssue.slug}/` : "/issues/";
-const latestIssueFallbackTitle =
-  latestIssue && latestIssue.papers.length === 0 ? `Upcoming Issue, ${latestIssue.label}` : latestIssue?.label || "Latest Issue";
-const latestIssueTitle = latestIssueEditable.title?.trim() || latestIssueFallbackTitle;
-const latestIssueHref = toDisplayHref(latestIssueEditable.href, defaultLatestIssueHref);
-const latestIssueMeta =
-  latestIssueEditable.metaText?.trim() || (latestIssue && latestIssue.papers.length > 0 ? `${latestIssue.papers.length} papers` : "");
-const latestIssueEmptyStateText = latestIssueEditable.emptyStateText?.trim() || "Papers for this issue will be posted soon.";
-
-const latestIssuePrimaryCta = {
-  label: latestIssueEditable.primaryCta?.label?.trim() || "Browse Issue",
-  href: toDisplayHref(latestIssueEditable.primaryCta?.href, defaultLatestIssueHref),
-};
-
-const defaultSecondaryCtaHref = latestIssueTitles[0] ? paperHref(latestIssueTitles[0]) : "";
-const hasSecondaryCtaOverride = Boolean(
-  latestIssueEditable.secondaryCta?.label?.trim() || latestIssueEditable.secondaryCta?.href?.trim()
-);
-const latestIssueSecondaryCta = hasSecondaryCtaOverride
-  ? {
-      label: latestIssueEditable.secondaryCta?.label?.trim() || "Read Featured Paper",
-      href: toDisplayHref(latestIssueEditable.secondaryCta?.href, defaultSecondaryCtaHref || "/issues/"),
-    }
-  : defaultSecondaryCtaHref
-    ? { label: "Read Featured Paper", href: defaultSecondaryCtaHref }
-    : null;
-
-const hasLatestIssueOverride = Boolean(
-  latestIssueEditable.title?.trim() ||
-    latestIssueEditable.href?.trim() ||
-    latestIssueEditable.metaText?.trim() ||
-    latestIssueEditable.emptyStateText?.trim() ||
-    latestIssueEditable.primaryCta?.label?.trim() ||
-    latestIssueEditable.primaryCta?.href?.trim() ||
-    latestIssueEditable.secondaryCta?.label?.trim() ||
-    latestIssueEditable.secondaryCta?.href?.trim() ||
-    editableFeaturedItems.length > 0
-);
-
-const showLatestIssueCard = Boolean(latestIssue || hasLatestIssueOverride);
-
-const newsEyebrow = newsAndEventsEditable.eyebrow?.trim() || "Updates";
-const newsHeading = newsAndEventsEditable.title?.trim() || "News and Events";
-const editableNewsItems = (newsAndEventsEditable.items ?? [])
-  .map((item) => item.trim())
-  .filter((item) => item.length > 0)
-  .map((item) => ({
-    date: "Update",
-    title: item,
-    summary: "",
-    href: "",
-    linkLabel: "",
-  }));
-const newsItems = editableNewsItems.length > 0 ? editableNewsItems : NEWS_EVENTS;
-const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "Updates about the series will be posted here.";
+const latestIssueRecord = latestIssue?.papers[0] ?? null;
+const latestIssueRepositoryDates = latestIssue
+  ? [...new Set(latestIssue.papers.map((paper) => paper.data.repository_published_at))].sort()
+  : [];
+const latestIssueOnlineLabel =
+  latestIssueRepositoryDates.length === 1
+    ? `Added to OAsis ${formatPaperDate(latestIssueRepositoryDates[0])}`
+    : latestIssueRepositoryDates.length > 1
+      ? `Papers added to OAsis between ${formatPaperDate(latestIssueRepositoryDates[0])} and ${formatPaperDate(latestIssueRepositoryDates.at(-1)!)}`
+      : "";
 ---
 
-<BaseLayout title="UNLV Undergraduate Economics Working Paper Series" bodyClass="page-home">
-  <section
-    class="hero-banner home-hero home-hero--modern full-bleed"
-    style={`--hero-image: url('${heroImage}'); --hero-focus-x: 58%; --hero-focus-y: 16%; --hero-panel-top: clamp(48px, 8vh, 96px); --hero-panel-width: 760px;`}
-  >
-    <div class="hero-content home-hero-content">
-      <div class="hero-panel-shell">
-        <div class="hero-panel">
-          <p class="hero-kicker">{INSTITUTION.department.name}</p>
-          <h1>
-            <span class="hero-title-line">UNLV Undergraduate Economics</span>
-            <span class="hero-title-line">Working Paper Series</span>
-          </h1>
-          <p class="hero-subtitle">
-            <span class="hero-subtitle-line">Original economics-related research by UNLV undergraduates</span>
-            <span class="hero-subtitle-line">Editorially screened working papers organized by issue</span>
-          </p>
-          <div class="hero-actions">
-            <a class="btn btn-home-primary" href={withBase("/issues/")}>Browse Issues</a>
-            <a class="btn btn-home-secondary" href={withBase(hasPublishedPapers ? "/papers/" : "/issues/archive/")}>
-              {hasPublishedPapers ? "Search Papers" : "Browse Archive"}
-            </a>
-          </div>
-        </div>
-      </div>
+<BaseLayout
+  title="UNLV Undergraduate Economics Working Paper Series"
+  description="Original economics-related research by UNLV undergraduates, released in semester issues."
+  bodyClass="page-home scholar-home"
+>
+  <header class="scholar-home-hero">
+    <div class="scholar-home-hero__image" aria-hidden="true">
+      <img src={withBase("/assets/images/lee-business-school.jpg")} alt="" width="1600" height="900" fetchpriority="high" />
     </div>
+    <div class="scholar-home-shell scholar-home-hero__content">
+      <p class="scholar-home-department">{INSTITUTION.department.name}</p>
+      <h1><span>UNLV Undergraduate Economics</span> Working Paper Series</h1>
+      <p class="scholar-home-hero__lead">
+        Original economics-related research by UNLV undergraduates, released in semester issues.
+      </p>
+      <p class="scholar-home-hero__notice">
+        Preliminary working papers. Editorially screened, not peer reviewed, and subject to revision.
+      </p>
+      <nav class="scholar-home-hero__actions" aria-label="Series actions">
+        <a class="scholar-home-button scholar-home-button--primary" href={withBase("/papers/")}>Browse Working Papers</a>
+        <a class="scholar-home-button scholar-home-button--quiet" href={withBase("/for-authors/")}>For Student Authors</a>
+      </nav>
+      <p class="scholar-home-photo-credit">
+        Campus photograph: <a
+          href="https://www.unlv.edu/news/release/lee-business-school-maintains-accreditation-business-and-accounting-programs"
+          rel="external"
+        >UNLV News (Lee Business School)</a>
+      </p>
+    </div>
+  </header>
 
-    <p class="hero-credit">
-      Photo credit:
-      <a
-        href="https://www.unlv.edu/news/release/lee-business-school-maintains-accreditation-business-and-accounting-programs"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        UNLV News (Lee Business School)
-      </a>
-    </p>
+  <section class="scholar-home-search" aria-labelledby="home-search-heading">
+    <div class="scholar-home-shell">
+      <h2 id="home-search-heading">Find a working paper</h2>
+      <form action={withBase("/papers/")} method="get" role="search">
+        <label for="home-paper-search">Search by title, author, keyword, or topic</label>
+        <div class="scholar-home-search__controls">
+          <input
+            id="home-paper-search"
+            name="q"
+            type="search"
+            autocomplete="off"
+            placeholder="Title, author, keyword, or topic"
+          />
+          <button type="submit">Search Working Papers</button>
+        </div>
+      </form>
+      <noscript>
+        <p class="scholar-home-search__noscript">
+          Search filtering requires JavaScript. You can still <a href={withBase("/papers/")}>browse the complete working-paper list</a>.
+        </p>
+      </noscript>
+    </div>
   </section>
 
-  <section class="section home-section" aria-labelledby="latest-issue-title">
-    <div class="section-head home-section-head">
-      <div>
-        <p class="eyebrow">Latest Issue</p>
-        <h2 id="latest-issue-title">Latest Issue</h2>
-      </div>
-      <a class="link-inline" href={withBase("/issues/")}>View all issues</a>
-    </div>
-
-    {showLatestIssueCard ? (
-      <article class="card home-surface home-latest-card" data-motion="gsap">
-        <header class="home-latest-head">
-          <h3><a href={latestIssueHref}>{latestIssueTitle}</a></h3>
-          {latestIssueMeta ? <p class="home-issue-meta">{latestIssueMeta}</p> : null}
+  <div class="scholar-home-shell scholar-home-sections">
+    {latestIssue && latestIssueRecord ? (
+      <section class="scholar-home-section scholar-home-latest" aria-labelledby="latest-issue-heading">
+        <header class="scholar-home-section__header">
+          <div>
+            <h2 id="latest-issue-heading">Latest Issue</h2>
+            <p class="scholar-home-issue-name">{latestIssue.label}</p>
+          </div>
+          <dl class="scholar-home-issue-facts" aria-label={`${latestIssue.label} issue details`}>
+            <div>
+              <dt>Issue</dt>
+              <dd>{repositoryIssueLabel(latestIssueRecord)}</dd>
+            </div>
+            <div>
+              <dt>Papers</dt>
+              <dd>{latestIssue.papers.length}</dd>
+            </div>
+            {latestIssueOnlineLabel ? (
+              <div>
+                <dt>Repository date</dt>
+                <dd>{latestIssueOnlineLabel}</dd>
+              </div>
+            ) : null}
+          </dl>
         </header>
 
-        {featuredItems.length > 0 ? (
-          <ol class="home-featured-list">
-            {featuredItems.map((item) => (
-              <li>
-                {item.href ? <a href={item.href}>{item.label}</a> : item.label}
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p class="muted home-featured-empty">{latestIssueEmptyStateText}</p>
-        )}
-
-        <div class="card-actions">
-          {latestIssuePrimaryCta.label ? (
-            <a class="btn btn-home-primary" href={latestIssuePrimaryCta.href}>
-              {latestIssuePrimaryCta.label}
-            </a>
-          ) : null}
-          {latestIssueSecondaryCta?.label ? (
-            <a class="btn btn-home-secondary" href={latestIssueSecondaryCta.href}>
-              {latestIssueSecondaryCta.label}
-            </a>
-          ) : null}
-        </div>
-      </article>
-    ) : (
-      <article class="card home-surface" data-motion="gsap">
-          <p class="muted">No issues have been published yet</p>
-      </article>
-    )}
-  </section>
-
-  <section class="section home-section" aria-labelledby="news-events-title">
-    <div class="section-head home-section-head">
-      <div>
-        <p class="eyebrow">{newsEyebrow}</p>
-        <h2 id="news-events-title">{newsHeading}</h2>
-      </div>
-    </div>
-
-    <article class="home-surface home-news-surface" data-motion="gsap">
-      {newsItems.length > 0 ? (
-        <ol class="home-news-list">
-          {newsItems.map((item) => (
+        <ol class="scholar-home-paper-list scholar-home-paper-list--issue">
+          {latestIssuePapers.map((paper) => (
             <li>
-              <article class="home-news-item">
-                <p class="home-news-date">{item.date}</p>
-                <div class="home-news-copy">
-                  <h3>{item.title}</h3>
-                  {item.summary ? <p>{item.summary}</p> : null}
-                  {item.href && item.linkLabel ? (
-                    <a class="home-news-link" href={toDisplayHref(item.href, item.href)}>{item.linkLabel} →</a>
-                  ) : null}
-                </div>
-              </article>
+              <h3><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h3>
+              <p>{formatAuthorDisplay(paper.data.authors)}</p>
             </li>
           ))}
         </ol>
-      ) : (
-        <p class="muted">{newsEmptyStateText}</p>
-      )}
-    </article>
-  </section>
+        <p class="scholar-home-section__link">
+          <a href={withBase(`/issues/${latestIssue.slug}/`)}>View the complete {latestIssue.label} issue</a>
+        </p>
+      </section>
+    ) : null}
 
-  <section class="section home-section" aria-labelledby="browse-field-title">
-    <div class="section-head home-section-head">
-      <div>
-        <p class="eyebrow">Browse by field</p>
-        <h2 id="browse-field-title">Research Fields</h2>
-      </div>
-    </div>
-
-    <article class="card home-surface" data-motion="gsap">
-      {fieldLinks.length > 0 ? (
-        <ul class="home-category-chips" aria-label="Research fields represented in the Series">
-          {fieldLinks.map((field) => (
+    {newPapers.length > 0 ? (
+      <section class="scholar-home-section" aria-labelledby="new-papers-heading">
+        <header class="scholar-home-section__header scholar-home-section__header--simple">
+          <div>
+            <h2 id="new-papers-heading">New Working Papers</h2>
+            <p>Recently added records from the Series.</p>
+          </div>
+          <a href={withBase("/papers/")}>View all working papers</a>
+        </header>
+        <ol class="scholar-home-paper-list">
+          {newPapers.map((paper) => (
             <li>
-              <a class="home-category-chip" href={withBase(`/fields/${field.slug}/`)}>
-                {field.name}
+              <h3><a href={paperHref(paper)}>{cleanPaperTitle(paper.data.title)}</a></h3>
+              <p class="scholar-home-paper-list__authors">{formatAuthorDisplay(paper.data.authors)}</p>
+              <dl class="scholar-home-paper-list__meta">
+                <div>
+                  <dt>Research field</dt>
+                  <dd>{paper.data.field}</dd>
+                </div>
+                <div>
+                  <dt>Issue</dt>
+                  <dd>{getIssueLabelForPaper(paper)}</dd>
+                </div>
+                <div>
+                  <dt>OAsis online</dt>
+                  <dd><time datetime={paper.data.repository_published_at}>{formatPaperDate(paper.data.repository_published_at)}</time></dd>
+                </div>
+                {paper.data.doi ? (
+                  <div>
+                    <dt>DOI</dt>
+                    <dd><a href={`https://doi.org/${paper.data.doi}`} rel="external">{paper.data.doi}</a></dd>
+                  </div>
+                ) : null}
+              </dl>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ) : null}
+
+    {fields.length > 0 ? (
+      <section class="scholar-home-section" aria-labelledby="research-fields-heading">
+        <header class="scholar-home-section__header scholar-home-section__header--simple">
+          <div>
+            <h2 id="research-fields-heading">Research Fields</h2>
+            <p>Browse the fields represented in the published collection.</p>
+          </div>
+          <a href={withBase("/fields/")}>Browse research fields</a>
+        </header>
+        <ul class="scholar-home-field-list">
+          {fields.map((field) => (
+            <li>
+              <a href={withBase(`/fields/${field.slug}/`)}>
+                <span>{field.name}</span>
+                <span>{field.count} {field.count === 1 ? "paper" : "papers"}</span>
               </a>
             </li>
           ))}
         </ul>
-      ) : (
-        <>
-          <p class="muted">Research-field pages will appear as papers are added to the Series.</p>
-          <div class="card-actions">
-            <a class="btn btn-small btn-primary" href={withBase("/issues/archive/")}>Browse historical records</a>
-          </div>
-        </>
-      )}
-    </article>
-  </section>
+      </section>
+    ) : null}
 
-  <section class="section home-section" aria-labelledby="about-bullets-title">
-    <div class="section-head home-section-head">
+    <section class="scholar-home-section scholar-home-repository" aria-labelledby="oasis-heading">
       <div>
-        <p class="eyebrow">About</p>
-        <h2 id="about-bullets-title">What This Series Is</h2>
+        <h2 id="oasis-heading">Permanent Records in OAsis</h2>
+        <p>{OASIS.safeDescription}</p>
+        <p>{OASIS.relationship}</p>
       </div>
-      <a class="link-inline" href={withBase("/about/")}>About the Series</a>
-    </div>
+      <a class="scholar-home-button scholar-home-button--outline" href={OASIS.collectionUrl} rel="external">
+        Browse the OAsis collection
+      </a>
+    </section>
 
-    <article class="card home-surface" data-motion="gsap">
-      <ul class="home-about-bullets">
-        <li>{SERIES.description}</li>
-        <li>{SERIES.workingPaperNotice}</li>
-        <li>Each deposited paper links to its permanent OAsis item record and full text</li>
-      </ul>
-    </article>
-  </section>
+    <section class="scholar-home-section scholar-home-about" aria-labelledby="about-series-heading">
+      <div>
+        <h2 id="about-series-heading">About the Series</h2>
+        <p>{SERIES.scope}</p>
+      </div>
+      <a href={withBase("/about/")}>Learn about the Series</a>
+    </section>
+  </div>
 </BaseLayout>

@@ -1,16 +1,44 @@
 ---
-import { ClientRouter, fade } from "astro:transitions";
-import globalCss from "../styles/global.css?raw";
-import viewerReadinessCssUrl from "../styles/viewer-readiness.css?url";
-import { INSTITUTION } from "../config/institution";
-import { OASIS, PRIMARY_NAVIGATION, SERIES } from "../config/publication";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { SERIES } from "../config/publication";
 import { withBase } from "../lib/urls";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import "../styles/layout.css";
+import "../styles/components.css";
+import "../styles/pages/home.css";
+import "../styles/pages/papers.css";
+import "../styles/pages/issues.css";
+import "../styles/pages/fields.css";
+import "../styles/pages/policies.css";
+import "../styles/print.css";
+
+type OpenGraphType = "website" | "article";
+
+interface ScholarlyMeta {
+  title: string;
+  authors: string[];
+  publicationDate: string;
+  onlineDate?: string;
+  technicalReportInstitution: string;
+  technicalReportNumber: string;
+  doi?: string;
+  abstractUrl: string;
+  pdfUrl?: string;
+}
 
 interface Props {
   title: string;
   description?: string;
   bodyClass?: string;
   canonicalPath?: string;
+  ogType?: OpenGraphType;
+  ogImagePath?: string;
+  articlePublishedAt?: string;
+  articleModifiedAt?: string;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  scholarlyMeta?: ScholarlyMeta;
   robots?: string;
   redirectTo?: string;
 }
@@ -20,32 +48,30 @@ const {
   description = SERIES.scope,
   bodyClass = "",
   canonicalPath = Astro.url.pathname,
+  ogType = "website",
+  ogImagePath = "/assets/brand/og-image.png",
+  articlePublishedAt,
+  articleModifiedAt,
+  jsonLd,
+  scholarlyMeta,
   robots = "",
   redirectTo = "",
 } = Astro.props;
 
-const pathname = Astro.url.pathname;
 const siteUrl = Astro.site ?? new URL("https://econ-undergrad-wps.sites.unlv.edu");
 const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
-const currentYear = new Date().getFullYear();
-const navItems = PRIMARY_NAVIGATION.map((item) => ({ ...item, href: withBase(item.href) }));
-
-function normalize(path: string): string {
-  return path.endsWith("/") ? path : `${path}/`;
-}
-
-function isActive(href: string): boolean {
-  const current = normalize(pathname);
-  const target = normalize(href);
-  if (target === normalize(withBase("/"))) {
-    return current === target;
-  }
-  return current.startsWith(target);
-}
+const openGraphImage = new URL(withBase(ogImagePath), siteUrl).toString();
+const serializedJsonLd = jsonLd
+  ? JSON.stringify(jsonLd)
+      .replace(/</gu, "\\u003c")
+      .replace(/\u2028/gu, "\\u2028")
+      .replace(/\u2029/gu, "\\u2029")
+  : "";
+const citationDate = (value: string): string => value.replace(/-/gu, "/");
 ---
 
 <!doctype html>
-<html lang="en" transition:name="root" transition:animate="none">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -57,339 +83,131 @@ function isActive(href: string): boolean {
     <link rel="icon" href={withBase("/favicon.svg")} type="image/svg+xml" />
     <link rel="apple-touch-icon" href={withBase("/apple-touch-icon.png")} />
     <link rel="manifest" href={withBase("/site.webmanifest")} />
-    <meta name="theme-color" content="#b10202" />
+    <meta name="theme-color" content="#a30b15" />
 
     <meta property="og:site_name" content={SERIES.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={new URL(withBase("/assets/brand/og-image.png"), siteUrl).toString()} />
+    <meta property="og:image" content={openGraphImage} />
+    <meta property="og:image:alt" content={`${SERIES.name} cover image`} />
+    {ogType === "article" && articlePublishedAt ? (
+      <meta property="article:published_time" content={articlePublishedAt} />
+    ) : null}
+    {ogType === "article" && articleModifiedAt ? (
+      <meta property="article:modified_time" content={articleModifiedAt} />
+    ) : null}
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(withBase("/assets/brand/og-image.png"), siteUrl).toString()} />
-    <style is:inline set:html={globalCss}></style>
-    <link rel="stylesheet" href={viewerReadinessCssUrl} />
-    <ClientRouter />
+    <meta name="twitter:image" content={openGraphImage} />
+    <meta name="twitter:image:alt" content={`${SERIES.name} cover image`} />
+
+    {scholarlyMeta ? (
+      <>
+        <meta name="citation_title" content={scholarlyMeta.title} />
+        {scholarlyMeta.authors.map((author) => <meta name="citation_author" content={author} />)}
+        <meta name="citation_publication_date" content={citationDate(scholarlyMeta.publicationDate)} />
+        {scholarlyMeta.onlineDate ? (
+          <meta name="citation_online_date" content={citationDate(scholarlyMeta.onlineDate)} />
+        ) : null}
+        <meta name="citation_technical_report_institution" content={scholarlyMeta.technicalReportInstitution} />
+        <meta name="citation_technical_report_number" content={scholarlyMeta.technicalReportNumber} />
+        {scholarlyMeta.doi ? <meta name="citation_doi" content={scholarlyMeta.doi} /> : null}
+        <meta name="citation_abstract_html_url" content={scholarlyMeta.abstractUrl} />
+        {scholarlyMeta.pdfUrl ? <meta name="citation_pdf_url" content={scholarlyMeta.pdfUrl} /> : null}
+      </>
+    ) : null}
+
+    {serializedJsonLd ? (
+      <script type="application/ld+json" is:inline set:html={serializedJsonLd}></script>
+    ) : null}
+    <slot name="head" />
   </head>
   <body class={bodyClass || undefined}>
-    <a class="skip-link" href="#content">Skip to content</a>
+    <a class="skip-link" href="#content">Skip to main content</a>
+    <SiteHeader />
 
-    <header class="site-header modern-header">
-      <div class="site-shell site-topbar">
-        <div class="site-topbar__brand">
-          <a
-            class="site-title site-logo"
-            href={withBase("/")}
-            aria-label={SERIES.name}
-          >
-            <span class="site-logo__primary">UNLV</span>
-            <span class="site-logo__secondary">{INSTITUTION.department.name} · {SERIES.mastheadName}</span>
-          </a>
-          <button
-            class="site-nav-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="site-primary-nav"
-            data-nav-toggle
-          >
-            <span class="site-nav-toggle__label">Menu</span>
-            <span class="site-nav-toggle__icon" aria-hidden="true"></span>
-          </button>
-        </div>
-
-        <nav class="main-nav" id="site-primary-nav" data-nav-panel aria-label="Primary">
-          <ul>
-            {navItems.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  class={isActive(item.href) ? "is-active" : undefined}
-                  aria-current={isActive(item.href) ? "page" : undefined}
-                >{item.label}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-    </header>
-
-    <main id="content" class="page-body" transition:name="page-main" transition:animate={fade()}>
+    <main id="content" class="page-body" tabindex="-1">
       <div class="page-content">
         <slot />
       </div>
     </main>
 
-    <footer class="site-footer modern-footer">
-      <div class="site-shell footer-shell">
-        <div class="footer-main">
-          <section class="footer-brand">
-            <h2 class="footer-journal">{SERIES.name}</h2>
-            <p class="footer-description">{SERIES.scope}</p>
-          </section>
+    <SiteFooter />
 
-          <nav class="footer-nav" aria-label="Explore">
-            <h3 class="footer-heading">Explore</h3>
-            <div class="footer-links-grid">
-              <ul class="footer-links">
-                {PRIMARY_NAVIGATION.slice(0, 3).map((item) => (
-                  <li><a href={withBase(item.href)}>{item.label}</a></li>
-                ))}
-              </ul>
-
-              <ul class="footer-links">
-                {PRIMARY_NAVIGATION.slice(3).map((item) => (
-                  <li><a href={withBase(item.href)}>{item.label}</a></li>
-                ))}
-              </ul>
-            </div>
-          </nav>
-
-          <nav class="footer-nav" aria-label="Academic links">
-            <h3 class="footer-heading">Academic Links</h3>
-            <ul class="footer-links">
-              <li><a href={INSTITUTION.school.url} target="_blank" rel="noopener noreferrer">{INSTITUTION.school.name}</a></li>
-              <li><a href={INSTITUTION.department.url} target="_blank" rel="noopener noreferrer">{INSTITUTION.department.name}</a></li>
-              <li><a href="https://www.unlv.edu/our" target="_blank" rel="noopener noreferrer">Office of Undergraduate Research</a></li>
-              <li><a href={OASIS.collectionUrl} target="_blank" rel="noopener noreferrer">OAsis collection</a></li>
-              <li><a href={withBase("/contact/")}>Contact</a></li>
-            </ul>
-          </nav>
-        </div>
-
-        <div class="footer-utility">
-          <p class="footer-utility-text">
-            <span>&copy; <span data-current-year>{currentYear}</span> {SERIES.name}.</span>
-            <span class="footer-disclaimer">{SERIES.workingPaperNotice}</span>
-          </p>
-
-          <ul class="footer-utility-links">
-            <li><a href={withBase("/policies/privacy/")}>Privacy</a></li>
-            <li><a href={withBase("/policies/permissions/")}>Permissions</a></li>
-            <li><a href={withBase("/policies/takedown/")}>Takedown</a></li>
-          </ul>
-        </div>
-      </div>
-    </footer>
+    <p class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-copy-status></p>
 
     <script>
-      import { bootSiteMotion } from "../scripts/site-motion";
+      document.documentElement.classList.add("has-js");
 
-      bootSiteMotion();
-    </script>
+      const copyStatus = document.querySelector<HTMLElement>("[data-copy-status]");
+      const announceCopyStatus = (message: string) => {
+        if (!copyStatus) return;
+        copyStatus.textContent = "";
+        window.requestAnimationFrame(() => {
+          copyStatus.textContent = message;
+        });
+      };
 
-    <script is:inline>
-      (() => {
-        const setCurrentYear = () => {
-          const year = String(new Date().getFullYear());
-          document.querySelectorAll("[data-current-year]").forEach((node) => {
-            node.textContent = year;
-          });
-        };
+      document.querySelectorAll<HTMLButtonElement>("[data-copy-target]").forEach((button) => {
+        if (button.dataset.copyBound === "true") return;
+        button.dataset.copyBound = "true";
+        const initialText = button.textContent?.trim() || "Copy";
+        const initialLabel = button.getAttribute("aria-label");
 
-        const collectRevealTargets = () => {
-          const selectors = [
-            "[data-reveal]",
-            "main .content-section",
-            "main .card",
-            "main .contact-card",
-            "main .ga-card",
-            "main .our-surface",
-          ];
-
-          const unique = new Set();
-          selectors.forEach((selector) => {
-            document.querySelectorAll(selector).forEach((node) => unique.add(node));
-          });
-
-          return Array.from(unique).filter((node) => {
-            if (!(node instanceof Element)) {
-              return false;
-            }
-
-            return !node.matches('[data-motion="gsap"]');
-          });
-        };
-
-        const initReveal = () => {
-          const nodes = collectRevealTargets();
-          if (nodes.length === 0) {
+        button.addEventListener("click", async () => {
+          const selector = button.dataset.copyTarget;
+          if (!selector) {
+            announceCopyStatus("Nothing was available to copy.");
             return;
           }
 
-          const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-          if (reducedMotion || !("IntersectionObserver" in window)) {
-            nodes.forEach((node) => node.classList.add("is-revealed"));
+          let target: Element | null = null;
+          try {
+            target = document.querySelector(selector);
+          } catch {
+            announceCopyStatus("The citation could not be copied. Select the citation text and copy it manually.");
+            return;
+          }
+          const text = target?.textContent?.trim();
+          if (!text) {
+            announceCopyStatus("Nothing was available to copy.");
             return;
           }
 
-          const observer = new IntersectionObserver(
-            (entries, io) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  entry.target.classList.add("is-revealed");
-                  io.unobserve(entry.target);
-                }
-              });
-            },
-            { threshold: 0.12 }
-          );
-
-          nodes.forEach((node, index) => {
-            if (!node.hasAttribute("data-reveal")) {
-              node.setAttribute("data-reveal", "auto");
-            }
-
-            if (!node.hasAttribute("data-reveal-delay")) {
-              node.setAttribute("data-reveal-delay", String(index % 3));
-            }
-
-            const bounds = node.getBoundingClientRect();
-            if (bounds.top <= window.innerHeight * 0.92) {
-              node.classList.add("is-revealed");
-            } else {
-              observer.observe(node);
-            }
-          });
-        };
-
-        const initCopyButtons = () => {
-          const buttons = Array.from(document.querySelectorAll("[data-copy-target]"));
-          if (buttons.length === 0) {
-            return;
-          }
-
-          buttons.forEach((button) => {
-            if (button.dataset.copyInit === "true") {
-              return;
-            }
-            button.dataset.copyInit = "true";
-
-            const originalLabel = (button.textContent || "Copy").trim();
-
-            button.addEventListener("click", async () => {
-              const selector = button.dataset.copyTarget || "";
-              const target = selector ? document.querySelector(selector) : null;
-              const text = (target?.textContent || "").trim();
-              if (!text) {
-                return;
-              }
-
-              const showCopied = () => {
-                button.classList.add("is-copied");
-                button.textContent = "Copied!";
-                window.setTimeout(() => {
-                  button.classList.remove("is-copied");
-                  button.textContent = originalLabel;
-                }, 1600);
-              };
-
-              try {
-                await navigator.clipboard.writeText(text);
-                showCopied();
-                return;
-              } catch (_) {
-                const ta = document.createElement("textarea");
-                ta.value = text;
-                ta.setAttribute("readonly", "");
-                ta.style.position = "fixed";
-                ta.style.left = "-9999px";
-                document.body.appendChild(ta);
-                ta.select();
-                try {
-                  document.execCommand("copy");
-                } catch (e) {
-                  // noop
-                }
-                ta.remove();
-                showCopied();
-              }
-            });
-          });
-        };
-
-        const initNavMenu = () => {
-          const toggle = document.querySelector("[data-nav-toggle]");
-          const panel = document.querySelector("[data-nav-panel]");
-          if (!(toggle instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) {
-            return;
-          }
-
-          const setOpen = (open) => {
-            toggle.setAttribute("aria-expanded", String(open));
-            panel.classList.toggle("is-open", open);
-            const label = toggle.querySelector(".site-nav-toggle__label");
-            if (label) {
-              label.textContent = open ? "Close" : "Menu";
-            }
+          const showSuccess = () => {
+            button.textContent = "Copied";
+            button.setAttribute("aria-label", "Citation copied to clipboard");
+            button.classList.add("is-copied");
+            announceCopyStatus("Citation copied to the clipboard.");
+            window.setTimeout(() => {
+              button.textContent = initialText;
+              button.classList.remove("is-copied");
+              if (initialLabel) button.setAttribute("aria-label", initialLabel);
+              else button.removeAttribute("aria-label");
+            }, 1800);
           };
 
-          if (toggle.dataset.navInit === "true") {
-            setOpen(false);
-            return;
+          try {
+            await navigator.clipboard.writeText(text);
+            showSuccess();
+          } catch {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.readOnly = true;
+            textarea.className = "copy-fallback";
+            document.body.append(textarea);
+            textarea.select();
+            const copied = document.execCommand("copy");
+            textarea.remove();
+            if (copied) showSuccess();
+            else announceCopyStatus("The citation could not be copied. Select the citation text and copy it manually.");
           }
-
-          toggle.dataset.navInit = "true";
-          setOpen(false);
-
-          toggle.addEventListener("click", () => {
-            const isOpen = toggle.getAttribute("aria-expanded") === "true";
-            setOpen(!isOpen);
-            if (!isOpen) {
-              // Safari does not consistently focus buttons after a pointer click.
-              // Keeping focus in the header lets Escape close the disclosed menu.
-              toggle.focus({ preventScroll: true });
-            }
-          });
-
-          const header = toggle.closest(".site-header");
-          header?.addEventListener("keydown", (event) => {
-            if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
-              setOpen(false);
-              toggle.focus();
-            }
-          });
-
-          panel.querySelectorAll("a").forEach((link) => {
-            link.addEventListener("click", () => {
-              if (window.matchMedia("(max-width: 1180px)").matches) {
-                setOpen(false);
-              }
-            });
-          });
-
-          const media = window.matchMedia("(max-width: 1180px)");
-          const handleViewportChange = (event) => {
-            if (!event.matches) {
-              setOpen(false);
-            }
-          };
-
-          if (typeof media.addEventListener === "function") {
-            media.addEventListener("change", handleViewportChange);
-          } else if (typeof media.addListener === "function") {
-            media.addListener(handleViewportChange);
-          }
-        };
-
-        const runEnhancements = () => {
-          document.documentElement.classList.add("motion-ready");
-          setCurrentYear();
-          initReveal();
-          initCopyButtons();
-          initNavMenu();
-        };
-
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", runEnhancements, { once: true });
-        } else {
-          runEnhancements();
-        }
-
-        document.addEventListener("astro:page-load", runEnhancements);
-      })();
+        });
+      });
     </script>
   </body>
 </html>

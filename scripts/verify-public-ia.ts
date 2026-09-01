@@ -173,11 +173,6 @@ for (const contract of redirectContracts) {
 
 try {
   const homeHtml = read("dist/index.html");
-  const primaryNav = homeHtml.match(/<nav class="main-nav"[\s\S]*?<\/nav>/i)?.[0] ?? "";
-  const navPairs = [...primaryNav.matchAll(/<a\s+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)].map((match) => [
-    match[1],
-    visibleText(match[2]),
-  ]);
   const expected = [
     ["/", "Home"],
     ["/papers/", "Working Papers"],
@@ -186,8 +181,25 @@ try {
     ["/for-authors/", "For Student Authors"],
     ["/about/", "About"],
   ];
-  if (JSON.stringify(navPairs) !== JSON.stringify(expected)) {
-    failures.push(`Primary navigation mismatch: ${JSON.stringify(navPairs)}.`);
+
+  const primaryNavigations = [
+    ...homeHtml.matchAll(
+      /<nav class="[^"]*\bsite-nav\b[^"]*" aria-label="Primary navigation">([\s\S]*?)<\/nav>/gi,
+    ),
+  ];
+
+  if (primaryNavigations.length !== 2) {
+    failures.push(`Expected responsive desktop and mobile primary navigations; found ${primaryNavigations.length}.`);
+  }
+
+  for (const [index, navigation] of primaryNavigations.entries()) {
+    const navPairs = [...navigation[1].matchAll(/<a\s+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)].map((match) => [
+      match[1],
+      visibleText(match[2]),
+    ]);
+    if (JSON.stringify(navPairs) !== JSON.stringify(expected)) {
+      failures.push(`Primary navigation ${index + 1} mismatch: ${JSON.stringify(navPairs)}.`);
+    }
   }
 } catch (error) {
   failures.push(error instanceof Error ? error.message : String(error));

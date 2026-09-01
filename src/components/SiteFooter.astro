@@ -1,0 +1,62 @@
+---
+import { INSTITUTION } from "../config/institution";
+import { OASIS, SERIES } from "../config/publication";
+import { withBase } from "../lib/urls";
+
+const currentYear = new Date().getFullYear();
+
+const seriesLinks = [
+  { href: "/papers/", label: "Working Papers" },
+  { href: "/issues/", label: "Issues" },
+  { href: "/fields/", label: "Research Fields" },
+  { href: "/for-authors/", label: "For Student Authors" },
+  { href: "/about/", label: "About the Series" },
+  { href: "/editorial-board/", label: "Editorial Board" },
+  { href: "/history/", label: "History and Acknowledgments" },
+  { href: "/policies/", label: "Policies" },
+] as const;
+---
+
+<footer class="site-footer">
+  <div class="site-shell site-footer__grid">
+    <section class="site-footer__identity" aria-labelledby="footer-series-name">
+      <h2 id="footer-series-name">{SERIES.name}</h2>
+      <p>{SERIES.description}</p>
+      <p class="site-footer__notice">{SERIES.workingPaperNotice}</p>
+    </section>
+
+    <nav class="site-footer__nav" aria-label="Help and access">
+      <h3>Help and access</h3>
+      <ul>
+        <li><a href={withBase("/contact/")}>Contact</a></li>
+        <li><a href={withBase("/policies/accessibility/")}>Accessibility</a></li>
+        <li><a href={withBase("/policies/privacy/")}>Privacy and records</a></li>
+        <li><a href={withBase("/policies/permissions/")}>Rights and permissions</a></li>
+        <li><a href={OASIS.collectionUrl}>OAsis collection</a></li>
+      </ul>
+    </nav>
+
+    <nav class="site-footer__nav" aria-label="Series">
+      <h3>Series</h3>
+      <ul>
+        {seriesLinks.map((item) => (
+          <li><a href={withBase(item.href)}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <nav class="site-footer__nav" aria-label="Institutional links">
+      <h3>Institutional home</h3>
+      <ul>
+        <li><a href={INSTITUTION.department.url}>{INSTITUTION.department.name}</a></li>
+        <li><a href={INSTITUTION.school.url}>{INSTITUTION.school.name}</a></li>
+        <li><a href={INSTITUTION.university.url}>{INSTITUTION.university.name}</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="site-shell site-footer__utility">
+    <p>&copy; {currentYear} {SERIES.name}</p>
+    <p>OAsis is a service of UNLV University Libraries.</p>
+  </div>
+</footer>
