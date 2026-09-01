@@ -1,7 +1,7 @@
 ---
 import AboutNavigation from "../../components/AboutNavigation.astro";
-import EditorialLinkGroups from "../../components/EditorialLinkGroups.astro";
 import PageBanner from "../../components/PageBanner.astro";
+import ProfileLinks from "../../components/ProfileLinks.astro";
 import { EDITORIAL_BOARD, type EditorialMember } from "../../config/editorial";
 import { SERIES } from "../../config/publication";
 import { PUBLIC_PROFILES } from "../../data/public-profiles";
@@ -49,7 +49,7 @@ const { profile, member } = Astro.props as { profile: PublicProfile; member: Edi
         <img
           class="profile-thumb"
           src={withBase(profile.headshot)}
-          alt={`Portrait of ${member.name}`}
+          alt=""
           width="128"
           height="128"
           loading="lazy"
@@ -57,18 +57,20 @@ const { profile, member } = Astro.props as { profile: PublicProfile; member: Edi
       ) : null
     }
 
-    <article class="profile-bio">
-      <section aria-labelledby="series-role-title">
-        <h2 id="series-role-title">Role in the Series</h2>
-        <p>{member.description}</p>
-      </section>
-
-      <section aria-labelledby="professional-biography-title">
-        <h2 id="professional-biography-title">Professional biography</h2>
+    <article class="profile-bio" aria-label={`Profile for ${member.name}`}>
+      <div class="profile-overview">
+        <p class="profile-series-role">{member.description}</p>
         {(profile.profileBio ?? [profile.summary]).map((paragraph) => <p>{paragraph}</p>)}
-      </section>
+      </div>
 
-      <EditorialLinkGroups links={profile.links} contactEmail={SERIES.contactEmail} />
+      <div class="profile-actions">
+        <ProfileLinks
+          links={profile.links}
+          ariaLabel={`External profiles for ${member.name}`}
+          ownerName={member.name}
+        />
+        <a class="profile-contact-link" href={`mailto:${SERIES.contactEmail}`}>Contact the Series</a>
+      </div>
     </article>
 
     <p class="profile-back-link">

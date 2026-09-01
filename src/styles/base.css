@@ -5,12 +5,13 @@
 }
 
 html {
-  min-inline-size: 20rem;
+  min-inline-size: 320px;
   scroll-padding-block-start: var(--header-offset);
   text-size-adjust: 100%;
 }
 
 body {
+  display: flex;
   min-block-size: 100vh;
   margin: 0;
   background: var(--color-canvas);
@@ -18,6 +19,7 @@ body {
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-body);
+  flex-direction: column;
   overflow-wrap: break-word;
 }
 
@@ -236,12 +238,12 @@ details > summary {
   list-style: none;
 }
 
-details > summary::-webkit-details-marker {
-  display: none;
+details > summary::marker {
+  content: "";
 }
 
-[id] {
-  scroll-margin-block-start: var(--header-offset);
+details > summary::-webkit-details-marker {
+  display: none;
 }
 
 [hidden] {

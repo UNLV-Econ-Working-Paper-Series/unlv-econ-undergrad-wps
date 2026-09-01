@@ -28,16 +28,15 @@ const { assistant, member } = Astro.props as {
   title={`${member.name} | Junior Editors | UNLV Undergraduate Economics Working Paper Series`}
   bodyClass="section-about page-profile"
 >
-  <PageBanner title={member.name} lead={`${member.publicTitle} · Non-voting`} />
+  <PageBanner title={member.name} lead={member.publicTitle} />
 
   <section class="content-section">
     <AboutNavigation currentHref="/editorial-board/" />
   </section>
 
   <section class="content-section profile-shell">
-    <article class="profile-bio">
-      <h2>Role in the Series</h2>
-      <p>{member.description}</p>
+    <article class="profile-bio" aria-label={`Series profile for ${member.name}`}>
+      <p class="profile-series-role">{member.description}</p>
       <p>
         The public record currently includes only the name, appointment term ({assistant.data.term}), and
         Series role. A biography, photograph, personal contact information, and external profile links are not

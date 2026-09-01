@@ -1,10 +1,12 @@
 ---
+import ChevronIcon from "./ChevronIcon.astro";
 import { INSTITUTION } from "../config/institution";
-import { PRIMARY_NAVIGATION, SERIES } from "../config/publication";
+import { ABOUT_NAVIGATION, PRIMARY_NAVIGATION, SERIES } from "../config/publication";
 import { withBase } from "../lib/urls";
 
 const pathname = Astro.url.pathname;
 const navItems = PRIMARY_NAVIGATION.map((item) => ({ ...item, href: withBase(item.href) }));
+const aboutSectionPaths = ABOUT_NAVIGATION.map((item) => normalizePath(withBase(item.href)));
 
 function normalizePath(path: string): string {
   if (path === "") return "/";
@@ -14,6 +16,12 @@ function normalizePath(path: string): string {
 function isActive(href: string): boolean {
   const current = normalizePath(pathname);
   const target = normalizePath(href);
+  const aboutTarget = normalizePath(withBase("/about/"));
+
+  if (target === aboutTarget) {
+    return aboutSectionPaths.some((path) => current.startsWith(path));
+  }
+
   return target === normalizePath(withBase("/")) ? current === target : current.startsWith(target);
 }
 ---
@@ -21,7 +29,10 @@ function isActive(href: string): boolean {
 <header class="site-header">
   <div class="site-shell site-header__inner">
     <a class="site-masthead" href={withBase("/")} aria-label={`${SERIES.name} home`}>
-      <span class="site-masthead__series">{SERIES.name}</span>
+      <span class="site-masthead__series site-masthead__series--full">{SERIES.name}</span>
+      <span class="site-masthead__series site-masthead__series--condensed" aria-hidden="true">
+        {INSTITUTION.university.shortName} Papers
+      </span>
       <span class="site-masthead__home">
         {INSTITUTION.department.name} · {INSTITUTION.school.name}
       </span>
@@ -48,7 +59,7 @@ function isActive(href: string): boolean {
     <details class="site-nav-disclosure" data-site-nav>
       <summary>
         <span>Menu</span>
-        <span class="site-nav-disclosure__icon" aria-hidden="true"></span>
+        <ChevronIcon class="site-nav-disclosure__icon" />
       </summary>
 
       <nav class="site-nav site-nav--mobile" aria-label="Primary navigation">
@@ -73,7 +84,98 @@ function isActive(href: string): boolean {
 </header>
 
 <script>
-  const desktopNavigation = window.matchMedia("(min-width: 68rem)");
+  const desktopNavigation = window.matchMedia("(min-width: 80rem)");
+  const siteHeader = document.querySelector<HTMLElement>(".site-header");
+  const desktopSiteNavigation = siteHeader?.querySelector<HTMLElement>(".site-nav--desktop");
+  const disclosure = siteHeader?.querySelector<HTMLDetailsElement>("[data-site-nav]");
+  let navigationLayoutFrame = 0;
+
+  const disclosureIsPrimaryNavigation = () =>
+    !desktopNavigation.matches || siteHeader?.hasAttribute("data-compact-navigation") === true;
+
+  const maximumUsableHeaderHeight = () => Math.min(224, window.innerHeight * 0.32);
+
+  const syncMastheadDensity = () => {
+    if (!siteHeader) return;
+
+    // Keep the complete publication name at ordinary text sizes. Only switch
+    // to the compact visual label when reflow would make the collapsed sticky
+    // header consume an unreasonable share of the viewport. The link's full
+    // accessible name remains available through its aria-label.
+    siteHeader.removeAttribute("data-condensed-masthead");
+    siteHeader.removeAttribute("data-static-header");
+    const shouldCondense = siteHeader.getBoundingClientRect().height > maximumUsableHeaderHeight();
+    siteHeader.toggleAttribute("data-condensed-masthead", shouldCondense);
+
+    // At 200% text in a short landscape viewport even the condensed controls
+    // can exceed the sticky-height guard. Keep every control full sized, but
+    // let that rare over-limit header scroll away instead of obscuring content.
+    siteHeader.toggleAttribute(
+      "data-static-header",
+      shouldCondense && siteHeader.getBoundingClientRect().height > maximumUsableHeaderHeight(),
+    );
+  };
+
+  const syncHeaderOffset = () => {
+    if (!siteHeader) return;
+
+    if (disclosure?.open && disclosureIsPrimaryNavigation()) return;
+
+    if (siteHeader.hasAttribute("data-static-header")) {
+      document.documentElement.style.setProperty("--header-offset", "0px");
+      return;
+    }
+
+    document.documentElement.style.setProperty(
+      "--header-offset",
+      `${Math.ceil(siteHeader.getBoundingClientRect().height)}px`,
+    );
+  };
+
+  const syncNavigationLayout = () => {
+    if (!siteHeader || !desktopSiteNavigation) return;
+
+    if (!desktopNavigation.matches) {
+      siteHeader.removeAttribute("data-compact-navigation");
+      syncMastheadDensity();
+      syncHeaderOffset();
+      return;
+    }
+
+    // Measure the normal desktop navigation even when a prior measurement selected
+    // the disclosure. Keeping the disclosure for a wrapped desktop row prevents
+    // enlarged text from turning the sticky header into a viewport obstruction.
+    siteHeader.removeAttribute("data-compact-navigation");
+
+    const navigationRows = new Set(
+      Array.from(desktopSiteNavigation.querySelectorAll<HTMLElement>("li"), (item) =>
+        Math.round(item.getBoundingClientRect().top),
+      ),
+    ).size;
+    const expandedHeaderHeight = siteHeader.getBoundingClientRect().height;
+    const useCompactNavigation = navigationRows > 1 || expandedHeaderHeight > maximumUsableHeaderHeight();
+
+    siteHeader.toggleAttribute("data-compact-navigation", useCompactNavigation);
+    if (!useCompactNavigation && disclosure?.open) disclosure.open = false;
+    syncMastheadDensity();
+    syncHeaderOffset();
+  };
+
+  const scheduleNavigationLayoutSync = () => {
+    cancelAnimationFrame(navigationLayoutFrame);
+    navigationLayoutFrame = requestAnimationFrame(syncNavigationLayout);
+  };
+
+  if (siteHeader && siteHeader.dataset.headerOffsetBound !== "true") {
+    siteHeader.dataset.headerOffsetBound = "true";
+    syncNavigationLayout();
+    new ResizeObserver(() => {
+      if (!disclosure?.open || !disclosureIsPrimaryNavigation()) {
+        scheduleNavigationLayoutSync();
+      }
+    }).observe(siteHeader);
+    window.addEventListener("resize", scheduleNavigationLayoutSync, { passive: true });
+  }
 
   document.querySelectorAll<HTMLDetailsElement>("[data-site-nav]").forEach((disclosure) => {
     if (disclosure.dataset.siteNavBound === "true") return;
@@ -88,14 +190,19 @@ function isActive(href: string): boolean {
       }
     });
 
+    disclosure.addEventListener("toggle", () => {
+      if (!disclosure.open) scheduleNavigationLayoutSync();
+    });
+
     disclosure.querySelectorAll<HTMLAnchorElement>("nav a").forEach((link) => {
       link.addEventListener("click", () => {
-        if (!desktopNavigation.matches) disclosure.open = false;
+        if (disclosureIsPrimaryNavigation()) disclosure.open = false;
       });
     });
 
     const closeAtDesktop = (event: MediaQueryListEvent) => {
       if (event.matches) disclosure.open = false;
+      scheduleNavigationLayoutSync();
     };
     desktopNavigation.addEventListener("change", closeAtDesktop);
   });

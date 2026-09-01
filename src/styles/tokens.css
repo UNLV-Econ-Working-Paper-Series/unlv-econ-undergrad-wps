@@ -51,11 +51,17 @@
   --shell-max: 76rem;
   --reading-max: 74ch;
   --gutter: clamp(1rem, 3vw, 2rem);
-  --header-offset: 7.25rem;
+  --header-offset: 5.5rem;
 
+  /* Restrained motion for a reading-first publication interface. */
+  --duration-instant: 90ms;
   --duration-fast: 140ms;
   --duration-base: 220ms;
+  --duration-reveal: 300ms;
+  --duration-stagger: 45ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-reveal-distance: 0.5rem;
 
   /* Compatibility aliases for existing components during the page migration. */
   --accent: var(--color-brand);

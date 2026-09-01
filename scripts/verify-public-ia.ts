@@ -45,9 +45,8 @@ const pageContracts: PageContract[] = [
       "Eric Chiang",
       "Junior Editors",
       "Brandon Penticoff",
-      "Non-voting",
     ],
-    absent: ["Editorial Lead", "Co-Editor", "Graduate Assistants"],
+    absent: ["Editorial Lead", "Co-Editor", "Graduate Assistants", "Non-voting"],
   },
   {
     path: "dist/history/index.html",

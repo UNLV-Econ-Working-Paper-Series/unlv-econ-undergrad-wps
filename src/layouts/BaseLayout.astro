@@ -119,6 +119,9 @@ const serializedJsonLd = jsonLd ? serializeJsonLd(jsonLd) : "";
     <p class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-copy-status></p>
 
     <script>
+      import { bootSiteMotion } from "../scripts/site-motion";
+
+      bootSiteMotion();
       document.documentElement.classList.add("has-js");
 
       const copyStatus = document.querySelector<HTMLElement>("[data-copy-status]");

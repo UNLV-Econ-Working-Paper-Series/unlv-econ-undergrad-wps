@@ -1,24 +1,34 @@
 ---
 import type { PublicProfileLink } from "../data/public-profiles.types";
 
-const { links = [], className } = Astro.props as {
+const {
+  links = [],
+  className,
+  ariaLabel = "Profile links",
+  ownerName,
+} = Astro.props as {
   links?: PublicProfileLink[];
   className?: string;
+  ariaLabel?: string;
+  ownerName?: string;
 };
 
 const linkLabels: Record<PublicProfileLink["type"], string> = {
   website: "Website",
-  linkedin: "LinkedIn",
-  scholar: "Google Scholar",
-  researchgate: "ResearchGate",
+  linkedin: "LinkedIn profile",
+  scholar: "Google Scholar profile",
+  researchgate: "ResearchGate profile",
 };
 ---
 
 {
   links.length > 0 ? (
-    <ul class:list={["profile-links", className]} aria-label="Profile links">
+    <ul class:list={["profile-links", className]} aria-label={ariaLabel}>
       {links.map((link) => {
         const label = link.label ?? linkLabels[link.type];
+        const accessibleLabel = ownerName
+          ? `${label} for ${ownerName} (opens in a new tab)`
+          : `${label} (opens in a new tab)`;
         return (
           <li>
             <a
@@ -27,7 +37,7 @@ const linkLabels: Record<PublicProfileLink["type"], string> = {
               href={link.href}
               target="_blank"
               rel="noreferrer noopener"
-              aria-label={label}
+              aria-label={accessibleLabel}
               title={label}
             >
               {link.type === "website" ? (

@@ -1,5 +1,6 @@
 ---
 import "../../styles/pages/papers.css";
+import ChevronIcon from "../../components/ChevronIcon.astro";
 import { OASIS_MIRROR_ACTIVE } from "../../config/repositoryStatus";
 import { OASIS } from "../../config/publication";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -315,18 +316,24 @@ const disclosures = [
 
       <aside class="paper-record-secondary" aria-label="Citation and repository information">
         <details class="paper-record-details paper-record-citation">
-          <summary>Cite this paper</summary>
+          <summary>
+            <span>Cite this paper</span>
+            <ChevronIcon class="paper-record-details__icon" />
+          </summary>
           <div class="paper-record-details__body">
             <label class="js-only" for="paper-citation-style">Citation style</label>
-            <select class="js-only" id="paper-citation-style" data-citation-selector>
-              {
-                citations.map((citation) => (
-                  <option value={citation.id} data-citation={citation.citation}>
-                    {citation.label}
-                  </option>
-                ))
-              }
-            </select>
+            <span class="select-control select-control--js-only">
+              <select id="paper-citation-style" data-citation-selector>
+                {
+                  citations.map((citation) => (
+                    <option value={citation.id} data-citation={citation.citation}>
+                      {citation.label}
+                    </option>
+                  ))
+                }
+              </select>
+              <ChevronIcon class="select-control__icon" />
+            </span>
             <p id="paper-citation-output" class="paper-record-citation-output" aria-live="polite">
               {defaultCitation.citation}
             </p>
@@ -364,7 +371,10 @@ const disclosures = [
         {
           disclosures.length > 0 || paper.data.license_url ? (
             <details class="paper-record-details">
-              <summary>Rights and disclosures</summary>
+              <summary>
+                <span>Rights and disclosures</span>
+                <ChevronIcon class="paper-record-details__icon" />
+              </summary>
               <div class="paper-record-details__body">
                 <dl>
                   {disclosures.map((entry) => (
@@ -392,7 +402,10 @@ const disclosures = [
         {
           paper.data.historical_provenance ? (
             <details class="paper-record-details">
-              <summary>Historical provenance</summary>
+              <summary>
+                <span>Historical provenance</span>
+                <ChevronIcon class="paper-record-details__icon" />
+              </summary>
               <div class="paper-record-details__body">
                 <dl>
                   <div>

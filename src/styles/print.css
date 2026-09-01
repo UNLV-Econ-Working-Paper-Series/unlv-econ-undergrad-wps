@@ -69,6 +69,12 @@
     max-inline-size: none;
   }
 
+  .page-banner :where(h1, .page-banner__kicker, .page-banner__subtitle, .page-banner__note),
+  .page-banner .page-banner__supplement,
+  .page-banner .page-banner__supplement a {
+    color: #000000 !important;
+  }
+
   .page-with-toc,
   .paper-detail-layout,
   .profile-shell {

@@ -33,12 +33,10 @@
 
 .wps-catalog-page .page-content > .wps-catalog-shell,
 .paper-record-page .page-content > .paper-record-shell {
-  width: min(100%, 74rem);
+  width: min(calc(100% - (2 * var(--gutter))), var(--shell-max));
   max-width: none;
   margin-right: auto;
   margin-left: auto;
-  padding-right: clamp(1rem, 4vw, 2rem);
-  padding-left: clamp(1rem, 4vw, 2rem);
 }
 
 .wps-catalog-page :where(h1, h2, h3, h4),
@@ -55,27 +53,6 @@
   box-shadow: none !important;
 }
 
-.wps-catalog-header {
-  padding-top: clamp(2.5rem, 6vw, 5rem);
-  padding-bottom: clamp(2rem, 5vw, 3.5rem);
-  border-bottom: 1px solid var(--wps-rule-dark);
-}
-
-.wps-catalog-header h1 {
-  max-width: 52rem;
-  margin: 0;
-  font-size: clamp(2.35rem, 6vw, 3.5rem);
-  line-height: 1.02;
-}
-
-.wps-catalog-header p {
-  max-width: 48rem;
-  margin: 1rem 0 0;
-  color: var(--wps-muted);
-  font-size: 1.02rem;
-}
-
-.wps-catalog-header a,
 .wps-paper-entry a,
 .paper-record-page .page-body a {
   color: var(--wps-red);
@@ -83,7 +60,6 @@
   text-underline-offset: 0.2em;
 }
 
-.wps-catalog-header a:hover,
 .wps-paper-entry a:hover,
 .paper-record-page .page-body a:hover {
   color: var(--wps-red-dark);
@@ -105,7 +81,7 @@
 
 .wps-catalog-heading h2 {
   margin: 0;
-  font-size: clamp(1.65rem, 4vw, 2.5rem);
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
 }
 
 .wps-catalog-heading p {
@@ -116,32 +92,54 @@
 
 .wps-catalog-filters {
   display: grid;
-  grid-template-columns: minmax(15rem, 1.65fr) repeat(3, minmax(9rem, 1fr));
-  gap: 1rem;
+  /*
+   * Eight flexible tracks keep search (2), research field (2), issue (1),
+   * sort (1), and actions (2) on one row when space permits. Because the
+   * minimum is in rem, increased text sizing naturally reduces the track count
+   * and reflows the controls instead of forcing them outside the form.
+   */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+  gap: 0.9rem;
   align-items: end;
-  padding: 1.25rem 0;
-  border-top: 1px solid var(--wps-rule);
-  border-bottom: 1px solid var(--wps-rule);
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+  border: 1px solid var(--wps-rule);
+  border-top: 3px solid var(--wps-red);
+  border-radius: 0.25rem;
   background: var(--wps-wash);
+}
+
+/* `.has-js .js-only` uses `display: revert !important` in the base layer. */
+.has-js .wps-catalog-filters {
+  display: grid !important;
 }
 
 .wps-catalog-filter {
   min-width: 0;
 }
 
+.wps-catalog-filter--search {
+  grid-column: span 2;
+}
+
+.wps-catalog-filter--field {
+  grid-column: span 2;
+}
+
 .wps-catalog-filter label {
   display: block;
-  margin-bottom: 0.38rem;
+  margin-bottom: 0.5rem;
   color: var(--wps-ink);
   font-size: 0.86rem;
   font-weight: 750;
+  line-height: 1.3;
 }
 
 .wps-catalog-filter input,
 .wps-catalog-filter select {
   width: 100%;
   min-width: 0;
-  min-height: 2.85rem;
+  height: 3rem;
+  min-height: 3rem;
   border: 1px solid var(--wps-rule-dark);
   border-radius: 2px !important;
   background: #ffffff;
@@ -152,15 +150,17 @@
 }
 
 .wps-catalog-filter-actions {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.6rem;
+  min-width: 0;
 }
 
 .wps-catalog-filter-actions button,
 .wps-catalog-no-results button {
-  min-height: 2.75rem;
+  min-width: 0;
+  min-height: 3rem;
   border: 2px solid var(--wps-red);
   border-radius: 2px;
   background: var(--wps-red);
@@ -169,6 +169,7 @@
   font: inherit;
   font-weight: 700;
   line-height: 1.2;
+  overflow-wrap: anywhere;
   cursor: pointer;
 }
 
@@ -209,7 +210,7 @@
 .wps-paper-entry h3 {
   max-width: 58rem;
   margin: 0;
-  font-size: clamp(1.55rem, 3.4vw, 2.3rem);
+  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
   line-height: 1.18;
 }
 
@@ -367,6 +368,7 @@
 .paper-record-breadcrumb ol {
   display: flex;
   flex-wrap: wrap;
+  align-items: baseline;
   gap: 0.25rem 0;
   margin: 0;
   padding: 0;
@@ -376,7 +378,9 @@
 }
 
 .paper-record-breadcrumb li {
+  display: inline-flex;
   min-width: 0;
+  align-items: baseline;
   overflow-wrap: anywhere;
 }
 
@@ -403,7 +407,7 @@
 
 .paper-record-header h1 {
   margin: 0;
-  font-size: clamp(2.2rem, 6.2vw, 4.6rem);
+  font-size: clamp(2rem, 5vw, 3.5rem);
   line-height: 1.03;
   overflow-wrap: anywhere;
 }
@@ -604,15 +608,17 @@
   cursor: pointer;
 }
 
-.paper-record-details summary::after {
-  flex: 0 0 auto;
+.paper-record-details__icon {
+  inline-size: 1rem;
+  block-size: 1rem;
   color: var(--wps-red);
-  content: "+";
-  font-family: ui-sans-serif, sans-serif;
+  transform: rotate(0deg);
+  transform-origin: center;
+  transition: transform var(--duration-fast) var(--ease-standard);
 }
 
-.paper-record-details[open] summary::after {
-  content: "−";
+.paper-record-details[open] .paper-record-details__icon {
+  transform: rotate(180deg);
 }
 
 .paper-record-details__body {
@@ -635,6 +641,39 @@
   color: var(--wps-ink);
   padding: 0.5rem;
   font: inherit;
+}
+
+.select-control {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--wps-ink);
+}
+
+.select-control--js-only {
+  display: none;
+}
+
+.has-js .select-control--js-only {
+  display: block;
+}
+
+.select-control > select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-inline-end: 2rem;
+}
+
+.select-control__icon {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 0.7rem;
+  inline-size: 0.95rem;
+  block-size: 0.95rem;
+  color: var(--wps-ink);
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .paper-record-citation-output {
@@ -684,6 +723,15 @@
     grid-column: 1 / -1;
   }
 
+  .wps-catalog-filter--field {
+    grid-column: auto;
+  }
+
+  .wps-catalog-filter-actions {
+    grid-column: 1 / -1;
+    max-width: 24rem;
+  }
+
   .paper-record-core > dl {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -721,6 +769,12 @@
     grid-column: auto;
   }
 
+  .wps-catalog-filter-actions {
+    grid-column: auto;
+    width: 100%;
+    max-width: none;
+  }
+
   .wps-paper-authors {
     display: block;
   }
@@ -750,12 +804,6 @@
 }
 
 @media (max-width: 380px) {
-  .wps-catalog-page .page-content > .wps-catalog-shell,
-  .paper-record-page .page-content > .paper-record-shell {
-    padding-right: 0.85rem;
-    padding-left: 0.85rem;
-  }
-
   .wps-catalog-filter-actions {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -776,7 +824,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .paper-record-page .page-body .paper-record-action {
+  .paper-record-page .page-body .paper-record-action,
+  .paper-record-details__icon {
     transition: none;
   }
 }
@@ -797,6 +846,16 @@
 
   .paper-record-notice {
     border-left-color: Highlight;
+  }
+
+  .select-control > select {
+    appearance: auto;
+    -webkit-appearance: auto;
+    padding-inline-end: 0.65rem;
+  }
+
+  .select-control__icon {
+    display: none;
   }
 }
 
@@ -851,7 +910,7 @@
     display: block !important;
   }
 
-  .paper-record-details summary::after {
+  .paper-record-details__icon {
     display: none;
   }
 

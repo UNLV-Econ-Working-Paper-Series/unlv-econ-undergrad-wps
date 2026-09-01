@@ -42,6 +42,26 @@ const pageContracts: PageContract[] = [
     ],
   },
   {
+    file: "dist/editorial-board/index.html",
+    texts: [
+      "Editorial Board",
+      "On this page",
+      "Authority and approval",
+      "Voting Editorial Board",
+      "Junior Editors",
+      "Governance and contact",
+      "Full profile",
+      'aria-label="External profiles for Mark Jayson Martinez Farol"',
+    ],
+    absentTexts: [
+      "Role in the Series",
+      "Professional biography",
+      "Institutional profiles",
+      "Research identifiers",
+      "Professional profiles",
+    ],
+  },
+  {
     file: "dist/issues/2026-spring/index.html",
     texts: [
       '<link rel="canonical" href="https://econ-undergrad-wps.sites.unlv.edu/issues/2026-spring/">',

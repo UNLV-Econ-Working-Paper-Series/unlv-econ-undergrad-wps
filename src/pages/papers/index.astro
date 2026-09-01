@@ -1,5 +1,7 @@
 ---
 import "../../styles/pages/papers.css";
+import ChevronIcon from "../../components/ChevronIcon.astro";
+import PageBanner from "../../components/PageBanner.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { OASIS, SERIES } from "../../config/publication";
 import {
@@ -42,16 +44,14 @@ const abstractExcerpt = (abstract: string, maximum = 240) => {
   description="Search the UNLV Undergraduate Economics Working Paper Series by author, research field, issue, keyword, or topic."
   bodyClass="section-papers page-papers wps-catalog-page"
 >
-  <div class="wps-catalog-shell">
-    <header class="wps-catalog-header">
-      <h1>Working Papers</h1>
-      <p>{SERIES.scope}</p>
-      <p>
-        The permanent repository records and deposited full texts are available through
-        <a href={OASIS.collectionUrl} rel="external">OAsis</a>.
-      </p>
-    </header>
+  <PageBanner title="Working Papers" lead={SERIES.scope} brand>
+    <p slot="supplement">
+      The permanent repository records and deposited full texts are available through
+      <a href={OASIS.collectionUrl} rel="external">OAsis</a>.
+    </p>
+  </PageBanner>
 
+  <div class="wps-catalog-shell">
     {
       papers.length === 0 ? (
         <section class="wps-catalog-empty-state" aria-labelledby="empty-catalog-heading">
@@ -87,37 +87,46 @@ const abstractExcerpt = (abstract: string, maximum = 240) => {
               />
             </div>
 
-            <div class="wps-catalog-filter">
+            <div class="wps-catalog-filter wps-catalog-filter--field">
               <label for="paper-field">Research Field</label>
-              <select id="paper-field" name="field" data-paper-field>
-                <option value="">All research fields</option>
-                {fields.map((field) => (
-                  <option value={field.slug}>
-                    {field.name} ({field.count})
-                  </option>
-                ))}
-              </select>
+              <span class="select-control">
+                <select id="paper-field" name="field" data-paper-field>
+                  <option value="">All research fields</option>
+                  {fields.map((field) => (
+                    <option value={field.slug}>
+                      {field.name} ({field.count})
+                    </option>
+                  ))}
+                </select>
+                <ChevronIcon class="select-control__icon" />
+              </span>
             </div>
 
             <div class="wps-catalog-filter">
               <label for="paper-issue">Issue</label>
-              <select id="paper-issue" name="issue" data-paper-issue>
-                <option value="">All issues</option>
-                {issues.map((issue) => (
-                  <option value={issue.slug}>
-                    {issue.label} ({issue.papers.length})
-                  </option>
-                ))}
-              </select>
+              <span class="select-control">
+                <select id="paper-issue" name="issue" data-paper-issue>
+                  <option value="">All issues</option>
+                  {issues.map((issue) => (
+                    <option value={issue.slug}>
+                      {issue.label} ({issue.papers.length})
+                    </option>
+                  ))}
+                </select>
+                <ChevronIcon class="select-control__icon" />
+              </span>
             </div>
 
             <div class="wps-catalog-filter">
               <label for="paper-sort">Sort</label>
-              <select id="paper-sort" name="sort" data-paper-sort>
-                <option value="newest">Newest first</option>
-                <option value="oldest">Oldest first</option>
-                <option value="title">Title A–Z</option>
-              </select>
+              <span class="select-control">
+                <select id="paper-sort" name="sort" data-paper-sort>
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="title">Title A–Z</option>
+                </select>
+                <ChevronIcon class="select-control__icon" />
+              </span>
             </div>
 
             <div class="wps-catalog-filter-actions">

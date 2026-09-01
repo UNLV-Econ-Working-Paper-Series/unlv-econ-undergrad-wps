@@ -30,6 +30,7 @@
 .publication-breadcrumb ol {
   display: flex;
   flex-wrap: wrap;
+  align-items: baseline;
   gap: 0.25rem 0.6rem;
   margin: 0;
   padding: 0;
@@ -37,7 +38,9 @@
 }
 
 .publication-breadcrumb li {
+  display: inline-flex;
   margin: 0;
+  align-items: baseline;
 }
 
 .publication-breadcrumb li + li::before {

@@ -23,7 +23,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
     photoSource: "Photo source: UNLV profile",
     profileHref: "/editorial-board/djeto-assane/",
     links: [
-      { type: "website", href: "https://assane.faculty.unlv.edu/" },
+      { type: "website", href: "https://assane.faculty.unlv.edu/", label: "Faculty website" },
       { type: "scholar", href: "https://scholar.google.com/citations?user=VJYYWTIAAAAJ&hl=en" },
       { type: "researchgate", href: "https://www.researchgate.net/profile/Djeto-Assane" },
     ],
@@ -45,7 +45,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
     photoSource: "Photo source: UNLV profile",
     profileHref: "/editorial-board/eric-chiang/",
     links: [
-      { type: "website", href: "https://www.unlv.edu/people/eric-chiang" },
+      { type: "website", href: "https://www.unlv.edu/people/eric-chiang", label: "UNLV profile" },
       { type: "linkedin", href: "https://www.linkedin.com/in/ericpchiang" },
       { type: "scholar", href: "https://scholar.google.com/citations?user=TcCXpb0AAAAJ" },
       { type: "researchgate", href: "https://www.researchgate.net/profile/Eric-Chiang-5" },
@@ -68,7 +68,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
     photoSource: "Photo source: LinkedIn profile",
     profileHref: "/editorial-board/mark-jayson-farol/",
     links: [
-      { type: "website", href: "https://markjayson.com" },
+      { type: "website", href: "https://markjayson.com", label: "Personal website" },
       { type: "linkedin", href: "https://www.linkedin.com/in/markjaysonfarol/" },
       { type: "scholar", href: "https://scholar.google.com/citations?user=vdr24hsAAAAJ&hl=en" },
       { type: "researchgate", href: "https://www.researchgate.net/profile/Mark-Jayson-Farol" },
