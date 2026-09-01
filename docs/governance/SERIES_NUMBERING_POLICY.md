@@ -38,23 +38,23 @@ All 15 current OAsis records share the repository-online date 2026-08-05. The st
 
 The initial registry is:
 
-| Series sequence | Immutable identifier | Local paper slug |
-| ---: | --- | --- |
-| 001 | `UNLV-Econ-WPS-2024-001` | `the-race-for-increasing-college-costs` |
-| 002 | `UNLV-Econ-WPS-2024-002` | `used-electric-vehicle-tax-credit` |
-| 003 | `UNLV-Econ-WPS-2025-003` | `nba-real-team-value` |
-| 004 | `UNLV-Econ-WPS-2026-004` | `hedonics-used-car-attributes` |
-| 005 | `UNLV-Econ-WPS-2026-005` | `key-determinants-diamond-value` |
-| 006 | `UNLV-Econ-WPS-2026-006` | `rural-metropolitan-gender-wage-gap` |
-| 007 | `UNLV-Econ-WPS-2026-007` | `social-determinants-educational-attainment` |
-| 008 | `UNLV-Econ-WPS-2026-008` | `ai-wage-effects-us-occupations` |
-| 009 | `UNLV-Econ-WPS-2026-009` | `residential-sale-prices-neighborhood-interior` |
-| 010 | `UNLV-Econ-WPS-2026-010` | `mlb-speed-premium` |
-| 011 | `UNLV-Econ-WPS-2026-011` | `nevada-mining-output-growth` |
-| 012 | `UNLV-Econ-WPS-2026-012` | `commercial-bank-failures` |
-| 013 | `UNLV-Econ-WPS-2026-013` | `gambling-losses-future-wagers` |
-| 014 | `UNLV-Econ-WPS-2026-014` | `las-vegas-casino-revenue` |
-| 015 | `UNLV-Econ-WPS-2026-015` | `march-madness-tournament-advancement` |
+| Series sequence | Immutable identifier     | Local paper slug                                |
+| --------------: | ------------------------ | ----------------------------------------------- |
+|             001 | `UNLV-Econ-WPS-2024-001` | `the-race-for-increasing-college-costs`         |
+|             002 | `UNLV-Econ-WPS-2024-002` | `used-electric-vehicle-tax-credit`              |
+|             003 | `UNLV-Econ-WPS-2025-003` | `nba-real-team-value`                           |
+|             004 | `UNLV-Econ-WPS-2026-004` | `hedonics-used-car-attributes`                  |
+|             005 | `UNLV-Econ-WPS-2026-005` | `key-determinants-diamond-value`                |
+|             006 | `UNLV-Econ-WPS-2026-006` | `rural-metropolitan-gender-wage-gap`            |
+|             007 | `UNLV-Econ-WPS-2026-007` | `social-determinants-educational-attainment`    |
+|             008 | `UNLV-Econ-WPS-2026-008` | `ai-wage-effects-us-occupations`                |
+|             009 | `UNLV-Econ-WPS-2026-009` | `residential-sale-prices-neighborhood-interior` |
+|             010 | `UNLV-Econ-WPS-2026-010` | `mlb-speed-premium`                             |
+|             011 | `UNLV-Econ-WPS-2026-011` | `nevada-mining-output-growth`                   |
+|             012 | `UNLV-Econ-WPS-2026-012` | `commercial-bank-failures`                      |
+|             013 | `UNLV-Econ-WPS-2026-013` | `gambling-losses-future-wagers`                 |
+|             014 | `UNLV-Econ-WPS-2026-014` | `las-vegas-casino-revenue`                      |
+|             015 | `UNLV-Econ-WPS-2026-015` | `march-madness-tournament-advancement`          |
 
 ## Future assignment
 

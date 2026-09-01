@@ -72,11 +72,11 @@ Private intake must retain author/coauthor approval, enrollment-at-completion ev
 
 The Editorial Board holds final publication and policy authority under this charter.
 
-| Intended member | Safe public title | Voting authority | Confirmation boundary |
-| --- | --- | --- | --- |
-| Mark Jayson Martinez Farol | Managing Editor and Series Organizer | Yes | Written role acceptance and term/continuity record required |
-| Djeto Assané | Faculty Editor | Yes | Written role acceptance required; add `and Faculty Sponsor` only after that title is expressly accepted |
-| Eric Chiang | Faculty Editor | Yes | Written role acceptance and term/continuity record required |
+| Intended member            | Safe public title                    | Voting authority | Confirmation boundary                                                                                   |
+| -------------------------- | ------------------------------------ | ---------------- | ------------------------------------------------------------------------------------------------------- |
+| Mark Jayson Martinez Farol | Managing Editor and Series Organizer | Yes              | Written role acceptance and term/continuity record required                                             |
+| Djeto Assané               | Faculty Editor                       | Yes              | Written role acceptance required; add `and Faculty Sponsor` only after that title is expressly accepted |
+| Eric Chiang                | Faculty Editor                       | Yes              | Written role acceptance and term/continuity record required                                             |
 
 The broader Editorial Team may include Board members, Junior Editors, temporary editorial assistants, metadata support, accessibility support, and publication-production support.
 
@@ -146,17 +146,17 @@ Complete final metadata verification, accessible-document review, citation gener
 
 **Specification-approved; private implementation required; OAsis coordination externally confirmable.**
 
-| Action | Required authority |
-| --- | --- |
-| Correct a typo, broken link, or non-substantive metadata error | Managing Editor, with author notification |
-| Correct an author name, title, abstract, or bibliographic field | Managing Editor after written author confirmation and, where relevant, OAsis coordination |
-| Replace a PDF only for accessibility or formatting, without substantive change | Managing Editor plus author approval |
-| Replace a manuscript with a substantive revision | Author, faculty sponsor, and two non-conflicted voting editors including one Faculty Editor |
-| Publish a correction notice | Two non-conflicted voting editors including one Faculty Editor |
-| Temporarily remove a custom-site PDF link for a credible urgent rights/privacy concern | Managing Editor or Faculty Editor pending formal review |
-| Restrict an OAsis record or file | OAsis administration in coordination with the Editorial Board |
-| Withdraw a paper | Majority of non-conflicted voting editors, including one Faculty Editor, coordinated with OAsis |
-| Decide an appeal | Non-conflicted Faculty Editor not responsible for the original decision, or appointed ad hoc faculty reviewer |
+| Action                                                                                 | Required authority                                                                                            |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Correct a typo, broken link, or non-substantive metadata error                         | Managing Editor, with author notification                                                                     |
+| Correct an author name, title, abstract, or bibliographic field                        | Managing Editor after written author confirmation and, where relevant, OAsis coordination                     |
+| Replace a PDF only for accessibility or formatting, without substantive change         | Managing Editor plus author approval                                                                          |
+| Replace a manuscript with a substantive revision                                       | Author, faculty sponsor, and two non-conflicted voting editors including one Faculty Editor                   |
+| Publish a correction notice                                                            | Two non-conflicted voting editors including one Faculty Editor                                                |
+| Temporarily remove a custom-site PDF link for a credible urgent rights/privacy concern | Managing Editor or Faculty Editor pending formal review                                                       |
+| Restrict an OAsis record or file                                                       | OAsis administration in coordination with the Editorial Board                                                 |
+| Withdraw a paper                                                                       | Majority of non-conflicted voting editors, including one Faculty Editor, coordinated with OAsis               |
+| Decide an appeal                                                                       | Non-conflicted Faculty Editor not responsible for the original decision, or appointed ad hoc faculty reviewer |
 
 Minor metadata and presentation errors may be corrected administratively. Substantive revisions, correction notices, restrictions, and withdrawals require editorial approval.
 

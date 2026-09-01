@@ -1,0 +1,22 @@
+# Faculty Sites security and hosting owner actions
+
+Observed from the public domain on August 31, 2026. These are host-level findings, not proof about a future deployment.
+
+## Positive observations
+
+- HTTPS serves the site.
+- HSTS is present with a one-year lifetime and `includeSubDomains`.
+- `X-Content-Type-Options: nosniff`, a referrer policy, and clickjacking protection are present.
+
+## Required confirmation and correction
+
+| Finding                             | Evidence                                                                                                                                                                             | Owner action                                                                                                                                                          | Release impact                                                                                 |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Invalid CSP value                   | One response header is `Content-Security-Policy: SAMEORIGIN`; `SAMEORIGIN` is an X-Frame-Options value, not a CSP directive. A second CSP contains only `upgrade-insecure-requests`. | Faculty Sites/cPanel security owner should identify the header source, remove the invalid value, and test one coherent CSP against the built site before enforcement. | Blocks a claim of production security-header readiness.                                        |
+| Duplicate headers                   | Referrer Policy, X-Content-Type-Options, and X-Frame-Options are emitted twice.                                                                                                      | Consolidate responsibility between origin, WAF, and proxy; verify the final effective response.                                                                       | Does not alone block content release, but blocks clean security sign-off.                      |
+| No Permissions Policy observed      | Homepage response did not include one.                                                                                                                                               | Decide and test a minimal policy appropriate for a static site.                                                                                                       | Does not block core release.                                                                   |
+| Directory listing exposed           | `/assets/` returned an Apache-style index.                                                                                                                                           | Disable indexes at the supported host layer and retest nested asset directories.                                                                                      | Blocks security hardening sign-off; raises the importance of excluding archives/private files. |
+| Generic missing-route response      | A nonexistent route returned the host's generic HTML 4 error page rather than the built site 404.                                                                                    | Configure the supported custom ErrorDocument mapping to `/404.html` and verify the status remains 404.                                                                | Blocks complete UX/404 release acceptance.                                                     |
+| Cache/compression ownership unclear | HTML did not expose an explicit cache policy; hashed assets were previously observed with limited caching and compression was not advertised.                                        | Confirm WAF/origin behavior; set safe HTML revalidation and long immutable caching for hashed assets; enable supported compression.                                   | Performance/operations follow-up.                                                              |
+
+Do not add an untested `.htaccess` from this repository. The authorized hosting owner must confirm Apache/cPanel support, WAF interaction, header precedence, and rollback before applying host configuration.

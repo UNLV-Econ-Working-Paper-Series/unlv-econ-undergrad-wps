@@ -18,25 +18,25 @@ Screenshots are stored under `docs/audits/screenshots/before/` using `<route>-<w
 
 ## Baseline findings
 
-| Area | Result | Finding |
-| --- | --- | --- |
-| Route availability | Pass for canonical routes | Audited canonical pages returned 200. |
-| Heading structure | Basic pass | Each sampled canonical page exposed one `h1`; deeper hierarchy still requires semantic review. |
-| Root overflow | Pass in sampled viewports | No document-level horizontal overflow at 390, 768, or 1440 pixels. |
-| Mobile navigation default | Pass | Menu is closed on initial load. |
+| Area                       | Result                           | Finding                                                                                                                                                                               |
+| -------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Route availability         | Pass for canonical routes        | Audited canonical pages returned 200.                                                                                                                                                 |
+| Heading structure          | Basic pass                       | Each sampled canonical page exposed one `h1`; deeper hierarchy still requires semantic review.                                                                                        |
+| Root overflow              | Pass in sampled viewports        | No document-level horizontal overflow at 390, 768, or 1440 pixels.                                                                                                                    |
+| Mobile navigation default  | Pass                             | Menu is closed on initial load.                                                                                                                                                       |
 | Mobile navigation expanded | Functional, needs release retest | Expanded panel remains inside the viewport and exposes all current links. Focus order, escape behavior, focus return, and scroll containment require explicit automated/manual tests. |
-| Sticky navigation | Needs redesign verification | The current header consumes substantial mobile space and combines sticky behavior with transition logic; all route classes need browser retesting after the IA change. |
-| Papers desktop layout | Needs redesign | Marketing statistics, an oversized filter panel, card-style results, and broad empty space make the catalog read as a product dashboard rather than an academic series. |
-| Papers mobile layout | Needs redesign | Long stacked controls and repeated cards create excessive vertical scanning and weak bibliographic hierarchy. |
-| Typography | Operational risk | Every page requests Google Fonts at runtime. The public site should not depend on a third-party font request for legibility or rendering stability. |
-| Motion | Needs systematic gate | Existing transitions mix Astro view transitions and GSAP. Reduced-motion behavior exists but requires route-by-route verification after changes. |
-| 404 behavior | Fail on production host | An arbitrary missing URL receives the hosting provider's plain `404 Not Found`, not the site's built `404.html`. |
-| Security-policy console | Fail | Every sampled production page reports `Unrecognized Content-Security-Policy directive 'SAMEORIGIN'`. |
-| Build identity | Insufficient | Live hashed assets match the local baseline, but the HTML exposes no explicit commit/build fingerprint. |
-| Institutional identity | Fail | Public surfaces use the former `UNLV Department of Economics` name and do not consistently present the required institutional hierarchy. |
-| Publication identity | Fail | Launch-news language, startup-style calls to action, category pills, and builder attribution dominate content that should foreground the scholarly record. |
-| Paper metadata | Incomplete | Current page title, structured fields, versions, status, date semantics, and machine-readable citation metadata do not yet meet the publication contract. |
-| Historical files | Blocked | Archive pages reference local PDF paths whose files are absent. |
+| Sticky navigation          | Needs redesign verification      | The current header consumes substantial mobile space and combines sticky behavior with transition logic; all route classes need browser retesting after the IA change.                |
+| Papers desktop layout      | Needs redesign                   | Marketing statistics, an oversized filter panel, card-style results, and broad empty space make the catalog read as a product dashboard rather than an academic series.               |
+| Papers mobile layout       | Needs redesign                   | Long stacked controls and repeated cards create excessive vertical scanning and weak bibliographic hierarchy.                                                                         |
+| Typography                 | Operational risk                 | Every page requests Google Fonts at runtime. The public site should not depend on a third-party font request for legibility or rendering stability.                                   |
+| Motion                     | Needs systematic gate            | Existing transitions mix Astro view transitions and GSAP. Reduced-motion behavior exists but requires route-by-route verification after changes.                                      |
+| 404 behavior               | Fail on production host          | An arbitrary missing URL receives the hosting provider's plain `404 Not Found`, not the site's built `404.html`.                                                                      |
+| Security-policy console    | Fail                             | Every sampled production page reports `Unrecognized Content-Security-Policy directive 'SAMEORIGIN'`.                                                                                  |
+| Build identity             | Insufficient                     | Live hashed assets match the local baseline, but the HTML exposes no explicit commit/build fingerprint.                                                                               |
+| Institutional identity     | Fail                             | Public surfaces use the former `UNLV Department of Economics` name and do not consistently present the required institutional hierarchy.                                              |
+| Publication identity       | Fail                             | Launch-news language, startup-style calls to action, category pills, and builder attribution dominate content that should foreground the scholarly record.                            |
+| Paper metadata             | Incomplete                       | Current page title, structured fields, versions, status, date semantics, and machine-readable citation metadata do not yet meet the publication contract.                             |
+| Historical files           | Blocked                          | Archive pages reference local PDF paths whose files are absent.                                                                                                                       |
 
 ## Visual observations
 
@@ -65,4 +65,3 @@ The release audit must repeat the same route/viewport matrix and add:
 7. Explicit live build-fingerprint comparison after deployment by an authorized operator.
 
 Automated scans are necessary but cannot establish WCAG conformance by themselves. External PDF accessibility remains a record-level verification requirement.
-

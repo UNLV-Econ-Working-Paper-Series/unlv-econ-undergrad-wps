@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-01T02:50:24.403Z",
+  "generated_at": "2026-09-01T03:55:31.201Z",
   "source": "https://oasis.library.unlv.edu/econ_ug_papers/",
   "configuration": {
     "timeout_ms": 12000,
-    "max_attempts": 2,
+    "max_attempts": 3,
     "concurrency": 3
   },
   "summary": {
     "total": 15,
-    "verified": 3,
+    "verified": 0,
     "mismatch": 0,
     "network_failure": 0,
-    "remote_error": 12,
+    "remote_error": 15,
     "invalid_local_data": 0
   },
   "records": [
@@ -26,6 +26,7 @@
       "local_issue_term": "Spring 2024",
       "doi": "10.34917/40601190",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/1",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1000&context=econ_ug_papers",
       "frontend_citation": "Farol, M. J. (2024). The Race for Increasing College Costs. UNLV Undergraduate Economics Working Paper Series, 1(1), 1–24 (UNLV-Econ-WPS-2024-001). https://doi.org/10.34917/40601190",
@@ -40,7 +41,8 @@
         "requested_url": "https://doi.org/10.34917/40601190",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/1/",
         "http_status": 200,
-        "attempts": 1,
+        "content_type": "text/html; charset=UTF-8",
+        "attempts": 2,
         "reached_oasis": true
       },
       "item_availability": {
@@ -48,6 +50,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/1",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/1/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -56,6 +59,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1000&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1000&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -185,6 +189,7 @@
       "local_issue_term": "Spring 2024",
       "doi": "10.34917/40601191",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/2",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1001&context=econ_ug_papers",
       "frontend_citation": "Tran, M. T. T. (2024). The Effects of the Tax Credit on the Used Electric Vehicle Market. UNLV Undergraduate Economics Working Paper Series, 1(1), 1–12 (UNLV-Econ-WPS-2024-002). https://doi.org/10.34917/40601191",
@@ -200,6 +205,7 @@
         "requested_url": "https://doi.org/10.34917/40601191",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/2/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -208,6 +214,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/2",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/2/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -216,6 +223,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1001&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1001&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -346,6 +354,7 @@
       "local_issue_term": "Spring 2025",
       "doi": "10.34917/40601192",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/3",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1002&context=econ_ug_papers",
       "frontend_citation": "Penticoff, B. C. (2025). Does a Star Player’s Jewelry Matter? An Analysis of NBA Real Team Value. UNLV Undergraduate Economics Working Paper Series, 2(1), 1–17 (UNLV-Econ-WPS-2025-003). https://doi.org/10.34917/40601192",
@@ -360,6 +369,7 @@
         "requested_url": "https://doi.org/10.34917/40601192",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/3/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -368,6 +378,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/3",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/3/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -376,6 +387,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1002&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1002&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -510,6 +522,7 @@
       "local_issue_term": "Fall 2025",
       "doi": "10.34917/40601193",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/4",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1003&context=econ_ug_papers",
       "frontend_citation": "Bent, A., Gutierrez, J. (2026). Hedonics of Used Car Attributes on Market Price. UNLV Undergraduate Economics Working Paper Series, 3(1), 1–18 (UNLV-Econ-WPS-2026-004). https://doi.org/10.34917/40601193",
@@ -524,6 +537,7 @@
         "requested_url": "https://doi.org/10.34917/40601193",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/4/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -532,6 +546,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/4",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/4/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -540,6 +555,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1003&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1003&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -675,6 +691,7 @@
       "local_issue_term": "Fall 2025",
       "doi": "10.34917/40601194",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/5",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1004&context=econ_ug_papers",
       "frontend_citation": "Brill, T., Dobrovolskyi, A., Labayog, R. (2026). Key Determinants of Diamond Value. UNLV Undergraduate Economics Working Paper Series, 3(1), 1–8 (UNLV-Econ-WPS-2026-005). https://doi.org/10.34917/40601194",
@@ -689,6 +706,7 @@
         "requested_url": "https://doi.org/10.34917/40601194",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/5/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -697,6 +715,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/5",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/5/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -705,6 +724,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1004&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1004&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -841,6 +861,7 @@
       "local_issue_term": "Fall 2025",
       "doi": "10.34917/40601195",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/6",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1005&context=econ_ug_papers",
       "frontend_citation": "Gonzalez, A., Montano, M., Sacks, B., Williams, J. (2026). Do Rural Areas Gender-Discriminate Wages More than Metropolitan Areas? UNLV Undergraduate Economics Working Paper Series, 3(1), 1–14 (UNLV-Econ-WPS-2026-006). https://doi.org/10.34917/40601195",
@@ -856,6 +877,7 @@
         "requested_url": "https://doi.org/10.34917/40601195",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/6/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -864,14 +886,16 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/6",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/6/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
       "pdf_availability": {
-        "status": "verified",
+        "status": "http_error",
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1005&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1005&context=econ_ug_papers",
-        "http_status": 206,
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1000,7 +1024,7 @@
           "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
         }
       ],
-      "outcome": "verified"
+      "outcome": "remote_error"
     },
     {
       "slug": "social-determinants-educational-attainment",
@@ -1014,6 +1038,7 @@
       "local_issue_term": "Fall 2025",
       "doi": "10.34917/40601196",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/7",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1006&context=econ_ug_papers",
       "frontend_citation": "Graham, I., Lieng, K., Weisbach, A. (2026). Social Determinants of Low Educational Attainment. UNLV Undergraduate Economics Working Paper Series, 3(1), 1–13 (UNLV-Econ-WPS-2026-007). https://doi.org/10.34917/40601196",
@@ -1029,6 +1054,7 @@
         "requested_url": "https://doi.org/10.34917/40601196",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/7/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1037,6 +1063,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/7",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/7/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1045,6 +1072,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1006&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1006&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1188,6 +1216,7 @@
       "local_issue_term": "Fall 2025",
       "doi": "10.34917/40601197",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/8",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1007&context=econ_ug_papers",
       "frontend_citation": "Pham, K., Rodriguez, K. (2026). Labor Market Responses to AI: Measuring Wage Effects Across U.S. Occupations. UNLV Undergraduate Economics Working Paper Series, 3(1), 1–14 (UNLV-Econ-WPS-2026-008). https://doi.org/10.34917/40601197",
@@ -1203,6 +1232,7 @@
         "requested_url": "https://doi.org/10.34917/40601197",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/8/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1211,6 +1241,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/8",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/8/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1219,6 +1250,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1007&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1007&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1351,6 +1383,7 @@
       "local_issue_term": "Spring 2026",
       "doi": "10.34917/40601198",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/9",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1008&context=econ_ug_papers",
       "frontend_citation": "Hagman, E. S. (2026). The Effects of Neighborhood and Interior Characteristics on Residential Sale Prices. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–18 (UNLV-Econ-WPS-2026-009). https://doi.org/10.34917/40601198",
@@ -1366,6 +1399,7 @@
         "requested_url": "https://doi.org/10.34917/40601198",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/9/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1374,6 +1408,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/9",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/9/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1382,6 +1417,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1008&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1008&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1517,6 +1553,7 @@
       "local_issue_term": "Spring 2026",
       "doi": "10.34917/40601199",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/10",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1009&context=econ_ug_papers",
       "frontend_citation": "Keithley, J. A., Hampton, C. (2026). MLB Speed Premium. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–10 (UNLV-Econ-WPS-2026-010). https://doi.org/10.34917/40601199",
@@ -1531,6 +1568,7 @@
         "requested_url": "https://doi.org/10.34917/40601199",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/10/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1539,6 +1577,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/10",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/10/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1547,6 +1586,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1009&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1009&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1679,6 +1719,7 @@
       "local_issue_term": "Spring 2026",
       "doi": "10.34917/40601200",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/11",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1010&context=econ_ug_papers",
       "frontend_citation": "Brown, M., Kitchen, E. (2026). The Structural Limitations of Mining Output Growth in Nevada. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–21 (UNLV-Econ-WPS-2026-011). https://doi.org/10.34917/40601200",
@@ -1694,6 +1735,7 @@
         "requested_url": "https://doi.org/10.34917/40601200",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/11/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1702,6 +1744,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/11",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/11/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1710,6 +1753,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1010&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1010&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1842,6 +1886,7 @@
       "local_issue_term": "Spring 2026",
       "doi": "10.34917/40601201",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/12",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1011&context=econ_ug_papers",
       "frontend_citation": "Qi, M. (2026). Simple Determinants of Commercial Bank Failures. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–11 (UNLV-Econ-WPS-2026-012). https://doi.org/10.34917/40601201",
@@ -1856,6 +1901,7 @@
         "requested_url": "https://doi.org/10.34917/40601201",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/12/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1864,6 +1910,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/12",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/12/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -1872,6 +1919,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1011&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1011&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -2009,6 +2057,7 @@
       "local_issue_term": "Spring 2026",
       "doi": "10.34917/40601202",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/13",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1012&context=econ_ug_papers",
       "frontend_citation": "Talavera, A., Ibarra, H. L., Rozbitskyy, R. (2026). Gambling Behaviors: How Do Gambling Losses Affect Future Wagers? UNLV Undergraduate Economics Working Paper Series, 3(2), 1–8 (UNLV-Econ-WPS-2026-013). https://doi.org/10.34917/40601202",
@@ -2024,6 +2073,7 @@
         "requested_url": "https://doi.org/10.34917/40601202",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/13/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -2032,14 +2082,16 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/13",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/13/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
       "pdf_availability": {
-        "status": "verified",
+        "status": "http_error",
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1012&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1012&context=econ_ug_papers",
-        "http_status": 206,
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -2166,7 +2218,7 @@
           "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
         }
       ],
-      "outcome": "verified"
+      "outcome": "remote_error"
     },
     {
       "slug": "las-vegas-casino-revenue",
@@ -2178,6 +2230,7 @@
       "local_issue_term": "Spring 2026",
       "doi": "10.34917/40601203",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/14",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1013&context=econ_ug_papers",
       "frontend_citation": "Villa-Real, K. A. (2026). Las Vegas Casino Revenue in an Expanding Gambling Market. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–11 (UNLV-Econ-WPS-2026-014). https://doi.org/10.34917/40601203",
@@ -2193,6 +2246,7 @@
         "requested_url": "https://doi.org/10.34917/40601203",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/14/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -2201,6 +2255,7 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/14",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/14/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -2209,6 +2264,7 @@
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1013&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1013&context=econ_ug_papers",
         "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -2343,6 +2399,7 @@
       "local_issue_term": "Spring 2026",
       "doi": "10.34917/40601204",
       "doi_syntax_valid": true,
+      "doi_target_matches_item": true,
       "item_url": "https://oasis.library.unlv.edu/econ_ug_papers/15",
       "pdf_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1014&context=econ_ug_papers",
       "frontend_citation": "Waldahl, J. (2026). Determinants of March Madness Tournament Advancement. UNLV Undergraduate Economics Working Paper Series, 3(2), 1–10 (UNLV-Econ-WPS-2026-015). https://doi.org/10.34917/40601204",
@@ -2357,6 +2414,7 @@
         "requested_url": "https://doi.org/10.34917/40601204",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/15/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -2365,14 +2423,16 @@
         "requested_url": "https://oasis.library.unlv.edu/econ_ug_papers/15",
         "final_url": "https://oasis.library.unlv.edu/econ_ug_papers/15/",
         "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
       "pdf_availability": {
-        "status": "verified",
+        "status": "http_error",
         "requested_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1014&context=econ_ug_papers",
         "final_url": "https://oasis.library.unlv.edu/cgi/viewcontent.cgi?article=1014&context=econ_ug_papers",
-        "http_status": 206,
+        "http_status": 403,
+        "content_type": "text/html; charset=UTF-8",
         "attempts": 1,
         "reached_oasis": true
       },
@@ -2496,7 +2556,7 @@
           "note": "No faculty-sponsor field was exposed on the audited OAsis item page"
         }
       ],
-      "outcome": "verified"
+      "outcome": "remote_error"
     }
   ]
 }

@@ -1,193 +1,180 @@
 # UNLV Undergraduate Economics Working Paper Series
 
-Public Astro frontend for the UNLV Undergraduate Economics Working Paper Series.
+Public discovery and reading site for the UNLV Undergraduate Economics Working Paper Series.
 
-This site is the discovery and reader interface for original economics-related working papers by UNLV undergraduates. The Series is operated by its Editorial Board within the Molasky Family Department of Economics and Real Estate, Lee Business School, University of Nevada, Las Vegas. Papers are editorially screened, are not peer reviewed, and may be revised.
+The Series publishes original economics-related working papers by UNLV undergraduates. It is operated by its Editorial Board within the Molasky Family Department of Economics and Real Estate, Lee Business School, University of Nevada, Las Vegas. Papers are editorially screened, are not peer reviewed, and may be revised.
 
-## Live Site
+The custom site organizes papers, authors, issues, research fields, citations, policies, and accessibility information. [OAsis](https://oasis.library.unlv.edu/econ_ug_papers/) is the institutional repository and permanent repository record for deposited papers.
 
-Official live site:
+## Production boundary
 
-https://econ-undergrad-wps.sites.unlv.edu
+The canonical public origin is <https://econ-undergrad-wps.sites.unlv.edu>. The Astro build uses the domain root (`base: "/"`). GitHub Pages is neither production nor staging and must not be treated as deployment evidence.
 
-The current Astro config uses:
+This repository contains only public source, public records, release tooling, and static assets. It must not contain submissions, consent evidence, ballots, review notes, decision records, mailbox exports, credentials, or private operations data. The private publishing-operations repository remains separate and must never be copied into this tree or the web root.
 
-- `site: "https://econ-undergrad-wps.sites.unlv.edu"`
-- `base: "/"`
+## Supported toolchain
 
-This repo is deployed at the domain root. Do not add a repository base path to links or build settings.
+- Node 24.16.0 (see `.nvmrc`)
+- npm 11.13.0 and the committed lockfile
+- Astro 7.2.10
+- TypeScript 6
+- Playwright for browser and accessibility checks
 
-## Repository Scope
-
-This public frontend repo contains:
-
-- homepage
-- issue pages
-- paper pages
-- category pages
-- About page
-- Contact page
-- policy pages
-- editorial board and graduate assistant profile pages
-- public assets used by the site
-- generated paper metadata and content consumed by Astro
-
-This public frontend repo does not contain:
-
-- a private admin portal
-- unpublished intake files
-- authentication or session databases
-- private backend runtime data
-- raw operations workflow data
-- the backend publishing pipeline
-
-The private backend/publishing pipeline lives in a separate repository:
-
-`markjayson13/econ495journal_ops`
-
-Treat that private repo only as an external upstream publishing source. Do not place the backend inside this repo, inside `public_html`, or at `/admin`.
-
-## Tech Stack
-
-- Astro
-- TypeScript
-- GSAP for selected page motion
-- Static HTML/CSS/JS output
-
-## Local Development
-
-Install dependencies:
+Use the pinned runtime before installing:
 
 ```bash
-npm install
+nvm use
+npm ci
 ```
 
-Start the local dev server:
+Install the browser engines once on a development machine:
+
+```bash
+npx playwright install chromium firefox webkit
+```
+
+## Local development
 
 ```bash
 npm run dev
 ```
 
-Default local URL:
+The default local URL is `http://127.0.0.1:4321`. Local development is HTTP on the loopback interface; there is no self-signed-certificate plugin.
 
-```text
-https://localhost:4321
-```
-
-Local development uses HTTPS because `astro.config.mjs` includes `@vitejs/plugin-basic-ssl`. Your browser may show a local certificate warning.
-
-Build the static site:
+Build and preview the static site:
 
 ```bash
 npm run build
-```
-
-Preview a completed build:
-
-```bash
 npm run preview
 ```
 
-## Production Build
+## Verification
 
-Run:
-
-```bash
-npm run build
-```
-
-This generates:
-
-```text
-dist/
-```
-
-The build script also runs:
+The complete deterministic and browser release gate is:
 
 ```bash
-npm run verify:text-contracts
+npm run verify:release
 ```
 
-The verification script checks required text on the built homepage, About page, and Contact page.
+It runs formatting, lint, Astro and TypeScript checks, publication unit tests, schema/content validation, the production build, copy and governance contracts, scholarly metadata and sitemap checks, internal-link checks, performance budgets, Playwright browser behavior, and axe accessibility checks. External services are intentionally excluded from this ordinary gate.
 
-## Deploying to UNLV Faculty Sites
-
-Deploy the static build output to UNLV Faculty Sites through cPanel.
-
-1. Run `npm run build`
-2. Create a ZIP from the contents inside `dist`, not the `dist` folder itself
-3. Upload the ZIP to cPanel File Manager under `/public_html`
-4. Extract it into `/public_html`
-5. Confirm that `index.html`, `_astro/`, `about/`, `issues/`, `papers/`, `policies/`, `assets/`, and related built folders are directly inside `/public_html`
-6. Do not upload `src/`, `node_modules/`, `.git/`, `.astro/`, `package.json`, or the backend repo into cPanel
-
-Terminal packaging command:
+Focused commands are also available:
 
 ```bash
-rm -f faculty-sites-dist.zip
-cd dist
-zip -r ../faculty-sites-dist.zip .
-cd ..
+npm run check
+npm run lint
+npm run format:check
+npm test
+npm run test:e2e
+npm run test:a11y
+npm run verify:content
+npm run verify:metadata
+npm run verify:internal-links
+npm run verify:performance
+npm run verify:external-records
+npm run verify:external-links
+npm run audit:lighthouse
 ```
 
-The generated `faculty-sites-dist.zip` is ignored by git.
+Run `npm audit` during release review and record the exact result. Do not use `npm audit fix --force` as a substitute for reviewing a framework-major upgrade.
 
-## Content Publishing Flow
+## Content architecture
 
-Paper content is generated upstream by the private backend/publishing pipeline. Generated artifacts should land in this frontend repo under paths such as:
+Important public paths:
 
-- `src/content/papers/`
-- `public/assets/papers/`
-- `public/assets/issues/`
+- `src/content.config.ts`: Astro content collections
+- `src/content/paper-schema.ts`: strict public paper record schema
+- `src/content/papers/`: the 15 current structured paper records
+- `src/config/publication.ts`: institutional identity and controlled research fields
+- `src/config/editorial.ts`: public editorial roles
+- `src/lib/publication/`: citation, metadata, date, identifier, version, and catalog utilities
+- `src/pages/`: canonical routes and supported legacy aliases
+- `docs/governance/`: publication governance and unresolved confirmations
+- `docs/archive/`: metadata-only historical inventory and migration controls
+- `docs/operations/`: release, deployment, rollback, security, and branch-protection runbooks
 
-After generated content changes are present in this frontend repo, run:
+Current paper metadata may be audited and migrated with:
 
 ```bash
-git status
-npm run build
-git add .
-git commit -m "Publish working paper content"
-git push origin main
+npm run migrate:papers
 ```
 
-Then package and deploy the new `dist/` output to Faculty Sites.
-
-## Branch Workflow
-
-Use branches and pull requests when branch protection is active:
+The write form is deliberately separate:
 
 ```bash
-git checkout -b docs/example-change
-git add .
-git commit -m "Describe change"
-git push origin docs/example-change
+npm run migrate:papers:write
 ```
 
-## Content and Route Structure
+Review the diff and rerun the full release gate after any migration. Never infer issue-release dates, rights, faculty sponsorship, or private consent from semester labels or public availability.
 
-Key source paths:
+## Branch and review workflow
 
-- `src/pages/`: Astro routes for homepage, issues, papers, categories, profiles, Contact, About, and policies
-- `src/content/config.ts`: Astro content collection schemas
-- `src/data/about-content.ts`: About page copy and citation template
-- `src/data/contact-content.ts`: Contact page copy
-- `src/data/public-profiles.ts`: Editorial board and public profile data
-- `src/data/issues.ts`: defined issue labels and archive years
-- `src/lib/papers.ts`: paper grouping, issue/category helpers, citation formatting, and paper URLs
-- `scripts/verify-text-contracts.ts`: post-build text checks
-- `scripts/markdown-to-homepage-content.ts`: helper for generating homepage editable content
+All public changes use a feature branch and pull request:
 
-## Governance
+```bash
+git switch -c feat/descriptive-change
+npm ci
+npm run verify:release
+git add <reviewed-files>
+git commit -m "Describe the reviewed change"
+git push -u origin feat/descriptive-change
+```
 
-See [GOVERNANCE.md](GOVERNANCE.md) for repository roles and change-control expectations:
+Do not push publication changes directly to `main`. Required protection remains an owner action until verified in GitHub; see [branch-protection instructions](docs/operations/BRANCH_PROTECTION_OWNER_ACTION.md).
 
-- Editorial Lead
-- Co-Editor
-- Technical Maintainer
-- Operations Support
+## Release artifact
 
-## Writing Standards
+After the approved commit passes the release gate:
 
-Public-facing copy should follow [docs/WRITING-STANDARDS.md](docs/WRITING-STANDARDS.md).
+```bash
+npm run package:faculty-sites
+```
 
-In short: use plain institutional language, call the project a working paper series or archive, make disclaimers direct, and avoid marketing copy.
+This produces and verifies:
+
+- `artifacts/faculty-sites-dist.zip`
+- `artifacts/faculty-sites-dist.zip.sha256`
+- an internal `SHA256SUMS.txt`
+- root-level `build-manifest.json`
+
+The ZIP contains the contents of `dist/`, not a `dist` wrapper. The packager rejects symbolic links, nested ZIPs, source/private paths, and missing required root files.
+It also re-reads Git independently and refuses to package a dirty tree, a mismatched commit, or a forged clean-source claim.
+
+Verify the external ZIP checksum and the embedded checksum/fingerprint gate before upload:
+
+```bash
+(cd artifacts && shasum -a 256 -c faculty-sites-dist.zip.sha256)
+RELEASE_COMMIT_SHA=<approved-40-character-sha> \
+  node scripts/verify-release-artifact.mjs artifacts/faculty-sites-dist.zip
+```
+
+Creating the artifact is not deployment. Only an authorized Faculty Sites operator may change production after `DEPLOY-001`, backup, header, custom-404, and rollback requirements are resolved. Follow the [deployment architecture](docs/operations/DEPLOYMENT_ARCHITECTURE.md), [release checklist](docs/operations/RELEASE_CHECKLIST.md), and [rollback runbook](docs/operations/ROLLBACK.md).
+
+After an authorized deployment, verify the live commit and host behavior:
+
+```bash
+npm run verify:production -- \
+  --origin https://econ-undergrad-wps.sites.unlv.edu \
+  --expected-commit <approved-40-character-sha>
+```
+
+The automated production checker verifies the fingerprint, representative routes, assets, citation MIME types, redirects, 404 behavior, metadata, and security headers. It cannot inspect a real mobile layout or browser console remotely. The authorized operator must complete those two browser checks separately before calling a release live.
+
+## External scholarly checks
+
+DOI and OAsis checks are retried, evidence-producing, and separate from normal CI:
+
+```bash
+npm run verify:external-records
+npm run verify:external-links
+```
+
+HTTP restrictions on repository PDFs are transport observations, not metadata mismatches or PDF accessibility findings. Full PDF accessibility remains a manual/document-remediation responsibility.
+
+Search and Scholar operations are bounded by the [Google Search runbook](docs/release/GOOGLE_SEARCH_REINDEXING.md) and [Google Scholar monitoring runbook](docs/release/GOOGLE_SCHOLAR_MONITORING.md). Neither indexing nor timing is guaranteed.
+
+## Governance and writing
+
+Repository change control is summarized in [GOVERNANCE.md](GOVERNANCE.md). Publication authority is defined in [publication governance](docs/governance/PUBLICATION_GOVERNANCE.md), and open institutional decisions are tracked in [owner actions](docs/release/OWNER_ACTIONS.md).
+
+Public copy follows [writing standards](docs/WRITING-STANDARDS.md): use plain institutional language, distinguish the Editorial Board from Junior Editors, state the working-paper and non-peer-reviewed status clearly, and never describe OAsis as the publisher.

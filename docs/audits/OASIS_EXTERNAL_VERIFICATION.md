@@ -1,37 +1,37 @@
 # OAsis External Verification
 
-Generated: 2026-09-01T02:50:24.403Z
+Generated: 2026-09-01T03:55:31.201Z
 
 This is a bounded external check, not a PDF accessibility certification. A metadata mismatch means the retrieved OAsis record differs from local structured data. A network failure means the comparison could not be completed. HTTP errors, including access-control responses, are reported separately and are not treated as metadata mismatches.
 
 ## Summary
 
 - Total records: 15
-- Fully verified: 3
+- Fully verified: 0
 - Metadata or DOI-target mismatches: 0
 - Network failures: 0
-- Remote HTTP errors: 12
+- Remote HTTP errors: 15
 - Invalid local records: 0
 
 ## Record results
 
-| Slug | DOI syntax / target | OAsis item | PDF probe | Compared fields | Outcome |
-| --- | --- | --- | --- | ---: | --- |
-| `the-race-for-increasing-college-costs` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `used-electric-vehicle-tax-credit` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `nba-real-team-value` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `hedonics-used-car-attributes` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `key-determinants-diamond-value` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `rural-metropolitan-gender-wage-gap` | valid; OAsis reached | verified (200) | verified (206) | 13 match / 0 mismatch | **verified** |
-| `social-determinants-educational-attainment` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `ai-wage-effects-us-occupations` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `residential-sale-prices-neighborhood-interior` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `mlb-speed-premium` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `nevada-mining-output-growth` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `commercial-bank-failures` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `gambling-losses-future-wagers` | valid; OAsis reached | verified (200) | verified (206) | 13 match / 0 mismatch | **verified** |
-| `las-vegas-casino-revenue` | valid; OAsis reached | verified (200) | HTTP 403 | 13 match / 0 mismatch | **remote_error** |
-| `march-madness-tournament-advancement` | valid; OAsis reached | verified (200) | verified (206) | 13 match / 0 mismatch | **verified** |
+| Slug                                            | DOI syntax / target       | OAsis item     | PDF probe |       Compared fields | Outcome          |
+| ----------------------------------------------- | ------------------------- | -------------- | --------- | --------------------: | ---------------- |
+| `the-race-for-increasing-college-costs`         | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `used-electric-vehicle-tax-credit`              | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `nba-real-team-value`                           | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `hedonics-used-car-attributes`                  | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `key-determinants-diamond-value`                | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `rural-metropolitan-gender-wage-gap`            | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `social-determinants-educational-attainment`    | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `ai-wage-effects-us-occupations`                | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `residential-sale-prices-neighborhood-interior` | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `mlb-speed-premium`                             | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `nevada-mining-output-growth`                   | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `commercial-bank-failures`                      | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `gambling-losses-future-wagers`                 | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `las-vegas-casino-revenue`                      | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
+| `march-madness-tournament-advancement`          | valid; exact item matched | verified (200) | HTTP 403  | 13 match / 0 mismatch | **remote_error** |
 
 ## Exceptions and limits
 
@@ -52,6 +52,10 @@ This is a bounded external check, not a PDF accessibility certification. A metad
 - PDF: HTTP 403 after 1 attempt(s).
 
 ### key-determinants-diamond-value
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### rural-metropolitan-gender-wage-gap
 
 - PDF: HTTP 403 after 1 attempt(s).
 
@@ -79,7 +83,15 @@ This is a bounded external check, not a PDF accessibility certification. A metad
 
 - PDF: HTTP 403 after 1 attempt(s).
 
+### gambling-losses-future-wagers
+
+- PDF: HTTP 403 after 1 attempt(s).
+
 ### las-vegas-casino-revenue
+
+- PDF: HTTP 403 after 1 attempt(s).
+
+### march-madness-tournament-advancement
 
 - PDF: HTTP 403 after 1 attempt(s).
 

@@ -17,15 +17,15 @@ This runbook covers Google Search discovery after an authorized Faculty Sites re
 
 Use these status terms in release reporting:
 
-| Status | Required evidence |
-| --- | --- |
-| `Local artifact verified` | Clean build and checks against `dist/` at a recorded commit |
-| `Production response verified` | Timestamped HTTP/browser evidence from the canonical production origin |
-| `Search Console submitted` | Authenticated sitemap-submission evidence for the production property |
-| `Search Console inspected` | Authenticated URL Inspection evidence for the exact canonical URL |
-| `Indexing requested` | Authenticated request confirmation for the exact canonical URL |
-| `Indexed` | Authenticated URL Inspection reports the canonical URL indexed, with the evidence date recorded |
-| `Not verified` | Evidence is missing, stale, belongs to another origin, or cannot be tied to the release |
+| Status                         | Required evidence                                                                               |
+| ------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `Local artifact verified`      | Clean build and checks against `dist/` at a recorded commit                                     |
+| `Production response verified` | Timestamped HTTP/browser evidence from the canonical production origin                          |
+| `Search Console submitted`     | Authenticated sitemap-submission evidence for the production property                           |
+| `Search Console inspected`     | Authenticated URL Inspection evidence for the exact canonical URL                               |
+| `Indexing requested`           | Authenticated request confirmation for the exact canonical URL                                  |
+| `Indexed`                      | Authenticated URL Inspection reports the canonical URL indexed, with the evidence date recorded |
+| `Not verified`                 | Evidence is missing, stale, belongs to another origin, or cannot be tied to the release         |
 
 ## 1. Pre-deploy: identify and build the release
 
@@ -82,19 +82,19 @@ For these three commands, no output is the expected result. A match is a release
 
 Recommended fixed sample routes for this release are:
 
-| Class | Canonical route |
-| --- | --- |
-| Homepage | `/` |
-| Catalog | `/papers/` |
-| Current issue | `/issues/2026-spring/` |
-| Fall 2025 issue | `/issues/2025-fall/` |
-| Earlier issue | `/issues/2024-spring/` |
-| Single-author paper | `/papers/march-madness-tournament-advancement/` |
-| Multi-author paper | `/papers/rural-metropolitan-gender-wage-gap/` |
-| Policies | `/policies/` |
-| Repository/indexing boundary | `/policies/archiving/` |
-| Version policy | `/policies/corrections-versioning/` |
-| Accessibility | `/policies/accessibility/` |
+| Class                        | Canonical route                                 |
+| ---------------------------- | ----------------------------------------------- |
+| Homepage                     | `/`                                             |
+| Catalog                      | `/papers/`                                      |
+| Current issue                | `/issues/2026-spring/`                          |
+| Fall 2025 issue              | `/issues/2025-fall/`                            |
+| Earlier issue                | `/issues/2024-spring/`                          |
+| Single-author paper          | `/papers/march-madness-tournament-advancement/` |
+| Multi-author paper           | `/papers/rural-metropolitan-gender-wage-gap/`   |
+| Policies                     | `/policies/`                                    |
+| Repository/indexing boundary | `/policies/archiving/`                          |
+| Version policy               | `/policies/corrections-versioning/`             |
+| Accessibility                | `/policies/accessibility/`                      |
 
 If any listed record is withdrawn or its slug changes before release, replace it with a published record in the same class and record the substitution.
 
@@ -130,15 +130,15 @@ rg -n '^Sitemap: https://econ-undergrad-wps\.sites\.unlv\.edu/sitemap\.xml$' /tm
 
 Check each retained legacy route in both HTTP tooling and a browser. The current static compatibility pages may return `200` with a refresh redirect rather than a server-side `3xx`; record the actual status. An approved static alias must contain `noindex, follow`, a canonical link to the destination, a refresh or script redirect, and a visible followable link. If the host is configured for server redirects, record the exact `3xx` status and `Location` header instead.
 
-| Legacy route or pattern | Required canonical destination |
-| --- | --- |
-| `/our/` | `/for-authors/` |
-| `/categories/` and obsolete general category routes | `/fields/` or the mapped canonical field |
-| `/categories/io-and-strategy/` | `/fields/industrial-organization/` |
-| `/categories/public-and-policy/` | `/fields/public-economics/` |
-| `/issues/page2/`, `/issues/page3/` | `/issues/` |
-| `/graduate-assistants/` | `/editorial-board/#junior-editors` with canonical `/editorial-board/` |
-| Existing `/graduate-assistants/[slug]/` | Preserve the profile route, or use a documented equivalent editorial-board profile destination; do not break the external URL |
+| Legacy route or pattern                              | Required canonical destination                                                                                                                                                                                     |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/our/`                                              | `/for-authors/`                                                                                                                                                                                                    |
+| `/categories/` and obsolete general category routes  | `/fields/` or the mapped canonical field                                                                                                                                                                           |
+| `/categories/io-and-strategy/`                       | `/fields/industrial-organization/`                                                                                                                                                                                 |
+| `/categories/public-and-policy/`                     | `/fields/public-economics/`                                                                                                                                                                                        |
+| `/issues/page2/`, `/issues/page3/`                   | `/issues/`                                                                                                                                                                                                         |
+| `/graduate-assistants/`                              | `/editorial-board/#junior-editors` with canonical `/editorial-board/`                                                                                                                                              |
+| Existing `/graduate-assistants/[slug]/`              | Preserve the profile route, or use a documented equivalent editorial-board profile destination; do not break the external URL                                                                                      |
 | Historical `/issues/[issue]/paper-[number]/` pattern | No verified aliases are generated by the current build. Treat the old-URL inventory and paper mapping as unresolved; do not claim a redirect until an explicit source-to-target mapping is implemented and tested. |
 
 - [ ] Confirm aliases are absent from the sitemap.
@@ -229,43 +229,43 @@ Populate these tables in the private release record. The public repository conta
 
 ### Release and deployment identity
 
-| Field | Value |
-| --- | --- |
-| Release ID | |
-| Commit SHA | |
-| Artifact/package checksum | |
-| Production origin | `https://econ-undergrad-wps.sites.unlv.edu/` |
-| Authorized deployment owner | |
-| Deployment UTC start/end | |
-| Rollback point and procedure | |
-| Local build result/evidence | |
-| Production identity evidence | |
-| Search Console property type/identifier | |
-| Authenticated operator | |
+| Field                                   | Value                                        |
+| --------------------------------------- | -------------------------------------------- |
+| Release ID                              |                                              |
+| Commit SHA                              |                                              |
+| Artifact/package checksum               |                                              |
+| Production origin                       | `https://econ-undergrad-wps.sites.unlv.edu/` |
+| Authorized deployment owner             |                                              |
+| Deployment UTC start/end                |                                              |
+| Rollback point and procedure            |                                              |
+| Local build result/evidence             |                                              |
+| Production identity evidence            |                                              |
+| Search Console property type/identifier |                                              |
+| Authenticated operator                  |                                              |
 
 ### Sitemap evidence
 
-| UTC time | Sitemap URL | Live HTTP result | Search Console submission status | Discovered URLs shown | Evidence location | Notes |
-| --- | --- | --- | --- | --- | --- | --- |
-| | `https://econ-undergrad-wps.sites.unlv.edu/sitemap.xml` | | | | | |
+| UTC time | Sitemap URL                                             | Live HTTP result | Search Console submission status | Discovered URLs shown | Evidence location | Notes |
+| -------- | ------------------------------------------------------- | ---------------- | -------------------------------- | --------------------- | ----------------- | ----- |
+|          | `https://econ-undergrad-wps.sites.unlv.edu/sitemap.xml` |                  |                                  |                       |                   |       |
 
 ### URL Inspection and indexing requests
 
 | UTC time | URL | Class | Indexed-data result | Live-test result | Declared canonical | Google-selected canonical | Request made/result | Evidence location | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | | | | |
+| -------- | --- | ----- | ------------------- | ---------------- | ------------------ | ------------------------- | ------------------- | ----------------- | ----- |
+|          |     |       |                     |                  |                    |                           |                     |                   |       |
 
 ### Redirect and metadata verification
 
 | UTC time | Tested URL | HTTP status | Browser destination | Canonical | Robots | Sitemap present? | Social metadata result | Result | Evidence location |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | | | | |
+| -------- | ---------- | ----------- | ------------------- | --------- | ------ | ---------------- | ---------------------- | ------ | ----------------- |
+|          |            |             |                     |           |        |                  |                        |        |                   |
 
 ### Ongoing search observation
 
 | Observation date | Query/report | Observed URL/title | Category (`stale name`, `malformed title`, `duplicate`, `canonical`) | Live source correct? | Action/owner | Next review | Evidence location |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | | |
+| ---------------- | ------------ | ------------------ | -------------------------------------------------------------------- | -------------------- | ------------ | ----------- | ----------------- |
+|                  |              |                    |                                                                      |                      |              |             |                   |
 
 ## Closeout
 
