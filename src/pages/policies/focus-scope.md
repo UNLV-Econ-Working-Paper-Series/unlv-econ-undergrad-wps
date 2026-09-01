@@ -5,7 +5,7 @@ lead: What the Series posts and what it does not.
 bodyClass: page-policy-focus-scope
 ---
 
-The **UNLV Undergraduate Economics Working Paper Series** is a public archive of working papers connected to the UNLV Department of Economics.
+The **UNLV Undergraduate Economics Working Paper Series** publishes original economics-related working papers by UNLV undergraduates. It is operated by its Editorial Board within the Molasky Family Department of Economics and Real Estate, Lee Business School, University of Nevada, Las Vegas.
 
 ## What we publish
 

@@ -6,12 +6,13 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && npm run verify:text-contracts",
+    "build": "astro build && npm run verify:text-contracts && npm run verify:governance-copy",
     "preview": "astro preview",
     "astro": "astro",
     "migrate:papers": "tsx scripts/import-papers-from-jekyll.ts --source ../UNLVECON495Journal/assets/data/papers.json",
     "generate:homepage-content": "tsx scripts/markdown-to-homepage-content.ts",
-    "verify:text-contracts": "tsx scripts/verify-text-contracts.ts"
+    "verify:text-contracts": "tsx scripts/verify-text-contracts.ts",
+    "verify:governance-copy": "tsx scripts/verify-governance-copy.ts"
   },
   "dependencies": {
     "astro": "^5.0.0",

@@ -31,7 +31,7 @@ export const SPECTRA_LINKS: ResourceLink[] = [
 ];
 
 export const SYMPOSIA_POINTS: string[] = [
-  "Open to undergraduate researchers across UNLV, including Department of Economics projects.",
+  "Open to undergraduate researchers across UNLV, including economics and real estate projects.",
   "Formats include posters, oral presentations, and performances or exhibitions.",
   "Held each fall and spring to support public communication and research feedback.",
 ];

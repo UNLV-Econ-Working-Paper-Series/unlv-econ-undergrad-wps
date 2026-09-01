@@ -11,13 +11,15 @@ export async function getStaticPaths() {
 
 const { issue } = Astro.props as { issue: ArchiveIssueGroup };
 const availablePapers = issue.papers.filter((paper) => paper.fileAvailable);
+const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
+  `${count} ${count === 1 ? singular : plural}`;
 ---
 
 <BaseLayout title={`${issue.label} | Archive`} bodyClass="section-issues page-archive-issue">
   <PageBanner
     kicker="Archive Issue"
     title={issue.label}
-    subtitle={`Archive issue with ${issue.papers.length} working paper(s) and ${issue.categories.length} topic categories`}
+    subtitle={`Archive issue with ${countLabel(issue.papers.length, "working paper")} and ${countLabel(issue.categories.length, "research field")}`}
   />
 
   <section class="content-section">
@@ -25,7 +27,7 @@ const availablePapers = issue.papers.filter((paper) => paper.fileAvailable);
       <header class="issue-archive-head">
         <h2>Issue Summary</h2>
         <p class="issue-card-meta">
-          {issue.papers.length} papers • {issue.categories.length} categories
+          {countLabel(issue.papers.length, "paper")} • {countLabel(issue.categories.length, "category", "categories")}
         </p>
       </header>
 

@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { HOMEPAGE_EDITABLE_CONTENT } from "../data/homepage-content";
 import { NEWS_EVENTS } from "../data/news";
+import { INSTITUTION } from "../config/institution";
+import { SERIES } from "../config/publication";
 import { cleanPaperTitle, getCategoryGroups, getIssueGroups, paperHref } from "../lib/papers";
 import { withBase } from "../lib/urls";
 
@@ -120,14 +122,14 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "Upda
     <div class="hero-content home-hero-content">
       <div class="hero-panel-shell">
         <div class="hero-panel">
-          <p class="hero-kicker">UNLV Department of Economics</p>
+          <p class="hero-kicker">{INSTITUTION.department.name}</p>
           <h1>
             <span class="hero-title-line">UNLV Undergraduate Economics</span>
             <span class="hero-title-line">Working Paper Series</span>
           </h1>
           <p class="hero-subtitle">
-            <span class="hero-subtitle-line">Archive for undergraduate economics working papers at UNLV</span>
-            <span class="hero-subtitle-line">Published by semester issue</span>
+            <span class="hero-subtitle-line">Original economics-related research by UNLV undergraduates</span>
+            <span class="hero-subtitle-line">Editorially screened working papers organized by issue</span>
           </p>
           <div class="hero-actions">
             <a class="btn btn-home-primary" href={withBase("/issues/")}>Browse Issues</a>
@@ -155,7 +157,7 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "Upda
     <div class="section-head home-section-head">
       <div>
         <p class="eyebrow">Latest Issue</p>
-        <h2 id="latest-issue-title">Latest Semester Release</h2>
+        <h2 id="latest-issue-title">Latest Issue</h2>
       </div>
       <a class="link-inline" href={withBase("/issues/")}>View all issues</a>
     </div>
@@ -267,14 +269,14 @@ const newsEmptyStateText = newsAndEventsEditable.emptyStateText?.trim() || "Upda
         <p class="eyebrow">About</p>
         <h2 id="about-bullets-title">What This Series Is</h2>
       </div>
-      <a class="link-inline" href={withBase("/about/")}>Read full about</a>
+      <a class="link-inline" href={withBase("/about/")}>About the Series</a>
     </div>
 
     <article class="card home-surface" data-motion="gsap">
       <ul class="home-about-bullets">
-        <li>Open-access archive of UNLV Department of Economics working papers, organized by semester issue</li>
-        <li>Working papers are posted for public reading; they are not peer-reviewed journal articles</li>
-        <li>Each paper stays available on its own page with a downloadable PDF</li>
+        <li>{SERIES.description}</li>
+        <li>{SERIES.workingPaperNotice}</li>
+        <li>Each deposited paper links to its permanent OAsis item record and full text</li>
       </ul>
     </article>
   </section>

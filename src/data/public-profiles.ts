@@ -1,4 +1,8 @@
 import type { PublicProfile } from "./public-profiles.types";
+import { EDITORIAL_BOARD, JUNIOR_EDITORS } from "../config/editorial";
+
+const roleFor = (id: string): string =>
+  [...EDITORIAL_BOARD, ...JUNIOR_EDITORS].find((member) => member.id === id)?.publicTitle ?? "Editorial Team";
 
 // Backend sync target:
 // this file represents the public-facing subset of backend user/profile data.
@@ -6,7 +10,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
   {
     id: "professor-djeto-assane",
     name: "Professor Djeto Assané, Ph.D.",
-    displayRole: "Editorial Lead",
+    displayRole: roleFor("djeto-assane"),
     summary:
       "Professor of economics in the Lee Business School with research interests in applied econometrics, growth, trade, institutions, and energy economics",
     profileBio: [
@@ -28,7 +32,7 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
   {
     id: "professor-eric-chiang",
     name: "Professor Eric Chiang, Ph.D.",
-    displayRole: "Co-Editor",
+    displayRole: roleFor("eric-chiang"),
     summary:
       "Professor-in-Residence of economics in the Lee Business School and former tenured associate professor at Florida Atlantic University",
     profileBio: [
@@ -50,8 +54,8 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
   },
   {
     id: "mark-jayson-farol",
-    name: "Mark Jayson Farol, M.A.",
-    displayRole: "Series Organizer",
+    name: "Mark Jayson Martinez Farol, M.A.",
+    displayRole: roleFor("mark-jayson-martinez-farol"),
     summary:
       "Economics researcher and platform builder who developed the series site and manages its publishing structure, metadata, and issue posting",
     profileBio: [
@@ -74,14 +78,11 @@ export const PUBLIC_PROFILES: PublicProfile[] = [
   {
     id: "brandon-penticoff",
     name: "Brandon Penticoff",
-    displayRole: "Junior Editor · Spring 2026",
+    displayRole: roleFor("brandon-penticoff"),
     summary:
-      "UNLV student in the accelerated B.A./M.A. program in Economics and Quantitative Business Economics and a Spring 2026 Junior Editor for the series",
+      "Supports initial screening and publication-production work under the direction of the Editorial Board; appointment and public-profile details require confirmation",
     sections: ["graduate_assistants"],
-    headshot: "/assets/images/brandon-penticoff.jpg",
-    photoSource: "Photo source: LinkedIn profile",
     profileHref: "/graduate-assistants/brandon-penticoff/",
-    links: [{ type: "linkedin", href: "https://www.linkedin.com/in/brandon-penticoff-4002252b1/" }],
     current: true,
     sortOrder: 30,
   },

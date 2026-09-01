@@ -1,24 +1,28 @@
-# Contributors
+# Contributors and Provenance
 
-## Founding Builder / Platform Architecture
-- Mark Jayson Farol
-  - Role: Founding Builder, Founding Technical Editor
-  - Summary: Created and originally authored the public website platform and architecture.
+This file records contributions. Current publication authority is controlled by [`docs/governance/PUBLICATION_GOVERNANCE.md`](docs/governance/PUBLICATION_GOVERNANCE.md), not by appearance in this list.
 
-## Editorial Leadership
-- Professor Djeto Assané
-  - Role: Editorial Lead
-- Professor Eric Chiang
-  - Role: Co-Editor
+## Publication infrastructure
 
-## Operations
-- Graduate Assistants (rotating)
-  - Role: Metadata operations, publication workflow support, and quality checks.
+- Mark Jayson Martinez Farol
+  - Created and originally authored the public website architecture and publication infrastructure.
+  - Intended publication role: Managing Editor and Series Organizer; written role acceptance remains an external confirmation action.
 
-## Future Contributors
+## Intended Editorial Board
 
-Add future contributors in this format:
+- Djeto Assané
+  - Safe public title: Faculty Editor.
+  - Expanded Faculty Sponsor title and role acceptance require written confirmation.
+- Eric Chiang
+  - Intended title: Faculty Editor.
+  - Role acceptance requires written confirmation.
 
-| Name | Role | Dates | Contributions |
-|---|---|---|---|
-| Example Name | Managing Editor (GA) | 2026-01 to 2026-05 | Metadata QA, issue publishing, policy updates |
+## Intended Junior Editor
+
+- Brandon Penticoff
+  - Intended non-voting role: Junior Editor.
+  - Current appointment, term, and public-profile consent require written confirmation.
+
+## Adding contributors
+
+Record the person's name, controlled role or contribution type, dates, contribution, evidence location, and whether the record carries publication authority. Do not place private contact, consent, review, or appointment evidence in public Git.

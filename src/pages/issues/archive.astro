@@ -6,6 +6,8 @@ import { withBase } from "../../lib/urls";
 
 const archiveIssues = getArchiveIssueGroups();
 const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b) => b - a);
+const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
+  `${count} ${count === 1 ? singular : plural}`;
 ---
 
 <BaseLayout title="Archive | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-issues page-archive">
@@ -62,7 +64,7 @@ const years = [...new Set(archiveIssues.map((issue) => issue.year))].sort((a, b)
               <header class="issue-archive-head">
                 <h2>{issue.label}</h2>
                 <p class="issue-card-meta">
-                  {issue.papers.length} papers • {issue.categories.length} categories
+                  {countLabel(issue.papers.length, "paper")} • {countLabel(issue.categories.length, "category", "categories")}
                 </p>
               </header>
 

@@ -1,49 +1,20 @@
 # Governance
 
-This document defines stewardship and change control for the public website repository of the UNLV Undergraduate Economics Working Paper Series.
+The controlling publication charter for this public repository is [`docs/governance/PUBLICATION_GOVERNANCE.md`](docs/governance/PUBLICATION_GOVERNANCE.md). Its editorial action table is [`docs/governance/EDITORIAL_AUTHORITY_MATRIX.md`](docs/governance/EDITORIAL_AUTHORITY_MATRIX.md), and unresolved approvals are recorded as named owner actions in [`docs/governance/EXTERNAL_CONFIRMATIONS.md`](docs/governance/EXTERNAL_CONFIRMATIONS.md).
 
-## 1) Roles
+The canonical charter supersedes earlier role labels such as `Editorial Lead`, `Co-Editor`, and `Managing Editor (GA)` for publication authority. Historical contributor and provenance records do not, by themselves, establish a current appointment or vote.
 
-- Editorial Lead
-  - Final owner for publication-facing decisions.
+## Public-repository stewardship
 
-- Co-Editor
-  - Supports the Editorial Lead on policy and publication approvals.
+- Public Git contains approved publication metadata, public policy, code, non-sensitive release evidence, and contributor provenance.
+- Unpublished manuscripts, student contact details, consent, ballots, review deliberation, disputes, rights/ethics records, and operational credentials remain in the private operations system.
+- `NOTICE`, `LICENSE`, `CONTRIBUTORS.md`, and `CITATION.cff` preserve software authorship and provenance. They do not require global public-site credit and do not override the publication charter.
 
-- Technical Maintainer
-  - Maintains the site code, build, deployment, and structural changes.
+## Change control
 
-- Operations Support
-  - Assists with metadata checks, content preparation, and routine site updates.
+- Non-policy copy or implementation changes require the Managing Editor plus one non-conflicted voting editor.
+- Material policy, authority, schema, retention, repository, domain, or infrastructure changes require two non-conflicted voting editors including one Faculty Editor.
+- Appointments and public-profile consent require private written evidence before publication configuration changes.
+- Emergency technical action may restore availability or temporarily protect rights/privacy, but permanent editorial action follows the authority matrix and must be recorded.
 
-## 2) Change Control
-
-### Minor changes
-Examples:
-- copy updates and content clarifications
-- non-breaking UI polish
-- docs updates
-
-Approval:
-- one editor role plus one technical maintainer
-
-### Major changes
-Examples:
-- routing/base-path/domain changes
-- schema changes affecting published papers
-- publication/citation behavior changes
-- legal/policy model changes
-
-Approval:
-- Editorial Lead plus one additional approver
-- at least one approver should be responsible for the technical implementation when code changes are involved
-
-## 3) Attribution and Credit Expectations
-
-- `NOTICE` must remain present in this repository.
-- `CONTRIBUTORS.md` should be updated as contributors join.
-- Public-facing credit should remain visible in footer and About/Credits.
-
-## 4) Public Writing Standards
-
-Public-facing copy should follow [`docs/WRITING-STANDARDS.md`](docs/WRITING-STANDARDS.md). Use plain institutional language, describe the project as a working paper series or archive, and keep working-paper disclaimers direct.
+No commit, pull request, or deployment substitutes for editorial, author, institutional, library, accessibility, or records approval required by the charter.

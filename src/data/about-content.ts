@@ -14,7 +14,7 @@ const bibtexTemplate = `@misc{unlv_econ_wp_author_year,
 export const ABOUT_PAGE_CONTENT: AboutPageContent = {
   banner: {
     title: "About",
-    lead: "An open-access archive of working papers from the UNLV Department of Economics",
+    lead: "An undergraduate economics working-paper publication at the University of Nevada, Las Vegas",
     note: "Working papers (not peer reviewed), published by semester issue",
   },
   tocItems: [
@@ -31,7 +31,7 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
     items: [
       [
         { text: "Open-access archive", tone: "strong" },
-        { text: " of working papers from the UNLV Department of Economics." },
+        { text: " of economics-related working papers by UNLV undergraduates." },
       ],
       [
         { text: "Published ", tone: "strong" },
@@ -57,7 +57,7 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
         type: "paragraph",
         segments: [
           {
-            text: "The UNLV Undergraduate Economics Working Paper Series is a public archive for papers connected to the UNLV Department of Economics. It gives student authors, junior editors, faculty, and collaborators one place to post ",
+            text: "The UNLV Undergraduate Economics Working Paper Series is operated by its Editorial Board within the Molasky Family Department of Economics and Real Estate. It gives readers one place to discover ",
           },
           { text: "working papers", tone: "strong" },
           { text: ". The site is " },
@@ -72,7 +72,7 @@ export const ABOUT_PAGE_CONTENT: AboutPageContent = {
     steps: [
       {
         title: "Department research",
-        description: "Authors in the UNLV Department of Economics develop original research projects with faculty mentorship.",
+        description: "UNLV undergraduate authors develop original economics-related research with faculty mentorship and sponsorship.",
       },
       {
         title: "Semester issue",

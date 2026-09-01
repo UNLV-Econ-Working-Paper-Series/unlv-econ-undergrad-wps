@@ -2,7 +2,7 @@
 
 Public Astro frontend for the UNLV Undergraduate Economics Working Paper Series.
 
-This site is an open-access frontend and archive for undergraduate economics working papers connected to the UNLV Department of Economics. Working papers are not peer-reviewed unless a paper page explicitly says otherwise. Use "working paper series" or "archive" as the default wording for this project.
+This site is the discovery and reader interface for original economics-related working papers by UNLV undergraduates. The Series is operated by its Editorial Board within the Molasky Family Department of Economics and Real Estate, Lee Business School, University of Nevada, Las Vegas. Papers are editorially screened, are not peer reviewed, and may be revised.
 
 ## Live Site
 

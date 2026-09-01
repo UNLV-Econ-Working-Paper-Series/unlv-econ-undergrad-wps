@@ -2,6 +2,8 @@
 import { ClientRouter, fade } from "astro:transitions";
 import globalCss from "../styles/global.css?raw";
 import viewerReadinessCssUrl from "../styles/viewer-readiness.css?url";
+import { INSTITUTION } from "../config/institution";
+import { OASIS, SERIES } from "../config/publication";
 import { withBase } from "../lib/urls";
 
 interface Props {
@@ -15,7 +17,7 @@ interface Props {
 
 const {
   title,
-  description = "UNLV Undergraduate Economics Working Paper Series - open-access working papers from the UNLV Department of Economics.",
+  description = SERIES.scope,
   bodyClass = "",
   canonicalPath = Astro.url.pathname,
   robots = "",
@@ -65,7 +67,7 @@ function isActive(href: string): boolean {
     <link rel="manifest" href={withBase("/site.webmanifest")} />
     <meta name="theme-color" content="#b10202" />
 
-    <meta property="og:site_name" content="UNLV Undergraduate Economics Working Paper Series" />
+    <meta property="og:site_name" content={SERIES.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -89,7 +91,7 @@ function isActive(href: string): boolean {
           <a
             class="site-title site-logo"
             href={withBase("/")}
-            aria-label="UNLV Undergraduate Economics Working Paper Series"
+            aria-label={SERIES.name}
           >
             <span class="site-logo__primary">UNLV Economics</span>
             <span class="site-logo__secondary">Undergraduate Working Paper Series</span>
@@ -132,10 +134,8 @@ function isActive(href: string): boolean {
       <div class="site-shell footer-shell">
         <div class="footer-main">
           <section class="footer-brand">
-            <h2 class="footer-journal">UNLV Undergraduate Economics Working Paper Series</h2>
-            <p class="footer-description">
-              Open-access working paper archive for the UNLV Department of Economics.
-            </p>
+            <h2 class="footer-journal">{SERIES.name}</h2>
+            <p class="footer-description">{SERIES.scope}</p>
           </section>
 
           <nav class="footer-nav" aria-label="Explore">
@@ -158,9 +158,10 @@ function isActive(href: string): boolean {
           <nav class="footer-nav" aria-label="Academic links">
             <h3 class="footer-heading">Academic Links</h3>
             <ul class="footer-links">
-              <li><a href="https://www.unlv.edu/business" target="_blank" rel="noopener noreferrer">Lee Business School</a></li>
-              <li><a href="https://www.unlv.edu/economics" target="_blank" rel="noopener noreferrer">Department of Economics</a></li>
+              <li><a href={INSTITUTION.school.url} target="_blank" rel="noopener noreferrer">{INSTITUTION.school.name}</a></li>
+              <li><a href={INSTITUTION.department.url} target="_blank" rel="noopener noreferrer">{INSTITUTION.department.name}</a></li>
               <li><a href="https://www.unlv.edu/our" target="_blank" rel="noopener noreferrer">Office of Undergraduate Research</a></li>
+              <li><a href={OASIS.collectionUrl} target="_blank" rel="noopener noreferrer">OAsis collection</a></li>
               <li><a href={withBase("/contact/")}>Contact</a></li>
             </ul>
           </nav>
@@ -168,9 +169,8 @@ function isActive(href: string): boolean {
 
         <div class="footer-utility">
           <p class="footer-utility-text">
-            <span>&copy; <span data-current-year>{currentYear}</span> UNLV Undergraduate Economics Working Paper Series.</span>
-            <span class="footer-disclaimer">Working papers are author-provided and may be revised over time.</span>
-            <span>Platform built by Mark Jayson Farol (Founding Technical Editor).</span>
+            <span>&copy; <span data-current-year>{currentYear}</span> {SERIES.name}.</span>
+            <span class="footer-disclaimer">{SERIES.workingPaperNotice}</span>
           </p>
 
           <ul class="footer-utility-links">

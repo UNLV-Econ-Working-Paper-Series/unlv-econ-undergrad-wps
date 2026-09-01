@@ -402,7 +402,7 @@ export function formatCitations(paper: PaperEntry): CitationOption[] {
   return [
     {
       id: "repository",
-      label: "OASIS repository",
+      label: "OAsis repository",
       citation: `${repositoryAuthors(paper.data.authors)} (${year}). ${title}. ${repositoryPublication} Available at: ${persistentUrl}`,
     },
     {

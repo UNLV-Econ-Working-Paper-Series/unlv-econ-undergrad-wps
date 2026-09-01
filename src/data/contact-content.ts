@@ -1,39 +1,41 @@
 import type { ContactPageContent } from "./contact-content.types";
+import { INSTITUTION } from "../config/institution";
+import { SERIES } from "../config/publication";
 
 // Backend sync target:
 // keep the object shape stable so backend can revise page text without changing layout code.
 export const CONTACT_PAGE_CONTENT: ContactPageContent = {
   banner: {
     title: "Contact",
-    lead: "Reach the series team or the Department of Economics office",
+    lead: `Reach the Series team or the ${INSTITUTION.department.name} office`,
   },
   routingTitle: "Who are you trying to reach?",
   contact: {
     series: {
       title: "Series Team",
       desc: "Questions about papers, corrections, permissions, takedown requests, and site issues",
-      email: "contact@econ-undergrad-wps.sites.unlv.edu",
+      email: SERIES.contactEmail,
       hint: "",
       actions: [
-        { label: "Email Series Team", href: "mailto:contact@econ-undergrad-wps.sites.unlv.edu", primary: true },
+        { label: "Email Series Team", href: `mailto:${SERIES.contactEmail}`, primary: true },
         { label: "Common Requests", href: "#requests" },
       ],
     },
     dept: {
-      title: "Department of Economics",
+      title: INSTITUTION.department.name,
       desc: "Department office contact information and general departmental inquiries",
-      phone: "+1-702-895-3776",
-      locationLine: "Frank and Estella Beam Hall (BEH), Room 508",
+      phone: `+1-${INSTITUTION.department.phoneDisplay}`,
+      locationLine: INSTITUTION.department.office,
       addressLines: [
-        "Department of Economics",
-        "University of Nevada, Las Vegas",
-        "Mail Stop: 6005",
-        "4505 S. Maryland Pkwy.",
-        "Las Vegas, NV 89154",
+        INSTITUTION.department.name,
+        INSTITUTION.university.name,
+        `Mail Stop: ${INSTITUTION.department.mailStop}`,
+        INSTITUTION.department.streetAddress,
+        INSTITUTION.department.locality,
       ],
       directionsUrl: "https://maps.google.com/?q=Frank+and+Estella+Beam+Hall+UNLV",
       actions: [
-        { label: "Call Office", href: "tel:+1-702-895-3776", primary: true },
+        { label: "Call Office", href: INSTITUTION.department.phoneHref, primary: true },
         { label: "Get Directions", href: "https://maps.google.com/?q=Frank+and+Estella+Beam+Hall+UNLV", external: true },
       ],
     },

@@ -24,6 +24,8 @@ const years = [...new Set(publishedIssues.map((issue) => issue.year).filter((yea
   (a, b) => b - a
 );
 const categories = [...new Set([...issueCategoryMap.values()].flat())].sort((a, b) => a.localeCompare(b));
+const countLabel = (count: number, singular: string, plural = `${singular}s`): string =>
+  `${count} ${count === 1 ? singular : plural}`;
 ---
 
 <BaseLayout title="Issues | UNLV Undergraduate Economics Working Paper Series" bodyClass="section-issues page-issues">
@@ -92,7 +94,7 @@ const categories = [...new Set([...issueCategoryMap.values()].flat())].sort((a, 
                   {index === 0 ? <p class="issue-latest-badge">Latest issue</p> : null}
                   <h2>{issue.label}</h2>
                   <p class="issue-card-meta">
-                    {issue.papers.length} papers • {issueCategories.length} categories
+                    {countLabel(issue.papers.length, "paper")} • {countLabel(issueCategories.length, "category", "categories")}
                   </p>
                 </header>
 
@@ -122,7 +124,7 @@ const categories = [...new Set([...issueCategoryMap.values()].flat())].sort((a, 
     <section class="issues-archive-container">
       <a class="issue-archive-card issue-archive-link card" data-motion="gsap" href={withBase("/issues/archive/")}>
         <h3>Legacy Archive</h3>
-        <p>Browse pre-2024 Hub working papers</p>
+        <p>Browse verified historical working-paper records</p>
       </a>
     </section>
   </section>
