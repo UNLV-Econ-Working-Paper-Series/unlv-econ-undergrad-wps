@@ -1,7 +1,7 @@
 # Phase 4 Browser and Visual Audit
 
-Date: August 31, 2026  
-Branch: `feat/publication-infrastructure-release`  
+Date: August 31, 2026
+Branch: `feat/publication-infrastructure-release`
 Production preview: `astro preview` at `http://127.0.0.1:4321`
 
 ## Result

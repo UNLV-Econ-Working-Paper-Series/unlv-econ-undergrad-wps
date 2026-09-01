@@ -1,7 +1,7 @@
 # Baseline Browser and Viewer Audit
 
-Audit date: 2026-08-31  
-Production origin: `https://econ-undergrad-wps.sites.unlv.edu/`  
+Audit date: 2026-08-31
+Production origin: `https://econ-undergrad-wps.sites.unlv.edu/`
 Audited build: `b9bdf5de16ae8e44d47b83203949ad70008d61ae`
 
 ## Coverage

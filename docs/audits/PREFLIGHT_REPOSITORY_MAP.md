@@ -1,8 +1,8 @@
 # Phase 0 Preflight Repository Map
 
-Audit date: 2026-08-31  
-Audited commit: `b9bdf5de16ae8e44d47b83203949ad70008d61ae`  
-Feature branch: `feat/publication-infrastructure-release`  
+Audit date: 2026-08-31
+Audited commit: `b9bdf5de16ae8e44d47b83203949ad70008d61ae`
+Feature branch: `feat/publication-infrastructure-release`
 Isolated worktree: `tmp/publication-infrastructure-release`
 
 ## Isolation and baseline
